@@ -1,0 +1,19 @@
+page_order:
+  - programs
+
+navbar_order:
+  - programs
+  - Resources
+  - Syllabi
+  - url: https://wakeforestid.com
+    text: Home
+
+dropdowns:
+  Resources:
+    - math
+    - programming
+  Syllabi:
+    - bio301-math-bio
+    - bio340-id-ecology
+    - bio390-research-tools
+    - field-epidemiology

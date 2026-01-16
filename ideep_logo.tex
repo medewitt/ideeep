@@ -1,0 +1,106 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes, decorations.pathmorphing, decorations.pathreplacing, decorations.markings, patterns, calc, arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[scale=2.5]
+
+% Define colors - using webgold and black theme
+\definecolor{webgold}{RGB}{140,109,44}
+\definecolor{darkgray}{RGB}{50,50,50}
+
+% Draw a circular background with four sections
+% Top-left: Compartmental model (SIR)
+\fill[webgold!15] (0,0) -- (135:2) arc (135:225:2) -- cycle;
+
+% Top-right: Bacteria
+\fill[webgold!15] (0,0) -- (45:2) arc (45:-45:2) -- cycle;
+
+% Bottom-left: Phylogenetic tree
+\fill[webgold!15] (0,0) -- (-135:2) arc (-135:-225:2) -- cycle;
+
+% Bottom-right: Life graph
+\fill[webgold!15] (0,0) -- (-45:2) arc (-45:-135:2) -- cycle;
+
+% Top-left: Compartmental model (SIR compartments with arrows)
+% S compartment (Susceptible)
+\coordinate (Sbox) at (180:1.1);
+\draw[webgold, line width=2.2pt] ($(Sbox) + (-0.15,0.2)$) rectangle ($(Sbox) + (0.15,-0.2)$);
+\node[text=webgold, font=\small\bfseries] at (Sbox) {S};
+% I compartment (Infected)
+\coordinate (Ibox) at (180:0.7);
+\draw[webgold, line width=2.2pt] ($(Ibox) + (-0.15,0.2)$) rectangle ($(Ibox) + (0.15,-0.2)$);
+\node[text=webgold, font=\small\bfseries] at (Ibox) {I};
+% R compartment (Recovered)
+\coordinate (Rbox) at (180:0.3);
+\draw[webgold, line width=2.2pt] ($(Rbox) + (-0.15,0.2)$) rectangle ($(Rbox) + (0.15,-0.2)$);
+\node[text=webgold, font=\small\bfseries] at (Rbox) {R};
+% Arrows between compartments
+\draw[webgold, line width=1.8pt, ->, >=Stealth] ($(Sbox) + (0,-0.2)$) -- ($(Ibox) + (0,0.2)$);
+\draw[webgold, line width=1.8pt, ->, >=Stealth] ($(Ibox) + (0,-0.2)$) -- ($(Rbox) + (0,0.2)$);
+
+% Top-right: Bacteria (rod-shaped with flagella)
+% Main bacterial cell body (rod shape)
+\draw[webgold, line width=3pt] (45:0.9) ellipse (0.35 and 0.18);
+% Flagella (wavy lines)
+\draw[webgold, line width=1.2pt] (45:0.9) .. controls (30:1.1) and (20:1.2) .. (15:1.3);
+\draw[webgold, line width=1.2pt] (45:0.9) .. controls (60:1.1) and (70:1.2) .. (75:1.3);
+\draw[webgold, line width=1.2pt] (45:0.9) .. controls (35:0.7) and (25:0.6) .. (20:0.5);
+% Pili (small lines extending from cell)
+\foreach \i in {-1,0,1} {
+    \draw[webgold, line width=0.9pt] ($(45:0.9) + (0.35, 0.06*\i)$) -- ($(45:0.9) + (0.5, 0.06*\i)$);
+}
+
+% Bottom-left: Phylogenetic tree
+% Main trunk
+\draw[webgold, line width=2.2pt] (-180:0.7) -- (-180:1.5);
+% Left branch
+\draw[webgold, line width=2pt] (-180:1.1) -- (-195:1.4);
+\draw[webgold, line width=1.6pt] (-195:1.4) -- (-200:1.65);
+\draw[webgold, line width=1.6pt] (-195:1.4) -- (-190:1.65);
+% Right branch
+\draw[webgold, line width=2pt] (-180:1.1) -- (-165:1.4);
+\draw[webgold, line width=1.6pt] (-165:1.4) -- (-160:1.65);
+\draw[webgold, line width=1.6pt] (-165:1.4) -- (-170:1.65);
+% Top branches
+\draw[webgold, line width=1.6pt] (-180:1.5) -- (-185:1.7);
+\draw[webgold, line width=1.6pt] (-180:1.5) -- (-175:1.7);
+% Terminal nodes
+\foreach \angle in {-200,-190,-185,-175,-170,-160} {
+    \fill[webgold] (\angle:1.65) circle (0.09);
+}
+\fill[webgold] (-180:1.5) circle (0.11);
+
+% Bottom-right: Life graph (survival/population curve)
+% Coordinate for graph center
+\coordinate (graphcenter) at (-45:1.0);
+% Axes
+\draw[webgold, line width=1.8pt] ($(graphcenter) + (-0.3,-0.4)$) -- ($(graphcenter) + (-0.3,0.4)$);
+\draw[webgold, line width=1.8pt] ($(graphcenter) + (-0.3,-0.4)$) -- ($(graphcenter) + (0.3,-0.4)$);
+% Survival curve (decreasing exponential curve)
+\draw[webgold, line width=2.5pt] 
+    ($(graphcenter) + (-0.3,-0.4)$) 
+    .. controls ($(graphcenter) + (-0.2,-0.2)$) and ($(graphcenter) + (-0.1,0.0)$) .. 
+    ($(graphcenter) + (0.0,0.2)$)
+    .. controls ($(graphcenter) + (0.1,0.3)$) and ($(graphcenter) + (0.2,0.35)$) .. 
+    ($(graphcenter) + (0.3,0.4)$);
+% Data points along curve
+\foreach \i in {0,1,2,3,4} {
+    \pgfmathsetmacro{\x}{-0.3 + 0.15*\i}
+    \pgfmathsetmacro{\y}{-0.4 + 0.2*\i - 0.05*\i*\i}
+    \fill[webgold] ($(graphcenter) + (\x,\y)$) circle (0.07);
+}
+
+% Central white circle for text
+\fill[white] (0,0) circle (0.55);
+
+% Text in center: "IDEEP"
+\node[text=black, font=\bfseries\LARGE, align=center] at (0,0.15) {IDEEP};
+\node[text=black, font=\small, align=center] at (0,-0.1) {Infectious Disease};
+\node[text=black, font=\small, align=center] at (0,-0.25) {Ecology \& Epidemiology};
+
+% Border circle
+\draw[webgold, line width=3.5pt] (0,0) circle (2);
+
+\end{tikzpicture}
+\end{document}

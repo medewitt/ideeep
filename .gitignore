@@ -1,0 +1,95 @@
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+
+# Build outputs
+/dist/
+
+# Configuration files (keep example)
+/config.yaml.example
+
+# LaTeX auxiliary files
+*.aux
+*.log
+*.dvi
+*.out
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Python (if used for serving)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# R
+.RData
+.Rhistory
+.Ruserdata
+.Rproj.user/
+.Rapp.history
+*.Rproj.user/
+packrat/
+renv/
+*.Rproj
+.Rproj.user
+
+# Julia
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+*.jl.mem.*
+Manifest.toml
+deps/
+build/
+.julia/
+*.jl~
+*.jl#
+
