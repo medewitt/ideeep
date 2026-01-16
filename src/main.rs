@@ -2,6 +2,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use pulldown_cmark::{html, Options, Parser};
 use regex::Regex;
+use katex::{Opts, OutputType};
 
 #[derive(Debug, serde::Deserialize)]
 struct FrontMatter {
@@ -33,105 +34,125 @@ fn extract_frontmatter(content: &str) -> (Option<FrontMatter>, &str) {
     }
 }
 
-fn protect_math_expressions(markdown: &str) -> (String, Vec<String>) {
-    let mut protected = markdown.to_string();
-    let mut math_blocks = Vec::new();
-    let mut block_id = 0;
-    
-    // Protect display math blocks: $$...$$
-    let display_dollar_pattern = Regex::new(r"\$\$[\s\S]*?\$\$").unwrap();
-    let mut positions: Vec<(usize, usize, String)> = Vec::new();
-    
-    for mat in display_dollar_pattern.find_iter(&protected) {
-        positions.push((mat.start(), mat.end(), mat.as_str().to_string()));
-    }
-    
-    // Replace from end to start to preserve indices
-    for (start, end, math_content) in positions.iter().rev() {
-        let placeholder = format!("\n\nMATH_BLOCK_{}\n\n", block_id);
-        math_blocks.push(math_content.clone());
-        protected.replace_range(*start..*end, &placeholder);
-        block_id += 1;
-    }
-    
-    // Protect display math blocks: \[...\]
-    let display_bracket_pattern = Regex::new(r"\\\[[\s\S]*?\\\]").unwrap();
-    let mut positions: Vec<(usize, usize, String)> = Vec::new();
-    
-    for mat in display_bracket_pattern.find_iter(&protected) {
-        positions.push((mat.start(), mat.end(), mat.as_str().to_string()));
-    }
-    
-    // Replace from end to start to preserve indices
-    for (start, end, math_content) in positions.iter().rev() {
-        let placeholder = format!("\n\nMATH_BLOCK_{}\n\n", block_id);
-        math_blocks.push(math_content.clone());
-        protected.replace_range(*start..*end, &placeholder);
-        block_id += 1;
-    }
-    
-    // Protect inline math: $...$ (but not $$)
-    // Use a simple pattern and filter out $$ matches manually
-    let inline_pattern = Regex::new(r"\$[^$\n]+?\$").unwrap();
-    let mut inline_positions: Vec<(usize, usize, String)> = Vec::new();
-    
-    for mat in inline_pattern.find_iter(&protected) {
-        let math_str = mat.as_str();
-        // Skip if it starts with $$ (already handled as display math)
-        if !math_str.starts_with("$$") {
-            inline_positions.push((mat.start(), mat.end(), math_str.to_string()));
-        }
-    }
-    
-    // Replace from end to start
-    for (start, end, math_content) in inline_positions.iter().rev() {
-        let placeholder = format!("MATH_INLINE_{}", block_id);
-        math_blocks.push(math_content.clone());
-        protected.replace_range(*start..*end, &placeholder);
-        block_id += 1;
-    }
-    
-    (protected, math_blocks)
+fn katex_opts(display: bool) -> Opts {
+    katex::Opts::builder()
+        .display_mode(display)
+        .throw_on_error(false)
+        .output_type(OutputType::HtmlAndMathml)
+        .build()
+        .unwrap()
 }
 
-fn restore_math_expressions(html: &str, math_blocks: &[String]) -> String {
-    let mut result = html.to_string();
+fn preprocess_math(md: &str) -> String {
+    let mut result = String::with_capacity(md.len() * 2);
+    let mut chars = md.chars().peekable();
     
-    // Process in reverse order to preserve indices
-    for (i, math_block) in math_blocks.iter().enumerate().rev() {
-        let placeholder = if math_block.starts_with("$$") || math_block.starts_with("\\[") {
-            format!("MATH_BLOCK_{}", i)
-        } else {
-            format!("MATH_INLINE_{}", i)
-        };
-        
-        // For display math, remove paragraph wrapping if present
-        if math_block.starts_with("$$") || math_block.starts_with("\\[") {
-            // Try various patterns that might wrap the math
-            let patterns = vec![
-                format!("<p>{}</p>", placeholder),
-                format!("<p>\n{}\n</p>", placeholder),
-                format!("{}\n", placeholder),
-                format!("\n{}\n", placeholder),
-                format!("\n\n{}\n\n", placeholder),
-                placeholder.clone(),
-            ];
-            
-            let mut replaced = false;
-            for pattern in &patterns {
-                if result.contains(pattern) {
-                    result = result.replace(pattern, &math_block);
-                    replaced = true;
-                    break;
+    while let Some(ch) = chars.next() {
+        if ch == '$' {
+            // Check for display math: $$
+            if chars.peek() == Some(&'$') {
+                chars.next(); // consume second $
+                let mut tex = String::new();
+                let mut found_end = false;
+                while let Some(c) = chars.next() {
+                    if c == '$' && chars.peek() == Some(&'$') {
+                        chars.next(); // consume second $
+                        found_end = true;
+                        break;
+                    }
+                    tex.push(c);
+                }
+                if found_end {
+                    let html = katex::render_with_opts(tex.trim(), katex_opts(true))
+                        .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, tex));
+                    result.push_str(&html);
+                } else {
+                    // Not a valid display math, put it back
+                    result.push('$');
+                    result.push('$');
+                    result.push_str(&tex);
+                }
+            } else {
+                // Inline math: $...$
+                let mut tex = String::new();
+                let mut found_end = false;
+                while let Some(c) = chars.next() {
+                    if c == '$' {
+                        found_end = true;
+                        break;
+                    }
+                    if c == '\n' {
+                        // Inline math can't span lines, put it back
+                        result.push('$');
+                        result.push_str(&tex);
+                        result.push(c);
+                        tex.clear();
+                        break;
+                    }
+                    tex.push(c);
+                }
+                if found_end && !tex.is_empty() {
+                    let html = katex::render_with_opts(tex.trim(), katex_opts(false))
+                        .unwrap_or_else(|_| format!(r#"<code class="math-error">{}</code>"#, tex));
+                    result.push_str(&html);
+                } else {
+                    result.push('$');
+                    result.push_str(&tex);
                 }
             }
-            
-            if !replaced {
-                result = result.replace(&placeholder, &math_block);
+        } else if ch == '\\' {
+            // Check for \( or \[
+            if let Some(&next) = chars.peek() {
+                if next == '(' {
+                    chars.next(); // consume (
+                    let mut tex = String::new();
+                    let mut found_end = false;
+                    while let Some(c) = chars.next() {
+                        if c == '\\' && chars.peek() == Some(&')') {
+                            chars.next(); // consume )
+                            found_end = true;
+                            break;
+                        }
+                        tex.push(c);
+                    }
+                    if found_end {
+                        let html = katex::render_with_opts(tex.trim(), katex_opts(false))
+                            .unwrap_or_else(|_| format!(r#"<code class="math-error">{}</code>"#, tex));
+                        result.push_str(&html);
+                    } else {
+                        result.push('\\');
+                        result.push('(');
+                        result.push_str(&tex);
+                    }
+                } else if next == '[' {
+                    chars.next(); // consume [
+                    let mut tex = String::new();
+                    let mut found_end = false;
+                    while let Some(c) = chars.next() {
+                        if c == '\\' && chars.peek() == Some(&']') {
+                            chars.next(); // consume ]
+                            found_end = true;
+                            break;
+                        }
+                        tex.push(c);
+                    }
+                    if found_end {
+                        let html = katex::render_with_opts(tex.trim(), katex_opts(true))
+                            .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, tex));
+                        result.push_str(&html);
+                    } else {
+                        result.push('\\');
+                        result.push('[');
+                        result.push_str(&tex);
+                    }
+                } else {
+                    result.push(ch);
+                }
+            } else {
+                result.push(ch);
             }
         } else {
-            // For inline math, just replace the placeholder
-            result = result.replace(&placeholder, math_block);
+            result.push(ch);
         }
     }
     
@@ -176,13 +197,23 @@ fn convert_internal_links(html: &str, markdown_files: &std::collections::HashSet
                 new.push_str(fq);
             }
             new
-        } else if !base_href.contains('.') && markdown_files.contains(base_href) {
-            // Add .html extension for known markdown files
-            let mut new = format!("{}.html", base_href);
-            if let Some(fq) = fragment_query {
-                new.push_str(fq);
+        } else if !base_href.contains('.') {
+            // Check if it matches a markdown file (by exact match or filename match)
+            let matched_path = markdown_files.iter()
+                .find(|path| {
+                    path.as_str() == base_href || path.ends_with(&format!("/{}", base_href))
+                });
+            
+            if let Some(matched) = matched_path {
+                let mut new = format!("{}.html", matched);
+                if let Some(fq) = fragment_query {
+                    new.push_str(fq);
+                }
+                new
+            } else {
+                // Not an internal link, skip
+                continue;
             }
-            new
         } else {
             // Not an internal link, skip
             continue;
@@ -201,15 +232,15 @@ fn convert_internal_links(html: &str, markdown_files: &std::collections::HashSet
 }
 
 fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<String>) -> String {
-    let (protected_markdown, math_blocks) = protect_math_expressions(markdown);
+    // Pre-process math expressions: render them server-side with KaTeX
+    let processed_markdown = preprocess_math(markdown);
     
     let options = Options::all();
-    let parser = Parser::new_ext(&protected_markdown, options);
+    let parser = Parser::new_ext(&processed_markdown, options);
     let mut html_output = String::new();
     html::push_html(&mut html_output, parser);
     
-    let html_with_math = restore_math_expressions(&html_output, &math_blocks);
-    convert_internal_links(&html_with_math, markdown_files)
+    convert_internal_links(&html_output, markdown_files)
 }
 
 #[derive(Clone)]
@@ -225,6 +256,7 @@ fn generate_navbar(
     dropdowns: Option<&std::collections::HashMap<String, serde_yaml::Value>>,
     markdown_titles: &std::collections::HashMap<String, String>,
     current_page: Option<&str>,
+    asset_prefix: &str,
 ) -> String {
     let mut nav = String::from("<nav style=\"background: #000; padding: 10px; margin-bottom: 20px; border-bottom: 2px solid #333;\">\n");
     nav.push_str("<style>
@@ -336,28 +368,35 @@ fn generate_navbar(
         .unwrap_or_else(|| "IDEEP".to_string());
     let index_is_active = current_page.map(|cp| cp == "index").unwrap_or(false);
     let index_link_class = if index_is_active { "nav-link active" } else { "nav-link" };
+    // Calculate relative path to index.html from current page
+    let index_path = if asset_prefix.is_empty() {
+        "index.html".to_string()
+    } else {
+        format!("{}index.html", asset_prefix)
+    };
     nav.push_str(&format!(
-        "  <li><a href=\"index.html\" class=\"{}\" style=\"display: flex; align-items: center; gap: 10px;\"><img src=\"assets/logo-wide.png\" alt=\"Logo\" style=\"height: 40px; width: auto;\">{}</a></li>\n",
-        index_link_class, index_title
+        "  <li><a href=\"{}\" class=\"{}\" style=\"display: flex; align-items: center; gap: 10px;\"><img src=\"{}assets/logo-wide.png\" alt=\"Logo\" style=\"height: 40px; width: auto;\">{}</a></li>\n",
+        index_path, index_link_class, asset_prefix, index_title
     ));
     
     for item in navbar_items {
         match item {
-            NavbarItem::MarkdownFile(path, title) => {
-                let html_name = path.file_stem()
-                    .and_then(|s| s.to_str())
-                    .unwrap_or("index");
-                let html_path = if output_in_dist {
-                    format!("{}.html", html_name)
-                } else {
-                    format!("{}.html", html_name)
-                };
+            NavbarItem::MarkdownFile(relative_path, title) => {
+                // Convert relative path to HTML path (e.g., "math/sir.md" -> "math/sir.html")
+                let html_path_base = relative_path.with_extension("html")
+                    .to_string_lossy()
+                    .replace('\\', "/");
+                let html_path = format!("{}{}", asset_prefix, html_path_base);
+                let rel_key = relative_path.with_extension("")
+                    .to_string_lossy()
+                    .replace('\\', "/");
+                
                 // Skip index since we already added it with logo at the start
-                if html_name == "index" {
+                if rel_key == "index" {
                     continue;
                 }
                 
-                let is_active = current_page.map(|cp| cp == html_name).unwrap_or(false);
+                let is_active = current_page.map(|cp| cp == &rel_key || cp == relative_path.file_stem().and_then(|s| s.to_str()).unwrap_or("")).unwrap_or(false);
                 let link_class = if is_active { "nav-link active" } else { "nav-link" };
                 
                 nav.push_str(&format!(
@@ -400,9 +439,27 @@ fn generate_navbar(
                                 for item in seq {
                                     match item {
                                         serde_yaml::Value::String(page_name) => {
-                                            // Simple string - treat as markdown file name
-                                            let html_path = format!("{}.html", page_name);
+                                            // Simple string - treat as markdown file name or path
+                                            // If markdown_titles contains this key, use it to construct HTML path
+                                            let html_path_base = if markdown_titles.contains_key(page_name) {
+                                                format!("{}.html", page_name)
+                                            } else {
+                                                // Try to find a match by filename
+                                                let found_key = markdown_titles.keys()
+                                                    .find(|k| k.as_str() == page_name || k.ends_with(&format!("/{}", page_name)));
+                                                if let Some(key) = found_key {
+                                                    format!("{}.html", key)
+                                                } else {
+                                                    format!("{}.html", page_name)
+                                                }
+                                            };
+                                            let html_path = format!("{}{}", asset_prefix, html_path_base);
                                             let display_title = markdown_titles.get(page_name)
+                                                .or_else(|| {
+                                                    markdown_titles.keys()
+                                                        .find(|k| k.as_str() == page_name || k.ends_with(&format!("/{}", page_name)))
+                                                        .and_then(|k| markdown_titles.get(k))
+                                                })
                                                 .cloned()
                                                 .unwrap_or_else(|| page_name.clone());
                                             nav.push_str(&format!(
@@ -444,24 +501,8 @@ fn generate_navbar(
     nav
 }
 
-fn generate_html(title: &str, content: &str, navbar: &str) -> Result<String, Box<dyn std::error::Error>> {
-    let mathjax_config = r#"<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    inlineMath: [['$','$'], ['\\(','\\)']],
-    displayMath: [['$$','$$'], ['\\[','\\]']],
-    processEscapes: true
-  }
-});
-</script>
-<script src="assets/tex-svg.js" id="MathJax-script"></script>
-<script>
-window.addEventListener('load', function() {
-    if (typeof MathJax !== 'undefined' && MathJax.Hub) {
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-    }
-});
-</script>"#;
+fn generate_html(title: &str, content: &str, navbar: &str, asset_prefix: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let katex_css = format!(r#"<link rel="stylesheet" href="{}assets/vendor/katex/katex.min.css" type="text/css" />"#, asset_prefix);
 
     // Read footer.html
     let footer_path = Path::new("assets/footer.html");
@@ -478,9 +519,33 @@ window.addEventListener('load', function() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{}</title>
-    <link rel="icon" type="image/png" href="assets/logo.png" />
-    <link rel="stylesheet" href="assets/styles.css" type="text/css" />
+    <link rel="icon" type="image/png" href="{}assets/logo.png" />
+    <link rel="stylesheet" href="{}assets/styles.css" type="text/css" />
     <script src="https://kit.fontawesome.com/1ffe760482.js" crossorigin="anonymous"></script>
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {{
+        hljs.highlightAll();
+    }});
+    </script>
     <style>
     body {{
         font-family: Arial, sans-serif;
@@ -497,6 +562,28 @@ window.addEventListener('load', function() {
     .blogbody {{
         font-family: Arial, sans-serif;
         padding-bottom: 20px;
+    }}
+    
+    /* Code block styling */
+    pre {{
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        overflow-x: auto;
+        margin: 20px 0;
+    }}
+    
+    code {{
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9em;
+    }}
+    
+    pre code {{
+        display: block;
+        padding: 0;
+        background: transparent;
+        border: none;
     }}
     
     /* Mobile responsive styles */
@@ -599,8 +686,53 @@ window.addEventListener('load', function() {
     {}
 </body>
 </html>"#,
-        title, mathjax_config, navbar, content, footer_content
+        title, asset_prefix, asset_prefix, katex_css, navbar, content, footer_content
     ))
+}
+
+fn calculate_asset_prefix(relative_path: &Path) -> String {
+    // Count how many directory components are in the path (excluding the filename)
+    let depth = relative_path.parent()
+        .map(|p| p.components().count())
+        .unwrap_or(0);
+    
+    // Generate the prefix: "../" repeated depth times
+    if depth == 0 {
+        String::new()
+    } else {
+        "../".repeat(depth)
+    }
+}
+
+fn calculate_relative_link_path(from_path: &Path, to_path: &str) -> String {
+    // If to_path is "index", it's always at the root
+    if to_path == "index" {
+        let depth = from_path.parent()
+            .map(|p| p.components().count())
+            .unwrap_or(0);
+        if depth == 0 {
+            "index.html".to_string()
+        } else {
+            format!("{}index.html", "../".repeat(depth))
+        }
+    } else {
+        // For other paths, calculate relative path
+        let from_dir = from_path.parent().unwrap_or(Path::new(""));
+        let to_path_buf = Path::new(to_path);
+        
+        // If they're in the same directory
+        if from_dir == to_path_buf.parent().unwrap_or(Path::new("")) {
+            format!("{}.html", to_path)
+        } else {
+            // Need to go up to common ancestor, then down to target
+            let depth = from_dir.components().count();
+            if depth == 0 {
+                format!("{}.html", to_path)
+            } else {
+                format!("{}{}.html", "../".repeat(depth), to_path)
+            }
+        }
+    }
 }
 
 fn copy_assets_to_dist() -> Result<(), Box<dyn std::error::Error>> {
@@ -612,17 +744,78 @@ fn copy_assets_to_dist() -> Result<(), Box<dyn std::error::Error>> {
         fs::create_dir_all(dist_assets_dir)?;
     }
     
-    // Copy all files from assets to dist/assets
+    // Recursively copy all files and directories from assets to dist/assets
     if assets_dir.exists() {
-        for entry in fs::read_dir(assets_dir)? {
-            let entry = entry?;
-            let path = entry.path();
-            if path.is_file() {
-                let filename = path.file_name().unwrap();
-                let dest_path = dist_assets_dir.join(filename);
-                fs::copy(&path, &dest_path)?;
-                println!("Copied: {} -> {}", path.display(), dest_path.display());
+        copy_directory_recursive(assets_dir, dist_assets_dir)?;
+    }
+    
+    Ok(())
+}
+
+fn copy_directory_recursive(src: &Path, dst: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    for entry in fs::read_dir(src)? {
+        let entry = entry?;
+        let path = entry.path();
+        let file_name = path.file_name().unwrap();
+        let dest_path = dst.join(file_name);
+        
+        if path.is_dir() {
+            // Create destination directory and recurse
+            fs::create_dir_all(&dest_path)?;
+            copy_directory_recursive(&path, &dest_path)?;
+        } else {
+            // Copy file
+            fs::copy(&path, &dest_path)?;
+            println!("Copied: {} -> {}", path.display(), dest_path.display());
+        }
+    }
+    
+    Ok(())
+}
+
+fn find_markdown_files(dir: &Path, base_dir: &Path, files: &mut Vec<(PathBuf, PathBuf, String)>) -> Result<(), Box<dyn std::error::Error>> {
+    if !dir.exists() {
+        return Ok(());
+    }
+    
+    for entry in fs::read_dir(dir)? {
+        let entry = entry?;
+        let path = entry.path();
+        
+        if path.is_dir() {
+            // Recursively search subdirectories
+            find_markdown_files(&path, base_dir, files)?;
+        } else if path.extension().and_then(|s| s.to_str()) == Some("md") {
+            // Skip README.md files (case-insensitive)
+            if let Some(filename) = path.file_stem().and_then(|s| s.to_str()) {
+                if filename.eq_ignore_ascii_case("README") {
+                    continue;
+                }
             }
+            
+            let content = fs::read_to_string(&path)?;
+            
+            // Skip files that are already HTML (not markdown)
+            if content.trim_start().starts_with("<!DOCTYPE") || content.trim_start().starts_with("<html") {
+                continue;
+            }
+            
+            let (frontmatter, _) = extract_frontmatter(&content);
+            let title = frontmatter
+                .and_then(|fm| fm.title)
+                .unwrap_or_else(|| {
+                    path.file_stem()
+                        .and_then(|s| s.to_str())
+                        .unwrap_or("Untitled")
+                        .to_string()
+                });
+            
+            // Calculate relative path from base_dir
+            let relative_path = path.strip_prefix(base_dir)
+                .unwrap_or(&path)
+                .to_path_buf();
+            
+            files.push((path.clone(), relative_path, title));
         }
     }
     
@@ -643,49 +836,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         fs::create_dir_all(dist_dir)?;
     }
     
-    let mut markdown_files: Vec<(PathBuf, String)> = Vec::new();
+    // Find all markdown files recursively (full_path, relative_path, title)
+    let mut markdown_files: Vec<(PathBuf, PathBuf, String)> = Vec::new();
+    find_markdown_files(content_dir, content_dir, &mut markdown_files)?;
 
-    // Find all markdown files in content directory
-    if content_dir.exists() {
-        for entry in fs::read_dir(content_dir)? {
-            let entry = entry?;
-            let path = entry.path();
-            if path.extension().and_then(|s| s.to_str()) == Some("md") {
-                // Skip README.md files (case-insensitive)
-                if let Some(filename) = path.file_stem().and_then(|s| s.to_str()) {
-                    if filename.eq_ignore_ascii_case("README") {
-                        continue;
-                    }
-                }
-                
-                let content = fs::read_to_string(&path)?;
-                
-                // Skip files that are already HTML (not markdown)
-                if content.trim_start().starts_with("<!DOCTYPE") || content.trim_start().starts_with("<html") {
-                    continue;
-                }
-                
-                let (frontmatter, _) = extract_frontmatter(&content);
-                let title = frontmatter
-                    .and_then(|fm| fm.title)
-                    .unwrap_or_else(|| {
-                        path.file_stem()
-                            .and_then(|s| s.to_str())
-                            .unwrap_or("Untitled")
-                            .to_string()
-                    });
-                markdown_files.push((path.clone(), title));
-            }
-        }
-    }
-
-    // Build a map of markdown file names to titles
+    // Build a map of markdown file paths (without extension) to titles
+    // Use relative path as key (e.g., "math/sir" for "content/math/sir.md")
     let mut markdown_titles: std::collections::HashMap<String, String> = std::collections::HashMap::new();
-    for (path, title) in &markdown_files {
-        let filename = path.file_stem()
-            .and_then(|s| s.to_str())
-            .unwrap_or("");
-        markdown_titles.insert(filename.to_string(), title.clone());
+    for (_, relative_path, title) in &markdown_files {
+        // Convert relative path to string key (without .md extension)
+        let key = relative_path.with_extension("")
+            .to_string_lossy()
+            .replace('\\', "/"); // Normalize path separators
+        markdown_titles.insert(key, title.clone());
     }
 
     // Load config file if it exists
@@ -713,14 +876,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Sort markdown files according to config or alphabetically
     if let Some(ref order) = page_order {
         // Separate index from other pages
-        let mut index_file: Option<(PathBuf, String)> = None;
-        let mut other_files: Vec<(PathBuf, String)> = Vec::new();
+        let mut index_file: Option<(PathBuf, PathBuf, String)> = None;
+        let mut other_files: Vec<(PathBuf, PathBuf, String)> = Vec::new();
         
         for file in markdown_files {
-            let filename = file.0.file_stem()
-                .and_then(|s| s.to_str())
-                .unwrap_or("");
-            if filename == "index" {
+            let relative_key = file.1.with_extension("")
+                .to_string_lossy()
+                .replace('\\', "/");
+            if relative_key == "index" {
                 index_file = Some(file);
             } else {
                 other_files.push(file);
@@ -729,23 +892,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         
         // Sort other files according to config order
         other_files.sort_by(|a, b| {
-            let a_name = a.0.file_stem()
-                .and_then(|s| s.to_str())
-                .unwrap_or("");
-            let b_name = b.0.file_stem()
-                .and_then(|s| s.to_str())
-                .unwrap_or("");
+            let a_key = a.1.with_extension("")
+                .to_string_lossy()
+                .replace('\\', "/");
+            let b_key = b.1.with_extension("")
+                .to_string_lossy()
+                .replace('\\', "/");
             
+            // Check if config matches just the filename or the full path
             let a_pos = order.iter().position(|x| {
                 if let Some(page_name) = x.as_str() {
-                    page_name == a_name
+                    page_name == &a_key || a_key.ends_with(&format!("/{}", page_name))
                 } else {
                     false
                 }
             });
             let b_pos = order.iter().position(|x| {
                 if let Some(page_name) = x.as_str() {
-                    page_name == b_name
+                    page_name == &b_key || b_key.ends_with(&format!("/{}", page_name))
                 } else {
                     false
                 }
@@ -755,7 +919,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 (Some(a_idx), Some(b_idx)) => a_idx.cmp(&b_idx),
                 (Some(_), None) => std::cmp::Ordering::Less,
                 (None, Some(_)) => std::cmp::Ordering::Greater,
-                (None, None) => a_name.cmp(b_name), // Alphabetical fallback for unlisted files
+                (None, None) => a_key.cmp(&b_key), // Alphabetical fallback for unlisted files
             }
         });
         
@@ -769,17 +933,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     } else {
         // Default: sort alphabetically, but keep index first
         markdown_files.sort_by(|a, b| {
-            let a_name = a.0.file_stem()
-                .and_then(|s| s.to_str())
-                .unwrap_or("");
-            let b_name = b.0.file_stem()
-                .and_then(|s| s.to_str())
-                .unwrap_or("");
+            let a_key = a.1.with_extension("")
+                .to_string_lossy()
+                .replace('\\', "/");
+            let b_key = b.1.with_extension("")
+                .to_string_lossy()
+                .replace('\\', "/");
             
-            match (a_name == "index", b_name == "index") {
+            match (a_key == "index", b_key == "index") {
                 (true, false) => std::cmp::Ordering::Less,
                 (false, true) => std::cmp::Ordering::Greater,
-                _ => a_name.cmp(b_name),
+                _ => a_key.cmp(&b_key),
             }
         });
     }
@@ -819,22 +983,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             continue;
                         }
                     }
-                    // Otherwise treat as markdown file name
-                    if let Some((path, title)) = markdown_files.iter()
-                        .find(|(p, _)| {
-                            p.file_stem()
-                                .and_then(|s| s.to_str())
-                                .map(|s| s == page_name)
-                                .unwrap_or(false)
+                    // Otherwise treat as markdown file name (can be filename or path like "math/sir")
+                    if let Some((full_path, relative_path, title)) = markdown_files.iter()
+                        .find(|(_, rel_path, _)| {
+                            let rel_key = rel_path.with_extension("")
+                                .to_string_lossy()
+                                .replace('\\', "/");
+                            rel_key == *page_name || rel_key.ends_with(&format!("/{}", page_name))
                         })
                         .cloned()
                     {
-                        let filename = path.file_stem()
-                            .and_then(|s| s.to_str())
-                            .unwrap_or("");
+                        let rel_key = relative_path.with_extension("")
+                            .to_string_lossy()
+                            .replace('\\', "/");
                         // Skip index (already added with logo)
-                        if filename != "index" {
-                            navbar_items.push(NavbarItem::MarkdownFile(path, title));
+                        if rel_key != "index" {
+                            navbar_items.push(NavbarItem::MarkdownFile(relative_path, title));
                         }
                     }
                 }
@@ -867,21 +1031,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             match item {
                 serde_yaml::Value::String(page_name) => {
                     // Simple string - find matching markdown file
-                    if let Some((path, title)) = markdown_files.iter()
-                        .find(|(p, _)| {
-                            p.file_stem()
-                                .and_then(|s| s.to_str())
-                                .map(|s| s == page_name)
-                                .unwrap_or(false)
+                    if let Some((_, relative_path, title)) = markdown_files.iter()
+                        .find(|(_, rel_path, _)| {
+                            let rel_key = rel_path.with_extension("")
+                                .to_string_lossy()
+                                .replace('\\', "/");
+                            rel_key == *page_name || rel_key.ends_with(&format!("/{}", page_name))
                         })
                         .cloned()
                     {
-                        let filename = path.file_stem()
-                            .and_then(|s| s.to_str())
-                            .unwrap_or("");
+                        let rel_key = relative_path.with_extension("")
+                            .to_string_lossy()
+                            .replace('\\', "/");
                         // Only add if not in dropdowns (but always include index)
-                        if filename == "index" || !pages_in_dropdowns.contains(filename) {
-                            navbar_items.push(NavbarItem::MarkdownFile(path, title));
+                        if rel_key == "index" || !pages_in_dropdowns.contains(&rel_key) && !pages_in_dropdowns.contains(page_name) {
+                            navbar_items.push(NavbarItem::MarkdownFile(relative_path, title));
                         }
                     }
                 }
@@ -908,12 +1072,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     } else {
         // Default: use all markdown files (filtered), then dropdowns
-        for (path, title) in &markdown_files {
-            let filename = path.file_stem()
-                .and_then(|s| s.to_str())
-                .unwrap_or("");
-            if filename == "index" || !pages_in_dropdowns.contains(filename) {
-                navbar_items.push(NavbarItem::MarkdownFile(path.clone(), title.clone()));
+        for (_, relative_path, title) in &markdown_files {
+            let rel_key = relative_path.with_extension("")
+                .to_string_lossy()
+                .replace('\\', "/");
+            if rel_key == "index" || !pages_in_dropdowns.contains(&rel_key) {
+                navbar_items.push(NavbarItem::MarkdownFile(relative_path.clone(), title.clone()));
             }
         }
         // Add dropdowns at the end
@@ -924,32 +1088,40 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    // Build a HashSet of markdown file names (without extension) for link conversion
+    // Build a HashSet of markdown file paths (without extension) for link conversion
     let markdown_file_names: std::collections::HashSet<String> = markdown_files.iter()
-        .map(|(path, _)| {
-            path.file_stem()
-                .and_then(|s| s.to_str())
-                .map(|s| s.to_string())
-                .unwrap_or_default()
+        .map(|(_, relative_path, _)| {
+            relative_path.with_extension("")
+                .to_string_lossy()
+                .replace('\\', "/")
         })
         .collect();
 
     // Process each markdown file
-    for (path, title) in &markdown_files {
-        let content = fs::read_to_string(path)?;
+    for (full_path, relative_path, title) in &markdown_files {
+        let content = fs::read_to_string(full_path)?;
         let (_, markdown_content) = extract_frontmatter(&content);
         let html_content = markdown_to_html(markdown_content, &markdown_file_names);
         
-        let html_filename = path.file_stem()
-            .and_then(|s| s.to_str())
-            .unwrap_or("index");
+        let rel_key = relative_path.with_extension("")
+            .to_string_lossy()
+            .replace('\\', "/");
+        
+        // Calculate asset prefix based on depth (e.g., "../" for one level deep)
+        let asset_prefix = calculate_asset_prefix(relative_path);
         
         // Generate navbar HTML with current page highlighted
-        let navbar = generate_navbar(&navbar_items, true, dropdowns.as_ref(), &markdown_titles, Some(html_filename));
+        let navbar = generate_navbar(&navbar_items, true, dropdowns.as_ref(), &markdown_titles, Some(&rel_key), &asset_prefix);
         
-        let html_output = generate_html(title, &html_content, &navbar)?;
+        let html_output = generate_html(title, &html_content, &navbar, &asset_prefix)?;
         
-        let html_path = dist_dir.join(format!("{}.html", html_filename));
+        // Preserve directory structure in dist
+        let html_path = dist_dir.join(relative_path.with_extension("html"));
+        
+        // Create parent directories if they don't exist
+        if let Some(parent) = html_path.parent() {
+            fs::create_dir_all(parent)?;
+        }
         
         fs::write(&html_path, html_output)?;
         println!("Generated: {}", html_path.display());
