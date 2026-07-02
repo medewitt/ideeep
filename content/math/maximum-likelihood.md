@@ -120,4 +120,7 @@ Its estimators are consistent and asymptotically normal, which underpins [standa
 - [Monotonic transformations](monotonic-transformations.md)
 - [Exponentials and logarithms](exponentials-and-logarithms.md)
 - [Statistical inference](statistical-inference.md)
+- [Linear Regression](linear-regression.md)
+- [Logistic Regression](logistic-regression.md)
+- [Bayesian Inference](bayesian-inference.md)
 - [Quantitative Methods](../math.md)

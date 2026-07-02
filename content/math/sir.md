@@ -62,4 +62,5 @@ This is done by linearizing the system and examining the [Jacobian matrix](jacob
 - [Equilibria and Linear Stability](equilibria-and-stability.md)
 - [Exponential and Logistic Growth](logistic-growth.md)
 - [Bifurcations](bifurcations.md) — the $R_0=1$ threshold
+- [Pharmacokinetics: Compartment Models](pharmacokinetics.md) — the same compartment framework applied to drugs
 - [Mathematical Biology (BIO 301)](../bio301-math-bio.md) — the course where these models are developed in depth

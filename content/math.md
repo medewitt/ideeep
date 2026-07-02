@@ -83,6 +83,22 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Confidence Intervals](math/confidence-intervals.md)
 - [Permutation Tests](math/permutation-tests.md)
 
+## Regression & generalized linear models
+
+- [Linear Regression](math/linear-regression.md)
+- [Logistic Regression](math/logistic-regression.md)
+- [Generalized Linear Models](math/generalized-linear-models.md) — GLMs and Poisson regression
+
+## Bayesian inference
+
+- [Bayesian Inference](math/bayesian-inference.md) — priors, likelihood, and the posterior
+- [Markov Chain Monte Carlo](math/mcmc.md)
+
+## Survival analysis
+
+- [Survival Analysis](math/survival-analysis.md) — Kaplan–Meier, hazards, censoring
+- [Cox Proportional Hazards Regression](math/cox-regression.md)
+
 ## Experimental & study design
 
 - [Experimental Design](math/experimental-design.md) — experimental vs observational, sources of bias
@@ -147,6 +163,12 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Equilibria and Linear Stability](math/equilibria-and-stability.md) — nullclines and phase planes
 - [Bifurcations](math/bifurcations.md) — thresholds and tipping points
 - [The Next-Generation Matrix and R₀](math/next-generation-matrix.md)
+
+## Pharmacokinetics & pharmacodynamics
+
+- [Pharmacokinetics: Compartment Models](math/pharmacokinetics.md) — ADME, clearance, half-life, AUC
+- [Pharmacodynamics: Dose–Response](math/pharmacodynamics.md) — the Emax/Hill model
+- [Antimicrobial PK/PD](math/antimicrobial-pkpd.md) — MIC and the PK/PD indices
 
 ## Applications
 
