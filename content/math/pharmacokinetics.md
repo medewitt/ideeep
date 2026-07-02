@@ -139,7 +139,7 @@ f <- function(t, C, p) list(-p$k * C)
 out <- ode(y = c(C = C0), times = t, func = f, parms = list(k = k))
 max(abs(out[, "C"] - Cexact))          # ~1e-6: ODE matches closed form
 
-trapz(t, Cexact)                        # ~114.5 mg*h/L (finite window)
+trapz(t, Cexact)                        # ~113.6 mg*h/L (finite window)
 C0 / k                                  # 115.6 mg*h/L (0 to infinity)
 ```
 
@@ -157,7 +157,7 @@ Cexact = C0 * np.exp(-k * t)
 sol = solve_ivp(lambda t, C: -k * C, (0, 24), [C0], t_eval=t, rtol=1e-9)
 print(np.max(np.abs(sol.y[0] - Cexact)))   # ~1e-7: agree
 
-print(np.trapz(Cexact, t))                 # ~114.5 mg*h/L
+print(np.trapz(Cexact, t))                 # ~113.6 mg*h/L
 print(C0 / k)                              # 115.6 mg*h/L (analytic AUC)
 ```
 
@@ -175,7 +175,7 @@ t = sol.t
 Cexact = @. C0 * exp(-k * t)
 maximum(abs.(sol.u .- Cexact))          # tiny: numerical matches analytic
 
-auc = sum(diff(t) .* (Cexact[1:end-1] .+ Cexact[2:end]) ./ 2)  # ~114.5
+auc = sum(diff(t) .* (Cexact[1:end-1] .+ Cexact[2:end]) ./ 2)  # ~113.6
 C0 / k                                   # 115.6 analytic AUC
 ```
 
