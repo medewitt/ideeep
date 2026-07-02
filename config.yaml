@@ -1,8 +1,12 @@
 page_order:
   - programs
+  - research
+  - people
 
 navbar_order:
   - programs
+  - research
+  - people
   - Resources
   - Syllabi
   - url: https://wakeforestid.com
