@@ -23,8 +23,8 @@ to populations to ecosystems.
 
 ## Resources
 
-- [Mathematics](math.md) — compartmental models, Jacobians, and the math behind disease dynamics
-- [Programming & computing](programming.md) — tools and guides for scientific computing
+- [Quantitative Methods](math.md) — calculus, linear algebra, probability, and statistics for disease dynamics, with R/Python/Julia
+- [Programming & Computing](programming.md) — good programming practices and tools for reproducible scientific computing
 
 ---
 
