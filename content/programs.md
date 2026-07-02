@@ -51,6 +51,7 @@ ecology, evolution, and epidemiology.
 | BIO 340 | [Infectious Disease Ecology](bio340-id-ecology.md) | Ecology and evolution of host–pathogen systems |
 | BIO 390 | [Research Tools and Methods](bio390-research-tools.md) | Reproducible, computational research skills |
 | BIO 301/302 | [Field Epidemiology and Tropical Medicine](field-epidemiology.md) | Hands-on field investigation in a tropical setting |
+| TBD | [Antimicrobial Stewardship and Infection Prevention](stewardship-infection-prevention.md) | Combating resistance and preventing transmission |
 
 > **Note:** Course numbers, credit hours, and offerings are illustrative of the
 > current curriculum and should be confirmed against the official course
