@@ -99,6 +99,29 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Instrumental Variables](math/instrumental-variables.md) — estimating causal effects under confounding
 - [Mendelian Randomization](math/mendelian-randomization.md) — genetic variants as instruments
 
+## Statistical & population genetics
+
+*Population-genetics foundations:*
+
+- [Hardy–Weinberg Equilibrium](math/hardy-weinberg.md) — genotype frequencies and the χ² test
+- [Linkage Disequilibrium](math/linkage-disequilibrium.md) — $D$, $D'$, and $r^2$
+- [Genetic Drift and the Wright–Fisher Model](math/genetic-drift.md)
+- [Population Structure and F_ST](math/population-structure.md)
+- [The Coalescent](math/coalescent-theory.md) — genealogies backward in time
+
+*Association & complex traits:*
+
+- [Genome-Wide Association Studies](math/gwas.md)
+- [Multiple Testing and False Discovery Rate](math/multiple-testing.md)
+- [Population Stratification and PCA Control](math/population-stratification.md)
+- [Heritability and Variance Components](math/heritability.md)
+- [Polygenic Scores](math/polygenic-scores.md)
+
+*Molecular evolution:*
+
+- [Detecting Selection with dN/dS](math/dn-ds.md)
+- [The Molecular Clock and Phylodynamics](math/molecular-clock.md)
+
 ## Applications
 
 - [Compartmental Models](math/sir.md) — the SIR model and $R_0$

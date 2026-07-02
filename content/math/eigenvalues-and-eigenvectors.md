@@ -118,4 +118,5 @@ In dynamical epidemiological models, eigenvalues of the Jacobian give a precise,
 - [Matrix Operations](matrix-operations.md)
 - [Inverse, Determinant, and Rank](matrix-inverse-and-determinant.md)
 - [Jacobians](jacobians.md)
+- [Population Stratification and PCA Control](population-stratification.md)
 - [Quantitative Methods](../math.md)
