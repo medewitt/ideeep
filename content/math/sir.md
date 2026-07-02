@@ -58,4 +58,8 @@ This is done by linearizing the system and examining the [Jacobian matrix](jacob
 ## Related
 
 - [Jacobians](jacobians.md) — stability analysis for the SIR model
+- [The Next-Generation Matrix and R₀](next-generation-matrix.md)
+- [Equilibria and Linear Stability](equilibria-and-stability.md)
+- [Exponential and Logistic Growth](logistic-growth.md)
+- [Bifurcations](bifurcations.md) — the $R_0=1$ threshold
 - [Mathematical Biology (BIO 301)](../bio301-math-bio.md) — the course where these models are developed in depth

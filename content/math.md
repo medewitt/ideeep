@@ -122,6 +122,32 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Detecting Selection with dN/dS](math/dn-ds.md)
 - [The Molecular Clock and Phylodynamics](math/molecular-clock.md)
 
+## Population & community ecology
+
+*Single-species dynamics:*
+
+- [Exponential and Logistic Growth](math/logistic-growth.md)
+- [Discrete-Time Models and the Logistic Map](math/discrete-population-models.md)
+- [Structured Population Models](math/structured-populations.md) — Leslie matrices
+- [Metapopulations and the Levins Model](math/metapopulations.md)
+
+*Species interactions & stability:*
+
+- [Lotka–Volterra Predator–Prey Dynamics](math/predator-prey.md)
+- [Competition and Coexistence](math/competition-coexistence.md)
+- [The Community Matrix and Stability](math/community-matrix.md)
+
+*Biodiversity & community structure:*
+
+- [Diversity Indices](math/diversity-indices.md) — Shannon, Simpson, Hill numbers
+- [Species-Abundance Distributions and Neutral Theory](math/species-abundance.md)
+
+*Dynamical-systems & epidemic-dynamics toolkit:*
+
+- [Equilibria and Linear Stability](math/equilibria-and-stability.md) — nullclines and phase planes
+- [Bifurcations](math/bifurcations.md) — thresholds and tipping points
+- [The Next-Generation Matrix and R₀](math/next-generation-matrix.md)
+
 ## Applications
 
 - [Compartmental Models](math/sir.md) — the SIR model and $R_0$
