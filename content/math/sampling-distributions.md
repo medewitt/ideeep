@@ -14,7 +14,7 @@ It is a distribution of an *estimator*, not of raw data. Its spread measures how
 
 ## Sampling distribution of the mean
 
-For an iid sample from a population with mean $\mu$ and standard deviation $\sigma$, the sample mean has
+For an iid sample from a population with mean $\mu$ and [standard deviation](measures-of-variability.md) $\sigma$, the sample mean has
 \[
 \mathbb{E}[\bar{X}] = \mu, \qquad \operatorname{Var}(\bar{X}) = \frac{\sigma^2}{n}, \qquad \operatorname{SD}(\bar{X}) = \frac{\sigma}{\sqrt{n}}.
 \]
@@ -76,11 +76,13 @@ end
 
 ## Why it matters for statistics
 
-Every standard error, $p$-value, and confidence interval is a statement about a sampling distribution. Understanding that a statistic *has* a distribution — with a known center and a spread that shrinks with $n$ — is what turns a lone number into [statistical inference](statistical-inference.md). The [central limit theorem](central-limit-theorem.md) tells us the *shape* of that distribution for means.
+Every standard error, $p$-value, and [confidence interval](confidence-intervals.md) is a statement about a sampling distribution. Understanding that a statistic *has* a distribution — with a known center and a spread that shrinks with $n$ — is what turns a lone number into [statistical inference](statistical-inference.md). The [central limit theorem](central-limit-theorem.md) tells us the *shape* of that distribution for means.
 
 ## Related
 
 - [Statistical Inference](statistical-inference.md)
 - [The Central Limit Theorem](central-limit-theorem.md)
 - [The Law of Large Numbers](law-of-large-numbers.md)
+- [Measures of Variability](measures-of-variability.md)
+- [Confidence Intervals](confidence-intervals.md)
 - [Quantitative Methods](../math.md)

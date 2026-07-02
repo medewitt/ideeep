@@ -4,7 +4,7 @@ title: "The Binomial Distribution"
 
 # The Binomial Distribution
 
-The binomial distribution counts how many "successes" occur in a fixed number of independent yes/no trials — how many of $n$ vaccinated people avoid infection, how many of $n$ tossed coins land heads, how many of $n$ patients respond to a treatment. It is the natural model behind testing a proportion.
+The binomial distribution counts how many "successes" occur in a fixed number of [independent](probability-basics.md) yes/no trials — how many of $n$ vaccinated people avoid infection, how many of $n$ tossed coins land heads, how many of $n$ patients respond to a treatment. It is the natural model behind testing a proportion.
 
 ## Definition
 
@@ -20,7 +20,7 @@ The binomial coefficient $\binom{n}{k}=\frac{n!}{k!\,(n-k)!}$ counts the number 
 
 ## Sum of Bernoulli trials
 
-A single trial with outcome $1$ (success, probability $p$) or $0$ (failure) is a **Bernoulli** random variable with mean $p$ and variance $p(1-p)$. A binomial variable is just the sum of $n$ independent Bernoulli trials:
+A single trial with outcome $1$ (success, probability $p$) or $0$ (failure) is a **Bernoulli** [random variable](random-variables.md) with [mean](measures-of-center.md) $p$ and [variance](measures-of-variability.md) $p(1-p)$. A binomial variable is just the sum of $n$ independent Bernoulli trials:
 $$X=\sum_{i=1}^{n}B_i,\qquad B_i\sim\mathrm{Bernoulli}(p).$$
 Because expectation and (for independent terms) variance add, this immediately gives $\mathbb{E}[X]=np$ and $\mathrm{Var}(X)=np(1-p)$.
 

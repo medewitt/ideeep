@@ -4,7 +4,7 @@ title: "Random Variables"
 
 # Random Variables
 
-A random variable turns messy real-world outcomes into numbers we can add, average, and model. It is the bridge between raw probability and the distributions used throughout statistics and epidemiology.
+A random variable turns messy real-world outcomes into numbers we can add, average, and model. It is the bridge between raw [probability](probability-basics.md) and the [distributions](distributions-overview.md) used throughout statistics and epidemiology.
 
 ## Definition
 
@@ -29,7 +29,7 @@ For a **discrete** RV, the **probability mass function (pmf)** gives the probabi
 p(x) = \Pr(X = x), \qquad \sum_x p(x) = 1.
 \]
 
-For a **continuous** RV, single points have probability zero, so we use a **probability density function (pdf)** $f(x)$. Probability is *area under the density*:
+For a **continuous** RV, single points have probability zero, so we use a **probability density function (pdf)** $f(x)$. Probability is *[area under the density](integrals.md)*:
 
 \[
 \Pr(a \le X \le b) = \int_a^b f(x)\,dx, \qquad \int_{-\infty}^{\infty} f(x)\,dx = 1.
@@ -51,7 +51,7 @@ The CDF is well-behaved for every random variable and has three defining propert
 2. **Limits**: $\displaystyle \lim_{x \to -\infty} F(x) = 0$ and $\displaystyle \lim_{x \to +\infty} F(x) = 1$.
 3. **Right-continuous**.
 
-For a continuous RV, the pdf is the derivative of the CDF, $f(x) = F'(x)$.
+For a continuous RV, the pdf is the [derivative](derivatives.md) of the CDF, $f(x) = F'(x)$.
 
 ## Worked example: a discrete RV
 
@@ -119,7 +119,7 @@ cdf(Normal(0, 1), 1.96)    # 0.975
 
 ## Why it matters for statistics
 
-Random variables are the objects statistics is *about*: an estimator is a random variable, a test statistic is a random variable, and data are realizations of random variables. The pmf/pdf and CDF are the two universal descriptions of their behavior — the CDF in particular underlies quantiles, p-values, and the monotonic transformations used in simulation and maximum likelihood.
+Random variables are the objects statistics is *about*: an estimator is a random variable, a test statistic is a random variable, and data are realizations of random variables. The pmf/pdf and CDF are the two universal descriptions of their behavior — the CDF in particular underlies [quantiles](measures-of-center.md), p-values, and the monotonic transformations used in simulation and maximum likelihood.
 
 ## Related
 

@@ -4,11 +4,11 @@ title: "Derivatives"
 
 # Derivatives
 
-A derivative measures the *instantaneous rate of change* of a function — the slope of the line tangent to its graph at a point. It is the engine behind optimization, maximum likelihood estimation, and the differential equations used in disease modeling.
+A derivative measures the *instantaneous rate of change* of a function — the slope of the line tangent to its graph at a point. It is the engine behind [optimization](optimization.md), [maximum likelihood](maximum-likelihood.md) estimation, and the differential equations used in disease modeling.
 
 ## The limit definition
 
-The derivative of $f$ at $x$ is the limit of the average rate of change (the slope of a secant line) as the interval shrinks to zero:
+The derivative of $f$ at $x$ is the [limit](limits.md) of the average rate of change (the slope of a secant line) as the interval shrinks to zero:
 
 \[
 f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
@@ -107,7 +107,7 @@ plot!(xs, slope .* (xs .- a) .+ a^2, ls = :dash)  # tangent
 
 ## Why it matters for statistics
 
-Derivatives locate the maxima and minima that drive statistical inference: setting the derivative of a log-likelihood to zero yields maximum likelihood estimates, and the second derivative (curvature) quantifies their precision through the Fisher information. They are also the building block of the gradients used to fit essentially every modern model.
+Derivatives locate the maxima and minima that drive statistical inference: setting the derivative of a log-likelihood to zero yields maximum likelihood estimates, and the second derivative (curvature) quantifies their precision through the Fisher information. They are also the building block of the [gradients](gradient.md) used to fit essentially every modern model.
 
 ## Related
 

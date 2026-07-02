@@ -4,7 +4,7 @@ title: "Computer Basics for Scientists"
 
 # Computer Basics for Scientists
 
-Before you can write reproducible analysis code, you need a clear mental model of how a computer stores and finds your files. A little fluency with directories and the command line will save you hours of frustration and make your work far easier to reproduce.
+Before you can write reproducible analysis code, you need a clear mental model of how a computer stores and finds your files. A little fluency with directories and the command line will save you hours of frustration and make your work far easier to [reproduce](reproducibility.md).
 
 ## How Files Are Stored
 
@@ -54,7 +54,7 @@ The extension is a hint about a file's format. It does not change the contents b
 
 ### Plain Text vs. Binary
 
-- **Plain text** files (`.csv`, `.json`, `.txt`, `.R`, `.py`) are human-readable characters. You can open them in any editor, diff them, and track them cleanly in Git.
+- **Plain text** files (`.csv`, `.json`, `.txt`, `.R`, `.py`) are human-readable characters. You can open them in any editor, diff them, and track them cleanly in [Git](version-control-git.md).
 - **Binary** files (`.xlsx`, `.docx`, `.png`, `.sav`) are encoded for specific programs and look like gibberish in a text editor.
 
 Do prefer plain-text formats for data and code, they are transparent, durable, and version-control-friendly. Don't store your primary dataset only inside a proprietary binary format.

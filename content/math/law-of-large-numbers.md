@@ -8,7 +8,7 @@ The law of large numbers is the guarantee that averaging works: pile up enough i
 
 ## Statement
 
-Let $X_1, X_2, \dots$ be independent and identically distributed with mean $\mu = \mathbb{E}[X_i]$, and let
+Let $X_1, X_2, \dots$ be [independent](probability-basics.md) and identically distributed with mean $\mu = \mathbb{E}[X_i]$, and let
 \[
 \bar{X}_n = \frac{1}{n}\sum_{i=1}^{n} X_i.
 \]
@@ -20,7 +20,7 @@ Informally, $\bar{X}_n \to \mu$. The stronger version (the strong law) gives con
 
 ### Connection to limits
 
-This is a probabilistic [limit](limits.md). Recall $\operatorname{SD}(\bar{X}_n) = \sigma/\sqrt{n} \to 0$: as the standard error vanishes, the sampling distribution of $\bar{X}_n$ collapses onto the single point $\mu$. Note the LLN describes *where* $\bar{X}_n$ lands; the [central limit theorem](central-limit-theorem.md) describes the *shape* of its fluctuations along the way.
+This is a probabilistic [limit](limits.md). Recall $\operatorname{SD}(\bar{X}_n) = \sigma/\sqrt{n} \to 0$: as the [standard error](measures-of-variability.md) vanishes, the [sampling distribution](sampling-distributions.md) of $\bar{X}_n$ collapses onto the single point $\mu$. Note the LLN describes *where* $\bar{X}_n$ lands; the [central limit theorem](central-limit-theorem.md) describes the *shape* of its fluctuations along the way.
 
 ## Worked example
 
@@ -71,11 +71,12 @@ println(running[end])   # close to 0.5
 
 ## Why it matters for statistics
 
-The LLN justifies estimation itself: sample means, proportions, and Monte Carlo integrals are reliable because they converge to the quantities they estimate. It is also the foundation of simulation — every "run it many times and average" argument on this site rests on it, including the empirical means used to approximate an [expected value](expected-value.md).
+The LLN justifies estimation itself: sample means, proportions, and Monte Carlo integrals are reliable because they converge to the quantities they estimate. It is also the foundation of [simulation](../programming/simulation-toolkit.md) — every "run it many times and average" argument on this site rests on it, including the empirical means used to approximate an [expected value](expected-value.md).
 
 ## Related
 
 - [Limits](limits.md)
 - [Expected Value](expected-value.md)
 - [The Central Limit Theorem](central-limit-theorem.md)
+- [Sampling Distributions](sampling-distributions.md)
 - [Quantitative Methods](../math.md)

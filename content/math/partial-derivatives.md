@@ -4,7 +4,7 @@ title: "Partial Derivatives"
 
 # Partial Derivatives
 
-A partial derivative measures how a multivariable function changes as you vary **one** input while holding the others fixed. They are the foundation of the gradient and the Jacobian, and of optimizing likelihoods that depend on several parameters.
+A partial derivative measures how a multivariable function changes as you vary **one** input while holding the others fixed. They are the foundation of the [gradient](gradient.md) and the [Jacobian](jacobians.md), and of [optimizing](optimization.md) [likelihoods](maximum-likelihood.md) that depend on several parameters.
 
 ## Definition and notation
 

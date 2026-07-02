@@ -8,12 +8,12 @@ The exponential distribution models the waiting time until the next event in a p
 
 ## Definition
 
-Let $X\sim\mathrm{Exponential}(\lambda)$ be the waiting time with rate $\lambda$. Its probability density function is
+Let $X\sim\mathrm{Exponential}(\lambda)$ be the waiting time with rate $\lambda$. Its [probability density function](random-variables.md) is
 $$f(x)=\lambda e^{-\lambda x},\qquad x\ge 0,$$
 with cumulative distribution function $F(x)=1-e^{-\lambda x}$.
 
 - **Support:** $x\in[0,\infty)$.
-- **Parameter:** rate $\lambda>0$ (events per unit time). The reciprocal $1/\lambda$ is the mean waiting time, sometimes called the *scale*.
+- **Parameter:** rate $\lambda>0$ (events per unit time). The reciprocal $1/\lambda$ is the [mean](measures-of-center.md) waiting time, sometimes called the *scale*.
 - **Mean:** $\mathbb{E}[X]=\dfrac{1}{\lambda}$.
 - **Variance:** $\mathrm{Var}(X)=\dfrac{1}{\lambda^2}$.
 
@@ -25,7 +25,7 @@ Having already waited $s$ units tells you nothing about how much longer you must
 
 ## Link to the Poisson
 
-If events occur according to a [Poisson](poisson-distribution.md) process with rate $\lambda$ — so the *count* in any window is Poisson($\lambda\cdot\text{length}$) — then the *waiting times between* consecutive events are independent Exponential($\lambda$) variables. Counting events and timing events are two views of the same underlying process.
+If events occur according to a [Poisson](poisson-distribution.md) process with rate $\lambda$ — so the *count* in any window is Poisson($\lambda\cdot\text{length}$) — then the *waiting times between* consecutive events are [independent](probability-basics.md) Exponential($\lambda$) variables. Counting events and timing events are two views of the same underlying process.
 
 ## When it arises
 

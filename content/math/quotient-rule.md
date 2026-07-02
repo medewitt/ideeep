@@ -4,7 +4,7 @@ title: "Quotient Rule"
 
 # Quotient Rule
 
-The quotient rule differentiates a ratio of two functions. Ratios are everywhere in epidemiology — prevalence proportions, hazard ratios, and the logistic curve are all quotients whose rates of change we often need.
+The quotient rule [differentiates](derivatives.md) a ratio of two functions. Ratios are everywhere in epidemiology — prevalence proportions, hazard ratios, and the logistic curve are all quotients whose rates of change we often need.
 
 ## The rule
 
@@ -16,7 +16,7 @@ Order matters in the numerator: it is "derivative of top times bottom, minus top
 
 ## Intuition
 
-Write the quotient as a product $f \cdot g^{-1}$ and apply the product and chain rules:
+Write the quotient as a product $f \cdot g^{-1}$ and apply the [product](product-rule.md) and [chain](chain-rule.md) rules:
 
 \[
 \frac{d}{dx}\big[f g^{-1}\big] = f' g^{-1} + f\,(-g^{-2} g') = \frac{f'}{g} - \frac{f g'}{g^2} = \frac{f' g - f g'}{g^2}.
@@ -76,7 +76,7 @@ ForwardDiff.derivative(x -> x / (1 + x), 1.0)     # 0.25
 
 ## Why it matters for statistics
 
-Proportions, rates, and probabilities are ratios, and models like logistic regression are built from them. Differentiating these quotients is how we obtain the score functions and delta-method standard errors for estimated proportions and odds.
+Proportions, rates, and probabilities are ratios, and models like logistic regression are built from them. Differentiating these quotients is how we obtain the score functions and delta-method [standard errors](measures-of-variability.md) for estimated proportions and odds.
 
 ## Related
 

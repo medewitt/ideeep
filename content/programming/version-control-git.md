@@ -54,7 +54,7 @@ git pull                   # fetch and merge others' changes into your copy
 
 ## `.gitignore`
 
-A `.gitignore` file lists paths Git should never track, secrets, large data, and generated output.
+A `.gitignore` file lists paths Git should never track, [secrets](handling-secrets.md), large data, and generated output.
 
 ```bash
 # .gitignore
@@ -85,7 +85,7 @@ Do write a message that finishes the sentence "This commit will…". Don't lump 
 
 - Add a clear `README.md` to each repo explaining what the project does and how to run it.
 - Pin your best repositories on your profile.
-- Keep repos public when the work is shareable, they become links you can put on a CV or website.
+- Keep repos public when the work is shareable, they become links you can put on a CV or [website](personal-website.md).
 
 ## Learn More
 

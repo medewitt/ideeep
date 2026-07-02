@@ -34,7 +34,7 @@ Let
 A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}.
 \]
 
-Form $A - \lambda I$ and take its determinant:
+Form $A - \lambda I$ and take its [determinant](matrix-inverse-and-determinant.md):
 
 \[
 \det\!\begin{bmatrix} 2 - \lambda & 1 \\ 1 & 2 - \lambda \end{bmatrix}
@@ -69,7 +69,7 @@ In epidemiology, evaluating $J$ at the **disease-free equilibrium** and checking
 
 ## PCA connection
 
-In principal component analysis, the eigenvectors of the sample **covariance matrix** are the principal component directions, and each eigenvalue is the variance captured along that direction. The largest eigenvalue points along the axis of greatest spread in the data — the covariance matrix is symmetric, so its eigenvalues are real and its eigenvectors orthogonal.
+In principal component analysis, the eigenvectors of the sample **[covariance](measures-of-variability.md) matrix** are the principal component directions, and each eigenvalue is the variance captured along that direction. The largest eigenvalue points along the axis of greatest spread in the data — the covariance matrix is symmetric, so its eigenvalues are real and its eigenvectors orthogonal.
 
 ## Computing it
 

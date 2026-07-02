@@ -15,7 +15,7 @@ A menu click leaves no trace. A script *is* the record: it documents exactly wha
 
 ## Set random seeds
 
-Anything that uses randomness — simulation, bootstrap, cross-validation splits, MCMC — must be seeded so the "random" results are identical on every run.
+Anything that uses randomness — [simulation](simulation-toolkit.md), bootstrap, cross-validation splits, MCMC — must be seeded so the "random" results are identical on every run.
 
 ```r
 set.seed(20260702)
@@ -71,7 +71,7 @@ Pkg.add("Distributions")
 Pkg.instantiate()      # reproduce from Project.toml + Manifest.toml
 ```
 
-Commit `renv.lock`, `requirements.txt`/`environment.yml`, and `Project.toml`/`Manifest.toml` to version control alongside your code.
+Commit `renv.lock`, `requirements.txt`/`environment.yml`, and `Project.toml`/`Manifest.toml` to [version control](version-control-git.md) alongside your code.
 
 ## Literate programming
 

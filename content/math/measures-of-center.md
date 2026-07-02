@@ -4,7 +4,7 @@ title: "Measures of Center"
 
 # Measures of Center
 
-A measure of center summarizes a distribution or dataset with a single "typical" value. Choosing the right one — mean, median, or mode — depends on shape, skew, and how much you trust the extremes.
+A measure of center summarizes a [distribution](distributions-overview.md) or dataset with a single "typical" value. Choosing the right one — mean, median, or mode — depends on shape, skew, and how much you trust the extremes.
 
 ## The three classic measures
 
@@ -71,10 +71,12 @@ println(mode(x))                     # 4
 
 ## Why it matters for statistics
 
-The center you report shapes the story your data tell. The mean feeds directly into variances, standard errors, and the [central limit theorem](central-limit-theorem.md); the median and quantiles give robust, distribution-free summaries that survive outliers and skew. Knowing when each is appropriate is the difference between an honest summary and a misleading one.
+The center you report shapes the story your data tell. The mean feeds directly into [variances](measures-of-variability.md), standard errors, and the [central limit theorem](central-limit-theorem.md); the median and quantiles give robust, distribution-free summaries that survive outliers and skew. Knowing when each is appropriate is the difference between an honest summary and a misleading one.
 
 ## Related
 
 - [Expected Value](expected-value.md)
 - [Measures of Variability](measures-of-variability.md)
+- [Distributions Overview](distributions-overview.md)
+- [Random Variables](random-variables.md)
 - [Quantitative Methods](../math.md)

@@ -8,7 +8,7 @@ Maximum likelihood estimation (MLE) is the workhorse for fitting statistical mod
 
 ## The likelihood function
 
-Given independent observations $x_1, \dots, x_n$ from a model with density (or mass function) $f(x;\theta)$, the **likelihood** is the joint probability of the data viewed as a function of the parameter $\theta$:
+Given [independent](probability-basics.md) observations $x_1, \dots, x_n$ from a model with density (or mass function) $f(x;\theta)$, the **likelihood** is the joint probability of the data viewed as a function of the [parameter](statistical-inference.md) $\theta$:
 
 \[
 \mathcal{L}(\theta) = \prod_{i=1}^{n} f(x_i;\theta).
@@ -42,7 +42,7 @@ and confirm it is a maximum by checking $\ell''(\theta) < 0$. When no closed for
 
 ## Worked example: Bernoulli / Binomial $p$
 
-Suppose $x_1,\dots,x_n$ are independent Bernoulli trials with success probability $p$, so $f(x;p)=p^{x}(1-p)^{1-x}$. Let $k=\sum_i x_i$ be the number of successes. The log-likelihood is
+Suppose $x_1,\dots,x_n$ are independent [Bernoulli](binomial-distribution.md) trials with success probability $p$, so $f(x;p)=p^{x}(1-p)^{1-x}$. Let $k=\sum_i x_i$ be the number of successes. The log-likelihood is
 
 \[
 \ell(p) = \sum_{i=1}^{n}\big[x_i\log p + (1-x_i)\log(1-p)\big] = k\log p + (n-k)\log(1-p).
@@ -103,7 +103,7 @@ All three recover $\hat{p}\approx k/n$.
 
 ## Why it matters for statistics
 
-MLE provides a general, principled recipe for estimating parameters of essentially any probabilistic model. Its estimators are consistent and asymptotically normal, which underpins standard errors, confidence intervals, and likelihood-ratio tests used throughout inference and epidemiological modeling.
+MLE provides a general, principled recipe for estimating parameters of essentially any probabilistic model. Its estimators are consistent and asymptotically normal, which underpins [standard errors](measures-of-variability.md), [confidence intervals](confidence-intervals.md), and likelihood-ratio tests used throughout inference and epidemiological modeling.
 
 ## Related
 

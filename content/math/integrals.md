@@ -4,7 +4,7 @@ title: "Integrals"
 
 # Integrals
 
-An integral accumulates a quantity — most visually, the *area under a curve*. In probability it is indispensable: the area under a density is a probability, the total area is $1$, and an expected value is an integral.
+An integral accumulates a quantity — most visually, the *area under a curve*. In [probability](probability-basics.md) it is indispensable: the area under a density is a probability, the total area is $1$, and an [expected value](expected-value.md) is an integral.
 
 ## Area under a curve
 
@@ -23,7 +23,7 @@ It is defined as a limit of Riemann sums — slice $[a,b]$ into $n$ pieces of wi
 ## Definite vs. indefinite
 
 - A **definite** integral $\int_a^b f(x)\,dx$ is a *number* (an area).
-- An **indefinite** integral $\int f(x)\,dx = F(x) + C$ is a *function*: the family of antiderivatives of $f$, meaning $F'(x) = f(x)$. The constant $C$ appears because adding a constant does not change the derivative.
+- An **indefinite** integral $\int f(x)\,dx = F(x) + C$ is a *function*: the family of antiderivatives of $f$, meaning $F'(x) = f(x)$. The constant $C$ appears because adding a constant does not change the [derivative](derivatives.md).
 
 ## The Fundamental Theorem of Calculus
 
@@ -78,7 +78,7 @@ println(val)          # 0.3333333333333333
 
 ## Why it matters for statistics
 
-A continuous random variable $X$ has a probability density $f$. Probabilities, the normalization condition, and the expected value are all integrals:
+A continuous [random variable](random-variables.md) $X$ has a probability density $f$. Probabilities, the normalization condition, and the expected value are all integrals:
 
 \[
 P(a \le X \le b) = \int_a^b f(x)\,dx, \qquad

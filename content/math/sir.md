@@ -66,7 +66,7 @@ their stability. This is done by linearizing the system and examining the
 [Jacobian matrix](jacobians.md), which shows how the SIR model can be analyzed at
 the disease-free equilibrium.
 
-## Related resources
+## Related
 
 - [Jacobians](jacobians.md) — stability analysis for the SIR model
 - [Mathematical Biology (BIO 301)](../bio301-math-bio.md) — the course where

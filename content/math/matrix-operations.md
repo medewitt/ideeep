@@ -4,7 +4,7 @@ title: "Matrix Operations"
 
 # Matrix Operations
 
-Matrix arithmetic is how statistical models are actually computed: fitting a regression, propagating a covariance, or stepping a dynamical system all reduce to a few matrix operations. The one rule that trips everyone up is that **matrix multiplication is not element-wise and is not commutative**.
+Matrix arithmetic is how statistical models are actually computed: fitting a regression, propagating a [covariance](measures-of-variability.md), or stepping a dynamical system all reduce to a few matrix operations. The one rule that trips everyone up is that **matrix multiplication is not element-wise and is not commutative**.
 
 ## Addition, subtraction, and scalar multiplication
 

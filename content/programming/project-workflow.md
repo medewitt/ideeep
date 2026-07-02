@@ -52,7 +52,7 @@ chmod -R a-w data/raw/
 
 ## Use project-relative paths
 
-Absolute paths like `/Users/you/Desktop/stuff/cases.csv` break the moment anyone else (or future-you on a new laptop) runs the code. Anchor everything to the project root.
+[Absolute paths](computer-basics.md) like `/Users/you/Desktop/stuff/cases.csv` break the moment anyone else (or future-you on a new laptop) runs the code. Anchor everything to the project root.
 
 ```r
 # BAD
@@ -118,4 +118,5 @@ Every project should open with a `README.md` answering: what is this, what do I 
 - [Reproducibility](reproducibility.md)
 - [Version Control with Git](version-control-git.md)
 - [Debugging and Troubleshooting](debugging-and-troubleshooting.md)
+- [Computer Basics for Scientists](computer-basics.md)
 - [Programming & Computing](../programming.md)

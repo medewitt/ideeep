@@ -4,7 +4,7 @@ title: "Product Rule"
 
 # Product Rule
 
-The product rule tells you how to differentiate a product of two functions. It shows up whenever a model multiplies quantities that both change — for example a time-varying rate times a shrinking susceptible pool.
+The product rule tells you how to [differentiate](derivatives.md) a product of two functions. It shows up whenever a model multiplies quantities that both change — for example a time-varying rate times a shrinking susceptible pool.
 
 ## The rule
 
@@ -73,7 +73,7 @@ ForwardDiff.derivative(x -> x^2 * exp(x), 1.0)   # 8.15485  == 3e
 
 ## Why it matters for statistics
 
-Likelihoods and moment calculations are full of products — a density times a weight, a rate times an exposure, or $x\,f(x)$ inside an expected value. The product rule (together with the chain rule) is what lets you differentiate these expressions to derive estimators and their variances.
+[Likelihoods](maximum-likelihood.md) and moment calculations are full of products — a density times a weight, a rate times an exposure, or $x\,f(x)$ inside an [expected value](expected-value.md). The product rule (together with the [chain rule](chain-rule.md)) is what lets you differentiate these expressions to derive estimators and their variances.
 
 ## Related
 

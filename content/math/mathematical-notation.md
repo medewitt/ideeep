@@ -4,7 +4,7 @@ title: "Mathematical Notation"
 
 # Mathematical Notation
 
-A compact shared vocabulary of symbols used throughout math and statistics. Knowing them lets you read likelihoods, probability statements, and model definitions without stumbling.
+A compact shared vocabulary of symbols used throughout math and statistics. Knowing them lets you read [likelihoods](maximum-likelihood.md), [probability](probability-basics.md) statements, and model definitions without stumbling.
 
 ## Sets and logic
 
@@ -89,11 +89,13 @@ binomial(n, k)    # 10
 
 ## Why it matters for statistics
 
-Statistical models are written in this notation: likelihoods are products $\prod_i f(x_i)$, expectations are sums $\sum_i x_i p_i$, and independence assumptions ($X \perp\!\!\!\perp Y$) justify factoring joint distributions. Fluency here is the prerequisite for everything that follows.
+Statistical models are written in this notation: likelihoods are products $\prod_i f(x_i)$, [expectations](expected-value.md) are sums $\sum_i x_i p_i$, and independence assumptions ($X \perp\!\!\!\perp Y$) justify factoring joint [distributions](distributions-overview.md). Fluency here is the prerequisite for everything that follows.
 
 ## Related
 
 - [Functions and Graphs](functions-and-graphs.md)
 - [Series](series.md)
 - [Probability Basics](probability-basics.md)
+- [Expected Value](expected-value.md)
+- [Exponentials and Logarithms](exponentials-and-logarithms.md)
 - [Quantitative Methods](../math.md)

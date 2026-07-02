@@ -10,7 +10,7 @@ biased predictions — a recurring trap in statistics and epidemiology.
 
 ## The inequality
 
-Let $g$ be a **convex** function and $X$ a random variable with finite mean.
+Let $g$ be a **convex** function and $X$ a [random variable](random-variables.md) with finite [mean](measures-of-center.md).
 Then
 \[
 \mathbb{E}[g(X)] \ge g\big(\mathbb{E}[X]\big).
@@ -35,7 +35,7 @@ Taking expectations, the linear term vanishes ($\mathbb{E}[X-\mu]=0$), leaving
 \mathbb{E}[g(X)] - g(\mu) \approx \tfrac12\, g''(\mu)\,\operatorname{Var}(X).
 \]
 When $g$ is convex, $g''(\mu) \ge 0$, so the gap is non-negative — Jensen again.
-The gap grows with the curvature $g''$ and with the spread $\operatorname{Var}(X)$.
+The gap grows with the curvature $g''$ and with the [spread](measures-of-variability.md) $\operatorname{Var}(X)$.
 
 ## Examples
 
@@ -135,4 +135,5 @@ size (from the variance gap) of the discrepancy lets you correct for it.
 - [Taylor Series](taylor-series.md)
 - [Monotonic Transformations](monotonic-transformations.md)
 - [The Legendre Transform](legendre-transform.md)
+- [Measures of Variability](measures-of-variability.md)
 - [Quantitative Methods](../math.md)

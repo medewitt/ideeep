@@ -11,8 +11,8 @@ A function maps each input to exactly one output, $f: x \mapsto f(x)$. Recognizi
 - **Linear:** $f(x) = a + bx$ — a straight line, slope $b$, intercept $a$.
 - **Quadratic:** $f(x) = ax^2 + bx + c$ — a parabola (e.g. squared error).
 - **Absolute value:** $f(x) = |x|$ — a V shape (e.g. L1 loss).
-- **Square root:** $f(x) = \sqrt{x}$ — defined for $x \ge 0$ (standard errors scale like $1/\sqrt{n}$).
-- **Exponential:** $f(x) = e^{x}$ — always positive, grows rapidly.
+- **Square root:** $f(x) = \sqrt{x}$ — defined for $x \ge 0$ ([standard errors](measures-of-variability.md) scale like $1/\sqrt{n}$).
+- **[Exponential](exponentials-and-logarithms.md):** $f(x) = e^{x}$ — always positive, grows rapidly.
 - **Natural log:** $f(x) = \ln x$ — defined for $x > 0$, the inverse of $e^x$.
 
 ## Domain and range
@@ -91,4 +91,5 @@ Nearly every model is a function: regression lines, link functions in GLMs (log,
 - [Exponentials and Logarithms](exponentials-and-logarithms.md)
 - [Mathematical Notation](mathematical-notation.md)
 - [Derivatives](derivatives.md)
+- [Limits](limits.md)
 - [Quantitative Methods](../math.md)

@@ -82,7 +82,7 @@ Even with a "99% accurate" test, a positive result means only a **16.7%** chance
 
 ## Simulation
 
-We estimate a probability by Monte Carlo: simulate the process many times and take the long-run fraction. Here we estimate $\Pr(\text{sum} = 7)$ for two fair dice (true value $6/36 \approx 0.1667$).
+We estimate a probability by Monte Carlo: [simulate](../programming/simulation-toolkit.md) the process many times and take the long-run fraction. Here we estimate $\Pr(\text{sum} = 7)$ for two fair dice (true value $6/36 \approx 0.1667$).
 
 ### R
 
@@ -118,7 +118,7 @@ mean(d1 .+ d2 .== 7)   # ~0.1667
 
 ## Why it matters for statistics
 
-Probability is the machinery under every inference. Conditional probability and Bayes' theorem drive diagnostic reasoning and Bayesian estimation; independence justifies multiplying likelihoods across observations; the union and complement rules underlie every calculation of error rates and p-values. Monte Carlo simulation turns a hard analytic probability into a simple counting exercise.
+Probability is the machinery under every inference. Conditional probability and Bayes' theorem drive diagnostic reasoning and Bayesian estimation; independence justifies multiplying [likelihoods](maximum-likelihood.md) across observations; the union and complement rules underlie every calculation of error rates and [p-values](p-values.md). Monte Carlo simulation turns a hard analytic probability into a simple counting exercise.
 
 ## Related
 

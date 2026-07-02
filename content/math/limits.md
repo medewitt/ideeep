@@ -4,7 +4,7 @@ title: "Limits"
 
 # Limits
 
-A limit describes the value a function or sequence approaches as its input moves toward some point. Limits are the foundation of derivatives, integrals, and the convergence theorems that make statistical inference work.
+A limit describes the value a function or sequence approaches as its input moves toward some point. Limits are the foundation of [derivatives](derivatives.md), [integrals](integrals.md), and the convergence theorems that make [statistical inference](statistical-inference.md) work.
 
 ## Intuitive and formal definition
 
@@ -14,7 +14,7 @@ Intuitively, $\lim_{n\to\infty} a_n = L$ means the terms $a_n$ get and stay arbi
 n > N \implies |a_n - L| < \epsilon.
 \]
 
-If such an $L$ exists the sequence **converges**; otherwise it **diverges**.
+If such an $L$ exists the [sequence](sequences.md) **converges**; otherwise it **diverges**.
 
 ## Properties of limits
 
@@ -73,12 +73,13 @@ sin.(xs) ./ xs        # -> 1.0
 
 ## Why it matters for statistics
 
-Convergence of sequences of random quantities is the engine of large-sample theory. The Weak Law of Large Numbers says the sample mean **converges in probability** to the true mean, $\bar{X}_n \xrightarrow{p} \mu$ — a probabilistic limit. Understanding ordinary limits first makes these stochastic versions far less mysterious.
+Convergence of sequences of random quantities is the engine of large-sample theory. The Weak [Law of Large Numbers](law-of-large-numbers.md) says the sample mean **converges in probability** to the true mean, $\bar{X}_n \xrightarrow{p} \mu$ — a probabilistic limit. Understanding ordinary limits first makes these stochastic versions far less mysterious.
 
 ## Related
 
 - [Sequences](sequences.md)
 - [Series](series.md)
 - [Derivatives](derivatives.md)
+- [Integrals](integrals.md)
 - [Law of Large Numbers](law-of-large-numbers.md)
 - [Quantitative Methods](../math.md)

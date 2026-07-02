@@ -4,7 +4,7 @@ title: "Handling Secrets and API Keys"
 
 # Handling Secrets and API Keys
 
-Sooner or later your scripts will need a password, an API token, or a database key. Where you put those secrets matters: a key hard-coded into a script and pushed to GitHub is a public leak that anyone can find and abuse.
+Sooner or later your scripts will need a password, an API token, or a database key. Where you put those secrets matters: a key hard-coded into a script and pushed to [GitHub](version-control-git.md) is a public leak that anyone can find and abuse.
 
 ## The Two Golden Rules
 

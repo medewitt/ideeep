@@ -4,7 +4,7 @@ title: "Common Integrals"
 
 # Common Integrals
 
-A short reference table of antiderivatives you will use constantly, plus the rules that let you combine them. The Gaussian integral at the end underlies the normal density.
+A short reference table of antiderivatives you will use constantly, plus the rules that let you combine them. The Gaussian integral at the end underlies the [normal](normal-distribution.md) density.
 
 ## The table
 
@@ -98,7 +98,7 @@ println(sqrt(pi))                                    # 1.7724538509055159
 
 ## Why it matters for statistics
 
-Densities are built from these functions: the exponential density uses $\int e^{-\lambda x}dx$, the normal uses the Gaussian integral, and moments (means, variances) reduce to power-rule integrals against a density. Knowing the table by sight makes normalizing constants and expected values fast to derive.
+Densities are built from these functions: the [exponential density](exponential-distribution.md) uses $\int e^{-\lambda x}dx$, the normal uses the Gaussian integral, and moments ([means](measures-of-center.md), [variances](measures-of-variability.md)) reduce to power-rule integrals against a density. Knowing the table by sight makes normalizing constants and expected values fast to derive.
 
 ## Related
 

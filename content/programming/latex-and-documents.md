@@ -9,8 +9,8 @@ LaTeX is a typesetting system that turns plain-text source into beautifully form
 ## Why LaTeX for Math?
 
 - Equations render precisely and consistently, no fighting an equation editor.
-- The source is plain text, so it version-controls and diffs cleanly.
-- The same math notation is portable across papers, slides, notebooks, and websites (via KaTeX/MathJax).
+- The source is plain text, so it [version-controls](version-control-git.md) and diffs cleanly.
+- The same math notation is portable across papers, slides, notebooks, and [websites](personal-website.md) (via KaTeX/MathJax).
 
 ## Inline vs. Display Math
 
@@ -36,7 +36,7 @@ Do use inline math for symbols mentioned in prose. Don't put large multi-line eq
 | `x_i` / `x^2` | subscript / superscript |
 | `X \sim N(\mu, \sigma^2)` | "distributed as" ($\sim$) |
 | `\bar{x}`, `\hat{\theta}` | bar and hat accents |
-| `\begin{bmatrix} a & b \\ c & d \end{bmatrix}` | a matrix |
+| `\begin{bmatrix} a & b \\ c & d \end{bmatrix}` | a [matrix](../math/matrix-operations.md) |
 
 An example combining several of these:
 

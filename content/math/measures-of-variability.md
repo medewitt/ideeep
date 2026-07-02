@@ -4,7 +4,7 @@ title: "Measures of Variability"
 
 # Measures of Variability
 
-Spread is as important as center: two datasets with the same mean can behave completely differently. Measures of variability quantify that spread — and one of them, the standard error, is the engine of statistical inference.
+Spread is as important as center: two datasets with the same [mean](measures-of-center.md) can behave completely differently. Measures of variability quantify that spread — and one of them, the standard error, is the engine of [statistical inference](statistical-inference.md).
 
 ## Variance and standard deviation
 
@@ -108,10 +108,12 @@ println(cov(x, y), " ", cor(x, y))
 
 ## Why it matters for statistics
 
-Variance and standard deviation calibrate how surprising a value is. Covariance and correlation are the raw material of regression. And the standard error — not the standard deviation — sets the width of [confidence intervals](confidence-intervals.md) and the scale of test statistics: it is precisely how uncertainty about an estimate scales down with sample size.
+Variance and standard deviation calibrate how surprising a value is. Covariance and correlation are the raw material of regression. And the standard error — not the standard deviation — sets the width of [confidence intervals](confidence-intervals.md) and the scale of [test statistics](hypothesis-testing.md): it is precisely how uncertainty about an estimate scales down with sample size.
 
 ## Related
 
+- [Measures of Center](measures-of-center.md)
 - [Sampling Distributions](sampling-distributions.md)
 - [The Central Limit Theorem](central-limit-theorem.md)
+- [Confidence Intervals](confidence-intervals.md)
 - [Quantitative Methods](../math.md)

@@ -4,7 +4,7 @@ title: "Instrumental Variables"
 
 # Instrumental Variables
 
-When an unmeasured confounder distorts the relationship between an exposure and an outcome, ordinary regression estimates the wrong thing. Instrumental variables (IV) exploit a special variable $Z$ to recover the causal effect even when confounding cannot be measured or adjusted for.
+When an unmeasured [confounder](experimental-design.md) distorts the relationship between an exposure and an outcome, ordinary regression estimates the wrong thing. Instrumental variables (IV) exploit a special variable $Z$ to recover the causal effect even when confounding cannot be measured or adjusted for.
 
 ## The problem: confounding bias
 
@@ -30,7 +30,7 @@ Intuitively, $Z$ nudges $X$ without touching $U$ or $Y$ by any other route, so t
 
 ### The Wald ratio
 
-With a single instrument, take covariances of the outcome equation with $Z$. Under independence and exclusion the confounder and direct terms drop out:
+With a single instrument, take [covariances](measures-of-variability.md) of the outcome equation with $Z$. Under independence and exclusion the confounder and direct terms drop out:
 
 \[
 \operatorname{Cov}(Z, Y) = \beta \,\operatorname{Cov}(Z, X) + \underbrace{\operatorname{Cov}(Z, U)}_{=\,0} + \underbrace{\operatorname{Cov}(Z, \varepsilon)}_{=\,0}.
@@ -42,7 +42,7 @@ Solving for $\beta$ gives the **Wald (ratio) estimator**:
 \hat\beta = \frac{\operatorname{Cov}(Z, Y)}{\operatorname{Cov}(Z, X)}.
 \]
 
-For a binary instrument this equals the difference in mean outcome divided by the difference in mean exposure across the two groups.
+For a binary instrument this equals the difference in [mean](measures-of-center.md) outcome divided by the difference in mean exposure across the two groups.
 
 ### Two-stage least squares (2SLS)
 
@@ -59,7 +59,7 @@ With a single instrument, 2SLS is algebraically identical to the Wald ratio. In 
 
 ### Weak-instrument bias
 
-If relevance is only barely satisfied ($\operatorname{Cov}(Z,X)$ near zero), the denominator is small and estimates become unstable, biased toward the OLS estimate, with poor confidence-interval coverage. A common rule of thumb is a first-stage $F$-statistic above 10; weaker instruments demand caution.
+If relevance is only barely satisfied ($\operatorname{Cov}(Z,X)$ near zero), the denominator is small and estimates become unstable, biased toward the OLS estimate, with poor [confidence-interval](confidence-intervals.md) coverage. A common rule of thumb is a first-stage $F$-statistic above 10; weaker instruments demand caution.
 
 ## Worked simulation
 
@@ -143,11 +143,13 @@ Xh  = hcat(ones(n), Xhat)
 
 ## Why it matters for statistics
 
-Instrumental variables extend causal estimation beyond the reach of adjustment: they identify effects when the confounders are unknown or unmeasured, which is the usual predicament in observational epidemiology and economics. Understanding the relevance, independence, and exclusion assumptions — and their untestability — is central to judging when an IV analysis is credible, and it underpies related designs such as Mendelian randomization and natural experiments.
+Instrumental variables extend causal estimation beyond the reach of adjustment: they identify effects when the confounders are unknown or unmeasured, which is the usual predicament in observational epidemiology and economics. Understanding the relevance, independence, and exclusion assumptions — and their untestability — is central to judging when an IV analysis is credible, and it underpies related designs such as [Mendelian randomization](mendelian-randomization.md) and natural experiments.
 
 ## Related
 
 - [Mendelian Randomization](mendelian-randomization.md)
 - [Experimental Design](experimental-design.md)
 - [Hypothesis Testing](hypothesis-testing.md)
+- [Confidence Intervals](confidence-intervals.md)
+- [Statistical Inference](statistical-inference.md)
 - [Quantitative Methods](../math.md)

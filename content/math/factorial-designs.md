@@ -142,12 +142,13 @@ coef(fit)
 
 ## Why it matters for statistics
 
-Factorial designs are the workhorse of planned experimentation. They squeeze maximum information out of each run, estimate main effects and interactions with the same data, and keep effect estimates orthogonal (hence uncorrelated). In fields from agronomy to clinical trials to industrial process optimization, they answer "which factors matter, and do they act together?" efficiently — a question OFAT experiments simply cannot address.
+Factorial designs are the workhorse of planned experimentation. They squeeze maximum information out of each run, estimate main effects and interactions with the same data, and keep effect estimates orthogonal (hence uncorrelated). In fields from agronomy to clinical trials to industrial process [optimization](optimization.md), they answer "which factors matter, and do they act together?" efficiently — a question OFAT experiments simply cannot address.
 
 ## Related
 
 - [Experimental Design](experimental-design.md)
 - [Fractional Factorial Designs](fractional-factorial-designs.md)
+- [Optimal Experimental Design](optimal-design.md)
 - [Response Surface Methodology](response-surface.md)
 - [Matrix Operations](matrix-operations.md)
 - [Quantitative Methods](../math.md)

@@ -132,7 +132,7 @@ end
 ## Comment the *why*, and format consistently
 
 - Comment intent and gotchas, not the obvious (`i = i + 1  # add one` helps no one).
-- Pick a style and let a formatter enforce it: `styler`/`lintr` (R), `black`/`ruff` (Python), `JuliaFormatter.jl` (Julia). Consistency removes noise from diffs and lets reviewers focus on substance.
+- Pick a style and let a formatter enforce it: `styler`/`lintr` (R), `black`/`ruff` (Python), `JuliaFormatter.jl` (Julia). Consistency removes noise from [diffs](version-control-git.md) and lets reviewers focus on substance.
 
 ```r
 # BAD: explains the code we can already read

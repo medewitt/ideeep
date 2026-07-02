@@ -36,7 +36,7 @@ within its bin. Setting $U_{ij}=\tfrac12$ centers the points instead.
 
 With $n$ independent uniform draws, the marginal coverage of each input is
 random — you can get clumps and gaps. LHS forces each input's marginal to be
-perfectly stratified into $n$ strata, which reduces the variance of estimated
+perfectly stratified into $n$ strata, which reduces the [variance](measures-of-variability.md) of estimated
 means of functions that are close to additive in the inputs. At the same $n$,
 LHS typically gives smoother, lower-variance estimates.
 
@@ -49,11 +49,11 @@ points out for better joint coverage.
 
 ### Arbitrary marginals via inverse CDFs
 
-LHS lives on $[0,1]^k$. To give input $j$ any target distribution with CDF
+LHS lives on $[0,1]^k$. To give input $j$ any target [distribution](distributions-overview.md) with CDF
 $F_j$, apply the inverse-CDF (quantile) transform $x_{ij} = F_j^{-1}(u_{ij})$.
-Because $F_j^{-1}$ is monotonic, it maps the equal-probability bins of $[0,1]$
+Because $F_j^{-1}$ is [monotonic](monotonic-transformations.md), it maps the equal-probability bins of $[0,1]$
 onto equal-probability strata of the target, so the Latin property is preserved.
-For example $F^{-1}=\,$`qnorm` gives a normal margin; scaling to $[a,b]$ gives a
+For example $F^{-1}=\,$`qnorm` gives a [normal](normal-distribution.md) margin; scaling to $[a,b]$ gives a
 uniform margin.
 
 ## Worked example: $n = 5$, two dimensions
@@ -141,7 +141,7 @@ println(round.(hcat(beta, gamma, R0)[1:5, :], digits = 3))
 Many statistical and epidemiological questions boil down to "how does model
 output vary as uncertain inputs vary?" Estimating output means, quantiles, and
 [sensitivity indices](sensitivity-analysis.md) requires a design of input
-points. LHS gives low-variance, reproducible coverage at a fixed budget $n$,
+points. LHS gives low-variance, [reproducible](../programming/reproducibility.md) coverage at a fixed budget $n$,
 which is decisive when each model run is expensive (large simulations, ODE
 solves, or Bayesian posterior evaluations). It is the standard front end for
 variance-based sensitivity analysis and for building emulators of costly models.

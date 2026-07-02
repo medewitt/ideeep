@@ -4,7 +4,7 @@ title: "The Gradient"
 
 # The Gradient
 
-The gradient collects all of a function's partial derivatives into a single vector that points in the direction of steepest ascent. It is the workhorse of optimization: gradient descent and maximum likelihood estimation both follow (or climb) the gradient.
+The gradient collects all of a function's [partial derivatives](partial-derivatives.md) into a single vector that points in the direction of steepest ascent. It is the workhorse of [optimization](optimization.md): gradient descent and [maximum likelihood](maximum-likelihood.md) estimation both follow (or climb) the gradient.
 
 ## Definition
 

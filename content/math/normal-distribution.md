@@ -4,15 +4,15 @@ title: "The Normal Distribution"
 
 # The Normal Distribution
 
-The normal (Gaussian) distribution is the bell-shaped curve that appears whenever many small, independent influences add together: measurement error, biological variation in heights or blood pressure, and — crucially for statistics — the sampling distribution of an average. Its ubiquity is not a coincidence but a consequence of the [central limit theorem](central-limit-theorem.md).
+The normal (Gaussian) distribution is the bell-shaped curve that appears whenever many small, independent influences add together: measurement error, biological variation in heights or blood pressure, and — crucially for statistics — the [sampling distribution](sampling-distributions.md) of an average. Its ubiquity is not a coincidence but a consequence of the [central limit theorem](central-limit-theorem.md).
 
 ## Definition
 
-A random variable $X\sim\mathcal{N}(\mu,\sigma^2)$ has probability density function
+A [random variable](random-variables.md) $X\sim\mathcal{N}(\mu,\sigma^2)$ has probability density function
 $$f(x)=\frac{1}{\sigma\sqrt{2\pi}}\,e^{-(x-\mu)^2/(2\sigma^2)}.$$
 
 - **Support:** $x\in(-\infty,\infty)$.
-- **Parameters:** mean $\mu\in\mathbb{R}$ (location) and variance $\sigma^2>0$ (spread); $\sigma$ is the standard deviation.
+- **Parameters:** [mean](measures-of-center.md) $\mu\in\mathbb{R}$ (location) and variance $\sigma^2>0$ (spread); $\sigma$ is the [standard deviation](measures-of-variability.md).
 - **Mean:** $\mathbb{E}[X]=\mu$.
 - **Variance:** $\mathrm{Var}(X)=\sigma^2$.
 

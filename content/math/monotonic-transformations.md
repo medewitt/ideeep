@@ -4,7 +4,7 @@ title: "Monotonic Transformations"
 
 # Monotonic Transformations
 
-A monotonic transformation reshapes a scale without scrambling its order. This simple property is why we can maximize a log-likelihood instead of a likelihood, and why the CDF gives a universal recipe for simulating any random variable.
+A monotonic transformation reshapes a scale without scrambling its order. This simple property is why we can maximize a log-likelihood instead of a likelihood, and why the CDF gives a universal recipe for [simulating](../programming/simulation-toolkit.md) any [random variable](random-variables.md).
 
 ## Definition
 
@@ -18,7 +18,7 @@ and **monotonically decreasing** if $x_1 < x_2 \implies g(x_1) > g(x_2)$. When t
 
 ## Order and argmax are preserved
 
-The key consequence: applying a **strictly increasing** $g$ does not change *where* a function attains its maximum or minimum.
+The key consequence: applying a **strictly increasing** $g$ does not change *where* a function attains its maximum or [minimum](optimization.md).
 
 \[
 \arg\max_{\theta}\, h(\theta) = \arg\max_{\theta}\, g\big(h(\theta)\big).
@@ -60,7 +60,7 @@ Reading this backward gives **inverse-CDF (inverse-transform) sampling**: to sim
 X = F^{-1}(U).
 \]
 
-Because $F$ is monotone it has a (quantile) inverse $F^{-1}$, so uniform draws map cleanly onto draws from any target distribution.
+Because $F$ is monotone it has a (quantile) inverse $F^{-1}$, so uniform draws map cleanly onto draws from any target [distribution](distributions-overview.md).
 
 ## Worked example
 

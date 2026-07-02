@@ -4,11 +4,11 @@ title: "Optimization and Critical Points"
 
 # Optimization and Critical Points
 
-Optimization is the search for a function's highest or lowest value. It is the mathematical core of maximum likelihood estimation, least squares, and fitting disease models to data.
+Optimization is the search for a function's highest or lowest value. It is the mathematical core of [maximum likelihood](maximum-likelihood.md) estimation, least squares, and fitting disease models to data.
 
 ## Critical points
 
-At a smooth interior maximum or minimum, the tangent line is flat, so the derivative is zero. Points where
+At a smooth interior maximum or minimum, the tangent line is flat, so the [derivative](derivatives.md) is zero. Points where
 
 \[
 f'(x) = 0
@@ -99,7 +99,7 @@ println(Optim.minimizer(res), " ", -Optim.minimum(res))  # 3.0  5.0
 
 ## Why it matters for statistics
 
-Nearly every estimation method is an optimization: maximum likelihood maximizes $\ell(\theta)$, least squares minimizes a sum of squared residuals, and MAP estimation maximizes a posterior. The first-order condition $f'(\theta)=0$ produces the *estimating equations*, and the second-derivative (Hessian) governs both which extremum you found and the estimator's variance.
+Nearly every estimation method is an optimization: maximum likelihood maximizes $\ell(\theta)$, least squares minimizes a sum of squared residuals, and MAP estimation maximizes a posterior. The first-order condition $f'(\theta)=0$ produces the *estimating equations*, and the second-derivative (Hessian) governs both which extremum you found and the estimator's [variance](measures-of-variability.md).
 
 ## Related
 
@@ -108,5 +108,6 @@ Nearly every estimation method is an optimization: maximum likelihood maximizes 
 - [Derivatives](derivatives.md)
 - [Partial Derivatives](partial-derivatives.md)
 - [Gradient](gradient.md)
+- [Jensen's Inequality](jensens-inequality.md)
 - [Exponentials and Logarithms](exponentials-and-logarithms.md)
 - [Quantitative Methods](../math.md)

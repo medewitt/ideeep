@@ -4,7 +4,7 @@ title: "Series"
 
 # Series
 
-A series is the sum of the terms of a sequence. Series let us add up infinitely many contributions in closed form — the trick behind expected values of count distributions and many probability generating functions.
+A series is the sum of the terms of a [sequence](sequences.md). Series let us add up infinitely many contributions in closed form — the trick behind [expected values](expected-value.md) of count [distributions](distributions-overview.md) and many probability generating functions.
 
 ## Partial sums
 
@@ -77,7 +77,7 @@ partial, closed
 
 ## Why it matters for statistics
 
-Geometric series give the mean of the geometric distribution and normalize infinite discrete distributions. Power series underlie moment and probability generating functions, and Taylor series (a special power series) drive approximations like the delta method. Recognizing when a series converges tells you whether an expectation is even finite.
+Geometric series give the mean of the geometric distribution and normalize infinite discrete distributions. Power series underlie moment and probability generating functions, and [Taylor series](taylor-series.md) (a special power series) drive approximations like the delta method. Recognizing when a series converges tells you whether an expectation is even finite.
 
 ## Related
 

@@ -4,7 +4,7 @@ title: "Chain Rule"
 
 # Chain Rule
 
-The chain rule differentiates a *composition* of functions — a function of a function. It is arguably the single most important differentiation rule: it powers backpropagation in neural networks and the delta method in statistics.
+The chain rule [differentiates](derivatives.md) a *composition* of functions — a function of a function. It is arguably the single most important differentiation rule: it powers backpropagation in neural networks and the delta method in statistics.
 
 ## The rule
 
@@ -84,7 +84,7 @@ ForwardDiff.derivative(x -> (3x^2 + 1)^5, 1.0)   # 7680.0
 
 ## Why it matters for statistics
 
-The chain rule underlies the **delta method**, which approximates the variance of a transformed estimator $h(\hat\theta)$ using $\big[h'(\hat\theta)\big]^2 \operatorname{Var}(\hat\theta)$. It is also how gradients propagate through the layers of a model during **backpropagation**, making automatic differentiation and modern machine learning possible.
+The chain rule underlies the **delta method**, which approximates the [variance](measures-of-variability.md) of a transformed [estimator](statistical-inference.md) $h(\hat\theta)$ using $\big[h'(\hat\theta)\big]^2 \operatorname{Var}(\hat\theta)$. It is also how [gradients](gradient.md) propagate through the layers of a model during **backpropagation**, making automatic differentiation and modern machine learning possible.
 
 ## Related
 

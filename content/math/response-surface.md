@@ -4,7 +4,7 @@ title: "Response Surface Methodology"
 
 # Response Surface Methodology
 
-Response Surface Methodology (RSM) is a sequential strategy for optimizing a process or output over continuous factors — think maximizing yield or minimizing defects by tuning temperature and pressure. You first move quickly toward the optimum with a simple model, then map the curvature near it with a richer one.
+Response Surface Methodology (RSM) is a sequential strategy for [optimizing](optimization.md) a process or output over continuous factors — think maximizing yield or minimizing defects by tuning temperature and pressure. You first move quickly toward the optimum with a simple model, then map the curvature near it with a richer one.
 
 ## The two-phase strategy
 
@@ -16,7 +16,7 @@ Far from the optimum, the surface is locally well approximated by a plane:
 y = \beta_0 + \sum_{i=1}^{k} \beta_i x_i + \varepsilon.
 \]
 
-Fit it with a two-level factorial plus center points. The gradient $(\beta_1, \dots, \beta_k)$ points in the direction of **steepest ascent**; take experimental steps along it until the response stops improving, signaling you are near a peak (where first-order terms flatten and curvature dominates).
+Fit it with a two-level [factorial](factorial-designs.md) plus center points. The [gradient](gradient.md) $(\beta_1, \dots, \beta_k)$ points in the direction of **steepest ascent**; take experimental steps along it until the response stops improving, signaling you are near a peak (where first-order terms flatten and curvature dominates).
 
 ### Phase 2: second-order model and curvature
 
@@ -38,7 +38,7 @@ Fitting the second-order model requires at least three levels per factor. A **ce
 
 ## Canonical / stationary-point analysis
 
-Write the fitted second-order model in matrix form:
+Write the fitted second-order model in [matrix](matrix-operations.md) form:
 
 \[
 \hat y = \beta_0 + x^\top b + x^\top B x,
@@ -50,7 +50,7 @@ where $b$ is the vector of linear coefficients and $B$ is the symmetric matrix w
 x_s = -\tfrac{1}{2} B^{-1} b.
 \]
 
-The eigenvalues of $B$ classify it: all negative → maximum, all positive → minimum, mixed signs → saddle point (a ridge to explore further).
+The [eigenvalues](eigenvalues-and-eigenvectors.md) of $B$ classify it: all negative → maximum, all positive → minimum, mixed signs → saddle point (a ridge to explore further).
 
 ## Worked example
 
@@ -139,4 +139,5 @@ RSM turns optimization into a sequence of small, informative experiments rather 
 - [Optimal Experimental Design](optimal-design.md)
 - [Optimization](optimization.md)
 - [Gradient](gradient.md)
+- [Eigenvalues and Eigenvectors](eigenvalues-and-eigenvectors.md)
 - [Quantitative Methods](../math.md)

@@ -4,7 +4,7 @@ title: "The Poisson Distribution"
 
 # The Poisson Distribution
 
-The Poisson distribution models the number of rare, independent events that occur in a fixed interval of time or space: new disease cases reported per week, mutations per genome, radioactive decays per second, or calls arriving at a help line. It is the go-to model for count data when events happen at a steady average rate.
+The Poisson distribution models the number of rare, [independent](probability-basics.md) events that occur in a fixed interval of time or space: new disease cases reported per week, mutations per genome, radioactive decays per second, or calls arriving at a help line. It is the go-to model for count data when events happen at a steady average rate.
 
 ## Definition
 
@@ -12,11 +12,11 @@ Let $X\sim\mathrm{Poisson}(\lambda)$ count events in a fixed window with average
 $$P(X=k)=\frac{\lambda^{k}e^{-\lambda}}{k!}.$$
 
 - **Support:** $k\in\{0,1,2,\dots\}$.
-- **Parameter:** rate $\lambda>0$ (the expected number of events in the window).
+- **Parameter:** rate $\lambda>0$ (the [expected number](expected-value.md) of events in the window).
 - **Mean:** $\mathbb{E}[X]=\lambda$.
 - **Variance:** $\mathrm{Var}(X)=\lambda$.
 
-A striking feature is that the **mean and variance are equal**, both $\lambda$. Real count data with variance much larger than the mean are called *overdispersed* and signal that a plain Poisson model is too simple.
+A striking feature is that the **[mean](measures-of-center.md) and [variance](measures-of-variability.md) are equal**, both $\lambda$. Real count data with variance much larger than the mean are called *overdispersed* and signal that a plain Poisson model is too simple.
 
 ## Limit of the binomial
 

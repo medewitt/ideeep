@@ -4,7 +4,7 @@ title: "Sequences"
 
 # Sequences
 
-A sequence is an ordered list of numbers indexed by the positive integers. Sequences model iterative estimators, sampling schemes, and the limiting behavior that underlies convergence results in statistics.
+A sequence is an ordered list of numbers indexed by the positive integers. Sequences model iterative estimators, sampling schemes, and the limiting behavior that underlies [convergence](limits.md) results in statistics.
 
 ## Definition and notation
 
@@ -14,9 +14,9 @@ A sequence $\{a_n\}$ assigns a value $a_n$ to each index $n = 1, 2, 3, \dots$. A
 
 - **Bounded:** there exist numbers $m, M$ with $m \le a_n \le M$ for all $n$.
 - **Increasing:** $a_{n+1} \ge a_n$ for all $n$; **decreasing:** $a_{n+1} \le a_n$.
-- **Strictly monotonic:** the inequality is strict, $a_{n+1} > a_n$ (or $<$), so no two terms are equal.
+- **Strictly [monotonic](monotonic-transformations.md):** the inequality is strict, $a_{n+1} > a_n$ (or $<$), so no two terms are equal.
 
-Strict monotonicity matters because a strictly increasing function is **invertible** — this is exactly why a continuous cumulative distribution function (CDF), which is strictly increasing on its support, has a well-defined inverse (the quantile function).
+Strict monotonicity matters because a strictly increasing function is **invertible** — this is exactly why a continuous [cumulative distribution function (CDF)](random-variables.md), which is strictly increasing on its support, has a well-defined inverse (the [quantile](measures-of-center.md) function).
 
 ## Worked example
 
@@ -66,7 +66,7 @@ all(diff(b) .< 0)       # true
 
 ## Why it matters for statistics
 
-Estimators computed over growing samples form sequences, and questions like "does $\bar{X}_n$ settle down?" are questions about sequence convergence. Strict monotonicity of CDFs guarantees quantiles are uniquely defined, which underpins simulation, inverse-transform sampling, and confidence intervals.
+Estimators computed over growing samples form sequences, and questions like "does $\bar{X}_n$ settle down?" are questions about sequence convergence. Strict monotonicity of CDFs guarantees quantiles are uniquely defined, which underpins simulation, inverse-transform sampling, and [confidence intervals](confidence-intervals.md).
 
 ## Related
 

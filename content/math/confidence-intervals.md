@@ -4,7 +4,7 @@ title: "Confidence Intervals"
 
 # Confidence Intervals
 
-A confidence interval reports a range of plausible values for a parameter—a mean incubation time, a prevalence—together with an estimate's uncertainty. It shifts attention from a single point estimate to the precision behind it.
+A confidence interval reports a range of plausible values for a [parameter](statistical-inference.md)—a mean incubation time, a prevalence—together with an estimate's uncertainty. It shifts attention from a single point estimate to the precision behind it.
 
 ## The idea
 
@@ -16,7 +16,7 @@ For a population mean with unknown variance, the standard $100(1-\alpha)\%$ CI i
 \bar{x} \pm t_{\alpha/2,\,n-1}\,\frac{s}{\sqrt{n}},
 \]
 
-where $\bar{x}$ is the sample mean, $s$ the sample standard deviation, $n$ the sample size, and $t_{\alpha/2,\,n-1}$ the upper-$\alpha/2$ critical value of the [$t$-distribution](t-distribution.md) with $n-1$ degrees of freedom. The term $s/\sqrt{n}$ is the standard error.
+where $\bar{x}$ is the sample mean, $s$ the sample [standard deviation](measures-of-variability.md), $n$ the sample size, and $t_{\alpha/2,\,n-1}$ the upper-$\alpha/2$ critical value of the [$t$-distribution](t-distribution.md) with $n-1$ degrees of freedom. The term $s/\sqrt{n}$ is the standard error.
 
 ### Correct interpretation
 
@@ -83,7 +83,7 @@ mean(covered)   # ~0.95
 
 ## Why it matters for statistics
 
-Confidence intervals communicate both the estimate and its uncertainty on the natural scale of the parameter, making results easier to judge than a bare p-value. Their coverage guarantee is the interval-based counterpart to hypothesis testing and is central to reporting effect sizes in epidemiology.
+Confidence intervals communicate both the estimate and its uncertainty on the natural scale of the parameter, making results easier to judge than a bare [p-value](p-values.md). Their coverage guarantee is the interval-based counterpart to [hypothesis testing](hypothesis-testing.md) and is central to reporting effect sizes in epidemiology.
 
 ## Related
 

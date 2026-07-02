@@ -4,7 +4,7 @@ title: "Exponentials and Logarithms"
 
 # Exponentials and Logarithms
 
-Exponentials describe multiplicative growth and logarithms undo them. In statistics they are everywhere: log-likelihoods turn products into sums, and log scales tame skewed, multiplicative data.
+Exponentials describe multiplicative growth and logarithms undo them. In statistics they are everywhere: [log-likelihoods](maximum-likelihood.md) turn products into sums, and log scales tame skewed, multiplicative data.
 
 ## Exponent rules
 
@@ -18,7 +18,7 @@ Negative and fractional exponents extend this: $a^{-n} = 1/a^{n}$ and $a^{1/n} =
 
 ## The natural base $e$
 
-The constant $e \approx 2.71828$ arises as a limit and as a series:
+The constant $e \approx 2.71828$ arises as a [limit](limits.md) and as a [series](series.md):
 
 \[
 e = \lim_{n\to\infty}\left(1 + \frac{1}{n}\right)^{n},

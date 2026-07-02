@@ -4,11 +4,11 @@ title: "Optimal Experimental Design"
 
 # Optimal Experimental Design
 
-When the design region is constrained or irregular — so classical factorials and central composite designs don't fit — **optimal design** picks run locations to make a model's parameter estimates as precise as possible. It is model-based: you specify the model, then choose points that optimize a criterion on the information matrix.
+When the design region is constrained or irregular — so classical factorials and central composite designs don't fit — **optimal design** picks run locations to make a model's parameter estimates as precise as possible. It is model-based: you specify the model, then choose points that [optimize](optimization.md) a criterion on the information [matrix](matrix-operations.md).
 
 ## The information matrix
 
-For a linear model $y = X\beta + \varepsilon$ with $\varepsilon \sim (0, \sigma^2 I)$, the least-squares estimator has covariance
+For a linear model $y = X\beta + \varepsilon$ with $\varepsilon \sim (0, \sigma^2 I)$, the least-squares estimator has [covariance](measures-of-variability.md)
 
 \[
 \operatorname{Var}(\hat\beta) = \sigma^2 (X^\top X)^{-1}.
@@ -50,7 +50,7 @@ which increases in $d$ and is maximized at $d = 1$. Compare two candidate design
 - **Endpoints** $x = \{-1, +1\}$: $\det(X^\top X) = 4(1)^2 = 4$.
 - **Interior points** $x = \{-0.5, +0.5\}$: $\det(X^\top X) = 4(0.5)^2 = 1$.
 
-The endpoint design has four times the determinant, so it estimates the slope far more precisely — spreading points as far apart as the region allows is D-optimal for a line.
+The endpoint design has four times the [determinant](matrix-inverse-and-determinant.md), so it estimates the slope far more precisely — spreading points as far apart as the region allows is D-optimal for a line.
 
 ## In code
 
@@ -116,4 +116,5 @@ Real experiments rarely live on a tidy cube: budgets cap runs, some factor combi
 - [Optimization](optimization.md)
 - [Factorial Designs](factorial-designs.md)
 - [Response Surface Methodology](response-surface.md)
+- [Experimental Design](experimental-design.md)
 - [Quantitative Methods](../math.md)

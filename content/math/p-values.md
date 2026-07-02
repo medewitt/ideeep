@@ -4,7 +4,7 @@ title: "p-Values"
 
 # p-Values
 
-The p-value is the most reported—and most misread—number in epidemiology. It quantifies how surprising the data are under the null hypothesis, and understanding exactly what it does and does not say is essential for honest inference.
+The p-value is the most reported—and most misread—number in epidemiology. It quantifies how surprising the data are under the [null hypothesis](hypothesis-testing.md), and understanding exactly what it does and does not say is essential for honest [inference](statistical-inference.md).
 
 ## Definition
 
@@ -29,7 +29,7 @@ The significance level $\alpha$ is a fixed threshold chosen *before* seeing data
 
 ## Worked example
 
-Suppose a standardized test statistic is $z_{\text{obs}} = 2.1$ under $H_0$, with a standard normal reference and a two-sided alternative. The p-value is the mass in both tails beyond $2.1$:
+Suppose a standardized test statistic is $z_{\text{obs}} = 2.1$ under $H_0$, with a [standard normal](normal-distribution.md) reference and a two-sided alternative. The p-value is the mass in both tails beyond $2.1$:
 
 \[
 p = 2\,\Pr(Z \ge 2.1) = 2 \times 0.0179 \approx 0.0357.

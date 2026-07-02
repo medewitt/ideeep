@@ -4,15 +4,15 @@ title: "Permutation Tests"
 
 # Permutation Tests
 
-Permutation tests let epidemiologists test for a group difference without assuming a particular distribution—useful for small samples or odd-shaped data where a $t$-test's assumptions are shaky. They build the null distribution directly from the data by shuffling.
+Permutation tests let epidemiologists test for a group difference without assuming a particular [distribution](distributions-overview.md)—useful for small samples or odd-shaped data where a $t$-test's assumptions are shaky. They build the null distribution directly from the data by shuffling.
 
 ## The idea
 
-Under a null hypothesis of **no effect / exchangeability**, the group labels carry no information: any assignment of observations to groups is equally likely. So we can:
+Under a [null hypothesis](hypothesis-testing.md) of **no effect / exchangeability**, the group labels carry no information: any assignment of observations to groups is equally likely. So we can:
 
-1. Compute a test statistic on the real data (e.g., the difference in group means, $\bar{X}_A - \bar{X}_B$).
+1. Compute a test statistic on the real data (e.g., the difference in group [means](measures-of-center.md), $\bar{X}_A - \bar{X}_B$).
 2. Repeatedly **shuffle the labels**, recomputing the statistic each time to trace out its distribution under $H_0$.
-3. Compute the p-value as the fraction of permutations giving a statistic at least as extreme as the observed one.
+3. Compute the [p-value](p-values.md) as the fraction of permutations giving a statistic at least as extreme as the observed one.
 
 \[
 p = \frac{\#\{\text{permutations with } |T^{*}| \ge |T_{\text{obs}}|\} + 1}{B + 1},

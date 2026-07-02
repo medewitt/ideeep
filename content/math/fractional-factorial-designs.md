@@ -4,7 +4,7 @@ title: "Fractional Factorial Designs"
 
 # Fractional Factorial Designs
 
-When a full $2^k$ factorial has too many runs — 7 factors already means $128$ runs — a **fractional factorial** design runs only a carefully chosen subset. Under **effect sparsity** (a few factors dominate), a fraction lets you screen many factors cheaply, at the cost of some effects being tangled together.
+When a full $2^k$ [factorial](factorial-designs.md) has too many runs — 7 factors already means $128$ runs — a **fractional factorial** design runs only a carefully chosen subset. Under **effect sparsity** (a few factors dominate), a fraction lets you screen many factors cheaply, at the cost of some effects being tangled together.
 
 ## The $2^{k-p}$ fraction
 

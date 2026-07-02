@@ -4,18 +4,18 @@ title: "Survey Sampling"
 
 # Survey Sampling
 
-Surveys are how epidemiologists estimate population quantities—prevalence, coverage, exposure—without measuring everyone. The sampling design determines both how to draw the sample and how to weight it so estimates generalize to the target population.
+Surveys are how epidemiologists estimate [population](statistical-inference.md) quantities—prevalence, coverage, exposure—without measuring everyone. The sampling design determines both how to draw the sample and how to weight it so estimates generalize to the target population.
 
 ## Common sampling designs
 
-- **Simple random sampling (SRS)** — every unit has an equal probability of selection, and every subset of size $n$ is equally likely. The baseline against which other designs are compared.
-- **Stratified sampling** — partition the population into strata (e.g., age groups, regions) and sample within each. Guarantees representation of every stratum and, when strata are internally homogeneous, lowers variance.
+- **Simple random sampling (SRS)** — every unit has an equal [probability](probability-basics.md) of selection, and every subset of size $n$ is equally likely. The baseline against which other designs are compared.
+- **Stratified sampling** — partition the population into strata (e.g., age groups, regions) and sample within each. Guarantees representation of every stratum and, when strata are internally homogeneous, lowers [variance](measures-of-variability.md).
 - **Cluster sampling** — randomly select groups (clusters, e.g., clinics or villages) and survey units within them. Cheaper for dispersed populations but usually less efficient because units within a cluster are correlated.
 - **Probability-proportional-to-size (PPS)** — select clusters with probability proportional to their size, so larger clusters are more likely to be chosen; combined with weighting this can yield efficient, self-weighting designs.
 
 ## Weighting and post-stratification
 
-When selection probabilities differ, each sampled unit represents a different number of population units. The **design weight** is the inverse of the selection probability, $w_i = 1/\pi_i$. A weighted mean estimates the population mean:
+When selection probabilities differ, each sampled unit represents a different number of population units. The **design weight** is the inverse of the selection probability, $w_i = 1/\pi_i$. A weighted [mean](measures-of-center.md) estimates the population mean:
 
 \[
 \hat{\bar{Y}} = \frac{\sum_i w_i\,y_i}{\sum_i w_i}.

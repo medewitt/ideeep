@@ -4,7 +4,7 @@ title: "Mendelian Randomization"
 
 # Mendelian Randomization
 
-Mendelian randomization (MR) uses genetic variants as instrumental variables to estimate the causal effect of a modifiable exposure on an outcome. Because alleles are randomly assigned from parents to offspring at conception (Mendel's law of segregation), they are largely independent of the lifestyle and environmental confounders that plague observational studies — giving MR the flavor of "nature's randomized trial."
+Mendelian randomization (MR) uses genetic variants as [instrumental variables](instrumental-variables.md) to estimate the causal effect of a modifiable exposure on an outcome. Because alleles are randomly assigned from parents to offspring at conception (Mendel's law of segregation), they are largely independent of the lifestyle and environmental [confounders](experimental-design.md) that plague observational studies — giving MR the flavor of "nature's randomized trial."
 
 ## Genes as instruments
 
@@ -38,7 +38,7 @@ This is **algebraically identical** to the slope of a weighted linear regression
 
 ## Threats and sensitivity analyses
 
-The IVW estimate is consistent only if **every** variant satisfies the exclusion restriction. Because horizontal pleiotropy is common, MR studies report sensitivity analyses that relax this in different ways:
+The IVW estimate is consistent only if **every** variant satisfies the exclusion restriction. Because horizontal pleiotropy is common, MR studies report [sensitivity analyses](sensitivity-analysis.md) that relax this in different ways:
 
 - **MR-Egger.** Regress $\hat\Gamma_j$ on $\hat\gamma_j$ **with** an intercept. A non-zero intercept flags average directional pleiotropy; the slope stays consistent under the weaker InSIDE assumption.
 - **Weighted median.** Consistent if at least half of the weight comes from valid instruments — robust to a minority of pleiotropic variants.
@@ -124,4 +124,6 @@ Mendelian randomization brings the logic of instrumental variables to genetic ep
 - [Instrumental Variables](instrumental-variables.md)
 - [Experimental Design](experimental-design.md)
 - [Hypothesis Testing](hypothesis-testing.md)
+- [Global Sensitivity Analysis](sensitivity-analysis.md)
+- [Statistical Inference](statistical-inference.md)
 - [Quantitative Methods](../math.md)

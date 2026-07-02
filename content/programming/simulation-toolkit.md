@@ -8,7 +8,7 @@ Simulation is the statistician's laboratory: when you can't derive a result on p
 
 ## Start from a known data-generating process
 
-The core move is to invent a **data-generating process (DGP)** with parameters you choose, draw data from it, and then apply your method. Any gap between your estimate and the known truth is bias, variance, or a bug.
+The core move is to invent a **data-generating process (DGP)** with parameters you choose, draw data from it, and then apply your method. Any gap between your estimate and the known truth is bias, [variance](../math/measures-of-variability.md), or a bug.
 
 ```r
 set.seed(1)                      # reproducibility first
@@ -21,7 +21,7 @@ coef(lm(y ~ x - 1))              # does OLS recover ~2?
 
 ## Core verbs, across three languages
 
-Most simulation work is some mix of: draw random numbers, repeat many times, optimize, root-find, integrate, and differentiate. Here is the same toolbox in each language.
+Most simulation work is some mix of: draw random numbers, repeat many times, [optimize](../math/optimization.md), root-find, [integrate](../math/integrals.md), and [differentiate](../math/derivatives.md). Here is the same toolbox in each language.
 
 | Task | R | Python (NumPy/SciPy) | Julia |
 |---|---|---|---|
@@ -58,7 +58,7 @@ ForwardDiff.derivative(t -> t^3, 2.0)               # exact derivative = 12
 
 ## Worked mini simulation study: coverage of a confidence interval
 
-Question: for the sample mean of $n$ normal observations, does the usual 95% t-interval actually contain the true mean 95% of the time? We can *check* by simulation.
+Question: for the sample mean of $n$ [normal](../math/normal-distribution.md) observations, does the usual 95% t-interval actually contain the true mean 95% of the time? We can *check* by simulation.
 
 The recipe is the workhorse pattern — **generate, fit, record, repeat**:
 
@@ -121,7 +121,7 @@ mean(covered)   # ~0.95
 
 ## Why this works
 
-Repeating the draw-and-estimate loop many times approximates the estimator's **sampling distribution**, and the average of an indicator (like "did the interval cover?") converges to its true probability by the [law of large numbers](../math/law-of-large-numbers.md). That is the engine behind every coverage check, power calculation, and bias estimate you'll run by simulation.
+Repeating the draw-and-estimate loop many times approximates the estimator's **[sampling distribution](../math/sampling-distributions.md)**, and the average of an indicator (like "did the interval cover?") converges to its true probability by the [law of large numbers](../math/law-of-large-numbers.md). That is the engine behind every coverage check, power calculation, and bias estimate you'll run by simulation.
 
 Practical tips:
 

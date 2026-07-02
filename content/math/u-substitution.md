@@ -4,7 +4,7 @@ title: "u-Substitution"
 
 # u-Substitution
 
-u-substitution is the *reverse of the chain rule*: it undoes a composition of functions inside an integral. It is the workhorse for integrating the kernels of many probability densities, especially the normal.
+u-substitution is the *reverse of the [chain rule](chain-rule.md)*: it undoes a composition of functions inside an integral. It is the workhorse for integrating the kernels of many [probability densities](random-variables.md), especially the [normal](normal-distribution.md).
 
 ## The idea
 

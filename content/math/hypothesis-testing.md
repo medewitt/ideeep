@@ -8,10 +8,10 @@ Hypothesis testing is the formal machinery epidemiologists use to decide whether
 
 ## The two hypotheses
 
-- The **null hypothesis** $H_0$ states "no effect" or "no difference" (e.g., the mean equals a reference value).
+- The **null hypothesis** $H_0$ states "no effect" or "no difference" (e.g., the [mean](measures-of-center.md) equals a reference value).
 - The **alternative hypothesis** $H_a$ is what we entertain if the data are incompatible with $H_0$ (e.g., the mean differs).
 
-We summarize the data with a **test statistic**—a single number whose distribution *under $H_0$* is known.
+We summarize the data with a **test statistic**—a single number whose [distribution](distributions-overview.md) *under $H_0$* is known.
 
 ## The logic
 
@@ -80,7 +80,7 @@ println(BinomialTest(18, 40, 0.5))       # proportion
 
 ## Why it matters for statistics
 
-Hypothesis testing gives a disciplined, reproducible rule for turning data into decisions while controlling the rate of false alarms. It is the foundation for evaluating treatment effects, screening associations, and reporting findings in nearly every quantitative study.
+Hypothesis testing gives a disciplined, [reproducible](../programming/reproducibility.md) rule for turning data into decisions while controlling the rate of false alarms. It is the foundation for evaluating treatment effects, screening associations, and reporting findings in nearly every quantitative study.
 
 ## Related
 

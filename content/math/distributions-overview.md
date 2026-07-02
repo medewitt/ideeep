@@ -105,7 +105,7 @@ As the sample size grows the empirical mean and variance both approach $\lambda$
 
 ## Why it matters for statistics
 
-Every inferential method assumes a probability model for the data. Choosing the right distribution — counts vs. proportions vs. continuous measurements — determines which estimator, test, and confidence interval are valid. Recognizing the mechanism that generates each distribution (adding effects → normal, counting rare events → Poisson, waiting for events → exponential) lets you pick models from first principles rather than by trial and error.
+Every inferential method assumes a probability model for the data. Choosing the right distribution — counts vs. proportions vs. continuous measurements — determines which [estimator](statistical-inference.md), test, and [confidence interval](confidence-intervals.md) are valid. Recognizing the mechanism that generates each distribution (adding effects → normal, counting rare events → Poisson, waiting for events → exponential) lets you pick models from first principles rather than by trial and error.
 
 ## Related
 

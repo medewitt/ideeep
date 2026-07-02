@@ -15,14 +15,14 @@ How data are collected determines what conclusions they can support. Good experi
 
 - **Randomization** — random assignment balances known *and unknown* confounders across groups in expectation, so differences in outcome can be attributed to the treatment.
 - **Control** — a comparison group (placebo or standard care) isolates the treatment effect from background trends.
-- **Replication** — multiple independent units per condition let us estimate variability and gain power.
+- **Replication** — multiple independent units per condition let us estimate [variability](measures-of-variability.md) and gain power.
 - **Blocking** — grouping similar units (e.g., by age band or site) and randomizing within blocks removes nuisance variation and sharpens comparisons.
 
 ## Observational designs
 
 - **Retrospective** (e.g., case-control): start from outcome and look back at exposures.
 - **Prospective** (e.g., cohort): enroll by exposure status and follow forward for outcomes.
-- **Sample survey**: measure a population cross-section at a point in time (see [survey sampling](survey-sampling.md)).
+- **Sample survey**: measure a [population](statistical-inference.md) cross-section at a point in time (see [survey sampling](survey-sampling.md)).
 
 ## Sources of bias
 

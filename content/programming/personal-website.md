@@ -24,7 +24,7 @@ All of them produce **static HTML** (plain files, no server logic) that you can 
 
 ### Where to Host
 
-- **GitHub Pages** free hosting straight from a GitHub repo.
+- **GitHub Pages** free hosting straight from a [GitHub](version-control-git.md) repo.
 - **Netlify** free hosting with automatic rebuilds when you push to Git.
 
 ## The Basic Steps

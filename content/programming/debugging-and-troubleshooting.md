@@ -63,7 +63,7 @@ f(v) = (@show typeof(v); sum(v) / length(v))
 
 ## Check assumptions: types and shapes
 
-A huge share of bugs are a value that isn't what you assumed — a string where you expected a number, a length-0 vector, a matrix transposed, an `NA` sneaking through.
+A huge share of bugs are a value that isn't what you assumed — a string where you expected a number, a length-0 vector, a [matrix](../math/matrix-operations.md) transposed, an `NA` sneaking through.
 
 ```r
 str(x)          # structure, type, first values

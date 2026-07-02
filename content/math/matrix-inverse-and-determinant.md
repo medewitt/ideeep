@@ -124,7 +124,7 @@ A \ [1.0, 1.0]   # [0.1, 0.1]
 
 ## Why it matters for statistics
 
-Invertibility is the dividing line between a regression that has a unique answer and one that does not. A near-singular $X^\top X$ (large but nonzero determinant issues, tiny eigenvalues) signals collinearity that inflates coefficient variances. In practice, use `solve`/`\` rather than forming an explicit inverse — it is faster and numerically more stable.
+Invertibility is the dividing line between a regression that has a unique answer and one that does not. A near-singular $X^\top X$ (large but nonzero determinant issues, tiny [eigenvalues](eigenvalues-and-eigenvectors.md)) signals collinearity that inflates coefficient [variances](measures-of-variability.md). In practice, use `solve`/`\` rather than forming an explicit inverse — it is faster and numerically more stable.
 
 ## Related
 

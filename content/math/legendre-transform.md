@@ -4,7 +4,7 @@ title: "The Legendre Transform"
 
 # The Legendre Transform
 
-The Legendre transform re-expresses a convex function in terms of its slopes
+The Legendre transform re-expresses a [convex](optimization.md) function in terms of its slopes
 instead of its inputs. It is the mathematical engine behind exponential
 families, cumulant generating functions, and large-deviations rate functions —
 places where "the dual variable is a slope."
@@ -30,7 +30,7 @@ of its tangent lines, indexed by slope.
 
 - **$f^*$ is always convex**, being a supremum of the affine functions
   $p \mapsto px - f(x)$, one for each $x$.
-- **Stationarity.** If $f$ is differentiable, the sup is attained where
+- **Stationarity.** If $f$ is [differentiable](derivatives.md), the sup is attained where
   $\frac{d}{dx}(px - f(x)) = 0$, i.e. at the $x$ with
   \[
   p = f'(x), \qquad\text{and then}\qquad f^*(p) = p x - f(x).
@@ -137,4 +137,5 @@ $\sup_x(px - f(x))$ pattern tells you a convex-conjugate structure is at play.
 - [Optimization](optimization.md)
 - [Derivatives](derivatives.md)
 - [Maximum Likelihood](maximum-likelihood.md)
+- [Expected Value](expected-value.md)
 - [Quantitative Methods](../math.md)

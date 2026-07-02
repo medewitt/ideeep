@@ -4,7 +4,7 @@ title: "The t-Distribution"
 
 # The t-Distribution
 
-Student's t-distribution is a bell-shaped curve that looks like the normal but with heavier tails. It arises when we standardize a sample mean but must **estimate** the population standard deviation from the same small sample — the everyday situation in experiments and epidemiological studies where $\sigma$ is unknown. The extra uncertainty from estimating $\sigma$ is exactly what fattens the tails.
+Student's t-distribution is a bell-shaped curve that looks like the normal but with heavier tails. It arises when we standardize a [sample mean](measures-of-center.md) but must **estimate** the population [standard deviation](measures-of-variability.md) from the same small sample — the everyday situation in experiments and epidemiological studies where $\sigma$ is unknown. The extra uncertainty from estimating $\sigma$ is exactly what fattens the tails.
 
 ## Definition
 
@@ -27,7 +27,7 @@ the standard normal density. By around $\nu=30$ the two are already very close.
 
 ## When it arises (Student's t)
 
-Suppose $X_1,\dots,X_n$ are an i.i.d. sample from a normal population with unknown mean $\mu$ and unknown $\sigma$. The standardized sample mean using the **sample** standard deviation $s$,
+Suppose $X_1,\dots,X_n$ are an i.i.d. sample from a normal [population](statistical-inference.md) with unknown mean $\mu$ and unknown $\sigma$. The standardized sample mean using the **sample** standard deviation $s$,
 $$T=\frac{\bar{X}-\mu}{s/\sqrt{n}},$$
 follows a t-distribution with $\nu=n-1$ degrees of freedom. If we knew $\sigma$ exactly, this would instead be standard normal; replacing $\sigma$ by the estimate $s$ is what produces the t.
 

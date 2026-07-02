@@ -4,7 +4,7 @@ title: "Integration by Parts"
 
 # Integration by Parts
 
-Integration by parts is the *reverse of the product rule*. It turns an integral of a product into an easier one, and it is the standard way to compute the mean of the exponential and gamma distributions.
+Integration by parts is the *reverse of the [product rule](product-rule.md)*. It turns an integral of a product into an easier one, and it is the standard way to compute the [mean](measures-of-center.md) of the [exponential](exponential-distribution.md) and gamma distributions.
 
 ## The formula
 

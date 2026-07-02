@@ -33,7 +33,7 @@ The DGP is a *model* of reality. Inference asks: given data that plausibly came 
 
 ## A statistic is random
 
-The crucial insight: because the sample is random, **any statistic computed from it is also a random variable**. Draw a different sample and you get a different $\hat{\theta}$. This sample-to-sample variability is not a nuisance to be ignored; it is exactly what lets us quantify uncertainty.
+The crucial insight: because the sample is random, **any statistic computed from it is also a [random variable](random-variables.md)**. Draw a different sample and you get a different $\hat{\theta}$. This sample-to-sample variability is not a nuisance to be ignored; it is exactly what lets us quantify uncertainty.
 
 A good estimator has its distribution centered near $\theta$ (low bias) and tightly concentrated (low variance). The distribution of $\hat{\theta}$ across hypothetical repeated samples is called its [sampling distribution](sampling-distributions.md).
 
@@ -41,7 +41,7 @@ A good estimator has its distribution centered near $\theta$ (low bias) and tigh
 
 Suppose the DGP is $X \sim \text{Normal}(\mu = 170,\ \sigma = 10)$ (adult heights in cm). The parameter of interest is $\mu = 170$, which in real life we would not know.
 
-We draw a single sample of $n = 25$ people and compute $\bar{X}$. We might get $\bar{X} = 168.4$. A different 25 people might give $\bar{X} = 171.2$. Neither equals $170$ exactly, yet both cluster around it. If we could repeat the sampling many times, the collection of $\bar{X}$ values would average to $\mu$ and have standard deviation $\sigma / \sqrt{n} = 10/5 = 2$.
+We draw a single sample of $n = 25$ people and compute $\bar{X}$. We might get $\bar{X} = 168.4$. A different 25 people might give $\bar{X} = 171.2$. Neither equals $170$ exactly, yet both cluster around it. If we could repeat the sampling many times, the collection of $\bar{X}$ values would average to $\mu$ and have [standard deviation](measures-of-variability.md) $\sigma / \sqrt{n} = 10/5 = 2$.
 
 ## Simulation
 
@@ -91,7 +91,7 @@ std(means)   # ~2.0  (= sigma / sqrt(n))
 
 ## Why it matters for statistics
 
-Inference is the foundation of the entire discipline: estimation, hypothesis testing, and confidence intervals all describe the behavior of a random statistic relative to a fixed parameter. Recognizing that $\hat{\theta}$ has a *distribution* — not just a value — is what separates a point guess from a scientific claim with quantified uncertainty. In epidemiology, this is how a prevalence estimate from a survey becomes a defensible statement about a whole population.
+Inference is the foundation of the entire discipline: estimation, [hypothesis testing](hypothesis-testing.md), and [confidence intervals](confidence-intervals.md) all describe the behavior of a random statistic relative to a fixed parameter. Recognizing that $\hat{\theta}$ has a *distribution* — not just a value — is what separates a point guess from a scientific claim with quantified uncertainty. In epidemiology, this is how a prevalence estimate from a [survey](survey-sampling.md) becomes a defensible statement about a whole population.
 
 ## Related
 

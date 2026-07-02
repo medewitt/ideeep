@@ -4,7 +4,7 @@ title: "Matrix and Vector Notation"
 
 # Matrix and Vector Notation
 
-Matrices and vectors are the language for organizing data and the parameters of statistical models. A regression dataset, a covariance structure, or a disease-model state are all naturally written as arrays of numbers, and a shared notation keeps the bookkeeping honest.
+Matrices and vectors are the language for organizing data and the parameters of statistical models. A regression dataset, a [covariance](measures-of-variability.md) structure, or a disease-model state are all naturally written as arrays of numbers, and a shared notation keeps the bookkeeping honest.
 
 ## Scalars, vectors, and matrices
 
@@ -16,7 +16,7 @@ A **vector** is an ordered list of numbers. By convention a vector is a *column 
 x = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}.
 \]
 
-Its transpose is a *row vector* $x^\top = \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}$.
+Its [transpose](matrix-operations.md) is a *row vector* $x^\top = \begin{bmatrix} x_1 & x_2 & x_3 \end{bmatrix}$.
 
 A **matrix** is a rectangular array of numbers with $m$ rows and $n$ columns; we say it has **dimension** $m \times n$:
 
@@ -99,7 +99,7 @@ I(3)         # 3x3 identity (UniformScaling as a matrix)
 
 ## Why it matters for statistics
 
-Clear notation is the foundation for everything downstream: the design matrix in regression, the covariance matrix, and the Jacobian of a disease model are all matrices. Knowing dimensions and conformability lets you predict whether an expression like $X^\top X$ is even defined (it is: $(p \times n)(n \times p) = p \times p$) before you compute anything.
+Clear notation is the foundation for everything downstream: the design matrix in regression, the covariance matrix, and the [Jacobian](jacobians.md) of a disease model are all matrices. Knowing dimensions and conformability lets you predict whether an expression like $X^\top X$ is even defined (it is: $(p \times n)(n \times p) = p \times p$) before you compute anything.
 
 ## Related
 

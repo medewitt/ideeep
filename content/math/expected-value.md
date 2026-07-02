@@ -4,7 +4,7 @@ title: "Expected Value"
 
 # Expected Value
 
-The expected value is the probability-weighted average of a random variable — the number a long run of draws settles around. It anchors nearly every summary in statistics, from the mean of a distribution to the target of an estimator.
+The expected value is the probability-weighted average of a [random variable](random-variables.md) — the number a long run of draws settles around. It anchors nearly every summary in statistics, from the [mean](measures-of-center.md) of a distribution to the target of an estimator.
 
 ## Definition
 
@@ -51,7 +51,7 @@ To find the expected value of a function $g(X)$ you do **not** need the distribu
 \]
 The expected value need not be an attainable outcome.
 
-**Exponential.** For $X$ with density $f(x) = \lambda e^{-\lambda x}$ on $x \ge 0$,
+**[Exponential](exponential-distribution.md).** For $X$ with density $f(x) = \lambda e^{-\lambda x}$ on $x \ge 0$,
 \[
 \mathbb{E}[X] = \int_0^\infty x\,\lambda e^{-\lambda x}\,dx = \frac{1}{\lambda}.
 \]
@@ -100,11 +100,13 @@ println(mean(exp_draws))     # ~ 0.5
 
 ## Why it matters for statistics
 
-Expectation defines what an estimator is aiming at: an estimator is unbiased when its expected value equals the parameter. Linearity makes the mean of a sample average trivial to compute, and the law of the unconscious statistician gives variances, moments, and likelihoods without ever deriving a new distribution.
+Expectation defines what an estimator is aiming at: an [estimator](statistical-inference.md) is unbiased when its expected value equals the parameter. Linearity makes the mean of a sample average trivial to compute, and the law of the unconscious statistician gives [variances](measures-of-variability.md), moments, and likelihoods without ever deriving a new distribution.
 
 ## Related
 
 - [Integrals](integrals.md)
 - [Measures of Center](measures-of-center.md)
+- [Measures of Variability](measures-of-variability.md)
+- [Random Variables](random-variables.md)
 - [The Law of Large Numbers](law-of-large-numbers.md)
 - [Quantitative Methods](../math.md)

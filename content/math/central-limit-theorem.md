@@ -4,11 +4,11 @@ title: "The Central Limit Theorem"
 
 # The Central Limit Theorem
 
-The central limit theorem explains why the bell curve is everywhere: add up or average many independent effects and the result is approximately normal, no matter what the individual pieces look like. It is the reason normal-based inference works so broadly.
+The central limit theorem explains why the bell curve is everywhere: add up or average many independent effects and the result is approximately [normal](normal-distribution.md), no matter what the individual pieces look like. It is the reason normal-based inference works so broadly.
 
 ## Statement
 
-Let $X_1, \dots, X_n$ be iid with mean $\mu$ and finite variance $\sigma^2$. As $n \to \infty$, the standardized sample mean converges in distribution to a standard normal:
+Let $X_1, \dots, X_n$ be iid with mean $\mu$ and finite [variance](measures-of-variability.md) $\sigma^2$. As $n \to \infty$, the standardized sample mean [converges](limits.md) in distribution to a standard normal:
 \[
 \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \to \mathcal{N}(0, 1).
 \]
@@ -20,7 +20,7 @@ The [law of large numbers](law-of-large-numbers.md) says $\bar{X} \to \mu$ (the 
 
 ## Worked example
 
-Suppose service times are exponential with rate $\lambda = 1$, so $\mu = 1$ and $\sigma = 1$ — a strongly right-skewed parent. Average $n = 50$ of them. The CLT says
+Suppose service times are [exponential](exponential-distribution.md) with rate $\lambda = 1$, so $\mu = 1$ and $\sigma = 1$ — a strongly right-skewed parent. Average $n = 50$ of them. The CLT says
 \[
 \bar{X} \approx \mathcal{N}\!\left(1,\ \frac{1}{50}\right), \qquad \operatorname{SD}(\bar{X}) = \frac{1}{\sqrt{50}} \approx 0.141.
 \]
@@ -73,11 +73,13 @@ end
 
 ## Why it matters for statistics
 
-The CLT is why $z$- and $t$-based confidence intervals and tests apply to means from almost any population, not just normal ones. It underwrites the normal approximation for proportions and sums, and it tells us how large a sample is "large enough" for inference to be trustworthy. Nearly every classical procedure leans on it.
+The CLT is why $z$- and $t$-based [confidence intervals](confidence-intervals.md) and tests apply to means from almost any population, not just normal ones. It underwrites the normal approximation for proportions and sums, and it tells us how large a sample is "large enough" for inference to be trustworthy. Nearly every classical procedure leans on it.
 
 ## Related
 
 - [Normal Distribution](normal-distribution.md)
 - [Sampling Distributions](sampling-distributions.md)
 - [The Law of Large Numbers](law-of-large-numbers.md)
+- [Statistical Inference](statistical-inference.md)
+- [Confidence Intervals](confidence-intervals.md)
 - [Quantitative Methods](../math.md)
