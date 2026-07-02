@@ -4,12 +4,15 @@ title: "Experimental Design"
 
 # Experimental Design
 
-How data are collected determines what conclusions they can support. Good experimental design is what lets epidemiologists move from "associated with" toward "causes," and recognizing sources of bias is essential when a true experiment is impossible.
+How data are collected determines what conclusions they can support.
+Good experimental design is what lets epidemiologists move from "associated with" toward "causes," and recognizing sources of bias is essential when a true experiment is impossible.
 
 ## Experimental vs. observational studies
 
-- In an **experiment**, the investigator actively assigns the exposure or treatment (ideally at random). This breaks the link between exposure and confounders and licenses causal claims.
-- In an **observational study**, exposure is merely observed as it occurs. Associations may be real but can be distorted by confounding, so causal interpretation demands caution.
+- In an **experiment**, the investigator actively assigns the exposure or treatment (ideally at random).
+  This breaks the link between exposure and confounders and licenses causal claims.
+- In an **observational study**, exposure is merely observed as it occurs.
+  Associations may be real but can be distorted by confounding, so causal interpretation demands caution.
 
 ## Principles of good experiments
 
@@ -71,7 +74,8 @@ foreach(println, zip(1:10, labels))
 
 ## Why it matters for statistics
 
-Design decides which biases the analysis can and cannot fix: no statistical adjustment recovers information a flawed design never captured. Randomization and control are what make inferred effects causal, and naming the biases of observational studies guides both honest interpretation and better analysis.
+Design decides which biases the analysis can and cannot fix: no statistical adjustment recovers information a flawed design never captured.
+Randomization and control are what make inferred effects causal, and naming the biases of observational studies guides both honest interpretation and better analysis.
 
 ## Related
 

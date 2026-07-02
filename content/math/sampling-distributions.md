@@ -4,33 +4,32 @@ title: "Sampling Distributions"
 
 # Sampling Distributions
 
-A statistic computed from a sample is itself random: draw a new sample and you get a new value. The distribution of that statistic over repeated samples — its *sampling distribution* — is the bridge from a single estimate to a statement about uncertainty.
+A statistic computed from a sample is itself random: draw a new sample and you get a new value.
+The distribution of that statistic over repeated samples — its *sampling distribution* — is the bridge from a single estimate to a statement about uncertainty.
 
 ## The idea
 
-Fix a population and a sample size $n$. Any statistic, say the sample mean $\bar{X}$, changes from sample to sample. If you could repeatedly draw fresh samples of size $n$ and recompute $\bar{X}$ each time, the histogram of those values is the **sampling distribution of $\bar{X}$**.
+Fix a population and a sample size $n$.
+Any statistic, say the sample mean $\bar{X}$, changes from sample to sample.
+If you could repeatedly draw fresh samples of size $n$ and recompute $\bar{X}$ each time, the histogram of those values is the **sampling distribution of $\bar{X}$**.
 
-It is a distribution of an *estimator*, not of raw data. Its spread measures how precise the estimate is.
+It is a distribution of an *estimator*, not of raw data.
+Its spread measures how precise the estimate is.
 
 ## Sampling distribution of the mean
 
-For an iid sample from a population with mean $\mu$ and [standard deviation](measures-of-variability.md) $\sigma$, the sample mean has
-\[
-\mathbb{E}[\bar{X}] = \mu, \qquad \operatorname{Var}(\bar{X}) = \frac{\sigma^2}{n}, \qquad \operatorname{SD}(\bar{X}) = \frac{\sigma}{\sqrt{n}}.
-\]
-So $\bar{X}$ is centered on the truth $\mu$ (it is unbiased) and its standard deviation — the **standard error** — shrinks like $1/\sqrt{n}$. Larger samples give tighter, more reliable estimates.
+For an iid sample from a population with mean $\mu$ and [standard deviation](measures-of-variability.md) $\sigma$, the sample mean has \[ \mathbb{E}[\bar{X}] = \mu, \qquad \operatorname{Var}(\bar{X}) = \frac{\sigma^2}{n}, \qquad \operatorname{SD}(\bar{X}) = \frac{\sigma}{\sqrt{n}}. \] So $\bar{X}$ is centered on the truth $\mu$ (it is unbiased) and its standard deviation — the **standard error** — shrinks like $1/\sqrt{n}$.
+Larger samples give tighter, more reliable estimates.
 
 ### Worked example
 
-A population has $\mu = 50$ and $\sigma = 10$. For samples of size $n = 25$:
-\[
-\mathbb{E}[\bar{X}] = 50, \qquad \operatorname{SD}(\bar{X}) = \frac{10}{\sqrt{25}} = 2.
-\]
-Quadrupling the sample to $n = 100$ halves the standard error to $10/\sqrt{100} = 1$.
+A population has $\mu = 50$ and $\sigma = 10$.
+For samples of size $n = 25$: \[ \mathbb{E}[\bar{X}] = 50, \qquad \operatorname{SD}(\bar{X}) = \frac{10}{\sqrt{25}} = 2. \] Quadrupling the sample to $n = 100$ halves the standard error to $10/\sqrt{100} = 1$.
 
 ## Simulation
 
-Draw many samples, compute a mean from each, and inspect the distribution of those means. Its spread should match $\sigma/\sqrt{n}$ and narrow as $n$ grows.
+Draw many samples, compute a mean from each, and inspect the distribution of those means.
+Its spread should match $\sigma/\sqrt{n}$ and narrow as $n$ grows.
 
 ### R
 
@@ -76,7 +75,9 @@ end
 
 ## Why it matters for statistics
 
-Every standard error, $p$-value, and [confidence interval](confidence-intervals.md) is a statement about a sampling distribution. Understanding that a statistic *has* a distribution — with a known center and a spread that shrinks with $n$ — is what turns a lone number into [statistical inference](statistical-inference.md). The [central limit theorem](central-limit-theorem.md) tells us the *shape* of that distribution for means.
+Every standard error, $p$-value, and [confidence interval](confidence-intervals.md) is a statement about a sampling distribution.
+Understanding that a statistic *has* a distribution — with a known center and a spread that shrinks with $n$ — is what turns a lone number into [statistical inference](statistical-inference.md).
+The [central limit theorem](central-limit-theorem.md) tells us the *shape* of that distribution for means.
 
 ## Related
 

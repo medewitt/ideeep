@@ -4,7 +4,8 @@ title: "Partial Derivatives"
 
 # Partial Derivatives
 
-A partial derivative measures how a multivariable function changes as you vary **one** input while holding the others fixed. They are the foundation of the [gradient](gradient.md) and the [Jacobian](jacobians.md), and of [optimizing](optimization.md) [likelihoods](maximum-likelihood.md) that depend on several parameters.
+A partial derivative measures how a multivariable function changes as you vary **one** input while holding the others fixed.
+They are the foundation of the [gradient](gradient.md) and the [Jacobian](jacobians.md), and of [optimizing](optimization.md) [likelihoods](maximum-likelihood.md) that depend on several parameters.
 
 ## Definition and notation
 
@@ -14,7 +15,8 @@ For $f(x, y)$, the partial derivative with respect to $x$ treats $y$ as a consta
 \frac{\partial f}{\partial x} = \lim_{h \to 0} \frac{f(x + h,\, y) - f(x,\, y)}{h}.
 \]
 
-Common notations include $\dfrac{\partial f}{\partial x}$, $f_x$, and $\partial_x f$. The curly $\partial$ (instead of $d$) signals that other variables are being held constant.
+Common notations include $\dfrac{\partial f}{\partial x}$, $f_x$, and $\partial_x f$.
+The curly $\partial$ (instead of $d$) signals that other variables are being held constant.
 
 ## Worked example: $f(x,y) = x^2 y + \sin(y)$
 
@@ -40,7 +42,8 @@ Stacking the partials of a scalar function into a vector gives the **gradient**:
 \nabla f = \left(\frac{\partial f}{\partial x},\; \frac{\partial f}{\partial y}\right).
 \]
 
-For a vector-valued function, arranging all partials into a matrix gives the **Jacobian**. Partial derivatives are the individual entries from which both objects are built.
+For a vector-valued function, arranging all partials into a matrix gives the **Jacobian**.
+Partial derivatives are the individual entries from which both objects are built.
 
 ## Computing it
 
@@ -90,7 +93,8 @@ ForwardDiff.gradient(g, [1.0, 0.0])   # [0.0, 2.0]
 
 ## Why it matters for statistics
 
-Log-likelihoods usually depend on several parameters at once (a mean and a variance, or a whole regression coefficient vector). Setting each partial derivative to zero produces the system of score equations solved to find maximum likelihood estimates, and the matrix of second partials becomes the observed information.
+Log-likelihoods usually depend on several parameters at once (a mean and a variance, or a whole regression coefficient vector).
+Setting each partial derivative to zero produces the system of score equations solved to find maximum likelihood estimates, and the matrix of second partials becomes the observed information.
 
 ## Related
 

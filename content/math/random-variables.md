@@ -4,7 +4,8 @@ title: "Random Variables"
 
 # Random Variables
 
-A random variable turns messy real-world outcomes into numbers we can add, average, and model. It is the bridge between raw [probability](probability-basics.md) and the [distributions](distributions-overview.md) used throughout statistics and epidemiology.
+A random variable turns messy real-world outcomes into numbers we can add, average, and model.
+It is the bridge between raw [probability](probability-basics.md) and the [distributions](distributions-overview.md) used throughout statistics and epidemiology.
 
 ## Definition
 
@@ -14,7 +15,8 @@ A **random variable** $X$ is a function that maps each outcome in the sample spa
 X : \Omega \to \mathbb{R}.
 \]
 
-For a coin flip, $\Omega = \{\text{heads}, \text{tails}\}$ and we might set $X(\text{heads}) = 1$, $X(\text{tails}) = 0$. The randomness lives in which outcome occurs; $X$ just records it numerically.
+For a coin flip, $\Omega = \{\text{heads}, \text{tails}\}$ and we might set $X(\text{heads}) = 1$, $X(\text{tails}) = 0$.
+The randomness lives in which outcome occurs; $X$ just records it numerically.
 
 ## Discrete vs. continuous
 
@@ -29,7 +31,8 @@ For a **discrete** RV, the **probability mass function (pmf)** gives the probabi
 p(x) = \Pr(X = x), \qquad \sum_x p(x) = 1.
 \]
 
-For a **continuous** RV, single points have probability zero, so we use a **probability density function (pdf)** $f(x)$. Probability is *[area under the density](integrals.md)*:
+For a **continuous** RV, single points have probability zero, so we use a **probability density function (pdf)** $f(x)$.
+Probability is *[area under the density](integrals.md)*:
 
 \[
 \Pr(a \le X \le b) = \int_a^b f(x)\,dx, \qquad \int_{-\infty}^{\infty} f(x)\,dx = 1.
@@ -55,17 +58,20 @@ For a continuous RV, the pdf is the [derivative](derivatives.md) of the CDF, $f(
 
 ## Worked example: a discrete RV
 
-Let $X \sim \text{Binomial}(n = 3, p = 0.5)$ — the number of heads in three fair flips. The pmf is $p(x) = \binom{3}{x}(0.5)^3$:
+Let $X \sim \text{Binomial}(n = 3, p = 0.5)$ — the number of heads in three fair flips.
+The pmf is $p(x) = \binom{3}{x}(0.5)^3$:
 
 \[
 p(0) = \tfrac{1}{8},\quad p(1) = \tfrac{3}{8},\quad p(2) = \tfrac{3}{8},\quad p(3) = \tfrac{1}{8}.
 \]
 
-These sum to 1. The CDF steps upward: $F(1) = \Pr(X \le 1) = \tfrac{1}{8} + \tfrac{3}{8} = \tfrac{1}{2}$.
+These sum to 1.
+The CDF steps upward: $F(1) = \Pr(X \le 1) = \tfrac{1}{8} + \tfrac{3}{8} = \tfrac{1}{2}$.
 
 ## Worked example: a continuous RV
 
-Let $X \sim \text{Exponential}(\lambda = 2)$ with pdf $f(x) = 2 e^{-2x}$ for $x \ge 0$. Its CDF is
+Let $X \sim \text{Exponential}(\lambda = 2)$ with pdf $f(x) = 2 e^{-2x}$ for $x \ge 0$.
+Its CDF is
 
 \[
 F(x) = \int_0^x 2 e^{-2t}\,dt = 1 - e^{-2x}.
@@ -119,7 +125,8 @@ cdf(Normal(0, 1), 1.96)    # 0.975
 
 ## Why it matters for statistics
 
-Random variables are the objects statistics is *about*: an estimator is a random variable, a test statistic is a random variable, and data are realizations of random variables. The pmf/pdf and CDF are the two universal descriptions of their behavior — the CDF in particular underlies [quantiles](measures-of-center.md), p-values, and the monotonic transformations used in simulation and maximum likelihood.
+Random variables are the objects statistics is *about*: an estimator is a random variable, a test statistic is a random variable, and data are realizations of random variables.
+The pmf/pdf and CDF are the two universal descriptions of their behavior — the CDF in particular underlies [quantiles](measures-of-center.md), p-values, and the monotonic transformations used in simulation and maximum likelihood.
 
 ## Related
 

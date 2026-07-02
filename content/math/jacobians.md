@@ -6,14 +6,7 @@ title: "Jacobians"
 
 ## Example: SIR Model with Frequency-Dependent Transmission
 
-Consider the [SIR model](sir.md):
-\[
-\begin{aligned}
-\frac{dS}{dt} &= -\beta \frac{S I}{N} \\
-\frac{dI}{dt} &= \beta \frac{S I}{N} - \gamma I \\
-\frac{dR}{dt} &= \gamma I
-\end{aligned}
-\]
+Consider the [SIR model](sir.md): \[ \begin{aligned} \frac{dS}{dt} &= -\beta \frac{S I}{N} \\ \frac{dI}{dt} &= \beta \frac{S I}{N} - \gamma I \\ \frac{dR}{dt} &= \gamma I \end{aligned} \]
 
 where:
 - $\beta$ = transmission rate (frequency dependent)
@@ -114,5 +107,3 @@ J = ForwardDiff.jacobian(u -> sir_model(u, p), u)
 - [Matrix Operations](matrix-operations.md)
 - [Inverse, Determinant, and Rank](matrix-inverse-and-determinant.md)
 - [Compartmental Models (SIR)](sir.md)
-
-

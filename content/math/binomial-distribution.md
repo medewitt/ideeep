@@ -4,12 +4,13 @@ title: "The Binomial Distribution"
 
 # The Binomial Distribution
 
-The binomial distribution counts how many "successes" occur in a fixed number of [independent](probability-basics.md) yes/no trials — how many of $n$ vaccinated people avoid infection, how many of $n$ tossed coins land heads, how many of $n$ patients respond to a treatment. It is the natural model behind testing a proportion.
+The binomial distribution counts how many "successes" occur in a fixed number of [independent](probability-basics.md) yes/no trials — how many of $n$ vaccinated people avoid infection, how many of $n$ tossed coins land heads, how many of $n$ patients respond to a treatment.
+It is the natural model behind testing a proportion.
 
 ## Definition
 
-Let $X\sim\mathrm{Binomial}(n,p)$ count the successes in $n$ independent trials, each with success probability $p$. Its probability mass function is
-$$P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}.$$
+Let $X\sim\mathrm{Binomial}(n,p)$ count the successes in $n$ independent trials, each with success probability $p$.
+Its probability mass function is $$P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}.$$
 
 - **Support:** $k\in\{0,1,2,\dots,n\}$.
 - **Parameters:** number of trials $n\in\{1,2,\dots\}$ and success probability $p\in[0,1]$.
@@ -20,19 +21,17 @@ The binomial coefficient $\binom{n}{k}=\frac{n!}{k!\,(n-k)!}$ counts the number 
 
 ## Sum of Bernoulli trials
 
-A single trial with outcome $1$ (success, probability $p$) or $0$ (failure) is a **Bernoulli** [random variable](random-variables.md) with [mean](measures-of-center.md) $p$ and [variance](measures-of-variability.md) $p(1-p)$. A binomial variable is just the sum of $n$ independent Bernoulli trials:
-$$X=\sum_{i=1}^{n}B_i,\qquad B_i\sim\mathrm{Bernoulli}(p).$$
-Because expectation and (for independent terms) variance add, this immediately gives $\mathbb{E}[X]=np$ and $\mathrm{Var}(X)=np(1-p)$.
+A single trial with outcome $1$ (success, probability $p$) or $0$ (failure) is a **Bernoulli** [random variable](random-variables.md) with [mean](measures-of-center.md) $p$ and [variance](measures-of-variability.md) $p(1-p)$.
+A binomial variable is just the sum of $n$ independent Bernoulli trials: $$X=\sum_{i=1}^{n}B_i,\qquad B_i\sim\mathrm{Bernoulli}(p).$$ Because expectation and (for independent terms) variance add, this immediately gives $\mathbb{E}[X]=np$ and $\mathrm{Var}(X)=np(1-p)$.
 
 ## When it arises
 
-The binomial arises whenever you count successes among a **fixed number of independent, identical trials**: proportion testing (fraction cured, fraction defective), survey responses (yes/no), and quality control. The sample proportion $\hat p=X/n$ is the basis for inference about an unknown $p$.
+The binomial arises whenever you count successes among a **fixed number of independent, identical trials**: proportion testing (fraction cured, fraction defective), survey responses (yes/no), and quality control.
+The sample proportion $\hat p=X/n$ is the basis for inference about an unknown $p$.
 
 ### Extension: the multinomial
 
-When each trial has more than two possible outcomes (say categories $1,\dots,m$ with probabilities $p_1,\dots,p_m$ summing to $1$), the counts follow the **multinomial** distribution
-$$P(X_1=k_1,\dots,X_m=k_m)=\frac{n!}{k_1!\cdots k_m!}\,p_1^{k_1}\cdots p_m^{k_m},$$
-the direct generalization of the binomial to several categories.
+When each trial has more than two possible outcomes (say categories $1,\dots,m$ with probabilities $p_1,\dots,p_m$ summing to $1$), the counts follow the **multinomial** distribution $$P(X_1=k_1,\dots,X_m=k_m)=\frac{n!}{k_1!\cdots k_m!}\,p_1^{k_1}\cdots p_m^{k_m},$$ the direct generalization of the binomial to several categories.
 
 ## In code
 
@@ -94,7 +93,8 @@ var(x)   # ~ 4.2   (theoretical variance = np(1-p) = 20 * 0.3 * 0.7)
 
 ## Why it matters for statistics
 
-The binomial underpins inference for proportions: confidence intervals for $p$, tests comparing two proportions, and the reasoning behind [p-values](p-values.md) in exact tests. For large $n$ it is well approximated by the [normal distribution](normal-distribution.md), and for large $n$ with small $p$ it approaches the [Poisson distribution](poisson-distribution.md).
+The binomial underpins inference for proportions: confidence intervals for $p$, tests comparing two proportions, and the reasoning behind [p-values](p-values.md) in exact tests.
+For large $n$ it is well approximated by the [normal distribution](normal-distribution.md), and for large $n$ with small $p$ it approaches the [Poisson distribution](poisson-distribution.md).
 
 ## Related
 

@@ -4,41 +4,25 @@ title: "Measures of Variability"
 
 # Measures of Variability
 
-Spread is as important as center: two datasets with the same [mean](measures-of-center.md) can behave completely differently. Measures of variability quantify that spread — and one of them, the standard error, is the engine of [statistical inference](statistical-inference.md).
+Spread is as important as center: two datasets with the same [mean](measures-of-center.md) can behave completely differently.
+Measures of variability quantify that spread — and one of them, the standard error, is the engine of [statistical inference](statistical-inference.md).
 
 ## Variance and standard deviation
 
-The **population variance** is the mean squared deviation from the mean $\mu$:
-\[
-\sigma^2 = \mathbb{E}\big[(X-\mu)^2\big].
-\]
-Its square root, the **standard deviation** $\sigma$, is in the same units as the data.
+The **population variance** is the mean squared deviation from the mean $\mu$: \[ \sigma^2 = \mathbb{E}\big[(X-\mu)^2\big]. \] Its square root, the **standard deviation** $\sigma$, is in the same units as the data.
 
-From a sample $x_1,\dots,x_n$ the **sample variance** uses divisor $n-1$:
-\[
-s^2 = \frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2.
-\]
-The $n-1$ (Bessel's correction) makes $s^2$ an unbiased estimator of $\sigma^2$; dividing by $n$ underestimates spread because deviations are taken from the estimated mean $\bar{x}$, not the true $\mu$.
+From a sample $x_1,\dots,x_n$ the **sample variance** uses divisor $n-1$: \[ s^2 = \frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2. \] The $n-1$ (Bessel's correction) makes $s^2$ an unbiased estimator of $\sigma^2$; dividing by $n$ underestimates spread because deviations are taken from the estimated mean $\bar{x}$, not the true $\mu$.
 
 ## Covariance and correlation
 
-For two variables, **covariance** measures how they move together:
-\[
-\operatorname{Cov}(X,Y) = \mathbb{E}\big[(X-\mu_X)(Y-\mu_Y)\big].
-\]
-**Correlation** rescales it to $[-1,1]$:
-\[
-\rho = \frac{\operatorname{Cov}(X,Y)}{\sigma_X\,\sigma_Y}.
-\]
-Note $\operatorname{Cov}(X,X) = \operatorname{Var}(X)$.
+For two variables, **covariance** measures how they move together: \[ \operatorname{Cov}(X,Y) = \mathbb{E}\big[(X-\mu_X)(Y-\mu_Y)\big]. \] **Correlation** rescales it to $[-1,1]$: \[ \rho = \frac{\operatorname{Cov}(X,Y)}{\sigma_X\,\sigma_Y}. \] Note $\operatorname{Cov}(X,X) = \operatorname{Var}(X)$.
 
 ## Standard deviation vs. standard error
 
-This distinction trips up almost everyone. The **standard deviation** $\sigma$ describes the spread of individual observations. The **standard error of the mean** describes the spread of the *sample mean* $\bar{X}$ across repeated samples:
-\[
-\operatorname{SE}(\bar{X}) = \frac{\sigma}{\sqrt{n}}.
-\]
-As $n$ grows, $\sigma$ stays fixed (it is a property of the population) but the SE **shrinks** like $1/\sqrt{n}$: averaging cancels noise. In practice we estimate it by $s/\sqrt{n}$.
+This distinction trips up almost everyone.
+The **standard deviation** $\sigma$ describes the spread of individual observations.
+The **standard error of the mean** describes the spread of the *sample mean* $\bar{X}$ across repeated samples: \[ \operatorname{SE}(\bar{X}) = \frac{\sigma}{\sqrt{n}}. \] As $n$ grows, $\sigma$ stays fixed (it is a property of the population) but the SE **shrinks** like $1/\sqrt{n}$: averaging cancels noise.
+In practice we estimate it by $s/\sqrt{n}$.
 
 ## Worked example
 
@@ -108,7 +92,9 @@ println(cov(x, y), " ", cor(x, y))
 
 ## Why it matters for statistics
 
-Variance and standard deviation calibrate how surprising a value is. Covariance and correlation are the raw material of regression. And the standard error — not the standard deviation — sets the width of [confidence intervals](confidence-intervals.md) and the scale of [test statistics](hypothesis-testing.md): it is precisely how uncertainty about an estimate scales down with sample size.
+Variance and standard deviation calibrate how surprising a value is.
+Covariance and correlation are the raw material of regression.
+And the standard error — not the standard deviation — sets the width of [confidence intervals](confidence-intervals.md) and the scale of [test statistics](hypothesis-testing.md): it is precisely how uncertainty about an estimate scales down with sample size.
 
 ## Related
 

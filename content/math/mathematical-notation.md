@@ -4,17 +4,22 @@ title: "Mathematical Notation"
 
 # Mathematical Notation
 
-A compact shared vocabulary of symbols used throughout math and statistics. Knowing them lets you read [likelihoods](maximum-likelihood.md), [probability](probability-basics.md) statements, and model definitions without stumbling.
+A compact shared vocabulary of symbols used throughout math and statistics.
+Knowing them lets you read [likelihoods](maximum-likelihood.md), [probability](probability-basics.md) statements, and model definitions without stumbling.
 
 ## Sets and logic
 
-We often work with the real numbers $\mathbb{R}$. A set $A$ can be a **subset** of another, $A \subset B$, and an object can be an **element** of a set, $x \in A$. Two events combine via **union** $A \cup B$ (either) and **intersection** $A \cap B$ (both).
+We often work with the real numbers $\mathbb{R}$.
+A set $A$ can be a **subset** of another, $A \subset B$, and an object can be an **element** of a set, $x \in A$.
+Two events combine via **union** $A \cup B$ (either) and **intersection** $A \cap B$ (both).
 
-Logical shorthand: **for all** $\forall$, **there exists** $\exists$, and **implies** $\Rightarrow$. In probability we write **distributed as** $X \sim \mathcal{N}(0,1)$, and **independence** as $X \perp Y$ (or the statistical form $X \perp\!\!\!\perp Y$).
+Logical shorthand: **for all** $\forall$, **there exists** $\exists$, and **implies** $\Rightarrow$.
+In probability we write **distributed as** $X \sim \mathcal{N}(0,1)$, and **independence** as $X \perp Y$ (or the statistical form $X \perp\!\!\!\perp Y$).
 
 ## Sums, products, and counting
 
-The **summation** $\sum_{i=1}^{n} a_i = a_1 + a_2 + \cdots + a_n$ adds terms; the **product** $\prod_{i=1}^{n} a_i = a_1 a_2 \cdots a_n$ multiplies them. The **factorial** is $n! = n\,(n-1)\cdots 2 \cdot 1$, and the **binomial coefficient** counts subsets:
+The **summation** $\sum_{i=1}^{n} a_i = a_1 + a_2 + \cdots + a_n$ adds terms; the **product** $\prod_{i=1}^{n} a_i = a_1 a_2 \cdots a_n$ multiplies them.
+The **factorial** is $n! = n\,(n-1)\cdots 2 \cdot 1$, and the **binomial coefficient** counts subsets:
 
 \[
 \binom{n}{k} = \frac{n!}{k!\,(n-k)!}.
@@ -89,7 +94,8 @@ binomial(n, k)    # 10
 
 ## Why it matters for statistics
 
-Statistical models are written in this notation: likelihoods are products $\prod_i f(x_i)$, [expectations](expected-value.md) are sums $\sum_i x_i p_i$, and independence assumptions ($X \perp\!\!\!\perp Y$) justify factoring joint [distributions](distributions-overview.md). Fluency here is the prerequisite for everything that follows.
+Statistical models are written in this notation: likelihoods are products $\prod_i f(x_i)$, [expectations](expected-value.md) are sums $\sum_i x_i p_i$, and independence assumptions ($X \perp\!\!\!\perp Y$) justify factoring joint [distributions](distributions-overview.md).
+Fluency here is the prerequisite for everything that follows.
 
 ## Related
 

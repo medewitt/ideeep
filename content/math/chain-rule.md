@@ -4,7 +4,8 @@ title: "Chain Rule"
 
 # Chain Rule
 
-The chain rule [differentiates](derivatives.md) a *composition* of functions — a function of a function. It is arguably the single most important differentiation rule: it powers backpropagation in neural networks and the delta method in statistics.
+The chain rule [differentiates](derivatives.md) a *composition* of functions — a function of a function.
+It is arguably the single most important differentiation rule: it powers backpropagation in neural networks and the delta method in statistics.
 
 ## The rule
 
@@ -22,7 +23,8 @@ In Leibniz notation, with $u = g(x)$,
 
 ## Intuition
 
-Differentiate the *outer* function (leaving the inside alone), then multiply by the derivative of the *inside*. The rates multiply: if $u$ changes twice as fast as $x$ and $y$ changes three times as fast as $u$, then $y$ changes six times as fast as $x$.
+Differentiate the *outer* function (leaving the inside alone), then multiply by the derivative of the *inside*.
+The rates multiply: if $u$ changes twice as fast as $x$ and $y$ changes three times as fast as $u$, then $y$ changes six times as fast as $x$.
 
 ## Worked example 1: $e^{-\lambda x}$
 
@@ -84,7 +86,8 @@ ForwardDiff.derivative(x -> (3x^2 + 1)^5, 1.0)   # 7680.0
 
 ## Why it matters for statistics
 
-The chain rule underlies the **delta method**, which approximates the [variance](measures-of-variability.md) of a transformed [estimator](statistical-inference.md) $h(\hat\theta)$ using $\big[h'(\hat\theta)\big]^2 \operatorname{Var}(\hat\theta)$. It is also how [gradients](gradient.md) propagate through the layers of a model during **backpropagation**, making automatic differentiation and modern machine learning possible.
+The chain rule underlies the **delta method**, which approximates the [variance](measures-of-variability.md) of a transformed [estimator](statistical-inference.md) $h(\hat\theta)$ using $\big[h'(\hat\theta)\big]^2 \operatorname{Var}(\hat\theta)$.
+It is also how [gradients](gradient.md) propagate through the layers of a model during **backpropagation**, making automatic differentiation and modern machine learning possible.
 
 ## Related
 

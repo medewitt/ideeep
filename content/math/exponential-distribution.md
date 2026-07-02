@@ -4,28 +4,29 @@ title: "The Exponential Distribution"
 
 # The Exponential Distribution
 
-The exponential distribution models the waiting time until the next event in a process where events occur at a constant average rate: the time between new infections, the length of an infectious period, the interval between radioactive decays, or the time until a component fails. It is the continuous companion of the [Poisson distribution](poisson-distribution.md).
+The exponential distribution models the waiting time until the next event in a process where events occur at a constant average rate: the time between new infections, the length of an infectious period, the interval between radioactive decays, or the time until a component fails.
+It is the continuous companion of the [Poisson distribution](poisson-distribution.md).
 
 ## Definition
 
-Let $X\sim\mathrm{Exponential}(\lambda)$ be the waiting time with rate $\lambda$. Its [probability density function](random-variables.md) is
-$$f(x)=\lambda e^{-\lambda x},\qquad x\ge 0,$$
-with cumulative distribution function $F(x)=1-e^{-\lambda x}$.
+Let $X\sim\mathrm{Exponential}(\lambda)$ be the waiting time with rate $\lambda$.
+Its [probability density function](random-variables.md) is $$f(x)=\lambda e^{-\lambda x},\qquad x\ge 0,$$ with cumulative distribution function $F(x)=1-e^{-\lambda x}$.
 
 - **Support:** $x\in[0,\infty)$.
-- **Parameter:** rate $\lambda>0$ (events per unit time). The reciprocal $1/\lambda$ is the [mean](measures-of-center.md) waiting time, sometimes called the *scale*.
+- **Parameter:** rate $\lambda>0$ (events per unit time).
+  The reciprocal $1/\lambda$ is the [mean](measures-of-center.md) waiting time, sometimes called the *scale*.
 - **Mean:** $\mathbb{E}[X]=\dfrac{1}{\lambda}$.
 - **Variance:** $\mathrm{Var}(X)=\dfrac{1}{\lambda^2}$.
 
 ## The memoryless property
 
-The exponential is the only continuous distribution that is **memoryless**:
-$$P(X>s+t\mid X>s)=P(X>t).$$
-Having already waited $s$ units tells you nothing about how much longer you must wait — the process "forgets" the past. This is why it models the time to the *next* event in a constant-rate process, and why it is a common (if simplistic) model for infectious periods that end at a constant hazard.
+The exponential is the only continuous distribution that is **memoryless**: $$P(X>s+t\mid X>s)=P(X>t).$$ Having already waited $s$ units tells you nothing about how much longer you must wait — the process "forgets" the past.
+This is why it models the time to the *next* event in a constant-rate process, and why it is a common (if simplistic) model for infectious periods that end at a constant hazard.
 
 ## Link to the Poisson
 
-If events occur according to a [Poisson](poisson-distribution.md) process with rate $\lambda$ — so the *count* in any window is Poisson($\lambda\cdot\text{length}$) — then the *waiting times between* consecutive events are [independent](probability-basics.md) Exponential($\lambda$) variables. Counting events and timing events are two views of the same underlying process.
+If events occur according to a [Poisson](poisson-distribution.md) process with rate $\lambda$ — so the *count* in any window is Poisson($\lambda\cdot\text{length}$) — then the *waiting times between* consecutive events are [independent](probability-basics.md) Exponential($\lambda$) variables.
+Counting events and timing events are two views of the same underlying process.
 
 ## When it arises
 
@@ -33,7 +34,8 @@ The exponential arises for **inter-event times** at a constant rate: time betwee
 
 ## In code
 
-Watch the parametrization carefully. R uses the **rate** $\lambda$, SciPy uses a **scale** $=1/\lambda$, and Julia's `Exponential(θ)` also uses the **scale** $\theta=1/\lambda$.
+Watch the parametrization carefully.
+R uses the **rate** $\lambda$, SciPy uses a **scale** $=1/\lambda$, and Julia's `Exponential(θ)` also uses the **scale** $\theta=1/\lambda$.
 
 ### R
 
@@ -96,7 +98,8 @@ var(x)   # ~ 4.0  (theoretical variance = 1/lambda^2)
 
 ## Why it matters for statistics
 
-The exponential is the building block of survival analysis and reliability, the simplest hazard model, and the inter-arrival law of Poisson processes used throughout epidemiology and queueing theory. Understanding its rate-vs-scale parametrization prevents a common and costly software bug when moving between R, Python, and Julia.
+The exponential is the building block of survival analysis and reliability, the simplest hazard model, and the inter-arrival law of Poisson processes used throughout epidemiology and queueing theory.
+Understanding its rate-vs-scale parametrization prevents a common and costly software bug when moving between R, Python, and Julia.
 
 ## Related
 

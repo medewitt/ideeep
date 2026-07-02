@@ -4,7 +4,8 @@ title: "Product Rule"
 
 # Product Rule
 
-The product rule tells you how to [differentiate](derivatives.md) a product of two functions. It shows up whenever a model multiplies quantities that both change — for example a time-varying rate times a shrinking susceptible pool.
+The product rule tells you how to [differentiate](derivatives.md) a product of two functions.
+It shows up whenever a model multiplies quantities that both change — for example a time-varying rate times a shrinking susceptible pool.
 
 ## The rule
 
@@ -16,7 +17,10 @@ A common mistake is to guess $f' g'$; the derivative of a product is **not** the
 
 ## Intuition
 
-Think of a rectangle with width $f$ and height $g$, so its area is $f g$. Nudge $x$ a little: the width grows by about $f'\,dx$ and the height by about $g'\,dx$. The area gains two thin strips — one of size $f'\,g$ (from the wider width) and one of size $f\,g'$ (from the taller height). The tiny corner $f' g' (dx)^2$ is negligible, leaving $f' g + f g'$.
+Think of a rectangle with width $f$ and height $g$, so its area is $f g$.
+Nudge $x$ a little: the width grows by about $f'\,dx$ and the height by about $g'\,dx$.
+The area gains two thin strips — one of size $f'\,g$ (from the wider width) and one of size $f\,g'$ (from the taller height).
+The tiny corner $f' g' (dx)^2$ is negligible, leaving $f' g + f g'$.
 
 ## Worked example: $x^2 e^x$
 
@@ -73,7 +77,8 @@ ForwardDiff.derivative(x -> x^2 * exp(x), 1.0)   # 8.15485  == 3e
 
 ## Why it matters for statistics
 
-[Likelihoods](maximum-likelihood.md) and moment calculations are full of products — a density times a weight, a rate times an exposure, or $x\,f(x)$ inside an [expected value](expected-value.md). The product rule (together with the [chain rule](chain-rule.md)) is what lets you differentiate these expressions to derive estimators and their variances.
+[Likelihoods](maximum-likelihood.md) and moment calculations are full of products — a density times a weight, a rate times an exposure, or $x\,f(x)$ inside an [expected value](expected-value.md).
+The product rule (together with the [chain rule](chain-rule.md)) is what lets you differentiate these expressions to derive estimators and their variances.
 
 ## Related
 

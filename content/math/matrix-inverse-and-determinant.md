@@ -4,7 +4,8 @@ title: "Inverse, Determinant, and Rank"
 
 # Inverse, Determinant, and Rank
 
-The determinant tells you whether a matrix can be "undone," the inverse does the undoing, and the rank counts how much independent information a matrix carries. Together they decide whether a regression has a unique solution — the normal equations $\hat\beta = (X^\top X)^{-1} X^\top y$ only work when $X^\top X$ is invertible.
+The determinant tells you whether a matrix can be "undone," the inverse does the undoing, and the rank counts how much independent information a matrix carries.
+Together they decide whether a regression has a unique solution — the normal equations $\hat\beta = (X^\top X)^{-1} X^\top y$ only work when $X^\top X$ is invertible.
 
 ## Determinant
 
@@ -30,11 +31,14 @@ For a $2 \times 2$ matrix:
 A^{-1} = \frac{1}{ad - bc} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}.
 \]
 
-The inverse exists **if and only if** $\det(A) \neq 0$. Such a matrix is called *nonsingular* (or *invertible*); a matrix with $\det(A) = 0$ is *singular*.
+The inverse exists **if and only if** $\det(A) \neq 0$.
+Such a matrix is called *nonsingular* (or *invertible*); a matrix with $\det(A) = 0$ is *singular*.
 
 ## Rank and singularity
 
-The **rank** of a matrix is the number of linearly independent rows (equivalently, columns). A square $n \times n$ matrix is **full rank** (rank $n$) exactly when it is invertible and $\det \neq 0$. If columns are linearly dependent — say one predictor is a copy or exact linear combination of others — the rank drops, the determinant is $0$, and no inverse exists.
+The **rank** of a matrix is the number of linearly independent rows (equivalently, columns).
+A square $n \times n$ matrix is **full rank** (rank $n$) exactly when it is invertible and $\det \neq 0$.
+If columns are linearly dependent — say one predictor is a copy or exact linear combination of others — the rank drops, the determinant is $0$, and no inverse exists.
 
 ## Worked example (by hand)
 
@@ -50,7 +54,8 @@ Determinant:
 \det(A) = 4 \cdot 6 - 7 \cdot 2 = 24 - 14 = 10 \neq 0,
 \]
 
-so $A$ is invertible. The inverse:
+so $A$ is invertible.
+The inverse:
 
 \[
 A^{-1} = \frac{1}{10} \begin{bmatrix} 6 & -7 \\ -2 & 4 \end{bmatrix}
@@ -74,7 +79,8 @@ In linear regression with design matrix $X$ ($n \times p$) and response $y$, the
 \hat\beta = (X^\top X)^{-1} X^\top y.
 \]
 
-This requires $X^\top X$ (a $p \times p$ matrix) to be invertible, i.e. $X$ must have full column rank $p$. Perfect **multicollinearity** — a predictor that is an exact linear combination of others — makes $X^\top X$ singular and $\hat\beta$ undefined.
+This requires $X^\top X$ (a $p \times p$ matrix) to be invertible, i.e. $X$ must have full column rank $p$.
+Perfect **multicollinearity** — a predictor that is an exact linear combination of others — makes $X^\top X$ singular and $\hat\beta$ undefined.
 
 ## Computing it
 
@@ -124,7 +130,9 @@ A \ [1.0, 1.0]   # [0.1, 0.1]
 
 ## Why it matters for statistics
 
-Invertibility is the dividing line between a regression that has a unique answer and one that does not. A near-singular $X^\top X$ (large but nonzero determinant issues, tiny [eigenvalues](eigenvalues-and-eigenvectors.md)) signals collinearity that inflates coefficient [variances](measures-of-variability.md). In practice, use `solve`/`\` rather than forming an explicit inverse — it is faster and numerically more stable.
+Invertibility is the dividing line between a regression that has a unique answer and one that does not.
+A near-singular $X^\top X$ (large but nonzero determinant issues, tiny [eigenvalues](eigenvalues-and-eigenvectors.md)) signals collinearity that inflates coefficient [variances](measures-of-variability.md).
+In practice, use `solve`/`\` rather than forming an explicit inverse — it is faster and numerically more stable.
 
 ## Related
 

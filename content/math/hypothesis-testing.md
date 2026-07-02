@@ -4,7 +4,8 @@ title: "Hypothesis Testing"
 
 # Hypothesis Testing
 
-Hypothesis testing is the formal machinery epidemiologists use to decide whether an observed effect—a difference in infection rates, a shift in mean exposure—is more than noise. It frames a question as a decision between two competing claims about the world.
+Hypothesis testing is the formal machinery epidemiologists use to decide whether an observed effect—a difference in infection rates, a shift in mean exposure—is more than noise.
+It frames a question as a decision between two competing claims about the world.
 
 ## The two hypotheses
 
@@ -15,7 +16,8 @@ We summarize the data with a **test statistic**—a single number whose [distrib
 
 ## The logic
 
-The reasoning is a proof by contradiction under uncertainty: **assume $H_0$ is true, then ask how surprising the observed data are.** If data at least as extreme as ours would almost never occur when $H_0$ holds, we reject $H_0$ in favor of $H_a$. The measure of surprise is the [p-value](p-values.md).
+The reasoning is a proof by contradiction under uncertainty: **assume $H_0$ is true, then ask how surprising the observed data are.** If data at least as extreme as ours would almost never occur when $H_0$ holds, we reject $H_0$ in favor of $H_a$.
+The measure of surprise is the [p-value](p-values.md).
 
 ### Errors and significance level
 
@@ -26,7 +28,8 @@ Because we decide under uncertainty, two mistakes are possible:
 | **Reject $H_0$** | Type I error (prob. $\alpha$) | correct |
 | **Fail to reject** | correct | Type II error (prob. $\beta$) |
 
-The **significance level** $\alpha$ (often $0.05$) is the Type I error rate we are willing to tolerate; we reject $H_0$ when the p-value is below $\alpha$. Power is $1-\beta$.
+The **significance level** $\alpha$ (often $0.05$) is the Type I error rate we are willing to tolerate; we reject $H_0$ when the p-value is below $\alpha$.
+Power is $1-\beta$.
 
 ### Choosing a test by data type
 
@@ -38,13 +41,16 @@ The **significance level** $\alpha$ (often $0.05$) is the Type I error rate we a
 
 ## Worked example: one-sample $t$-test
 
-Suppose we measure incubation times (days) for $n=10$ cases and want to test $H_0:\mu = 5$ against $H_a:\mu \ne 5$. We observe $\bar{x}=5.8$ and $s=1.2$. The test statistic is
+Suppose we measure incubation times (days) for $n=10$ cases and want to test $H_0:\mu = 5$ against $H_a:\mu \ne 5$.
+We observe $\bar{x}=5.8$ and $s=1.2$.
+The test statistic is
 
 \[
 t = \frac{\bar{x}-\mu_0}{s/\sqrt{n}} = \frac{5.8 - 5}{1.2/\sqrt{10}} = \frac{0.8}{0.3795} \approx 2.11,
 \]
 
-compared to a [$t$-distribution](t-distribution.md) with $n-1=9$ degrees of freedom. The two-sided p-value is about $0.064$, so at $\alpha=0.05$ we would *not* reject $H_0$.
+compared to a [$t$-distribution](t-distribution.md) with $n-1=9$ degrees of freedom.
+The two-sided p-value is about $0.064$, so at $\alpha=0.05$ we would *not* reject $H_0$.
 
 ## In code
 
@@ -80,7 +86,8 @@ println(BinomialTest(18, 40, 0.5))       # proportion
 
 ## Why it matters for statistics
 
-Hypothesis testing gives a disciplined, [reproducible](../programming/reproducibility.md) rule for turning data into decisions while controlling the rate of false alarms. It is the foundation for evaluating treatment effects, screening associations, and reporting findings in nearly every quantitative study.
+Hypothesis testing gives a disciplined, [reproducible](../programming/reproducibility.md) rule for turning data into decisions while controlling the rate of false alarms.
+It is the foundation for evaluating treatment effects, screening associations, and reporting findings in nearly every quantitative study.
 
 ## Related
 

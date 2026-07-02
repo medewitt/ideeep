@@ -4,11 +4,13 @@ title: "Good Programming Practices"
 
 # Good Programming Practices
 
-Code you write for an analysis is read far more often than it is written — by reviewers, by collaborators, and by you six months from now. A few habits make your code easier to read, harder to break, and cheaper to fix.
+Code you write for an analysis is read far more often than it is written — by reviewers, by collaborators, and by you six months from now.
+A few habits make your code easier to read, harder to break, and cheaper to fix.
 
 ## Name things well
 
-Names are the cheapest documentation you have. Spend them wisely.
+Names are the cheapest documentation you have.
+Spend them wisely.
 
 - **Functions are verbs / actions**: `simulate_epidemic`, `fit_model`, `load_cases`.
 - **Variables are nouns**: `case_count`, `contact_matrix`, `posterior_draws`.
@@ -42,7 +44,8 @@ has_many_positives = nrow(positive_cases) > 100
 
 ## Write small functions that do one thing
 
-If you can't describe a function without saying "and", it probably wants to be two functions. Small, single-purpose functions are easy to name, test, and reuse.
+If you can't describe a function without saying "and", it probably wants to be two functions.
+Small, single-purpose functions are easy to name, test, and reuse.
 
 ```r
 # BAD: one function loads, cleans, models, and plots
@@ -63,7 +66,8 @@ fit_model  <- function(d) lm(logy ~ x, data = d)
 
 ## Don't Repeat Yourself (DRY)
 
-Copy-pasted code drifts: you fix a bug in one copy and forget the other three. When you see the same lines twice, extract a function.
+Copy-pasted code drifts: you fix a bug in one copy and forget the other three.
+When you see the same lines twice, extract a function.
 
 ```python
 # BAD: same transformation, three times, easy to get out of sync
@@ -81,7 +85,8 @@ train_z, valid_z, test_z = (standardize(s, mu, sigma) for s in (train, valid, te
 
 ## Avoid magic numbers
 
-A bare `0.05` or `1000` buried in code is a mystery. Give it a name.
+A bare `0.05` or `1000` buried in code is a mystery.
+Give it a name.
 
 ```r
 # BAD
@@ -97,7 +102,8 @@ draws  <- rnorm(n_draws)
 
 ## Fail loudly
 
-A wrong answer is worse than an error. Check your assumptions and stop early with a clear message rather than silently producing nonsense.
+A wrong answer is worse than an error.
+Check your assumptions and stop early with a clear message rather than silently producing nonsense.
 
 ```r
 # GOOD: validate inputs up front
@@ -131,8 +137,9 @@ end
 
 ## Comment the *why*, and format consistently
 
-- Comment intent and gotchas, not the obvious (`i = i + 1  # add one` helps no one).
-- Pick a style and let a formatter enforce it: `styler`/`lintr` (R), `black`/`ruff` (Python), `JuliaFormatter.jl` (Julia). Consistency removes noise from [diffs](version-control-git.md) and lets reviewers focus on substance.
+- Comment intent and gotchas, not the obvious (`i = i + 1 # add one` helps no one).
+- Pick a style and let a formatter enforce it: `styler`/`lintr` (R), `black`/`ruff` (Python), `JuliaFormatter.jl` (Julia).
+  Consistency removes noise from [diffs](version-control-git.md) and lets reviewers focus on substance.
 
 ```r
 # BAD: explains the code we can already read

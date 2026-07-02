@@ -4,7 +4,8 @@ title: "Derivatives"
 
 # Derivatives
 
-A derivative measures the *instantaneous rate of change* of a function — the slope of the line tangent to its graph at a point. It is the engine behind [optimization](optimization.md), [maximum likelihood](maximum-likelihood.md) estimation, and the differential equations used in disease modeling.
+A derivative measures the *instantaneous rate of change* of a function — the slope of the line tangent to its graph at a point.
+It is the engine behind [optimization](optimization.md), [maximum likelihood](maximum-likelihood.md) estimation, and the differential equations used in disease modeling.
 
 ## The limit definition
 
@@ -14,7 +15,8 @@ The derivative of $f$ at $x$ is the [limit](limits.md) of the average rate of ch
 f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
 \]
 
-Geometrically, $\frac{f(x+h)-f(x)}{h}$ is the slope of the secant through $(x, f(x))$ and $(x+h, f(x+h))$. As $h \to 0$ that secant rotates into the *tangent line*, whose slope is $f'(x)$.
+Geometrically, $\frac{f(x+h)-f(x)}{h}$ is the slope of the secant through $(x, f(x))$ and $(x+h, f(x+h))$.
+As $h \to 0$ that secant rotates into the *tangent line*, whose slope is $f'(x)$.
 
 ## Notation
 
@@ -32,7 +34,8 @@ If $f$ is differentiable at $x$, then it is continuous at $x$. The converse fail
 
 ## Worked example: $x^2$ from the definition
 
-Let $f(x) = x^2$. Apply the limit definition:
+Let $f(x) = x^2$.
+Apply the limit definition:
 
 \[
 \begin{aligned}
@@ -107,7 +110,8 @@ plot!(xs, slope .* (xs .- a) .+ a^2, ls = :dash)  # tangent
 
 ## Why it matters for statistics
 
-Derivatives locate the maxima and minima that drive statistical inference: setting the derivative of a log-likelihood to zero yields maximum likelihood estimates, and the second derivative (curvature) quantifies their precision through the Fisher information. They are also the building block of the [gradients](gradient.md) used to fit essentially every modern model.
+Derivatives locate the maxima and minima that drive statistical inference: setting the derivative of a log-likelihood to zero yields maximum likelihood estimates, and the second derivative (curvature) quantifies their precision through the Fisher information.
+They are also the building block of the [gradients](gradient.md) used to fit essentially every modern model.
 
 ## Related
 

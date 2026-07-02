@@ -4,13 +4,13 @@ title: "The t-Distribution"
 
 # The t-Distribution
 
-Student's t-distribution is a bell-shaped curve that looks like the normal but with heavier tails. It arises when we standardize a [sample mean](measures-of-center.md) but must **estimate** the population [standard deviation](measures-of-variability.md) from the same small sample — the everyday situation in experiments and epidemiological studies where $\sigma$ is unknown. The extra uncertainty from estimating $\sigma$ is exactly what fattens the tails.
+Student's t-distribution is a bell-shaped curve that looks like the normal but with heavier tails.
+It arises when we standardize a [sample mean](measures-of-center.md) but must **estimate** the population [standard deviation](measures-of-variability.md) from the same small sample — the everyday situation in experiments and epidemiological studies where $\sigma$ is unknown.
+The extra uncertainty from estimating $\sigma$ is exactly what fattens the tails.
 
 ## Definition
 
-The t-distribution with $\nu$ degrees of freedom has density
-$$f(t)=\frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\left(\frac{\nu}{2}\right)}\left(1+\frac{t^2}{\nu}\right)^{-\frac{\nu+1}{2}},$$
-where $\Gamma$ is the gamma function.
+The t-distribution with $\nu$ degrees of freedom has density $$f(t)=\frac{\Gamma\!\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi}\,\Gamma\!\left(\frac{\nu}{2}\right)}\left(1+\frac{t^2}{\nu}\right)^{-\frac{\nu+1}{2}},$$ where $\Gamma$ is the gamma function.
 
 - **Support:** $t\in(-\infty,\infty)$.
 - **Parameter:** degrees of freedom $\nu>0$ (for a one-sample mean, $\nu=n-1$).
@@ -21,15 +21,15 @@ The distribution is symmetric about $0$, like the standard normal, but its varia
 
 ## Heavier tails, approaching normal
 
-For small $\nu$ the t-distribution puts noticeably more probability in the tails than the [normal](normal-distribution.md): extreme values are more likely, so critical values are larger and confidence intervals wider. As $\nu\to\infty$ the estimate of $\sigma$ becomes essentially exact and
-$$f(t)\;\longrightarrow\;\phi(t)=\frac{1}{\sqrt{2\pi}}e^{-t^2/2},$$
-the standard normal density. By around $\nu=30$ the two are already very close.
+For small $\nu$ the t-distribution puts noticeably more probability in the tails than the [normal](normal-distribution.md): extreme values are more likely, so critical values are larger and confidence intervals wider.
+As $\nu\to\infty$ the estimate of $\sigma$ becomes essentially exact and $$f(t)\;\longrightarrow\;\phi(t)=\frac{1}{\sqrt{2\pi}}e^{-t^2/2},$$ the standard normal density.
+By around $\nu=30$ the two are already very close.
 
 ## When it arises (Student's t)
 
-Suppose $X_1,\dots,X_n$ are an i.i.d. sample from a normal [population](statistical-inference.md) with unknown mean $\mu$ and unknown $\sigma$. The standardized sample mean using the **sample** standard deviation $s$,
-$$T=\frac{\bar{X}-\mu}{s/\sqrt{n}},$$
-follows a t-distribution with $\nu=n-1$ degrees of freedom. If we knew $\sigma$ exactly, this would instead be standard normal; replacing $\sigma$ by the estimate $s$ is what produces the t.
+Suppose $X_1,\dots,X_n$ are an i.i.d. sample from a normal [population](statistical-inference.md) with unknown mean $\mu$ and unknown $\sigma$.
+The standardized sample mean using the **sample** standard deviation $s$, $$T=\frac{\bar{X}-\mu}{s/\sqrt{n}},$$ follows a t-distribution with $\nu=n-1$ degrees of freedom.
+If we knew $\sigma$ exactly, this would instead be standard normal; replacing $\sigma$ by the estimate $s$ is what produces the t.
 
 ## In code
 
@@ -91,7 +91,9 @@ var(rt(1e6, df = 5)) # ~ 1.67   (theoretical nu/(nu-2) = 5/3 for nu = 5)
 
 ## Why it matters for statistics
 
-The t-distribution is the workhorse of small-sample inference about means. It supplies the critical values for the one- and two-sample **t-tests** in [hypothesis testing](hypothesis-testing.md) and the multipliers for **t-based** [confidence intervals](confidence-intervals.md) for a mean. Using the t (rather than the normal) correctly accounts for the extra uncertainty of estimating $\sigma$ from limited data — the difference that keeps small-sample intervals honest.
+The t-distribution is the workhorse of small-sample inference about means.
+It supplies the critical values for the one- and two-sample **t-tests** in [hypothesis testing](hypothesis-testing.md) and the multipliers for **t-based** [confidence intervals](confidence-intervals.md) for a mean.
+Using the t (rather than the normal) correctly accounts for the extra uncertainty of estimating $\sigma$ from limited data — the difference that keeps small-sample intervals honest.
 
 ## Related
 

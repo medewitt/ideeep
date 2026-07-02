@@ -4,7 +4,8 @@ title: "Functions and Graphs"
 
 # Functions and Graphs
 
-A function maps each input to exactly one output, $f: x \mapsto f(x)$. Recognizing the shapes of common functions lets you read transformations, link functions, and model curves at a glance.
+A function maps each input to exactly one output, $f: x \mapsto f(x)$.
+Recognizing the shapes of common functions lets you read transformations, link functions, and model curves at a glance.
 
 ## Common functions in statistics
 
@@ -17,11 +18,14 @@ A function maps each input to exactly one output, $f: x \mapsto f(x)$. Recognizi
 
 ## Domain and range
 
-The **domain** is the set of allowed inputs; the **range** is the set of achievable outputs. For example $\sqrt{x}$ has domain $[0, \infty)$ and range $[0, \infty)$, while $\ln x$ has domain $(0, \infty)$ and range $\mathbb{R}$. Exponential $e^x$ has domain $\mathbb{R}$ and range $(0, \infty)$ — which is why it is used to keep modeled rates positive.
+The **domain** is the set of allowed inputs; the **range** is the set of achievable outputs.
+For example $\sqrt{x}$ has domain $[0, \infty)$ and range $[0, \infty)$, while $\ln x$ has domain $(0, \infty)$ and range $\mathbb{R}$.
+Exponential $e^x$ has domain $\mathbb{R}$ and range $(0, \infty)$ — which is why it is used to keep modeled rates positive.
 
 ## Piecewise functions
 
-A **piecewise** function uses different rules on different parts of its domain. A worked example:
+A **piecewise** function uses different rules on different parts of its domain.
+A worked example:
 
 \[
 f(x) =
@@ -32,7 +36,8 @@ x^2 & 0 \le x \le 1 \\
 \end{cases}
 \]
 
-Evaluating: $f(-3) = 3$, $f(0.5) = 0.25$, and $f(4) = 1$. The pieces meet continuously at $x = 0$ (both give $0$) and at $x = 1$ (both give $1$).
+Evaluating: $f(-3) = 3$, $f(0.5) = 0.25$, and $f(4) = 1$.
+The pieces meet continuously at $x = 0$ (both give $0$) and at $x = 1$ (both give $1$).
 
 ## Computing it
 
@@ -84,7 +89,8 @@ f.([-3, 0.5, 4])   # [3.0, 0.25, 1.0]
 
 ## Why it matters for statistics
 
-Nearly every model is a function: regression lines, link functions in GLMs (log, logit), loss functions, and density curves. Knowing domains keeps you from taking $\ln$ of a negative number or a square root of a negative variance, and recognizing shapes helps you diagnose fit and transformations.
+Nearly every model is a function: regression lines, link functions in GLMs (log, logit), loss functions, and density curves.
+Knowing domains keeps you from taking $\ln$ of a negative number or a square root of a negative variance, and recognizing shapes helps you diagnose fit and transformations.
 
 ## Related
 

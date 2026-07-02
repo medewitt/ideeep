@@ -4,27 +4,27 @@ title: "The Central Limit Theorem"
 
 # The Central Limit Theorem
 
-The central limit theorem explains why the bell curve is everywhere: add up or average many independent effects and the result is approximately [normal](normal-distribution.md), no matter what the individual pieces look like. It is the reason normal-based inference works so broadly.
+The central limit theorem explains why the bell curve is everywhere: add up or average many independent effects and the result is approximately [normal](normal-distribution.md), no matter what the individual pieces look like.
+It is the reason normal-based inference works so broadly.
 
 ## Statement
 
-Let $X_1, \dots, X_n$ be iid with mean $\mu$ and finite [variance](measures-of-variability.md) $\sigma^2$. As $n \to \infty$, the standardized sample mean [converges](limits.md) in distribution to a standard normal:
-\[
-\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \to \mathcal{N}(0, 1).
-\]
-Equivalently, $\bar{X}$ is approximately $\mathcal{N}\!\big(\mu,\, \sigma^2/n\big)$ for large $n$. The remarkable part: this holds **regardless of the shape of the parent distribution** — skewed, discrete, bimodal — as long as the variance is finite.
+Let $X_1, \dots, X_n$ be iid with mean $\mu$ and finite [variance](measures-of-variability.md) $\sigma^2$.
+As $n \to \infty$, the standardized sample mean [converges](limits.md) in distribution to a standard normal: \[ \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \to \mathcal{N}(0, 1). \] Equivalently, $\bar{X}$ is approximately $\mathcal{N}\!\big(\mu,\, \sigma^2/n\big)$ for large $n$.
+The remarkable part: this holds **regardless of the shape of the parent distribution** — skewed, discrete, bimodal — as long as the variance is finite.
 
 ### LLN vs. CLT
 
-The [law of large numbers](law-of-large-numbers.md) says $\bar{X} \to \mu$ (the mean stops moving). The CLT is the finer statement: the leftover fluctuations, magnified by $\sqrt{n}$, are Gaussian. LLN gives the location; CLT gives the shape.
+The [law of large numbers](law-of-large-numbers.md) says $\bar{X} \to \mu$ (the mean stops moving).
+The CLT is the finer statement: the leftover fluctuations, magnified by $\sqrt{n}$, are Gaussian.
+LLN gives the location; CLT gives the shape.
 
 ## Worked example
 
-Suppose service times are [exponential](exponential-distribution.md) with rate $\lambda = 1$, so $\mu = 1$ and $\sigma = 1$ — a strongly right-skewed parent. Average $n = 50$ of them. The CLT says
-\[
-\bar{X} \approx \mathcal{N}\!\left(1,\ \frac{1}{50}\right), \qquad \operatorname{SD}(\bar{X}) = \frac{1}{\sqrt{50}} \approx 0.141.
-\]
-So $P(\bar{X} > 1.2) \approx P\!\left(Z > \frac{1.2 - 1}{0.141}\right) = P(Z > 1.41) \approx 0.079$, even though a single exponential draw exceeding $1.2$ has probability $e^{-1.2} \approx 0.30$. Averaging tames the skew.
+Suppose service times are [exponential](exponential-distribution.md) with rate $\lambda = 1$, so $\mu = 1$ and $\sigma = 1$ — a strongly right-skewed parent.
+Average $n = 50$ of them.
+The CLT says \[ \bar{X} \approx \mathcal{N}\!\left(1,\ \frac{1}{50}\right), \qquad \operatorname{SD}(\bar{X}) = \frac{1}{\sqrt{50}} \approx 0.141. \] So $P(\bar{X} > 1.2) \approx P\!\left(Z > \frac{1.2 - 1}{0.141}\right) = P(Z > 1.41) \approx 0.079$, even though a single exponential draw exceeding $1.2$ has probability $e^{-1.2} \approx 0.30$.
+Averaging tames the skew.
 
 ## Simulation
 
@@ -73,7 +73,9 @@ end
 
 ## Why it matters for statistics
 
-The CLT is why $z$- and $t$-based [confidence intervals](confidence-intervals.md) and tests apply to means from almost any population, not just normal ones. It underwrites the normal approximation for proportions and sums, and it tells us how large a sample is "large enough" for inference to be trustworthy. Nearly every classical procedure leans on it.
+The CLT is why $z$- and $t$-based [confidence intervals](confidence-intervals.md) and tests apply to means from almost any population, not just normal ones.
+It underwrites the normal approximation for proportions and sums, and it tells us how large a sample is "large enough" for inference to be trustworthy.
+Nearly every classical procedure leans on it.
 
 ## Related
 

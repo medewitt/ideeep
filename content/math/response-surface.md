@@ -4,7 +4,8 @@ title: "Response Surface Methodology"
 
 # Response Surface Methodology
 
-Response Surface Methodology (RSM) is a sequential strategy for [optimizing](optimization.md) a process or output over continuous factors — think maximizing yield or minimizing defects by tuning temperature and pressure. You first move quickly toward the optimum with a simple model, then map the curvature near it with a richer one.
+Response Surface Methodology (RSM) is a sequential strategy for [optimizing](optimization.md) a process or output over continuous factors — think maximizing yield or minimizing defects by tuning temperature and pressure.
+You first move quickly toward the optimum with a simple model, then map the curvature near it with a richer one.
 
 ## The two-phase strategy
 
@@ -16,7 +17,8 @@ Far from the optimum, the surface is locally well approximated by a plane:
 y = \beta_0 + \sum_{i=1}^{k} \beta_i x_i + \varepsilon.
 \]
 
-Fit it with a two-level [factorial](factorial-designs.md) plus center points. The [gradient](gradient.md) $(\beta_1, \dots, \beta_k)$ points in the direction of **steepest ascent**; take experimental steps along it until the response stops improving, signaling you are near a peak (where first-order terms flatten and curvature dominates).
+Fit it with a two-level [factorial](factorial-designs.md) plus center points.
+The [gradient](gradient.md) $(\beta_1, \dots, \beta_k)$ points in the direction of **steepest ascent**; take experimental steps along it until the response stops improving, signaling you are near a peak (where first-order terms flatten and curvature dominates).
 
 ### Phase 2: second-order model and curvature
 
@@ -30,10 +32,12 @@ This quadratic can bend, so it can represent a maximum, minimum, or saddle.
 
 ## Central composite designs (CCD)
 
-Fitting the second-order model requires at least three levels per factor. A **central composite design** builds this economically from three pieces:
+Fitting the second-order model requires at least three levels per factor.
+A **central composite design** builds this economically from three pieces:
 
 - **Factorial points** — the $2^k$ (or fractional) corners, $x_i = \pm 1$.
-- **Axial (star) points** — $2k$ points at $(\pm\alpha, 0, \dots, 0)$, etc., extending each axis beyond the cube. Choosing $\alpha = (2^k)^{1/4}$ gives a **rotatable** design (equal prediction variance at equal distance from the center).
+- **Axial (star) points** — $2k$ points at $(\pm\alpha, 0, \dots, 0)$, etc., extending each axis beyond the cube.
+  Choosing $\alpha = (2^k)^{1/4}$ gives a **rotatable** design (equal prediction variance at equal distance from the center).
 - **Center points** — several replicates at the origin, giving a pure-error estimate and information on curvature.
 
 ## Canonical / stationary-point analysis
@@ -44,7 +48,8 @@ Write the fitted second-order model in [matrix](matrix-operations.md) form:
 \hat y = \beta_0 + x^\top b + x^\top B x,
 \]
 
-where $b$ is the vector of linear coefficients and $B$ is the symmetric matrix with $\beta_{ii}$ on the diagonal and $\beta_{ij}/2$ off-diagonal. Setting the gradient to zero, $\,b + 2Bx = 0$, gives the **stationary point**:
+where $b$ is the vector of linear coefficients and $B$ is the symmetric matrix with $\beta_{ii}$ on the diagonal and $\beta_{ij}/2$ off-diagonal.
+Setting the gradient to zero, $\,b + 2Bx = 0$, gives the **stationary point**:
 
 \[
 x_s = -\tfrac{1}{2} B^{-1} b.
@@ -54,13 +59,16 @@ The [eigenvalues](eigenvalues-and-eigenvectors.md) of $B$ classify it: all negat
 
 ## Worked example
 
-Fit a one-factor quadratic $\hat y = \beta_0 + \beta_1 x + \beta_{11} x^2$. With scalar $b = \beta_1$ and $B = \beta_{11}$, the stationary point is
+Fit a one-factor quadratic $\hat y = \beta_0 + \beta_1 x + \beta_{11} x^2$.
+With scalar $b = \beta_1$ and $B = \beta_{11}$, the stationary point is
 
 \[
 x_s = -\frac{\beta_1}{2\beta_{11}}.
 \]
 
-Suppose $\hat y = 80 + 6x - 3x^2$. Then $x_s = -6 / (2 \cdot -3) = 1.0$, and since $\beta_{11} = -3 < 0$ it is a **maximum**, with predicted optimum $\hat y = 80 + 6(1) - 3(1)^2 = 83$. In two factors the same formula $x_s = -\tfrac12 B^{-1}b$ locates the peak of the fitted surface.
+Suppose $\hat y = 80 + 6x - 3x^2$.
+Then $x_s = -6 / (2 \cdot -3) = 1.0$, and since $\beta_{11} = -3 < 0$ it is a **maximum**, with predicted optimum $\hat y = 80 + 6(1) - 3(1)^2 = 83$.
+In two factors the same formula $x_s = -\tfrac12 B^{-1}b$ locates the peak of the fitted surface.
 
 ## In code
 
@@ -131,7 +139,9 @@ eigvals(B)                 # both negative -> maximum
 
 ## Why it matters for statistics
 
-RSM turns optimization into a sequence of small, informative experiments rather than a blind search. By pairing efficient designs (factorials, then CCDs) with regression models and calculus (gradients for ascent, the stationary-point formula for the peak), it finds and characterizes optima with minimal runs. It is central to process improvement in chemistry, manufacturing, and formulation science, and it connects experimental design directly to continuous optimization.
+RSM turns optimization into a sequence of small, informative experiments rather than a blind search.
+By pairing efficient designs (factorials, then CCDs) with regression models and calculus (gradients for ascent, the stationary-point formula for the peak), it finds and characterizes optima with minimal runs.
+It is central to process improvement in chemistry, manufacturing, and formulation science, and it connects experimental design directly to continuous optimization.
 
 ## Related
 

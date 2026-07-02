@@ -4,7 +4,8 @@ title: "Common Integrals"
 
 # Common Integrals
 
-A short reference table of antiderivatives you will use constantly, plus the rules that let you combine them. The Gaussian integral at the end underlies the [normal](normal-distribution.md) density.
+A short reference table of antiderivatives you will use constantly, plus the rules that let you combine them.
+The Gaussian integral at the end underlies the [normal](normal-distribution.md) density.
 
 ## The table
 
@@ -38,11 +39,13 @@ The area under the "bell curve" kernel $e^{-x^2}$ over the whole real line is
 \int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi} .
 \]
 
-This has no elementary antiderivative, yet the total is finite and exact. It is why the normal density $\frac{1}{\sqrt{2\pi}\,\sigma}\exp\!\big(-\frac{(x-\mu)^2}{2\sigma^2}\big)$ integrates to $1$ — the $\sqrt{2\pi}$ is precisely the normalizing constant.
+This has no elementary antiderivative, yet the total is finite and exact.
+It is why the normal density $\frac{1}{\sqrt{2\pi}\,\sigma}\exp\!\big(-\frac{(x-\mu)^2}{2\sigma^2}\big)$ integrates to $1$ — the $\sqrt{2\pi}$ is precisely the normalizing constant.
 
 ## Worked example
 
-Integrate the polynomial $\int_0^2 (3x^2 + 2x + 1)\,dx$. Using the sum and constant-multiple rules with the power rule:
+Integrate the polynomial $\int_0^2 (3x^2 + 2x + 1)\,dx$.
+Using the sum and constant-multiple rules with the power rule:
 
 \[
 \int (3x^2 + 2x + 1)\,dx = x^3 + x^2 + x + C .
@@ -98,7 +101,8 @@ println(sqrt(pi))                                    # 1.7724538509055159
 
 ## Why it matters for statistics
 
-Densities are built from these functions: the [exponential density](exponential-distribution.md) uses $\int e^{-\lambda x}dx$, the normal uses the Gaussian integral, and moments ([means](measures-of-center.md), [variances](measures-of-variability.md)) reduce to power-rule integrals against a density. Knowing the table by sight makes normalizing constants and expected values fast to derive.
+Densities are built from these functions: the [exponential density](exponential-distribution.md) uses $\int e^{-\lambda x}dx$, the normal uses the Gaussian integral, and moments ([means](measures-of-center.md), [variances](measures-of-variability.md)) reduce to power-rule integrals against a density.
+Knowing the table by sight makes normalizing constants and expected values fast to derive.
 
 ## Related
 

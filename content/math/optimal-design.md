@@ -4,7 +4,8 @@ title: "Optimal Experimental Design"
 
 # Optimal Experimental Design
 
-When the design region is constrained or irregular — so classical factorials and central composite designs don't fit — **optimal design** picks run locations to make a model's parameter estimates as precise as possible. It is model-based: you specify the model, then choose points that [optimize](optimization.md) a criterion on the information [matrix](matrix-operations.md).
+When the design region is constrained or irregular — so classical factorials and central composite designs don't fit — **optimal design** picks run locations to make a model's parameter estimates as precise as possible.
+It is model-based: you specify the model, then choose points that [optimize](optimization.md) a criterion on the information [matrix](matrix-operations.md).
 
 ## The information matrix
 
@@ -14,24 +15,32 @@ For a linear model $y = X\beta + \varepsilon$ with $\varepsilon \sim (0, \sigma^
 \operatorname{Var}(\hat\beta) = \sigma^2 (X^\top X)^{-1}.
 \]
 
-The matrix $X^\top X$ is the **information matrix**: larger information means smaller variance. Optimal design chooses the rows of the model matrix $X$ (the runs) to make $X^\top X$ "big" in a chosen sense. These criteria are named by letters — hence "alphabetic" optimality.
+The matrix $X^\top X$ is the **information matrix**: larger information means smaller variance.
+Optimal design chooses the rows of the model matrix $X$ (the runs) to make $X^\top X$ "big" in a chosen sense.
+These criteria are named by letters — hence "alphabetic" optimality.
 
 ## Alphabetic optimality criteria
 
-- **D-optimality** — maximize $\det(X^\top X)$. This minimizes the volume of the joint confidence ellipsoid for $\beta$, since that volume is proportional to $\det(X^\top X)^{-1/2}$. The most widely used criterion.
+- **D-optimality** — maximize $\det(X^\top X)$.
+  This minimizes the volume of the joint confidence ellipsoid for $\beta$, since that volume is proportional to $\det(X^\top X)^{-1/2}$.
+  The most widely used criterion.
 - **A-optimality** — minimize $\operatorname{tr}\big((X^\top X)^{-1}\big)$, the sum (average) of the parameter variances.
-- **I-optimality** (a.k.a. IV) — minimize the *average* prediction variance over the design region.
+- **I-optimality** (a.k.a.
+  IV) — minimize the *average* prediction variance over the design region.
 - **G-optimality** — minimize the *maximum* prediction variance over the region.
 
 The prediction variance at a point $x_0$ is $\sigma^2\, x_0^\top (X^\top X)^{-1} x_0$, which links the I/G criteria to $(X^\top X)^{-1}$.
 
 ## Exchange algorithms
 
-For all but tiny problems, searching over subsets of a candidate set is combinatorial. **Exchange algorithms** — the classic one is **Fedorov's** — start from an initial design and repeatedly swap a design point for a candidate point whenever the swap improves the criterion (e.g. increases $\det(X^\top X)$), stopping at a local optimum. Modified Fedorov and coordinate-exchange variants scale this to many candidates.
+For all but tiny problems, searching over subsets of a candidate set is combinatorial.
+**Exchange algorithms** — the classic one is **Fedorov's** — start from an initial design and repeatedly swap a design point for a candidate point whenever the swap improves the criterion (e.g. increases $\det(X^\top X)$), stopping at a local optimum.
+Modified Fedorov and coordinate-exchange variants scale this to many candidates.
 
 ## Worked example: endpoints are D-optimal for a line
 
-Fit a straight line $y = \beta_0 + \beta_1 x$ on the region $x \in [-1, 1]$ with two runs at $\pm d$ (with $0 < d \le 1$). The model matrix and information matrix are
+Fit a straight line $y = \beta_0 + \beta_1 x$ on the region $x \in [-1, 1]$ with two runs at $\pm d$ (with $0 < d \le 1$).
+The model matrix and information matrix are
 
 \[
 X = \begin{bmatrix} 1 & -d \\ 1 & \phantom{-}d \end{bmatrix},
@@ -45,7 +54,8 @@ Then
 \det(X^\top X) = 2 \cdot 2d^2 = 4d^2,
 \]
 
-which increases in $d$ and is maximized at $d = 1$. Compare two candidate designs:
+which increases in $d$ and is maximized at $d = 1$.
+Compare two candidate designs:
 
 - **Endpoints** $x = \{-1, +1\}$: $\det(X^\top X) = 4(1)^2 = 4$.
 - **Interior points** $x = \{-0.5, +0.5\}$: $\det(X^\top X) = 4(0.5)^2 = 1$.
@@ -108,7 +118,9 @@ println(best, "  det = ", best_det)
 
 ## Why it matters for statistics
 
-Real experiments rarely live on a tidy cube: budgets cap runs, some factor combinations are infeasible, and the region can be an odd polytope. Optimal design gives a principled, criterion-driven way to place runs anywhere in such regions, tailored to the model you intend to fit. It also unifies classical designs — for many standard settings the D-optimal design *is* the familiar factorial — and quantifies exactly what "precise estimation" means through $X^\top X$.
+Real experiments rarely live on a tidy cube: budgets cap runs, some factor combinations are infeasible, and the region can be an odd polytope.
+Optimal design gives a principled, criterion-driven way to place runs anywhere in such regions, tailored to the model you intend to fit.
+It also unifies classical designs — for many standard settings the D-optimal design *is* the familiar factorial — and quantifies exactly what "precise estimation" means through $X^\top X$.
 
 ## Related
 

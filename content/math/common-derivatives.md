@@ -38,7 +38,8 @@ The **power rule** $\frac{d}{dx}x^n = n x^{n-1}$ holds for any real $n$, so it a
 
 ## Worked example: differentiating a polynomial
 
-Let $f(x) = 3x^4 - 5x^2 + 7x - 2$. Differentiate term by term using the power, constant-multiple, and sum rules:
+Let $f(x) = 3x^4 - 5x^2 + 7x - 2$.
+Differentiate term by term using the power, constant-multiple, and sum rules:
 
 \[
 \begin{aligned}
@@ -89,7 +90,8 @@ Symbolics.derivative(3x^4 - 5x^2 + 7x - 2, x)   # 7 + 12(x^3) - 10x
 
 ## Why it matters for statistics
 
-These few rules cover the derivatives you meet constantly: polynomial regression terms, the $e^x$ in [exponential growth](exponentials-and-logarithms.md) and logistic models, and the $\ln x$ at the heart of every [log-likelihood](maximum-likelihood.md). Knowing them cold lets you derive score equations and standard errors without reaching for software.
+These few rules cover the derivatives you meet constantly: polynomial regression terms, the $e^x$ in [exponential growth](exponentials-and-logarithms.md) and logistic models, and the $\ln x$ at the heart of every [log-likelihood](maximum-likelihood.md).
+Knowing them cold lets you derive score equations and standard errors without reaching for software.
 
 ## Related
 

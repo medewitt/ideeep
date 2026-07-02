@@ -4,7 +4,8 @@ title: "Eigenvalues and Eigenvectors"
 
 # Eigenvalues and Eigenvectors
 
-An eigenvector of a matrix is a direction that the matrix merely stretches or shrinks without rotating; the eigenvalue is the stretch factor. These special directions govern the stability of disease models (via the Jacobian) and the axes of variation in PCA, making them one of the most useful tools in applied statistics.
+An eigenvector of a matrix is a direction that the matrix merely stretches or shrinks without rotating; the eigenvalue is the stretch factor.
+These special directions govern the stability of disease models (via the Jacobian) and the axes of variation in PCA, making them one of the most useful tools in applied statistics.
 
 ## Definition
 
@@ -18,7 +19,8 @@ Applying $A$ to $v$ points along the same line — orientation is unchanged (or 
 
 ## Characteristic equation
 
-Rearranging, $(A - \lambda I)v = 0$. A nonzero $v$ exists only when $A - \lambda I$ is singular, giving the **characteristic equation**:
+Rearranging, $(A - \lambda I)v = 0$.
+A nonzero $v$ exists only when $A - \lambda I$ is singular, giving the **characteristic equation**:
 
 \[
 \det(A - \lambda I) = 0.
@@ -43,33 +45,29 @@ Form $A - \lambda I$ and take its [determinant](matrix-inverse-and-determinant.m
 
 So $\lambda_1 = 3$ and $\lambda_2 = 1$.
 
-**Eigenvector for $\lambda_1 = 3$:** solve $(A - 3I)v = 0$:
-\[
-\begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix} v = 0 \ \Rightarrow\ v_1 = v_2,
-\quad v^{(1)} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}.
-\]
+**Eigenvector for $\lambda_1 = 3$:** solve $(A - 3I)v = 0$: \[ \begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix} v = 0 \ \Rightarrow\ v_1 = v_2, \quad v^{(1)} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}. \]
 
-**Eigenvector for $\lambda_2 = 1$:** solve $(A - I)v = 0$:
-\[
-\begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix} v = 0 \ \Rightarrow\ v_1 = -v_2,
-\quad v^{(2)} = \begin{bmatrix} 1 \\ -1 \end{bmatrix}.
-\]
+**Eigenvector for $\lambda_2 = 1$:** solve $(A - I)v = 0$: \[ \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix} v = 0 \ \Rightarrow\ v_1 = -v_2, \quad v^{(2)} = \begin{bmatrix} 1 \\ -1 \end{bmatrix}. \]
 
-Check: $A \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 3 \\ 3 \end{bmatrix} = 3\begin{bmatrix} 1 \\ 1 \end{bmatrix}$. $\checkmark$
+Check: $A \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 3 \\ 3 \end{bmatrix} = 3\begin{bmatrix} 1 \\ 1 \end{bmatrix}$.
+$\checkmark$
 
 ## Stability of dynamical systems
 
-For a system of ODEs, linearize near an equilibrium using the [Jacobian](jacobians.md) matrix $J$ evaluated at that point. The eigenvalues of $J$ determine **local stability**:
+For a system of ODEs, linearize near an equilibrium using the [Jacobian](jacobians.md) matrix $J$ evaluated at that point.
+The eigenvalues of $J$ determine **local stability**:
 
 - If **every** eigenvalue has **negative real part**, the equilibrium is locally stable (perturbations decay).
 - If **any** eigenvalue has **positive real part**, it is unstable (perturbations grow).
 - Complex eigenvalues indicate oscillatory approach or departure.
 
-In epidemiology, evaluating $J$ at the **disease-free equilibrium** and checking the eigenvalues is equivalent to the threshold condition on the basic reproduction number: the disease-free state is stable when $R_0 < 1$ and unstable (an outbreak grows) when $R_0 > 1$. The dominant eigenvalue crossing zero corresponds to $R_0$ crossing $1$.
+In epidemiology, evaluating $J$ at the **disease-free equilibrium** and checking the eigenvalues is equivalent to the threshold condition on the basic reproduction number: the disease-free state is stable when $R_0 < 1$ and unstable (an outbreak grows) when $R_0 > 1$.
+The dominant eigenvalue crossing zero corresponds to $R_0$ crossing $1$.
 
 ## PCA connection
 
-In principal component analysis, the eigenvectors of the sample **[covariance](measures-of-variability.md) matrix** are the principal component directions, and each eigenvalue is the variance captured along that direction. The largest eigenvalue points along the axis of greatest spread in the data — the covariance matrix is symmetric, so its eigenvalues are real and its eigenvectors orthogonal.
+In principal component analysis, the eigenvectors of the sample **[covariance](measures-of-variability.md) matrix** are the principal component directions, and each eigenvalue is the variance captured along that direction.
+The largest eigenvalue points along the axis of greatest spread in the data — the covariance matrix is symmetric, so its eigenvalues are real and its eigenvectors orthogonal.
 
 ## Computing it
 
@@ -111,7 +109,8 @@ F.vectors         # columns are unit eigenvectors
 
 ## Why it matters for statistics
 
-Eigen-decomposition underpins PCA, factor analysis, and the diagnosis of multicollinearity (a near-zero eigenvalue of $X^\top X$ flags an ill-conditioned design). In dynamical epidemiological models, eigenvalues of the Jacobian give a precise, computable stability criterion that mirrors the $R_0$ threshold — turning intuition about outbreaks into linear algebra.
+Eigen-decomposition underpins PCA, factor analysis, and the diagnosis of multicollinearity (a near-zero eigenvalue of $X^\top X$ flags an ill-conditioned design).
+In dynamical epidemiological models, eigenvalues of the Jacobian give a precise, computable stability criterion that mirrors the $R_0$ threshold — turning intuition about outbreaks into linear algebra.
 
 ## Related
 

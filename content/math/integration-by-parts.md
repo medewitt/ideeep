@@ -4,7 +4,8 @@ title: "Integration by Parts"
 
 # Integration by Parts
 
-Integration by parts is the *reverse of the [product rule](product-rule.md)*. It turns an integral of a product into an easier one, and it is the standard way to compute the [mean](measures-of-center.md) of the [exponential](exponential-distribution.md) and gamma distributions.
+Integration by parts is the *reverse of the [product rule](product-rule.md)*.
+It turns an integral of a product into an easier one, and it is the standard way to compute the [mean](measures-of-center.md) of the [exponential](exponential-distribution.md) and gamma distributions.
 
 ## The formula
 
@@ -26,11 +27,13 @@ A useful priority for picking $u$ (differentiate first what comes earliest):
 - **T**rigonometric — $\sin x, \cos x$
 - **E**xponential — $e^x$
 
-Whatever is left becomes $dv$. The goal is for $\int v\,du$ to be easier than the original.
+Whatever is left becomes $dv$.
+The goal is for $\int v\,du$ to be easier than the original.
 
 ## Worked example
 
-Compute $\displaystyle\int x\,e^{-x}\,dx$. By LIATE, the algebraic factor $x$ is $u$ and $e^{-x}dx$ is $dv$:
+Compute $\displaystyle\int x\,e^{-x}\,dx$.
+By LIATE, the algebraic factor $x$ is $u$ and $e^{-x}dx$ is $dv$:
 
 \[
 u = x,\quad du = dx, \qquad dv = e^{-x}\,dx,\quad v = -e^{-x}.
@@ -94,7 +97,8 @@ The exponential distribution with rate $\lambda$ has density $\lambda e^{-\lambd
 E[X] = \int_0^\infty x\,\lambda e^{-\lambda x}\,dx = \frac{1}{\lambda},
 \]
 
-which is exactly the integration-by-parts computation above (with a rescaling). The same technique produces the moments of the gamma distribution and appears whenever you integrate a polynomial against an exponential kernel.
+which is exactly the integration-by-parts computation above (with a rescaling).
+The same technique produces the moments of the gamma distribution and appears whenever you integrate a polynomial against an exponential kernel.
 
 ## Related
 

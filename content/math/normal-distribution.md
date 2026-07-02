@@ -4,12 +4,12 @@ title: "The Normal Distribution"
 
 # The Normal Distribution
 
-The normal (Gaussian) distribution is the bell-shaped curve that appears whenever many small, independent influences add together: measurement error, biological variation in heights or blood pressure, and — crucially for statistics — the [sampling distribution](sampling-distributions.md) of an average. Its ubiquity is not a coincidence but a consequence of the [central limit theorem](central-limit-theorem.md).
+The normal (Gaussian) distribution is the bell-shaped curve that appears whenever many small, independent influences add together: measurement error, biological variation in heights or blood pressure, and — crucially for statistics — the [sampling distribution](sampling-distributions.md) of an average.
+Its ubiquity is not a coincidence but a consequence of the [central limit theorem](central-limit-theorem.md).
 
 ## Definition
 
-A [random variable](random-variables.md) $X\sim\mathcal{N}(\mu,\sigma^2)$ has probability density function
-$$f(x)=\frac{1}{\sigma\sqrt{2\pi}}\,e^{-(x-\mu)^2/(2\sigma^2)}.$$
+A [random variable](random-variables.md) $X\sim\mathcal{N}(\mu,\sigma^2)$ has probability density function $$f(x)=\frac{1}{\sigma\sqrt{2\pi}}\,e^{-(x-\mu)^2/(2\sigma^2)}.$$
 
 - **Support:** $x\in(-\infty,\infty)$.
 - **Parameters:** [mean](measures-of-center.md) $\mu\in\mathbb{R}$ (location) and variance $\sigma^2>0$ (spread); $\sigma$ is the [standard deviation](measures-of-variability.md).
@@ -20,9 +20,8 @@ The curve is symmetric about $\mu$, with inflection points at $\mu\pm\sigma$.
 
 ## The standard normal
 
-Setting $\mu=0$ and $\sigma=1$ gives the **standard normal** $Z\sim\mathcal{N}(0,1)$ with density
-$$\phi(z)=\frac{1}{\sqrt{2\pi}}\,e^{-z^2/2}.$$
-Any normal variable can be standardized by the $z$-score $Z=\dfrac{X-\mu}{\sigma}$, which is why a single table (or the `pnorm` function) suffices for all normal probabilities. Its cdf is written $\Phi(z)=P(Z\le z)$.
+Setting $\mu=0$ and $\sigma=1$ gives the **standard normal** $Z\sim\mathcal{N}(0,1)$ with density $$\phi(z)=\frac{1}{\sqrt{2\pi}}\,e^{-z^2/2}.$$ Any normal variable can be standardized by the $z$-score $Z=\dfrac{X-\mu}{\sigma}$, which is why a single table (or the `pnorm` function) suffices for all normal probabilities.
+Its cdf is written $\Phi(z)=P(Z\le z)$.
 
 ## The 68–95–99.7 rule
 
@@ -36,7 +35,8 @@ This "empirical rule" is a fast sanity check: a value more than $3\sigma$ from t
 
 ## When it arises
 
-The normal distribution arises whenever a quantity is the **sum or average of many independent small effects**. By the [central limit theorem](central-limit-theorem.md), the sample mean of almost any distribution is approximately normal for large $n$, which is why normal-based tests and confidence intervals are so widely applicable even when the raw data are not themselves normal.
+The normal distribution arises whenever a quantity is the **sum or average of many independent small effects**.
+By the [central limit theorem](central-limit-theorem.md), the sample mean of almost any distribution is approximately normal for large $n$, which is why normal-based tests and confidence intervals are so widely applicable even when the raw data are not themselves normal.
 
 ## In code
 
@@ -99,7 +99,9 @@ mean(abs(x - 100) <= 15)  # ~ 0.68, matching the 68% rule
 
 ## Why it matters for statistics
 
-The normal distribution is the backbone of classical inference. Because sample means are approximately normal, $z$- and $t$-based [confidence intervals](confidence-intervals.md) and [hypothesis tests](hypothesis-testing.md) rest on it. It is also the reference against which "unusual" observations are judged, and the limiting shape of the [t-distribution](t-distribution.md) as degrees of freedom grow.
+The normal distribution is the backbone of classical inference.
+Because sample means are approximately normal, $z$- and $t$-based [confidence intervals](confidence-intervals.md) and [hypothesis tests](hypothesis-testing.md) rest on it.
+It is also the reference against which "unusual" observations are judged, and the limiting shape of the [t-distribution](t-distribution.md) as degrees of freedom grow.
 
 ## Related
 

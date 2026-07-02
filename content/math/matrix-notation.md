@@ -4,13 +4,15 @@ title: "Matrix and Vector Notation"
 
 # Matrix and Vector Notation
 
-Matrices and vectors are the language for organizing data and the parameters of statistical models. A regression dataset, a [covariance](measures-of-variability.md) structure, or a disease-model state are all naturally written as arrays of numbers, and a shared notation keeps the bookkeeping honest.
+Matrices and vectors are the language for organizing data and the parameters of statistical models.
+A regression dataset, a [covariance](measures-of-variability.md) structure, or a disease-model state are all naturally written as arrays of numbers, and a shared notation keeps the bookkeeping honest.
 
 ## Scalars, vectors, and matrices
 
 A **scalar** is a single number, written in lowercase italics: $a = 3$.
 
-A **vector** is an ordered list of numbers. By convention a vector is a *column vector* (a single column):
+A **vector** is an ordered list of numbers.
+By convention a vector is a *column vector* (a single column):
 
 \[
 x = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}.
@@ -27,21 +29,28 @@ A = \begin{bmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \end{bm
 
 ## Indexing
 
-The entry in row $i$ and column $j$ is $a_{ij}$ (row first, then column). For the matrix above, $a_{23}$ is the number in the second row, third column. A vector entry $x_i$ uses a single index.
+The entry in row $i$ and column $j$ is $a_{ij}$ (row first, then column).
+For the matrix above, $a_{23}$ is the number in the second row, third column.
+A vector entry $x_i$ uses a single index.
 
 ## Special matrices
 
-- **Identity** $I_n$: square, $1$s on the diagonal and $0$s elsewhere. It is the multiplicative identity: $AI = IA = A$.
+- **Identity** $I_n$: square, $1$s on the diagonal and $0$s elsewhere.
+  It is the multiplicative identity: $AI = IA = A$.
 \[
 I_3 = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}.
 \]
 - **Zero matrix** $0$: every entry is $0$.
 - **Diagonal** matrix: nonzero entries only on the diagonal, $a_{ij} = 0$ for $i \neq j$.
-- **Symmetric** matrix: square with $A = A^\top$, i.e. $a_{ij} = a_{ji}$. Covariance matrices are symmetric.
+- **Symmetric** matrix: square with $A = A^\top$, i.e. $a_{ij} = a_{ji}$.
+  Covariance matrices are symmetric.
 
 ## Conformability
 
-Operations only make sense when dimensions match. Addition requires two matrices of *identical* dimension. Matrix multiplication $AB$ requires the number of columns of $A$ to equal the number of rows of $B$: an $(m \times n)$ times an $(n \times p)$ gives an $(m \times p)$ result. Checking conformability first is the quickest way to catch mistakes.
+Operations only make sense when dimensions match.
+Addition requires two matrices of *identical* dimension.
+Matrix multiplication $AB$ requires the number of columns of $A$ to equal the number of rows of $B$: an $(m \times n)$ times an $(n \times p)$ gives an $(m \times p)$ result.
+Checking conformability first is the quickest way to catch mistakes.
 
 ## Statistical motivation: the data matrix
 
@@ -57,7 +66,8 @@ x_{n1} & x_{n2} & \cdots & x_{np}
 \quad (n \times p).
 \]
 
-Row $i$ is one subject; column $j$ is one measured variable. Nearly every model — linear regression, PCA, generalized linear models — begins by writing the data this way.
+Row $i$ is one subject; column $j$ is one measured variable.
+Nearly every model — linear regression, PCA, generalized linear models — begins by writing the data this way.
 
 ## Computing it
 
@@ -99,7 +109,8 @@ I(3)         # 3x3 identity (UniformScaling as a matrix)
 
 ## Why it matters for statistics
 
-Clear notation is the foundation for everything downstream: the design matrix in regression, the covariance matrix, and the [Jacobian](jacobians.md) of a disease model are all matrices. Knowing dimensions and conformability lets you predict whether an expression like $X^\top X$ is even defined (it is: $(p \times n)(n \times p) = p \times p$) before you compute anything.
+Clear notation is the foundation for everything downstream: the design matrix in regression, the covariance matrix, and the [Jacobian](jacobians.md) of a disease model are all matrices.
+Knowing dimensions and conformability lets you predict whether an expression like $X^\top X$ is even defined (it is: $(p \times n)(n \times p) = p \times p$) before you compute anything.
 
 ## Related
 

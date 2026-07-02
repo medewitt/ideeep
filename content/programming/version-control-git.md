@@ -4,11 +4,14 @@ title: "Version Control with Git & GitHub"
 
 # Version Control with Git & GitHub
 
-Git is a tool that records the history of your project so you can undo mistakes, collaborate without emailing files back and forth, and back up your work. GitHub is the most popular place to host Git projects online, and a public GitHub profile doubles as a portfolio that employers and collaborators can browse.
+Git is a tool that records the history of your project so you can undo mistakes, collaborate without emailing files back and forth, and back up your work.
+GitHub is the most popular place to host Git projects online, and a public GitHub profile doubles as a portfolio that employers and collaborators can browse.
 
 ## Why Version Control?
 
-- **History:** every saved state (a **commit**) is recoverable. Break something? Roll back.
+- **History:** every saved state (a **commit**) is recoverable.
+  Break something?
+  Roll back.
 - **Collaboration:** multiple people can work on the same project and merge their changes.
 - **Backup:** pushing to GitHub keeps an off-machine copy of your work.
 - **Portfolio / resume:** a tidy public repo of real projects is a credible demonstration of your skills.
@@ -17,7 +20,8 @@ Git is a tool that records the history of your project so you can undo mistakes,
 
 - **Repository (repo):** a project folder that Git is tracking, plus its full history.
 - **Commit:** a labeled snapshot of your files at a moment in time, with a message describing the change.
-- **Branch:** an independent line of development. `main` is the default; feature branches let you experiment safely.
+- **Branch:** an independent line of development.
+  `main` is the default; feature branches let you experiment safely.
 - **Remote:** a copy of the repo hosted elsewhere (e.g., on GitHub), usually named `origin`.
 
 ## One-Time Setup
@@ -65,7 +69,8 @@ output/
 .DS_Store
 ```
 
-Do commit your code and small text files. Don't commit secrets, huge datasets, or generated artifacts, they bloat the repo and can leak sensitive information.
+Do commit your code and small text files.
+Don't commit secrets, huge datasets, or generated artifacts, they bloat the repo and can leak sensitive information.
 
 ## Commit Early, Commit Often, With Good Messages
 
@@ -79,7 +84,8 @@ git commit -m "Fix off-by-one in age-group binning"
 git commit -m "stuff"
 ```
 
-Do write a message that finishes the sentence "This commit will…". Don't lump a week of unrelated changes into one giant commit.
+Do write a message that finishes the sentence "This commit will…".
+Don't lump a week of unrelated changes into one giant commit.
 
 ## GitHub as a Professional Showcase
 

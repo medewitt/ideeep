@@ -4,11 +4,13 @@ title: "u-Substitution"
 
 # u-Substitution
 
-u-substitution is the *reverse of the [chain rule](chain-rule.md)*: it undoes a composition of functions inside an integral. It is the workhorse for integrating the kernels of many [probability densities](random-variables.md), especially the [normal](normal-distribution.md).
+u-substitution is the *reverse of the [chain rule](chain-rule.md)*: it undoes a composition of functions inside an integral.
+It is the workhorse for integrating the kernels of many [probability densities](random-variables.md), especially the [normal](normal-distribution.md).
 
 ## The idea
 
-The chain rule says $\frac{d}{dx}F(g(x)) = F'(g(x))\,g'(x)$. Reading that backwards gives the substitution rule: if an integrand looks like $f(g(x))$ multiplied by its inner derivative $g'(x)$, then
+The chain rule says $\frac{d}{dx}F(g(x)) = F'(g(x))\,g'(x)$.
+Reading that backwards gives the substitution rule: if an integrand looks like $f(g(x))$ multiplied by its inner derivative $g'(x)$, then
 
 \[
 \int f\big(g(x)\big)\,g'(x)\,dx = \int f(u)\,du, \qquad u = g(x),\ du = g'(x)\,dx .
@@ -31,13 +33,15 @@ For a definite integral, change the limits too:
 
 Compute $\displaystyle\int 2x\,e^{x^2}\,dx$.
 
-Let $u = x^2$, so $du = 2x\,dx$ — and $2x\,dx$ is exactly what sits in front of the exponential. The integral becomes
+Let $u = x^2$, so $du = 2x\,dx$ — and $2x\,dx$ is exactly what sits in front of the exponential.
+The integral becomes
 
 \[
 \int e^{u}\,du = e^{u} + C = e^{x^2} + C .
 \]
 
-A closely related normal-density kernel: $\displaystyle\int x\,e^{-x^2}\,dx$. Take $u = -x^2$, $du = -2x\,dx$, so $x\,dx = -\tfrac12\,du$:
+A closely related normal-density kernel: $\displaystyle\int x\,e^{-x^2}\,dx$.
+Take $u = -x^2$, $du = -2x\,dx$, so $x\,dx = -\tfrac12\,du$:
 
 \[
 \int x\,e^{-x^2}\,dx = -\frac12\int e^{u}\,du = -\frac12 e^{-x^2} + C .
@@ -85,7 +89,8 @@ expand_derivatives(D(-0.5*exp(-x^2)))          # x*exp(-x^2)
 
 ## Why it matters for statistics
 
-Normalizing a density and computing moments constantly produces integrands of the form $g'(x)\,f(g(x))$. For the normal density the substitution $u = (x-\mu)/\sigma$ reduces any Gaussian integral to the standard $\int e^{-u^2/2}\,du$; for the exponential and gamma families, $u = -\lambda x$ handles the exponential factor.
+Normalizing a density and computing moments constantly produces integrands of the form $g'(x)\,f(g(x))$.
+For the normal density the substitution $u = (x-\mu)/\sigma$ reduces any Gaussian integral to the standard $\int e^{-u^2/2}\,du$; for the exponential and gamma families, $u = -\lambda x$ handles the exponential factor.
 
 ## Related
 

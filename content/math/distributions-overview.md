@@ -4,15 +4,21 @@ title: "Common Distributions: An Overview"
 
 # Common Distributions: An Overview
 
-A handful of probability distributions describe a huge range of natural, epidemiological, and experimental data: coin-flip-like proportions, counts of rare events, waiting times between infections, and the bell-shaped noise that emerges whenever many small effects add up. This page is a map to the five workhorse distributions and when each one arises.
+A handful of probability distributions describe a huge range of natural, epidemiological, and experimental data: coin-flip-like proportions, counts of rare events, waiting times between infections, and the bell-shaped noise that emerges whenever many small effects add up.
+This page is a map to the five workhorse distributions and when each one arises.
 
 ## The five workhorses
 
-- **[Normal](normal-distribution.md)** — continuous, symmetric bell curve. Arises whenever many small independent effects add up (heights, measurement error, sample means via the [central limit theorem](central-limit-theorem.md)).
-- **[Binomial](binomial-distribution.md)** — discrete count of "successes" in $n$ independent yes/no trials. Arises in proportion testing (vaccinated vs. not, cured vs. not).
-- **[Poisson](poisson-distribution.md)** — discrete count of rare events in a fixed window. Arises for case counts, mutations, or arrivals when events are independent and the rate is constant.
-- **[Exponential](exponential-distribution.md)** — continuous waiting time until the next event. Arises for time between infections or the length of an infectious period; it is the memoryless partner of the Poisson.
-- **[Student's t](t-distribution.md)** — continuous, bell-shaped but heavier-tailed than the normal. Arises for the standardized sample mean when the population $\sigma$ is estimated from data.
+- **[Normal](normal-distribution.md)** — continuous, symmetric bell curve.
+  Arises whenever many small independent effects add up (heights, measurement error, sample means via the [central limit theorem](central-limit-theorem.md)).
+- **[Binomial](binomial-distribution.md)** — discrete count of "successes" in $n$ independent yes/no trials.
+  Arises in proportion testing (vaccinated vs. not, cured vs. not).
+- **[Poisson](poisson-distribution.md)** — discrete count of rare events in a fixed window.
+  Arises for case counts, mutations, or arrivals when events are independent and the rate is constant.
+- **[Exponential](exponential-distribution.md)** — continuous waiting time until the next event.
+  Arises for time between infections or the length of an infectious period; it is the memoryless partner of the Poisson.
+- **[Student's t](t-distribution.md)** — continuous, bell-shaped but heavier-tailed than the normal.
+  Arises for the standardized sample mean when the population $\sigma$ is estimated from data.
 
 ## Comparison table
 
@@ -26,7 +32,8 @@ A handful of probability distributions describe a huge range of natural, epidemi
 
 ## The R d/p/q/r naming convention
 
-R names distribution functions by a **prefix + root**. The root is the distribution (`norm`, `binom`, `pois`, `exp`, `t`), and the prefix picks the operation:
+R names distribution functions by a **prefix + root**.
+The root is the distribution (`norm`, `binom`, `pois`, `exp`, `t`), and the prefix picks the operation:
 
 - `d*` — **d**ensity (pdf) or probability mass (pmf): $f(x)$.
 - `p*` — cumulative **p**robability (cdf): $P(X\le x)$.
@@ -93,7 +100,8 @@ quantile(Normal(0, 1), 0.975)  # quantile -> 1.96
 
 ## Simulation
 
-A quick check that samples converge to their theoretical means. Averaging many Poisson($\lambda=4$) draws should land near $4$.
+A quick check that samples converge to their theoretical means.
+Averaging many Poisson($\lambda=4$) draws should land near $4$.
 
 ```r
 set.seed(1)
@@ -105,7 +113,9 @@ As the sample size grows the empirical mean and variance both approach $\lambda$
 
 ## Why it matters for statistics
 
-Every inferential method assumes a probability model for the data. Choosing the right distribution — counts vs. proportions vs. continuous measurements — determines which [estimator](statistical-inference.md), test, and [confidence interval](confidence-intervals.md) are valid. Recognizing the mechanism that generates each distribution (adding effects → normal, counting rare events → Poisson, waiting for events → exponential) lets you pick models from first principles rather than by trial and error.
+Every inferential method assumes a probability model for the data.
+Choosing the right distribution — counts vs. proportions vs. continuous measurements — determines which [estimator](statistical-inference.md), test, and [confidence interval](confidence-intervals.md) are valid.
+Recognizing the mechanism that generates each distribution (adding effects → normal, counting rare events → Poisson, waiting for events → exponential) lets you pick models from first principles rather than by trial and error.
 
 ## Related
 

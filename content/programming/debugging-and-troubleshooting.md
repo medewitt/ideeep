@@ -4,21 +4,28 @@ title: "Debugging and Troubleshooting"
 
 # Debugging and Troubleshooting
 
-Bugs are normal, not a sign you're bad at this. What separates a smooth debugging session from a frustrating one is a calm, systematic process. Panic-editing random lines is the slow path; the steps below are the fast one.
+Bugs are normal, not a sign you're bad at this.
+What separates a smooth debugging session from a frustrating one is a calm, systematic process.
+Panic-editing random lines is the slow path; the steps below are the fast one.
 
 ## Read the error message
 
-It sounds obvious, but read the *whole* message, slowly. It usually names the problem, the function, and the line. Most "mysterious" errors are explained in the text people skip.
+It sounds obvious, but read the *whole* message, slowly.
+It usually names the problem, the function, and the line.
+Most "mysterious" errors are explained in the text people skip.
 
 ```text
 Error in log(x) : non-numeric argument to mathematical function
 ```
 
-That is telling you `x` isn't numeric. Believe it, and go check the type of `x`.
+That is telling you `x` isn't numeric.
+Believe it, and go check the type of `x`.
 
 ## Reproduce it minimally (a reprex)
 
-Strip the problem down to the smallest snippet that still fails. Doing so often reveals the cause on its own, and it's exactly what you'll need if you ask for help. This minimal, self-contained example is a **reproducible example**, or *reprex*.
+Strip the problem down to the smallest snippet that still fails.
+Doing so often reveals the cause on its own, and it's exactly what you'll need if you ask for help.
+This minimal, self-contained example is a **reproducible example**, or *reprex*.
 
 ```r
 # A good reprex: self-contained, runs on its own, shows the error
@@ -40,7 +47,8 @@ reprex::reprex({
 
 Find *where* reality diverges from your expectation by looking at intermediate values.
 
-- Quick and universal: print things. `print()`/`cat()` in R, `print()` in Python, `@show` in Julia.
+- Quick and universal: print things.
+  `print()`/`cat()` in R, `print()` in Python, `@show` in Julia.
 - Pause and poke around live: `browser()` (R), `breakpoint()`/`pdb` (Python), `Debugger.jl` (Julia).
 
 ```r
@@ -80,7 +88,8 @@ print(type(x), np.shape(x), np.isnan(x).any())
 
 ## Rubber-duck it
 
-Explain the code out loud, line by line, to a rubber duck (or a patient colleague). Forcing yourself to state what each line *should* do surfaces the line that doesn't.
+Explain the code out loud, line by line, to a rubber duck (or a patient colleague).
+Forcing yourself to state what each line *should* do surfaces the line that doesn't.
 
 ## Search effectively
 
@@ -90,7 +99,8 @@ Explain the code out loud, line by line, to a rubber duck (or a patient colleagu
 
 ## When and how to ask for help
 
-Ask once you've read the error, made a reprex, and checked types — that work often solves it, and if not, it makes your question answerable. A good help request includes:
+Ask once you've read the error, made a reprex, and checked types — that work often solves it, and if not, it makes your question answerable.
+A good help request includes:
 
 1. What you're trying to do (the goal, not just the broken line).
 2. A **minimal reproducible example** anyone can run.

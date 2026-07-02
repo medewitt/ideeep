@@ -4,7 +4,8 @@ title: "Maximum Likelihood Estimation"
 
 # Maximum Likelihood Estimation
 
-Maximum likelihood estimation (MLE) is the workhorse for fitting statistical models in epidemiology, from case-fatality proportions to hazard rates. It picks the parameter values that make the observed data most probable.
+Maximum likelihood estimation (MLE) is the workhorse for fitting statistical models in epidemiology, from case-fatality proportions to hazard rates.
+It picks the parameter values that make the observed data most probable.
 
 ## The likelihood function
 
@@ -22,13 +23,15 @@ The **maximum likelihood estimate** is the value that maximizes this:
 
 ### Why work with the log
 
-Products of many small probabilities underflow numerically and are awkward to differentiate. Taking the logarithm turns the product into a sum:
+Products of many small probabilities underflow numerically and are awkward to differentiate.
+Taking the logarithm turns the product into a sum:
 
 \[
 \ell(\theta) = \log \mathcal{L}(\theta) = \sum_{i=1}^{n} \log f(x_i;\theta).
 \]
 
-Because $\log$ is a strictly increasing [monotonic transformation](monotonic-transformations.md), it preserves the location of the maximum: $\arg\max_\theta \ell(\theta) = \arg\max_\theta \mathcal{L}(\theta)$. See [exponentials and logarithms](exponentials-and-logarithms.md).
+Because $\log$ is a strictly increasing [monotonic transformation](monotonic-transformations.md), it preserves the location of the maximum: $\arg\max_\theta \ell(\theta) = \arg\max_\theta \mathcal{L}(\theta)$.
+See [exponentials and logarithms](exponentials-and-logarithms.md).
 
 ### Finding the maximum
 
@@ -38,11 +41,14 @@ We locate the maximum with [calculus](derivatives.md): solve the **score equatio
 \ell'(\theta) = 0
 \]
 
-and confirm it is a maximum by checking $\ell''(\theta) < 0$. When no closed form exists, maximize numerically (see [optimization](optimization.md)).
+and confirm it is a maximum by checking $\ell''(\theta) < 0$.
+When no closed form exists, maximize numerically (see [optimization](optimization.md)).
 
 ## Worked example: Bernoulli / Binomial $p$
 
-Suppose $x_1,\dots,x_n$ are independent [Bernoulli](binomial-distribution.md) trials with success probability $p$, so $f(x;p)=p^{x}(1-p)^{1-x}$. Let $k=\sum_i x_i$ be the number of successes. The log-likelihood is
+Suppose $x_1,\dots,x_n$ are independent [Bernoulli](binomial-distribution.md) trials with success probability $p$, so $f(x;p)=p^{x}(1-p)^{1-x}$.
+Let $k=\sum_i x_i$ be the number of successes.
+The log-likelihood is
 
 \[
 \ell(p) = \sum_{i=1}^{n}\big[x_i\log p + (1-x_i)\log(1-p)\big] = k\log p + (n-k)\log(1-p).
@@ -58,7 +64,8 @@ k(1-p) = (n-k)p
 \hat{p} = \frac{k}{n} = \bar{x}.
 \]
 
-The second derivative $\ell''(p) = -k/p^2 - (n-k)/(1-p)^2 < 0$ confirms a maximum. The MLE of a Bernoulli/Binomial proportion is simply the sample mean.
+The second derivative $\ell''(p) = -k/p^2 - (n-k)/(1-p)^2 < 0$ confirms a maximum.
+The MLE of a Bernoulli/Binomial proportion is simply the sample mean.
 
 ## In code
 
@@ -103,7 +110,8 @@ All three recover $\hat{p}\approx k/n$.
 
 ## Why it matters for statistics
 
-MLE provides a general, principled recipe for estimating parameters of essentially any probabilistic model. Its estimators are consistent and asymptotically normal, which underpins [standard errors](measures-of-variability.md), [confidence intervals](confidence-intervals.md), and likelihood-ratio tests used throughout inference and epidemiological modeling.
+MLE provides a general, principled recipe for estimating parameters of essentially any probabilistic model.
+Its estimators are consistent and asymptotically normal, which underpins [standard errors](measures-of-variability.md), [confidence intervals](confidence-intervals.md), and likelihood-ratio tests used throughout inference and epidemiological modeling.
 
 ## Related
 

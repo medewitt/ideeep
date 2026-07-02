@@ -4,7 +4,8 @@ title: "Taylor and Maclaurin Series"
 
 # Taylor and Maclaurin Series
 
-A Taylor series approximates a smooth function by a polynomial built from its [derivatives](derivatives.md) at a point. This local approximation is the workhorse behind the delta method, Newton-type [optimization](optimization.md), and many large-sample expansions.
+A Taylor series approximates a smooth function by a polynomial built from its [derivatives](derivatives.md) at a point.
+This local approximation is the workhorse behind the delta method, Newton-type [optimization](optimization.md), and many large-sample expansions.
 
 ## Taylor expansion
 
@@ -76,7 +77,9 @@ approx, error
 
 ## Why it matters for statistics
 
-The delta method approximates the [variance](measures-of-variability.md) of a transformed estimator $g(\hat\theta)$ via a first-order Taylor expansion, $g(\hat\theta) \approx g(\theta) + g'(\theta)(\hat\theta - \theta)$. Second-order expansions of the [log-likelihood](maximum-likelihood.md) give the Fisher information and Newton-Raphson updates for maximum likelihood. In short, Taylor series turn intractable nonlinear quantities into tractable linear or quadratic ones.
+The delta method approximates the [variance](measures-of-variability.md) of a transformed estimator $g(\hat\theta)$ via a first-order Taylor expansion, $g(\hat\theta) \approx g(\theta) + g'(\theta)(\hat\theta - \theta)$.
+Second-order expansions of the [log-likelihood](maximum-likelihood.md) give the Fisher information and Newton-Raphson updates for maximum likelihood.
+In short, Taylor series turn intractable nonlinear quantities into tractable linear or quadratic ones.
 
 ## Related
 

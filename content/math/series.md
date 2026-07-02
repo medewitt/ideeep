@@ -4,11 +4,13 @@ title: "Series"
 
 # Series
 
-A series is the sum of the terms of a [sequence](sequences.md). Series let us add up infinitely many contributions in closed form — the trick behind [expected values](expected-value.md) of count [distributions](distributions-overview.md) and many probability generating functions.
+A series is the sum of the terms of a [sequence](sequences.md).
+Series let us add up infinitely many contributions in closed form — the trick behind [expected values](expected-value.md) of count [distributions](distributions-overview.md) and many probability generating functions.
 
 ## Partial sums
 
-Given a sequence $\{a_n\}$, the $N$-th **partial sum** is $S_N = \sum_{n=1}^{N} a_n$. An infinite series $\sum_{n=1}^{\infty} a_n$ **converges** to $S$ if $S_N \to S$ as $N \to \infty$; otherwise it **diverges**.
+Given a sequence $\{a_n\}$, the $N$-th **partial sum** is $S_N = \sum_{n=1}^{N} a_n$.
+An infinite series $\sum_{n=1}^{\infty} a_n$ **converges** to $S$ if $S_N \to S$ as $N \to \infty$; otherwise it **diverges**.
 
 ## Arithmetic series
 
@@ -28,7 +30,8 @@ With ratio $r$, the terms are $a, ar, ar^2, \dots$. When $|r| < 1$ the infinite 
 
 ## Power series
 
-A power series $\sum_{n=0}^{\infty} c_n x^n$ defines a function on its interval of convergence. The key example is
+A power series $\sum_{n=0}^{\infty} c_n x^n$ defines a function on its interval of convergence.
+The key example is
 
 \[
 \frac{1}{1 - x} = \sum_{n=0}^{\infty} x^{n},\qquad |x| < 1.
@@ -38,7 +41,8 @@ Note the **harmonic series** $\sum_{n=1}^{\infty} \tfrac{1}{n}$ **diverges**, ev
 
 ## Worked example
 
-Let $a = 1$, $r = 1/2$. The infinite geometric series is
+Let $a = 1$, $r = 1/2$.
+The infinite geometric series is
 
 \[
 \sum_{n=1}^{\infty} \left(\tfrac{1}{2}\right)^{n-1} = \frac{1}{1 - \tfrac12} = 2.
@@ -77,7 +81,9 @@ partial, closed
 
 ## Why it matters for statistics
 
-Geometric series give the mean of the geometric distribution and normalize infinite discrete distributions. Power series underlie moment and probability generating functions, and [Taylor series](taylor-series.md) (a special power series) drive approximations like the delta method. Recognizing when a series converges tells you whether an expectation is even finite.
+Geometric series give the mean of the geometric distribution and normalize infinite discrete distributions.
+Power series underlie moment and probability generating functions, and [Taylor series](taylor-series.md) (a special power series) drive approximations like the delta method.
+Recognizing when a series converges tells you whether an expectation is even finite.
 
 ## Related
 

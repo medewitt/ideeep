@@ -4,7 +4,8 @@ title: "Monotonic Transformations"
 
 # Monotonic Transformations
 
-A monotonic transformation reshapes a scale without scrambling its order. This simple property is why we can maximize a log-likelihood instead of a likelihood, and why the CDF gives a universal recipe for [simulating](../programming/simulation-toolkit.md) any [random variable](random-variables.md).
+A monotonic transformation reshapes a scale without scrambling its order.
+This simple property is why we can maximize a log-likelihood instead of a likelihood, and why the CDF gives a universal recipe for [simulating](../programming/simulation-toolkit.md) any [random variable](random-variables.md).
 
 ## Definition
 
@@ -14,7 +15,9 @@ A function $g$ is **monotonically increasing** if it preserves order:
 x_1 < x_2 \implies g(x_1) < g(x_2),
 \]
 
-and **monotonically decreasing** if $x_1 < x_2 \implies g(x_1) > g(x_2)$. When the inequalities are strict, $g$ is *strictly* monotone. Examples of strictly increasing functions on their domains: $g(x) = \log x$, $g(x) = e^x$, $g(x) = x^3$.
+and **monotonically decreasing** if $x_1 < x_2 \implies g(x_1) > g(x_2)$.
+When the inequalities are strict, $g$ is *strictly* monotone.
+Examples of strictly increasing functions on their domains: $g(x) = \log x$, $g(x) = e^x$, $g(x) = x^3$.
 
 ## Order and argmax are preserved
 
@@ -34,17 +37,20 @@ The likelihood of iid data is a product,
 L(\theta) = \prod_{i=1}^n f(x_i \mid \theta),
 \]
 
-which is numerically awkward (products of many small numbers underflow). Because $\log$ is strictly increasing, maximizing the **log-likelihood**
+which is numerically awkward (products of many small numbers underflow).
+Because $\log$ is strictly increasing, maximizing the **log-likelihood**
 
 \[
 \ell(\theta) = \log L(\theta) = \sum_{i=1}^n \log f(x_i \mid \theta)
 \]
 
-yields the **same** maximizer $\hat{\theta}$ — turning a product into a friendly sum without changing the answer. See [maximum likelihood](maximum-likelihood.md).
+yields the **same** maximizer $\hat{\theta}$ — turning a product into a friendly sum without changing the answer.
+See [maximum likelihood](maximum-likelihood.md).
 
 ## CDFs are non-decreasing
 
-Every cumulative distribution function $F(x) = \Pr(X \le x)$ is monotonically non-decreasing, rising from 0 to 1. This monotonicity is what makes the next result possible.
+Every cumulative distribution function $F(x) = \Pr(X \le x)$ is monotonically non-decreasing, rising from 0 to 1.
+This monotonicity is what makes the next result possible.
 
 ## The probability integral transform
 
@@ -64,13 +70,15 @@ Because $F$ is monotone it has a (quantile) inverse $F^{-1}$, so uniform draws m
 
 ## Worked example
 
-Let $X \sim \text{Exponential}(\lambda)$ with $F(x) = 1 - e^{-\lambda x}$. Solving $U = 1 - e^{-\lambda X}$ for $X$:
+Let $X \sim \text{Exponential}(\lambda)$ with $F(x) = 1 - e^{-\lambda x}$.
+Solving $U = 1 - e^{-\lambda X}$ for $X$:
 
 \[
 X = -\frac{1}{\lambda}\log(1 - U).
 \]
 
-So exponential samples come free from uniform samples. And since $1 - U$ is also $\text{Uniform}(0,1)$, one often writes $X = -\tfrac{1}{\lambda}\log U$.
+So exponential samples come free from uniform samples.
+And since $1 - U$ is also $\text{Uniform}(0,1)$, one often writes $X = -\tfrac{1}{\lambda}\log U$.
 
 ## Simulation
 
@@ -129,7 +137,9 @@ argmax(h) == argmax(log.(h))  # true
 
 ## Why it matters for statistics
 
-Monotonic transformations underpin two workhorses of statistical practice. Optimization on the log scale makes maximum likelihood numerically stable while leaving the estimate untouched, and the probability integral transform is the foundation of random-number generation, quantile methods, and copulas. Recognizing that order-preserving maps leave argmax and rankings intact lets you swap scales freely for convenience.
+Monotonic transformations underpin two workhorses of statistical practice.
+Optimization on the log scale makes maximum likelihood numerically stable while leaving the estimate untouched, and the probability integral transform is the foundation of random-number generation, quantile methods, and copulas.
+Recognizing that order-preserving maps leave argmax and rankings intact lets you swap scales freely for convenience.
 
 ## Related
 

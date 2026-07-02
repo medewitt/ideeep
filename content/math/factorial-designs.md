@@ -4,11 +4,14 @@ title: "Factorial Designs"
 
 # Factorial Designs
 
-Factorial designs let you study several factors at once by testing every combination of their levels. This is far more efficient than changing one factor at a time, and — crucially — it is the only way to detect **interactions**, where the effect of one factor depends on the level of another.
+Factorial designs let you study several factors at once by testing every combination of their levels.
+This is far more efficient than changing one factor at a time, and — crucially — it is the only way to detect **interactions**, where the effect of one factor depends on the level of another.
 
 ## Crossing factors: the $2^k$ design
 
-Suppose we have $k$ factors, each set to a **low** ($-1$) and **high** ($+1$) level. Crossing all levels gives $2^k$ treatment combinations (runs). With $k=2$ factors $A$ and $B$ we get $2^2 = 4$ runs; with $k=3$ we get $8$, and so on.
+Suppose we have $k$ factors, each set to a **low** ($-1$) and **high** ($+1$) level.
+Crossing all levels gives $2^k$ treatment combinations (runs).
+With $k=2$ factors $A$ and $B$ we get $2^2 = 4$ runs; with $k=3$ we get $8$, and so on.
 
 Coding levels as $\pm 1$ makes the algebra clean and the columns orthogonal.
 
@@ -23,9 +26,11 @@ The interaction column $AB$ is the elementwise product of the $A$ and $B$ column
 
 ## Main effects and interactions
 
-A **main effect** of a factor is the change in the average response as the factor goes from low to high. An **interaction** measures how much the effect of one factor changes across the levels of another.
+A **main effect** of a factor is the change in the average response as the factor goes from low to high.
+An **interaction** measures how much the effect of one factor changes across the levels of another.
 
-Why one-factor-at-a-time (OFAT) fails: if you vary $A$ while holding $B$ fixed, then vary $B$ while holding $A$ fixed, you never observe the $A$–$B$ combination that reveals synergy or antagonism. Factorial designs cross the factors, so interactions become estimable.
+Why one-factor-at-a-time (OFAT) fails: if you vary $A$ while holding $B$ fixed, then vary $B$ while holding $A$ fixed, you never observe the $A$–$B$ combination that reveals synergy or antagonism.
+Factorial designs cross the factors, so interactions become estimable.
 
 ### Effect = difference of averages
 
@@ -45,7 +50,8 @@ Fit the regression
 y = \beta_0 + \beta_A x_A + \beta_B x_B + \beta_{AB}\, x_A x_B + \varepsilon,
 \]
 
-where $x_A, x_B \in \{-1, +1\}$. Because the design columns are orthogonal, the least-squares coefficients are independent, and each **regression coefficient equals half the corresponding effect**:
+where $x_A, x_B \in \{-1, +1\}$.
+Because the design columns are orthogonal, the least-squares coefficients are independent, and each **regression coefficient equals half the corresponding effect**:
 
 \[
 \beta_A = \tfrac{1}{2}\,\text{Effect}(A).
@@ -81,7 +87,8 @@ y_{(-,+)} &= 25, & y_{(+,+)} &= 45.
 = \frac{20 + 45}{2} - \frac{30 + 25}{2} = 32.5 - 27.5 = 5.
 \]
 
-So going high on $A$ adds about $15$ units, high on $B$ adds about $10$, and there is a modest positive interaction of $5$: the boost from $A$ is larger when $B$ is also high. The fitted coefficients would be $\beta_A = 7.5$, $\beta_B = 5$, $\beta_{AB} = 2.5$.
+So going high on $A$ adds about $15$ units, high on $B$ adds about $10$, and there is a modest positive interaction of $5$: the boost from $A$ is larger when $B$ is also high.
+The fitted coefficients would be $\beta_A = 7.5$, $\beta_B = 5$, $\beta_{AB} = 2.5$.
 
 ## In code
 
@@ -142,7 +149,9 @@ coef(fit)
 
 ## Why it matters for statistics
 
-Factorial designs are the workhorse of planned experimentation. They squeeze maximum information out of each run, estimate main effects and interactions with the same data, and keep effect estimates orthogonal (hence uncorrelated). In fields from agronomy to clinical trials to industrial process [optimization](optimization.md), they answer "which factors matter, and do they act together?" efficiently — a question OFAT experiments simply cannot address.
+Factorial designs are the workhorse of planned experimentation.
+They squeeze maximum information out of each run, estimate main effects and interactions with the same data, and keep effect estimates orthogonal (hence uncorrelated).
+In fields from agronomy to clinical trials to industrial process [optimization](optimization.md), they answer "which factors matter, and do they act together?" efficiently — a question OFAT experiments simply cannot address.
 
 ## Related
 

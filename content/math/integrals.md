@@ -4,7 +4,8 @@ title: "Integrals"
 
 # Integrals
 
-An integral accumulates a quantity — most visually, the *area under a curve*. In [probability](probability-basics.md) it is indispensable: the area under a density is a probability, the total area is $1$, and an [expected value](expected-value.md) is an integral.
+An integral accumulates a quantity — most visually, the *area under a curve*.
+In [probability](probability-basics.md) it is indispensable: the area under a density is a probability, the total area is $1$, and an [expected value](expected-value.md) is an integral.
 
 ## Area under a curve
 
@@ -23,21 +24,26 @@ It is defined as a limit of Riemann sums — slice $[a,b]$ into $n$ pieces of wi
 ## Definite vs. indefinite
 
 - A **definite** integral $\int_a^b f(x)\,dx$ is a *number* (an area).
-- An **indefinite** integral $\int f(x)\,dx = F(x) + C$ is a *function*: the family of antiderivatives of $f$, meaning $F'(x) = f(x)$. The constant $C$ appears because adding a constant does not change the [derivative](derivatives.md).
+- An **indefinite** integral $\int f(x)\,dx = F(x) + C$ is a *function*: the family of antiderivatives of $f$, meaning $F'(x) = f(x)$.
+  The constant $C$ appears because adding a constant does not change the [derivative](derivatives.md).
 
 ## The Fundamental Theorem of Calculus
 
-The FTC links the two operations of calculus. If $F$ is any antiderivative of $f$ (so $F' = f$), then
+The FTC links the two operations of calculus.
+If $F$ is any antiderivative of $f$ (so $F' = f$), then
 
 \[
 \int_a^b f(x)\,dx = F(b) - F(a) .
 \]
 
-In words: integration and differentiation are inverse processes. To find an area, find an antiderivative and evaluate it at the endpoints.
+In words: integration and differentiation are inverse processes.
+To find an area, find an antiderivative and evaluate it at the endpoints.
 
 ## Worked example
 
-Compute $\displaystyle\int_0^1 x^2\,dx$. An antiderivative of $x^2$ is $F(x) = \tfrac{1}{3}x^3$ (check: $F'(x) = x^2$). By the FTC,
+Compute $\displaystyle\int_0^1 x^2\,dx$.
+An antiderivative of $x^2$ is $F(x) = \tfrac{1}{3}x^3$ (check: $F'(x) = x^2$).
+By the FTC,
 
 \[
 \int_0^1 x^2\,dx = F(1) - F(0) = \frac{1^3}{3} - \frac{0^3}{3} = \frac{1}{3} \approx 0.3333 .
@@ -78,7 +84,8 @@ println(val)          # 0.3333333333333333
 
 ## Why it matters for statistics
 
-A continuous [random variable](random-variables.md) $X$ has a probability density $f$. Probabilities, the normalization condition, and the expected value are all integrals:
+A continuous [random variable](random-variables.md) $X$ has a probability density $f$.
+Probabilities, the normalization condition, and the expected value are all integrals:
 
 \[
 P(a \le X \le b) = \int_a^b f(x)\,dx, \qquad

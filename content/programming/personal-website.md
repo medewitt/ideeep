@@ -4,7 +4,8 @@ title: "Building a Personal Website"
 
 # Building a Personal Website
 
-A personal website is the single best place to collect your projects, papers, code, and CV in one link you control. For students, it is a low-cost portfolio that makes you findable and signals that you take your work seriously.
+A personal website is the single best place to collect your projects, papers, code, and CV in one link you control.
+For students, it is a low-cost portfolio that makes you findable and signals that you take your work seriously.
 
 ## Why Bother?
 
@@ -14,7 +15,8 @@ A personal website is the single best place to collect your projects, papers, co
 
 ## Options for Building One
 
-You do not need to hand-write HTML. These tools turn Markdown/R Markdown into a polished static site:
+You do not need to hand-write HTML.
+These tools turn Markdown/R Markdown into a polished static site:
 
 - **Quarto websites** the current, language-agnostic standard (works with R, Python, Julia).
 - **`blogdown`** an R package that builds Hugo-powered blogs from R Markdown.
@@ -81,7 +83,8 @@ git remote add origin https://github.com/username/username.github.io.git
 git push -u origin main
 ```
 
-Then, in the repository's **Settings → Pages**, choose the branch and folder (e.g., `main` / `docs`) to publish. Your site appears at `https://username.github.io`.
+Then, in the repository's **Settings → Pages**, choose the branch and folder (e.g., `main` / `docs`) to publish.
+Your site appears at `https://username.github.io`.
 
 ## Buying and Pointing a Domain
 
@@ -94,7 +97,8 @@ A custom domain (like `janeresearcher.com`) looks professional and is yours to k
 3. **Tell your host about the domain** on GitHub Pages, set the custom domain in **Settings → Pages** (this writes a `CNAME` file into your repo); on Netlify, add it under **Domain settings**.
 4. Enable **HTTPS** both hosts issue a free certificate once DNS resolves.
 
-Do let DNS propagate (it can take minutes to a day) before assuming something is broken. Don't forget to renew the domain, letting it lapse takes your site offline.
+Do let DNS propagate (it can take minutes to a day) before assuming something is broken.
+Don't forget to renew the domain, letting it lapse takes your site offline.
 
 ## Related
 

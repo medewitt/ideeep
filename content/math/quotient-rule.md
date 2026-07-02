@@ -4,7 +4,8 @@ title: "Quotient Rule"
 
 # Quotient Rule
 
-The quotient rule [differentiates](derivatives.md) a ratio of two functions. Ratios are everywhere in epidemiology — prevalence proportions, hazard ratios, and the logistic curve are all quotients whose rates of change we often need.
+The quotient rule [differentiates](derivatives.md) a ratio of two functions.
+Ratios are everywhere in epidemiology — prevalence proportions, hazard ratios, and the logistic curve are all quotients whose rates of change we often need.
 
 ## The rule
 
@@ -34,7 +35,8 @@ Let $f(x) = x$ and $g(x) = 1 + x$, so $f'(x) = 1$ and $g'(x) = 1$:
 = \frac{1}{(1+x)^2}.
 \]
 
-The derivative is always positive, so $\frac{x}{1+x}$ increases toward its saturating limit of $1$ — the same "diminishing returns" shape as a saturating incidence or dose-response curve. At $x = 1$ the slope is $\tfrac{1}{4}$.
+The derivative is always positive, so $\frac{x}{1+x}$ increases toward its saturating limit of $1$ — the same "diminishing returns" shape as a saturating incidence or dose-response curve.
+At $x = 1$ the slope is $\tfrac{1}{4}$.
 
 ## Computing it
 
@@ -76,7 +78,8 @@ ForwardDiff.derivative(x -> x / (1 + x), 1.0)     # 0.25
 
 ## Why it matters for statistics
 
-Proportions, rates, and probabilities are ratios, and models like logistic regression are built from them. Differentiating these quotients is how we obtain the score functions and delta-method [standard errors](measures-of-variability.md) for estimated proportions and odds.
+Proportions, rates, and probabilities are ratios, and models like logistic regression are built from them.
+Differentiating these quotients is how we obtain the score functions and delta-method [standard errors](measures-of-variability.md) for estimated proportions and odds.
 
 ## Related
 

@@ -4,29 +4,31 @@ title: "The Poisson Distribution"
 
 # The Poisson Distribution
 
-The Poisson distribution models the number of rare, [independent](probability-basics.md) events that occur in a fixed interval of time or space: new disease cases reported per week, mutations per genome, radioactive decays per second, or calls arriving at a help line. It is the go-to model for count data when events happen at a steady average rate.
+The Poisson distribution models the number of rare, [independent](probability-basics.md) events that occur in a fixed interval of time or space: new disease cases reported per week, mutations per genome, radioactive decays per second, or calls arriving at a help line.
+It is the go-to model for count data when events happen at a steady average rate.
 
 ## Definition
 
-Let $X\sim\mathrm{Poisson}(\lambda)$ count events in a fixed window with average rate $\lambda$. Its probability mass function is
-$$P(X=k)=\frac{\lambda^{k}e^{-\lambda}}{k!}.$$
+Let $X\sim\mathrm{Poisson}(\lambda)$ count events in a fixed window with average rate $\lambda$.
+Its probability mass function is $$P(X=k)=\frac{\lambda^{k}e^{-\lambda}}{k!}.$$
 
 - **Support:** $k\in\{0,1,2,\dots\}$.
 - **Parameter:** rate $\lambda>0$ (the [expected number](expected-value.md) of events in the window).
 - **Mean:** $\mathbb{E}[X]=\lambda$.
 - **Variance:** $\mathrm{Var}(X)=\lambda$.
 
-A striking feature is that the **[mean](measures-of-center.md) and [variance](measures-of-variability.md) are equal**, both $\lambda$. Real count data with variance much larger than the mean are called *overdispersed* and signal that a plain Poisson model is too simple.
+A striking feature is that the **[mean](measures-of-center.md) and [variance](measures-of-variability.md) are equal**, both $\lambda$.
+Real count data with variance much larger than the mean are called *overdispersed* and signal that a plain Poisson model is too simple.
 
 ## Limit of the binomial
 
-The Poisson arises as the limit of a [binomial](binomial-distribution.md) with many trials, each individually unlikely. If $n\to\infty$ and $p\to 0$ while the product $np\to\lambda$ stays fixed, then
-$$\binom{n}{k}p^k(1-p)^{n-k}\;\longrightarrow\;\frac{\lambda^{k}e^{-\lambda}}{k!}.$$
-This is why the Poisson is called the "law of rare events": it counts many opportunities for an event, each with tiny probability.
+The Poisson arises as the limit of a [binomial](binomial-distribution.md) with many trials, each individually unlikely.
+If $n\to\infty$ and $p\to 0$ while the product $np\to\lambda$ stays fixed, then $$\binom{n}{k}p^k(1-p)^{n-k}\;\longrightarrow\;\frac{\lambda^{k}e^{-\lambda}}{k!}.$$ This is why the Poisson is called the "law of rare events": it counts many opportunities for an event, each with tiny probability.
 
 ## When it arises
 
-The Poisson applies to **counts of independent events at a constant rate**: epidemiological case counts, incidence of rare diseases, defects per batch, or arrivals in a queue. It connects directly to the [exponential distribution](exponential-distribution.md): if event counts are Poisson, the waiting times between consecutive events are exponential.
+The Poisson applies to **counts of independent events at a constant rate**: epidemiological case counts, incidence of rare diseases, defects per batch, or arrivals in a queue.
+It connects directly to the [exponential distribution](exponential-distribution.md): if event counts are Poisson, the waiting times between consecutive events are exponential.
 
 ## In code
 
@@ -88,7 +90,9 @@ var(x)   # ~ 4.00  (theoretical variance = lambda; mean == variance)
 
 ## Why it matters for statistics
 
-The Poisson is the foundation of count-data modeling, including Poisson regression for rates (cases per person-year) and the analysis of contingency tables. Recognizing when the mean-equals-variance assumption fails — overdispersion — guides the choice of richer models such as the negative binomial. It links proportions ([binomial](binomial-distribution.md)) and waiting times ([exponential](exponential-distribution.md)) into one coherent picture of event processes.
+The Poisson is the foundation of count-data modeling, including Poisson regression for rates (cases per person-year) and the analysis of contingency tables.
+Recognizing when the mean-equals-variance assumption fails — overdispersion — guides the choice of richer models such as the negative binomial.
+It links proportions ([binomial](binomial-distribution.md)) and waiting times ([exponential](exponential-distribution.md)) into one coherent picture of event processes.
 
 ## Related
 

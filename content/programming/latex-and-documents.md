@@ -4,7 +4,8 @@ title: "LaTeX and Technical Documents"
 
 # LaTeX and Technical Documents
 
-LaTeX is a typesetting system that turns plain-text source into beautifully formatted documents, and it is the de facto standard for anything math-heavy. If you write equations, you will get cleaner, more consistent results with LaTeX than with a word processor, and the same math syntax works inside R Markdown, Quarto, and Jupyter.
+LaTeX is a typesetting system that turns plain-text source into beautifully formatted documents, and it is the de facto standard for anything math-heavy.
+If you write equations, you will get cleaner, more consistent results with LaTeX than with a word processor, and the same math syntax works inside R Markdown, Quarto, and Jupyter.
 
 ## Why LaTeX for Math?
 
@@ -14,7 +15,8 @@ LaTeX is a typesetting system that turns plain-text source into beautifully form
 
 ## Inline vs. Display Math
 
-Wrap math in dollar signs. A single `$...$` is **inline** (flows within a sentence); double `$$...$$` is **display** (centered on its own line).
+Wrap math in dollar signs.
+A single `$...$` is **inline** (flows within a sentence); double `$$...$$` is **display** (centered on its own line).
 
 ```latex
 The estimator $\hat{\beta}$ is unbiased when the errors have mean zero.
@@ -24,7 +26,8 @@ $$
 $$
 ```
 
-Do use inline math for symbols mentioned in prose. Don't put large multi-line equations inline, they crowd the text; use display math.
+Do use inline math for symbols mentioned in prose.
+Don't put large multi-line equations inline, they crowd the text; use display math.
 
 ## Common Constructs
 
@@ -67,14 +70,16 @@ The sample mean is $\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i$.
 
 ## Using LaTeX from R
 
-You do not need a system-wide LaTeX install. The **`tinytex`** R package installs a lightweight, self-contained distribution:
+You do not need a system-wide LaTeX install.
+The **`tinytex`** R package installs a lightweight, self-contained distribution:
 
 ```r
 install.packages("tinytex")
 tinytex::install_tinytex()   # one-time: sets up LaTeX for PDF rendering
 ```
 
-With that in place, R Markdown and Quarto can render PDFs. Math goes directly in the document using the same `$...$` syntax:
+With that in place, R Markdown and Quarto can render PDFs.
+Math goes directly in the document using the same `$...$` syntax:
 
 ````markdown
 ---
@@ -99,12 +104,14 @@ quarto render analysis.qmd --to pdf
 
 ## LaTeX from Python, Jupyter, and Julia
 
-- **Jupyter / Python:** Markdown cells render `$...$` and `$$...$$` via MathJax, so notebooks display typeset math with no extra setup. Exporting to PDF (`jupyter nbconvert --to pdf`) uses LaTeX under the hood.
+- **Jupyter / Python:** Markdown cells render `$...$` and `$$...$$` via MathJax, so notebooks display typeset math with no extra setup.
+  Exporting to PDF (`jupyter nbconvert --to pdf`) uses LaTeX under the hood.
 - **Julia:** Quarto and Pluto/Documenter notebooks render the same LaTeX math syntax; `LaTeXStrings.jl` lets you put LaTeX in plot labels.
 
 ## Journal Templates
 
-For submitting to journals, the **`rticles`** R package provides ready-made LaTeX templates for many publishers (PLOS, Elsevier, IEEE, and more). You write in R Markdown and get a correctly formatted PDF, no need to reverse-engineer a journal's style file.
+For submitting to journals, the **`rticles`** R package provides ready-made LaTeX templates for many publishers (PLOS, Elsevier, IEEE, and more).
+You write in R Markdown and get a correctly formatted PDF, no need to reverse-engineer a journal's style file.
 
 ```r
 install.packages("rticles")

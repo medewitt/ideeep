@@ -4,7 +4,8 @@ title: "Project Workflow"
 
 # Project Workflow
 
-A project you can hand to a colleague — or return to in a year — is one where the structure tells the story. A little discipline about folders, raw data, and a build pipeline pays off every time you re-run the analysis.
+A project you can hand to a colleague — or return to in a year — is one where the structure tells the story.
+A little discipline about folders, raw data, and a build pipeline pays off every time you re-run the analysis.
 
 ## A sensible folder structure
 
@@ -32,7 +33,9 @@ Numbering scripts by stage (`01-`, `02-`, ...) makes the intended run order obvi
 
 ## Never edit raw data
 
-Treat `data/raw/` as immutable — the ground truth you can always fall back to. Every cleaning step happens in code and writes to `data/derived/`. This means:
+Treat `data/raw/` as immutable — the ground truth you can always fall back to.
+Every cleaning step happens in code and writes to `data/derived/`.
+This means:
 
 - You can always reconstruct derived data from raw + scripts.
 - A cleaning mistake is a one-line fix and re-run, not a lost dataset.
@@ -52,7 +55,8 @@ chmod -R a-w data/raw/
 
 ## Use project-relative paths
 
-[Absolute paths](computer-basics.md) like `/Users/you/Desktop/stuff/cases.csv` break the moment anyone else (or future-you on a new laptop) runs the code. Anchor everything to the project root.
+[Absolute paths](computer-basics.md) like `/Users/you/Desktop/stuff/cases.csv` break the moment anyone else (or future-you on a new laptop) runs the code.
+Anchor everything to the project root.
 
 ```r
 # BAD
@@ -78,7 +82,9 @@ cases = CSV.read(joinpath(root, "data", "raw", "cases.csv"), DataFrame)
 
 ## Analysis as a DAG
 
-Think of your analysis as a **directed acyclic graph (DAG)**: raw data feeds cleaning, cleaning feeds modelling, modelling feeds figures. Each step depends only on earlier ones. Framed this way, a build tool can figure out what needs to re-run when a single input changes — and skip the rest.
+Think of your analysis as a **directed acyclic graph (DAG)**: raw data feeds cleaning, cleaning feeds modelling, modelling feeds figures.
+Each step depends only on earlier ones.
+Framed this way, a build tool can figure out what needs to re-run when a single input changes — and skip the rest.
 
 ```text
 raw/cases.csv ──▶ 01-clean ──▶ derived/clean.csv ──▶ 02-fit ──▶ model.rds ──▶ 03-forecast ──▶ figures/
@@ -86,7 +92,8 @@ raw/cases.csv ──▶ 01-clean ──▶ derived/clean.csv ──▶ 02-fit �
 
 ## Drive the pipeline with a build tool
 
-Don't run scripts by hand in a half-remembered order. A build tool encodes the DAG and reproduces everything with one command.
+Don't run scripts by hand in a half-remembered order.
+A build tool encodes the DAG and reproduces everything with one command.
 
 A tiny `Makefile`:
 
@@ -106,7 +113,8 @@ clean:
 	rm -f data/derived/* output/model.rds output/figures/*
 ```
 
-Now `make` runs only the stages whose inputs changed. In R, the [`targets`](https://books.ropensci.org/targets/) package expresses the same DAG natively; in Python, `snakemake` or a simple `Makefile` does the job.
+Now `make` runs only the stages whose inputs changed.
+In R, the [`targets`](https://books.ropensci.org/targets/) package expresses the same DAG natively; in Python, `snakemake` or a simple `Makefile` does the job.
 
 ## A README that gets you started
 

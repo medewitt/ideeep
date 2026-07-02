@@ -4,11 +4,13 @@ title: "Limits"
 
 # Limits
 
-A limit describes the value a function or sequence approaches as its input moves toward some point. Limits are the foundation of [derivatives](derivatives.md), [integrals](integrals.md), and the convergence theorems that make [statistical inference](statistical-inference.md) work.
+A limit describes the value a function or sequence approaches as its input moves toward some point.
+Limits are the foundation of [derivatives](derivatives.md), [integrals](integrals.md), and the convergence theorems that make [statistical inference](statistical-inference.md) work.
 
 ## Intuitive and formal definition
 
-Intuitively, $\lim_{n\to\infty} a_n = L$ means the terms $a_n$ get and stay arbitrarily close to $L$. Formally ($\epsilon$-definition): for every $\epsilon > 0$ there exists an $N$ such that
+Intuitively, $\lim_{n\to\infty} a_n = L$ means the terms $a_n$ get and stay arbitrarily close to $L$.
+Formally ($\epsilon$-definition): for every $\epsilon > 0$ there exists an $N$ such that
 
 \[
 n > N \implies |a_n - L| < \epsilon.
@@ -34,7 +36,8 @@ For an indeterminate form $\tfrac{0}{0}$ or $\tfrac{\infty}{\infty}$,
 \lim_{x\to c}\frac{f(x)}{g(x)} = \lim_{x\to c}\frac{f'(x)}{g'(x)}.
 \]
 
-**Example:** $\displaystyle \lim_{x\to 0}\frac{\sin x}{x}$ is $\tfrac{0}{0}$. Differentiating top and bottom gives $\lim_{x\to 0}\frac{\cos x}{1} = \cos 0 = 1$.
+**Example:** $\displaystyle \lim_{x\to 0}\frac{\sin x}{x}$ is $\tfrac{0}{0}$.
+Differentiating top and bottom gives $\lim_{x\to 0}\frac{\cos x}{1} = \cos 0 = 1$.
 
 ## Worked example
 
@@ -73,7 +76,9 @@ sin.(xs) ./ xs        # -> 1.0
 
 ## Why it matters for statistics
 
-Convergence of sequences of random quantities is the engine of large-sample theory. The Weak [Law of Large Numbers](law-of-large-numbers.md) says the sample mean **converges in probability** to the true mean, $\bar{X}_n \xrightarrow{p} \mu$ — a probabilistic limit. Understanding ordinary limits first makes these stochastic versions far less mysterious.
+Convergence of sequences of random quantities is the engine of large-sample theory.
+The Weak [Law of Large Numbers](law-of-large-numbers.md) says the sample mean **converges in probability** to the true mean, $\bar{X}_n \xrightarrow{p} \mu$ — a probabilistic limit.
+Understanding ordinary limits first makes these stochastic versions far less mysterious.
 
 ## Related
 

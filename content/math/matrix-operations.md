@@ -4,7 +4,8 @@ title: "Matrix Operations"
 
 # Matrix Operations
 
-Matrix arithmetic is how statistical models are actually computed: fitting a regression, propagating a [covariance](measures-of-variability.md), or stepping a dynamical system all reduce to a few matrix operations. The one rule that trips everyone up is that **matrix multiplication is not element-wise and is not commutative**.
+Matrix arithmetic is how statistical models are actually computed: fitting a regression, propagating a [covariance](measures-of-variability.md), or stepping a dynamical system all reduce to a few matrix operations.
+The one rule that trips everyone up is that **matrix multiplication is not element-wise and is not commutative**.
 
 ## Addition, subtraction, and scalar multiplication
 
@@ -32,7 +33,9 @@ The **Hadamard product** $A \circ B$ multiplies corresponding entries and needs 
 \begin{bmatrix} 5 & 12 \\ 21 & 32 \end{bmatrix}.
 \]
 
-**Matrix multiplication** $AB$ is different. It requires **conformability**: an $(m \times n)$ matrix times an $(n \times p)$ matrix yields an $(m \times p)$ matrix. The $(i,j)$ entry is the dot product of row $i$ of $A$ with column $j$ of $B$:
+**Matrix multiplication** $AB$ is different.
+It requires **conformability**: an $(m \times n)$ matrix times an $(n \times p)$ matrix yields an $(m \times p)$ matrix.
+The $(i,j)$ entry is the dot product of row $i$ of $A$ with column $j$ of $B$:
 
 \[
 (AB)_{ij} = \sum_{k=1}^{n} a_{ik} b_{kj}.
@@ -40,7 +43,8 @@ The **Hadamard product** $A \circ B$ multiplies corresponding entries and needs 
 
 ## Transpose
 
-The transpose $A^\top$ flips rows and columns: $(A^\top)_{ij} = a_{ji}$. Useful properties:
+The transpose $A^\top$ flips rows and columns: $(A^\top)_{ij} = a_{ji}$.
+Useful properties:
 
 \[
 (A^\top)^\top = A, \qquad (A + B)^\top = A^\top + B^\top, \qquad (AB)^\top = B^\top A^\top.
@@ -58,7 +62,8 @@ A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} \ (2 \times 3),
 B = \begin{bmatrix} 7 & 8 \\ 9 & 10 \\ 11 & 12 \end{bmatrix} \ (3 \times 2).
 \]
 
-Since $A$ is $2 \times 3$ and $B$ is $3 \times 2$, $AB$ is $2 \times 2$. Compute each entry:
+Since $A$ is $2 \times 3$ and $B$ is $3 \times 2$, $AB$ is $2 \times 2$.
+Compute each entry:
 
 \[
 \begin{aligned}
@@ -75,7 +80,8 @@ So
 AB = \begin{bmatrix} 58 & 64 \\ 139 & 154 \end{bmatrix}.
 \]
 
-**Not commutative:** $BA$ here is $3 \times 3$, a completely different object. Even for square matrices, $AB \neq BA$ in general.
+**Not commutative:** $BA$ here is $3 \times 3$, a completely different object.
+Even for square matrices, $AB \neq BA$ in general.
 
 ## Computing it
 
@@ -128,7 +134,8 @@ C * D        # matrix multiplication -> [19 22; 43 50]
 
 ## Why it matters for statistics
 
-The least-squares fit $\hat\beta = (X^\top X)^{-1} X^\top y$ is built entirely from transpose and matrix multiplication; the cross-product $X^\top X$ collapses an $n \times p$ dataset into a $p \times p$ summary. Confusing `*` (element-wise) with matrix multiplication is a classic source of silently wrong results, so keep the operators straight.
+The least-squares fit $\hat\beta = (X^\top X)^{-1} X^\top y$ is built entirely from transpose and matrix multiplication; the cross-product $X^\top X$ collapses an $n \times p$ dataset into a $p \times p$ summary.
+Confusing `*` (element-wise) with matrix multiplication is a classic source of silently wrong results, so keep the operators straight.
 
 ## Related
 

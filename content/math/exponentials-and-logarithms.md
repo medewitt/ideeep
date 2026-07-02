@@ -4,7 +4,8 @@ title: "Exponentials and Logarithms"
 
 # Exponentials and Logarithms
 
-Exponentials describe multiplicative growth and logarithms undo them. In statistics they are everywhere: [log-likelihoods](maximum-likelihood.md) turn products into sums, and log scales tame skewed, multiplicative data.
+Exponentials describe multiplicative growth and logarithms undo them.
+In statistics they are everywhere: [log-likelihoods](maximum-likelihood.md) turn products into sums, and log scales tame skewed, multiplicative data.
 
 ## Exponent rules
 
@@ -28,7 +29,8 @@ e^{x} = \sum_{n=0}^{\infty} \frac{x^{n}}{n!}.
 
 ## Logarithm identities
 
-The natural log $\ln$ is the inverse of $e^x$: $\ln(e^x) = x$ and $e^{\ln x} = x$ for $x > 0$. Its identities mirror the exponent rules:
+The natural log $\ln$ is the inverse of $e^x$: $\ln(e^x) = x$ and $e^{\ln x} = x$ for $x > 0$.
+Its identities mirror the exponent rules:
 
 \[
 \ln(ab) = \ln a + \ln b,\quad
@@ -40,7 +42,9 @@ The natural log $\ln$ is the inverse of $e^x$: $\ln(e^x) = x$ and $e^{\ln x} = x
 
 ## Worked example
 
-Take $a = 3$, $b = 4$. Then $\ln(3 \cdot 4) = \ln 12 \approx 2.4849$, while $\ln 3 + \ln 4 \approx 1.0986 + 1.3863 = 2.4849$ — the product identity holds. And with $n = 10{,}000$, $(1 + 1/n)^n \approx 2.71815$, already close to $e$.
+Take $a = 3$, $b = 4$.
+Then $\ln(3 \cdot 4) = \ln 12 \approx 2.4849$, while $\ln 3 + \ln 4 \approx 1.0986 + 1.3863 = 2.4849$ — the product identity holds.
+And with $n = 10{,}000$, $(1 + 1/n)^n \approx 2.71815$, already close to $e$.
 
 ## Computing it
 
@@ -82,7 +86,8 @@ isapprox(log(3 * 4), log(3) + log(4))   # true
 
 ## Why it matters for statistics
 
-Likelihoods are products $\prod_i f(x_i)$ that underflow to zero numerically; taking $\ln$ converts them to sums $\sum_i \ln f(x_i)$ that are stable and easy to differentiate for maximum likelihood. Log scales also linearize exponential growth (epidemic curves) and symmetrize right-skewed data.
+Likelihoods are products $\prod_i f(x_i)$ that underflow to zero numerically; taking $\ln$ converts them to sums $\sum_i \ln f(x_i)$ that are stable and easy to differentiate for maximum likelihood.
+Log scales also linearize exponential growth (epidemic curves) and symmetrize right-skewed data.
 
 ## Related
 

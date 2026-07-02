@@ -4,7 +4,8 @@ title: "The Gradient"
 
 # The Gradient
 
-The gradient collects all of a function's [partial derivatives](partial-derivatives.md) into a single vector that points in the direction of steepest ascent. It is the workhorse of [optimization](optimization.md): gradient descent and [maximum likelihood](maximum-likelihood.md) estimation both follow (or climb) the gradient.
+The gradient collects all of a function's [partial derivatives](partial-derivatives.md) into a single vector that points in the direction of steepest ascent.
+It is the workhorse of [optimization](optimization.md): gradient descent and [maximum likelihood](maximum-likelihood.md) estimation both follow (or climb) the gradient.
 
 ## Definition
 
@@ -16,11 +17,14 @@ For a scalar-valued function $f(x_1, \dots, x_n)$, the gradient is the vector of
 
 ## Direction of steepest ascent
 
-At any point, $\nabla f$ points in the direction in which $f$ increases fastest, and its magnitude $\lVert \nabla f \rVert$ is that maximum rate of increase. The negative gradient $-\nabla f$ points in the direction of steepest *descent* — which is exactly why we step along $-\nabla f$ to minimize a loss. Where $f$ is at a maximum or minimum, $\nabla f = \mathbf{0}$.
+At any point, $\nabla f$ points in the direction in which $f$ increases fastest, and its magnitude $\lVert \nabla f \rVert$ is that maximum rate of increase.
+The negative gradient $-\nabla f$ points in the direction of steepest *descent* — which is exactly why we step along $-\nabla f$ to minimize a loss.
+Where $f$ is at a maximum or minimum, $\nabla f = \mathbf{0}$.
 
 ## Relation to the Jacobian
 
-The gradient is the [Jacobian](jacobians.md) of a scalar-valued function — specifically its single row (or, by convention, that row transposed into a column). More generally the Jacobian stacks the gradients of each component of a vector-valued function as its rows.
+The gradient is the [Jacobian](jacobians.md) of a scalar-valued function — specifically its single row (or, by convention, that row transposed into a column).
+More generally the Jacobian stacks the gradients of each component of a vector-valued function as its rows.
 
 ## Worked example: $f(x,y) = x^2 + 3y^2$
 
@@ -85,7 +89,8 @@ x   # ≈ [0.0, 0.0]
 
 ## Why it matters for statistics
 
-Fitting a model almost always means optimizing an objective — minimizing a loss or maximizing a log-likelihood — and the gradient is the compass. Gradient ascent on the log-likelihood drives maximum likelihood estimation, while stochastic gradient descent trains the large models used in modern data science and disease forecasting.
+Fitting a model almost always means optimizing an objective — minimizing a loss or maximizing a log-likelihood — and the gradient is the compass.
+Gradient ascent on the log-likelihood drives maximum likelihood estimation, while stochastic gradient descent trains the large models used in modern data science and disease forecasting.
 
 ## Related
 

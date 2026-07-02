@@ -4,11 +4,14 @@ title: "Reproducibility"
 
 # Reproducibility
 
-An analysis is reproducible if someone else — or you, later — can re-run it and get the same answer. Reproducibility is not an extra chore at the end; it is a set of small habits that also make your work easier to debug and trust.
+An analysis is reproducible if someone else — or you, later — can re-run it and get the same answer.
+Reproducibility is not an extra chore at the end; it is a set of small habits that also make your work easier to debug and trust.
 
 ## Scripts beat point-and-click
 
-A menu click leaves no trace. A script *is* the record: it documents exactly what you did and lets you re-run it instantly when the data updates or a reviewer asks a question. If you find yourself clicking through a GUI to transform data, write the code instead.
+A menu click leaves no trace.
+A script *is* the record: it documents exactly what you did and lets you re-run it instantly when the data updates or a reviewer asks a question.
+If you find yourself clicking through a GUI to transform data, write the code instead.
 
 - **Point-and-click**: fast once, impossible to reproduce, error-prone to repeat.
 - **Scripted**: a permanent, re-runnable record of every decision.
@@ -34,11 +37,13 @@ rng = MersenneTwister(20260702)
 x = randn(rng, 1000)
 ```
 
-Seed once at the top of a script (or pass an explicit generator through your functions). Report the seed in your writeup so others can reproduce the exact figures.
+Seed once at the top of a script (or pass an explicit generator through your functions).
+Report the seed in your writeup so others can reproduce the exact figures.
 
 ## Record your environment
 
-Same code + different package versions can give different answers. Capture what you ran with.
+Same code + different package versions can give different answers.
+Capture what you ran with.
 
 **R** — snapshot the session, and use `renv` to lock and restore versions:
 
@@ -75,7 +80,8 @@ Commit `renv.lock`, `requirements.txt`/`environment.yml`, and `Project.toml`/`Ma
 
 ## Literate programming
 
-Interleave prose, code, and output in one document so the narrative and the numbers can never drift apart. Regenerate the whole report from source in one step.
+Interleave prose, code, and output in one document so the narrative and the numbers can never drift apart.
+Regenerate the whole report from source in one step.
 
 - **R**: R Markdown or [Quarto](https://quarto.org/) (`quarto render report.qmd`).
 - **Python / Julia / R**: Jupyter notebooks, or Quarto, which supports all three.
@@ -85,7 +91,8 @@ The key win: figures and tables are *computed from the code in the document*, no
 ## Relative paths and deterministic pipelines
 
 - Use project-relative paths (see [Project Workflow](project-workflow.md)) so the code runs on any machine.
-- Make the pipeline deterministic end to end: the same inputs always yield the same outputs. Avoid hidden state — don't rely on variables lingering in your session, and prefer `Rscript`/`python script.py` over an interactive console for the final run.
+- Make the pipeline deterministic end to end: the same inputs always yield the same outputs.
+  Avoid hidden state — don't rely on variables lingering in your session, and prefer `Rscript`/`python script.py` over an interactive console for the final run.
 
 ```bash
 # GOOD: reproduce the whole analysis from a clean state

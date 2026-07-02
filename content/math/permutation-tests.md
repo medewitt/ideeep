@@ -4,11 +4,13 @@ title: "Permutation Tests"
 
 # Permutation Tests
 
-Permutation tests let epidemiologists test for a group difference without assuming a particular [distribution](distributions-overview.md)—useful for small samples or odd-shaped data where a $t$-test's assumptions are shaky. They build the null distribution directly from the data by shuffling.
+Permutation tests let epidemiologists test for a group difference without assuming a particular [distribution](distributions-overview.md)—useful for small samples or odd-shaped data where a $t$-test's assumptions are shaky.
+They build the null distribution directly from the data by shuffling.
 
 ## The idea
 
-Under a [null hypothesis](hypothesis-testing.md) of **no effect / exchangeability**, the group labels carry no information: any assignment of observations to groups is equally likely. So we can:
+Under a [null hypothesis](hypothesis-testing.md) of **no effect / exchangeability**, the group labels carry no information: any assignment of observations to groups is equally likely.
+So we can:
 
 1. Compute a test statistic on the real data (e.g., the difference in group [means](measures-of-center.md), $\bar{X}_A - \bar{X}_B$).
 2. Repeatedly **shuffle the labels**, recomputing the statistic each time to trace out its distribution under $H_0$.
@@ -18,11 +20,13 @@ Under a [null hypothesis](hypothesis-testing.md) of **no effect / exchangeabilit
 p = \frac{\#\{\text{permutations with } |T^{*}| \ge |T_{\text{obs}}|\} + 1}{B + 1},
 \]
 
-where $B$ is the number of permutations. Adding 1 to numerator and denominator (counting the observed data itself) keeps the test valid and avoids a p-value of exactly zero.
+where $B$ is the number of permutations.
+Adding 1 to numerator and denominator (counting the observed data itself) keeps the test valid and avoids a p-value of exactly zero.
 
 ## Worked example
 
-Two groups: treated $A=\{5.1, 6.3, 5.8\}$ and control $B=\{4.2, 4.9, 5.0\}$. Observed statistic:
+Two groups: treated $A=\{5.1, 6.3, 5.8\}$ and control $B=\{4.2, 4.9, 5.0\}$.
+Observed statistic:
 
 \[
 T_{\text{obs}} = \bar{X}_A - \bar{X}_B = 5.733 - 4.700 = 1.033.
@@ -78,7 +82,8 @@ println((count(x -> abs(x) >= abs(obs), perm) + 1) / (length(perm) + 1))
 
 ## Why it matters for statistics
 
-Permutation tests give exact or nearly exact p-values under minimal assumptions, relying only on exchangeability rather than normality or large samples. They are a robust, transparent alternative to parametric tests and generalize to almost any statistic you can compute.
+Permutation tests give exact or nearly exact p-values under minimal assumptions, relying only on exchangeability rather than normality or large samples.
+They are a robust, transparent alternative to parametric tests and generalize to almost any statistic you can compute.
 
 ## Related
 

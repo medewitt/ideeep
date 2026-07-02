@@ -4,7 +4,8 @@ title: "Handling Secrets and API Keys"
 
 # Handling Secrets and API Keys
 
-Sooner or later your scripts will need a password, an API token, or a database key. Where you put those secrets matters: a key hard-coded into a script and pushed to [GitHub](version-control-git.md) is a public leak that anyone can find and abuse.
+Sooner or later your scripts will need a password, an API token, or a database key.
+Where you put those secrets matters: a key hard-coded into a script and pushed to [GitHub](version-control-git.md) is a public leak that anyone can find and abuse.
 
 ## The Two Golden Rules
 
@@ -37,7 +38,8 @@ The standard pattern is to store secrets in a per-user config or `.env` file tha
 
 ### R: `.Renviron` + `Sys.getenv()`
 
-Create a file named `.Renviron` in your home directory (or project root). R reads it automatically at startup.
+Create a file named `.Renviron` in your home directory (or project root).
+R reads it automatically at startup.
 
 ```bash
 # ~/.Renviron  -- one KEY=value per line, no quotes, no "export"
@@ -100,13 +102,15 @@ secrets.yaml
 *.pem
 ```
 
-Do check `git status` before committing to confirm no secret files are staged. Don't assume a file is safe just because you "meant" to ignore it, verify the `.gitignore` is working.
+Do check `git status` before committing to confirm no secret files are staged.
+Don't assume a file is safe just because you "meant" to ignore it, verify the `.gitignore` is working.
 
 ## What to Do If You Leak a Key
 
 If a secret ever lands in a commit, a shared log, or a screenshot, **rotate it immediately**:
 
-1. Log in to the provider and **revoke/regenerate** the key. The old value should stop working.
+1. Log in to the provider and **revoke/regenerate** the key.
+   The old value should stop working.
 2. Update your local `.env` / `.Renviron` with the new value.
 3. Removing it from Git history (with tools like `git filter-repo`) is good hygiene, but rotation is what actually protects you, treat the leaked key as permanently compromised.
 

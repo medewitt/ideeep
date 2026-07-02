@@ -4,7 +4,8 @@ title: "Instrumental Variables"
 
 # Instrumental Variables
 
-When an unmeasured [confounder](experimental-design.md) distorts the relationship between an exposure and an outcome, ordinary regression estimates the wrong thing. Instrumental variables (IV) exploit a special variable $Z$ to recover the causal effect even when confounding cannot be measured or adjusted for.
+When an unmeasured [confounder](experimental-design.md) distorts the relationship between an exposure and an outcome, ordinary regression estimates the wrong thing.
+Instrumental variables (IV) exploit a special variable $Z$ to recover the causal effect even when confounding cannot be measured or adjusted for.
 
 ## The problem: confounding bias
 
@@ -14,15 +15,20 @@ Suppose we want the causal effect $\beta$ of an exposure $X$ on an outcome $Y$, 
 Y = \beta X + U + \varepsilon, \qquad X = \alpha U + \text{(other causes)}.
 \]
 
-Because $X$ and the error term share $U$, the regressor is correlated with the disturbance ($\operatorname{Cov}(X, U) \ne 0$). Ordinary least squares (OLS) is then **biased and inconsistent**: it estimates a mixture of the causal effect and the confounding association, not $\beta$.
+Because $X$ and the error term share $U$, the regressor is correlated with the disturbance ($\operatorname{Cov}(X, U) \ne 0$).
+Ordinary least squares (OLS) is then **biased and inconsistent**: it estimates a mixture of the causal effect and the confounding association, not $\beta$.
 
 ## The instrument and its three assumptions
 
-An **instrument** $Z$ is a variable that lets us isolate the part of $X$ that is "as good as randomly assigned." It must satisfy three assumptions:
+An **instrument** $Z$ is a variable that lets us isolate the part of $X$ that is "as good as randomly assigned."
+It must satisfy three assumptions:
 
-1. **Relevance.** $Z$ is associated with the exposure: $\operatorname{Cov}(Z, X) \ne 0$. This is testable.
-2. **Independence (exogeneity).** $Z$ is independent of the confounders: $\operatorname{Cov}(Z, U) = 0$. Not directly testable.
-3. **Exclusion restriction.** $Z$ affects $Y$ **only through** $X$ — there is no direct path $Z \to Y$. Not directly testable.
+1. **Relevance.** $Z$ is associated with the exposure: $\operatorname{Cov}(Z, X) \ne 0$.
+   This is testable.
+2. **Independence (exogeneity).** $Z$ is independent of the confounders: $\operatorname{Cov}(Z, U) = 0$.
+   Not directly testable.
+3. **Exclusion restriction.** $Z$ affects $Y$ **only through** $X$ — there is no direct path $Z \to Y$.
+   Not directly testable.
 
 Intuitively, $Z$ nudges $X$ without touching $U$ or $Y$ by any other route, so the induced change in $Y$ can be attributed to $X$ alone.
 
@@ -30,7 +36,8 @@ Intuitively, $Z$ nudges $X$ without touching $U$ or $Y$ by any other route, so t
 
 ### The Wald ratio
 
-With a single instrument, take [covariances](measures-of-variability.md) of the outcome equation with $Z$. Under independence and exclusion the confounder and direct terms drop out:
+With a single instrument, take [covariances](measures-of-variability.md) of the outcome equation with $Z$.
+Under independence and exclusion the confounder and direct terms drop out:
 
 \[
 \operatorname{Cov}(Z, Y) = \beta \,\operatorname{Cov}(Z, X) + \underbrace{\operatorname{Cov}(Z, U)}_{=\,0} + \underbrace{\operatorname{Cov}(Z, \varepsilon)}_{=\,0}.
@@ -49,9 +56,11 @@ For a binary instrument this equals the difference in [mean](measures-of-center.
 With one or more instruments, the standard estimator is **2SLS**:
 
 - **Stage 1.** Regress $X$ on $Z$ and keep the fitted values $\hat X$ — the projection of $X$ onto the instrument, free of the confounded variation.
-- **Stage 2.** Regress $Y$ on $\hat X$. The coefficient on $\hat X$ is $\hat\beta_{2\text{SLS}}$.
+- **Stage 2.** Regress $Y$ on $\hat X$.
+  The coefficient on $\hat X$ is $\hat\beta_{2\text{SLS}}$.
 
-With a single instrument, 2SLS is algebraically identical to the Wald ratio. In matrix form, with instrument matrix $Z$,
+With a single instrument, 2SLS is algebraically identical to the Wald ratio.
+In matrix form, with instrument matrix $Z$,
 
 \[
 \hat\beta_{2\text{SLS}} = \left(\hat X^\top \hat X\right)^{-1} \hat X^\top Y, \qquad \hat X = Z (Z^\top Z)^{-1} Z^\top X.
@@ -59,7 +68,8 @@ With a single instrument, 2SLS is algebraically identical to the Wald ratio. In 
 
 ### Weak-instrument bias
 
-If relevance is only barely satisfied ($\operatorname{Cov}(Z,X)$ near zero), the denominator is small and estimates become unstable, biased toward the OLS estimate, with poor [confidence-interval](confidence-intervals.md) coverage. A common rule of thumb is a first-stage $F$-statistic above 10; weaker instruments demand caution.
+If relevance is only barely satisfied ($\operatorname{Cov}(Z,X)$ near zero), the denominator is small and estimates become unstable, biased toward the OLS estimate, with poor [confidence-interval](confidence-intervals.md) coverage.
+A common rule of thumb is a first-stage $F$-statistic above 10; weaker instruments demand caution.
 
 ## Worked simulation
 
@@ -143,7 +153,8 @@ Xh  = hcat(ones(n), Xhat)
 
 ## Why it matters for statistics
 
-Instrumental variables extend causal estimation beyond the reach of adjustment: they identify effects when the confounders are unknown or unmeasured, which is the usual predicament in observational epidemiology and economics. Understanding the relevance, independence, and exclusion assumptions — and their untestability — is central to judging when an IV analysis is credible, and it underpies related designs such as [Mendelian randomization](mendelian-randomization.md) and natural experiments.
+Instrumental variables extend causal estimation beyond the reach of adjustment: they identify effects when the confounders are unknown or unmeasured, which is the usual predicament in observational epidemiology and economics.
+Understanding the relevance, independence, and exclusion assumptions — and their untestability — is central to judging when an IV analysis is credible, and it underpies related designs such as [Mendelian randomization](mendelian-randomization.md) and natural experiments.
 
 ## Related
 
