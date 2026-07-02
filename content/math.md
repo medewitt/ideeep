@@ -46,6 +46,11 @@ core idea and notation with a worked example and runnable code in **R**,
 
 - [Optimization and Critical Points](math/optimization.md) — maxima, minima, and convexity
 
+## Convexity & inequalities
+
+- [Jensen's Inequality and Nonlinear Averaging](math/jensens-inequality.md)
+- [The Legendre Transform](math/legendre-transform.md) — convex conjugates
+
 ## Linear algebra
 
 - [Matrix and Vector Notation](math/matrix-notation.md)
@@ -78,10 +83,21 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Confidence Intervals](math/confidence-intervals.md)
 - [Permutation Tests](math/permutation-tests.md)
 
-## Study & survey design
+## Experimental & study design
 
 - [Experimental Design](math/experimental-design.md) — experimental vs observational, sources of bias
+- [Factorial Designs](math/factorial-designs.md) — main effects and interactions
+- [Fractional Factorial Designs](math/fractional-factorial-designs.md) — partial designs, aliasing, resolution
+- [Optimal Experimental Design](math/optimal-design.md) — D-, A-, and I-optimality
+- [Response Surface Methodology](math/response-surface.md) — optimizing over continuous factors
+- [Latin Hypercube Sampling](math/latin-hypercube.md) — space-filling designs for computer experiments
+- [Global Sensitivity Analysis](math/sensitivity-analysis.md) — Sobol indices and Morris screening
 - [Survey Sampling](math/survey-sampling.md) — SRS, stratified, cluster, and weighting
+
+## Causal inference
+
+- [Instrumental Variables](math/instrumental-variables.md) — estimating causal effects under confounding
+- [Mendelian Randomization](math/mendelian-randomization.md) — genetic variants as instruments
 
 ## Applications
 

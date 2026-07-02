@@ -75,6 +75,10 @@ Design decides which biases the analysis can and cannot fix: no statistical adju
 
 ## Related
 
+- [Factorial designs](factorial-designs.md)
+- [Fractional factorial designs](fractional-factorial-designs.md)
+- [Optimal experimental design](optimal-design.md)
+- [Response surface methodology](response-surface.md)
 - [Survey sampling](survey-sampling.md)
 - [Hypothesis testing](hypothesis-testing.md)
 - [Statistical inference](statistical-inference.md)
