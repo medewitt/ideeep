@@ -82,6 +82,7 @@ Nearly every classical procedure leans on it.
 - [Normal Distribution](normal-distribution.md)
 - [Sampling Distributions](sampling-distributions.md)
 - [The Law of Large Numbers](law-of-large-numbers.md)
+- [Moment Generating Functions](moment-generating-functions.md)
 - [Statistical Inference](statistical-inference.md)
 - [Confidence Intervals](confidence-intervals.md)
 - [Quantitative Methods](../math.md)

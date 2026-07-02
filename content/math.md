@@ -71,11 +71,13 @@ core idea and notation with a worked example and runnable code in **R**,
     [Exponential](math/exponential-distribution.md) ·
     [t](math/t-distribution.md)
 - [Expected Value](math/expected-value.md)
+- [Moment Generating Functions](math/moment-generating-functions.md)
 - [Measures of Center](math/measures-of-center.md) — mean, median, quantiles
 - [Measures of Variability](math/measures-of-variability.md) — variance, SD, standard error
 - [Sampling Distributions](math/sampling-distributions.md)
 - [The Law of Large Numbers](math/law-of-large-numbers.md)
 - [The Central Limit Theorem](math/central-limit-theorem.md)
+- [Branching Processes](math/branching-processes.md) — Galton–Watson, extinction, and outbreaks
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
 - [Monotonic Transformations](math/monotonic-transformations.md)
 - [Hypothesis Testing](math/hypothesis-testing.md)
@@ -163,6 +165,13 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Equilibria and Linear Stability](math/equilibria-and-stability.md) — nullclines and phase planes
 - [Bifurcations](math/bifurcations.md) — thresholds and tipping points
 - [The Next-Generation Matrix and R₀](math/next-generation-matrix.md)
+
+## Networks
+
+- [Networks and Graphs](math/networks.md) — adjacency matrices, degree, and structure
+- [Centrality and Node Importance](math/centrality.md) — degree, betweenness, eigenvector centrality
+- [Random-Graph Models](math/network-models.md) — Erdős–Rényi, scale-free, small-world
+- [Networks in Ecology and Epidemiology](math/ecological-networks.md) — food webs and transmission networks
 
 ## Pharmacokinetics & pharmacodynamics
 

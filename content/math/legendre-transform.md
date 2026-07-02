@@ -105,4 +105,5 @@ Recognizing a $\sup_x(px - f(x))$ pattern tells you a convex-conjugate structure
 - [Derivatives](derivatives.md)
 - [Maximum Likelihood](maximum-likelihood.md)
 - [Expected Value](expected-value.md)
+- [Moment Generating Functions](moment-generating-functions.md)
 - [Quantitative Methods](../math.md)

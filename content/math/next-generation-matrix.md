@@ -103,4 +103,6 @@ Because $R_0 = \rho(FV^{-1})$ crosses $1$ exactly when the disease-free equilibr
 - [Eigenvalues and Eigenvectors](eigenvalues-and-eigenvectors.md)
 - [Inverse, Determinant, and Rank](matrix-inverse-and-determinant.md)
 - [Equilibria and Linear Stability](equilibria-and-stability.md)
+- [Networks in Ecology and Epidemiology](ecological-networks.md)
+- [Branching Processes](branching-processes.md)
 - [Quantitative Methods](../math.md)

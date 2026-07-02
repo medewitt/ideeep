@@ -157,4 +157,5 @@ May's result reframed the diversity–stability debate and continues to guide qu
 - [Equilibria and Stability](equilibria-and-stability.md)
 - [Lotka–Volterra Predator–Prey Dynamics](predator-prey.md)
 - [Competition and Coexistence](competition-coexistence.md)
+- [Networks in Ecology and Epidemiology](ecological-networks.md)
 - [Quantitative Methods](../math.md)
