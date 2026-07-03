@@ -287,6 +287,7 @@ hr {
 .nav-logo {
 	display: inline-flex;
 	align-items: center;
+	gap: var(--space-3);
 	text-decoration: none;
 	padding: var(--space-2) 0;
 	margin-right: auto;         /* logo left, menu pushed to the right */
@@ -296,6 +297,30 @@ hr {
 	height: 40px;
 	width: auto;
 	display: block;
+	flex: none;
+}
+
+/* Live wordmark — crisp, selectable, and recolors in dark mode */
+.nav-wordmark {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.12;
+}
+.nav-wordmark-main {
+	font-weight: 800;
+	font-size: 0.98rem;
+	letter-spacing: 0.01em;
+	color: var(--color-accent);
+}
+.nav-wordmark-sub {
+	font-size: 0.66rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	color: var(--color-nav-fg);
+	opacity: 0.7;
+}
+@media screen and (max-width: 600px) {
+	.nav-wordmark-sub { display: none; }
 }
 
 /* Hamburger toggle — hidden on desktop, revealed in the mobile media query */
@@ -543,6 +568,45 @@ blockquote p {
 
 blockquote p + p {
 	margin-top: var(--space-3);
+}
+
+/* Callouts / admonitions ([!NOTE] [!TIP] [!WARNING] [!EXAMPLE]) */
+.callout {
+	margin: var(--space-5) 0;
+	padding: var(--space-4) var(--space-5);
+	border: 1px solid var(--callout-border);
+	border-left: 4px solid var(--callout-accent);
+	border-radius: var(--radius);
+	background: var(--callout-bg);
+}
+.callout > :last-child {
+	margin-bottom: 0;
+}
+.callout p {
+	margin-bottom: var(--space-3);
+}
+.callout-heading {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-weight: 700;
+	color: var(--callout-accent);
+	margin-bottom: var(--space-2);
+}
+.callout-heading svg {
+	width: 18px;
+	height: 18px;
+	flex: none;
+}
+.callout-note    { --callout-accent: var(--color-link); --callout-bg: rgba(47, 111, 159, 0.07); --callout-border: rgba(47, 111, 159, 0.28); }
+.callout-tip     { --callout-accent: #3f8f5b; --callout-bg: rgba(63, 143, 91, 0.08); --callout-border: rgba(63, 143, 91, 0.28); }
+.callout-warning { --callout-accent: #b0842f; --callout-bg: rgba(176, 132, 47, 0.10); --callout-border: rgba(176, 132, 47, 0.32); }
+.callout-example { --callout-accent: var(--color-accent); --callout-bg: var(--color-surface); --callout-border: var(--color-border); }
+:root[data-theme="dark"] .callout-tip { --callout-accent: #6ac08a; }
+:root[data-theme="dark"] .callout-warning { --callout-accent: #d8ab54; }
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .callout-tip { --callout-accent: #6ac08a; }
+	:root:not([data-theme="light"]) .callout-warning { --callout-accent: #d8ab54; }
 }
 
 /* 7. Footer ---------------------------------------------------------------- */

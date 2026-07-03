@@ -233,16 +233,50 @@ fn convert_internal_links(html: &str, markdown_files: &std::collections::HashSet
     result
 }
 
+/// SVG glyph for each callout type (inline so it themes with currentColor).
+fn callout_icon(kind: &str) -> &'static str {
+    match kind {
+        "tip" => r#"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>"#,
+        "warning" => r#"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>"#,
+        "example" => r#"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg>"#,
+        // note / default
+        _ => r#"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>"#,
+    }
+}
+
+/// Transform GitHub-style admonition blockquotes (`> [!NOTE]`, `[!TIP]`,
+/// `[!WARNING]`, `[!EXAMPLE]`) into styled callout blocks.
+fn render_callouts(html: &str) -> String {
+    let re = Regex::new(r"(?is)<blockquote>\s*<p>\s*\[!(NOTE|TIP|WARNING|EXAMPLE|IMPORTANT|CAUTION)\][ \t]*(?:<br\s*/?>|\n)?(.*?)</blockquote>").unwrap();
+    re.replace_all(html, |caps: &regex::Captures| {
+        let raw = caps[1].to_ascii_lowercase();
+        let (kind, label) = match raw.as_str() {
+            "tip" => ("tip", "Tip"),
+            "warning" | "caution" => ("warning", "Warning"),
+            "example" => ("example", "Example"),
+            _ => ("note", "Note"), // note / important
+        };
+        format!(
+            "<div class=\"callout callout-{kind}\">\n<div class=\"callout-heading\">{icon}<span>{label}</span></div>\n<p>{body}</div>",
+            kind = kind,
+            icon = callout_icon(kind),
+            label = label,
+            body = &caps[2],
+        )
+    }).into_owned()
+}
+
 fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<String>) -> String {
     // Pre-process math expressions: render them server-side with KaTeX
     let processed_markdown = preprocess_math(markdown);
-    
+
     let options = Options::all();
     let parser = Parser::new_ext(&processed_markdown, options);
     let mut html_output = String::new();
     html::push_html(&mut html_output, parser);
-    
-    convert_internal_links(&html_output, markdown_files)
+
+    let linked = convert_internal_links(&html_output, markdown_files);
+    render_callouts(&linked)
 }
 
 #[derive(Clone)]
@@ -264,9 +298,6 @@ fn generate_navbar(
     let mut nav = String::from("<nav class=\"site-nav\" aria-label=\"Primary\">\n<div class=\"nav-inner\">\n");
 
     // Logo/home link sits outside the collapsible menu so it stays visible on mobile.
-    let index_title = markdown_titles.get("index")
-        .cloned()
-        .unwrap_or_else(|| "IDEEP".to_string());
     let index_is_active = current_page.map(|cp| cp == "index").unwrap_or(false);
     let index_link_class = if index_is_active { "nav-logo active" } else { "nav-logo" };
     // Calculate relative path to index.html from current page
@@ -276,12 +307,11 @@ fn generate_navbar(
         format!("{}index.html", asset_prefix)
     };
     nav.push_str(&format!(
-        "  <a href=\"{}\" class=\"{}\"{}><img class=\"nav-logo-img\" src=\"{}assets/logo-wide.png\" alt=\"IDEEEP home\">{}</a>\n",
+        "  <a href=\"{}\" class=\"{}\"{}><img class=\"nav-logo-img\" src=\"{}assets/emblem.png\" alt=\"\" width=\"40\" height=\"40\"><span class=\"nav-wordmark\"><span class=\"nav-wordmark-main\">Infectious Diseases</span><span class=\"nav-wordmark-sub\">Ecology, Evolution &amp; Epidemiology</span></span></a>\n",
         index_path,
         index_link_class,
         if index_is_active { " aria-current=\"page\"" } else { "" },
-        asset_prefix,
-        index_title
+        asset_prefix
     ));
 
     // Hamburger toggle (shown on narrow screens; controlled by assets/nav.js).
