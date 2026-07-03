@@ -23,6 +23,8 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 - [Floating-Point Arithmetic & Numerical Stability](programming/floating-point-and-numerical-stability.md) — log space, the log-sum-exp trick, and why likelihoods hit zero
 - [Numerical Methods for Dynamical Systems](programming/numerical-methods-for-dynamical-systems.md) — integrating ODEs, Euler vs RK4, stiffness, and solvers
 - [Testing & Verification for Scientific Code](programming/testing-scientific-code.md) — unit tests, invariants, and testing stochastic code
+- [Vectorization, Memory & Profiling](programming/vectorization-and-performance.md) — constant-factor speed, the memory hierarchy, and profiling
+- [Parallelism & Concurrency](programming/parallelism-and-concurrency.md) — cores vs threads, race conditions, and thread oversubscription
 - [Manipulating Data Frames](math/manipulating-data.md) — dplyr, data.table, pandas, Polars, DataFrames.jl
 - [Computer Basics for Scientists](programming/computer-basics.md) — files, paths, and the command line
 - [Running Jobs on an HPC Cluster (SLURM)](programming/hpc-clusters-slurm.md) — the DEAC & DEMON clusters, modules, SSH, and job submission
