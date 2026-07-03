@@ -167,6 +167,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Discrete-Time Models and the Logistic Map](math/discrete-population-models.md)
 - [Structured Population Models](math/structured-populations.md) — Leslie matrices
 - [Metapopulations and the Levins Model](math/metapopulations.md)
+- [Asynchrony and the Inflationary Effect](math/metapopulation-asynchrony.md) — how spatiotemporal variation and dispersal inflate abundance and persistence
 
 *Species interactions & stability:*
 
