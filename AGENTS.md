@@ -50,6 +50,11 @@ Relative `.md` links are rewritten to `.html` at build time.
 
 To **add a new section**: create a hub page `content/<section>.md`, put its pages in `content/<section>/`, then add the hub key to a `dropdowns:` entry and place that dropdown in `navbar_order`.
 
+Hub (and other long) pages can set `toc: true` in front matter to get an
+auto-generated "On this page" table of contents built from their `##` headings;
+it is off by default. Flat link lists (4+ items, all links) are automatically
+flowed into responsive columns.
+
 ## Page skeleton (match this)
 
 See `content/math/logistic-growth.md` or `content/epidemiology/epidemiological-intervals.md` for exemplars. The standard structure is:

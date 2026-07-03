@@ -1,5 +1,6 @@
 ---
 title: "Scientific Pathways"
+toc: true
 ---
 
 # Scientific Pathways

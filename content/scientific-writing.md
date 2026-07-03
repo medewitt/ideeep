@@ -1,5 +1,6 @@
 ---
 title: "Scientific Writing"
+toc: true
 ---
 
 # Scientific Writing

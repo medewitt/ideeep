@@ -1565,11 +1565,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let (frontmatter, markdown_content) = extract_frontmatter(&content);
         let html_content = markdown_to_html(markdown_content, &markdown_file_names);
 
-        // Give headings ids, then add an "On this page" TOC to long/hub pages.
-        // Front-matter `toc:` overrides the automatic threshold (>= 5 sections).
+        // Give headings ids, then add an "On this page" TOC where a page opts in
+        // with `toc: true` in its front matter (used on the section hub pages).
         let (html_content, headings) = add_heading_ids(&html_content);
-        let toc_default = headings.iter().filter(|(lvl, _, _)| *lvl == 2).count() >= 5;
-        let toc_enabled = frontmatter.and_then(|fm| fm.toc).unwrap_or(toc_default);
+        let toc_enabled = frontmatter.and_then(|fm| fm.toc).unwrap_or(false);
         let html_content = if toc_enabled && !headings.is_empty() {
             let toc = build_toc(&headings);
             let with_lead = html_content.replacen("<p>", "<p class=\"lead\">", 1);

@@ -1,5 +1,6 @@
 ---
 title: "Programming & Computing"
+toc: true
 ---
 
 # Programming & Computing

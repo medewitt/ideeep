@@ -1,5 +1,6 @@
 ---
 title: "Epidemiology"
+toc: true
 ---
 
 # Epidemiology

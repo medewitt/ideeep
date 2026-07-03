@@ -1,5 +1,6 @@
 ---
 title: "Diagnostics & Surveillance"
+toc: true
 ---
 
 # Diagnostics & Surveillance
