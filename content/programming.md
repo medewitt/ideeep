@@ -13,6 +13,7 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 
 - [Good Programming Practices](programming/good-programming-practices.md) — naming, small functions, and clean code
 - [Project Workflow](programming/project-workflow.md) — organizing an analytic project
+- [Software Design & Packaging](programming/software-design-and-packaging.md) — modularity, interfaces, and turning analysis into a package
 - [Reproducibility](programming/reproducibility.md) — seeds, environments, and literate code
 - [Debugging and Troubleshooting](programming/debugging-and-troubleshooting.md) — a calm process and the reprex
 - [A Simulation Toolkit](programming/simulation-toolkit.md) — building fake data and simulation studies
