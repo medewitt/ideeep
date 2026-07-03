@@ -16,6 +16,7 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 - [Reproducibility](programming/reproducibility.md) — seeds, environments, and literate code
 - [Debugging and Troubleshooting](programming/debugging-and-troubleshooting.md) — a calm process and the reprex
 - [A Simulation Toolkit](programming/simulation-toolkit.md) — building fake data and simulation studies
+- [Randomness & Random Number Generation](programming/randomness-and-rng.md) — seeds, sampling, and the parallel-RNG trap
 - [Big-O Notation & Computational Complexity](programming/big-o-and-complexity.md) — how work grows with data, and the `O(n²)` trap
 - [Data Structures & Choosing the Right Container](programming/data-structures.md) — arrays, hash maps, and sets, and the list→set fix
 - [Recursion & Dynamic Programming](programming/recursion-and-dynamic-programming.md) — memoization, sequence alignment, HMMs, and tree likelihoods
