@@ -8,6 +8,8 @@ navbar_order:
   - research
   - people
   - Resources
+  - Methods
+  - Professional Development
   - Syllabi
   - Search
   - url: https://wakeforestid.com
@@ -17,6 +19,12 @@ dropdowns:
   Resources:
     - math
     - programming
+  Methods:
+    - epidemiology
+    - diagnostics
+  Professional Development:
+    - scientific-pathways
+    - scientific-writing
   Syllabi:
     - bio301-math-bio
     - bio340-id-ecology
