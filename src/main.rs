@@ -260,15 +260,14 @@ fn generate_navbar(
     current_page: Option<&str>,
     asset_prefix: &str,
 ) -> String {
-    let mut nav = String::from("<nav class=\"site-nav\" aria-label=\"Primary\">\n");
-    nav.push_str("<ul class=\"nav-list\">\n");
+    let mut nav = String::from("<nav class=\"site-nav\" aria-label=\"Primary\">\n<div class=\"nav-inner\">\n");
 
-    // Always add logo/IDEEP link at the start
+    // Logo/home link sits outside the collapsible menu so it stays visible on mobile.
     let index_title = markdown_titles.get("index")
         .cloned()
         .unwrap_or_else(|| "IDEEP".to_string());
     let index_is_active = current_page.map(|cp| cp == "index").unwrap_or(false);
-    let index_link_class = if index_is_active { "nav-link nav-logo active" } else { "nav-link nav-logo" };
+    let index_link_class = if index_is_active { "nav-logo active" } else { "nav-logo" };
     // Calculate relative path to index.html from current page
     let index_path = if asset_prefix.is_empty() {
         "index.html".to_string()
@@ -276,10 +275,19 @@ fn generate_navbar(
         format!("{}index.html", asset_prefix)
     };
     nav.push_str(&format!(
-        "  <li class=\"nav-item\"><a href=\"{}\" class=\"{}\"><img class=\"nav-logo-img\" src=\"{}assets/logo-wide.png\" alt=\"IDEEEP home\">{}</a></li>\n",
-        index_path, index_link_class, asset_prefix, index_title
+        "  <a href=\"{}\" class=\"{}\"{}><img class=\"nav-logo-img\" src=\"{}assets/logo-wide.png\" alt=\"IDEEEP home\">{}</a>\n",
+        index_path,
+        index_link_class,
+        if index_is_active { " aria-current=\"page\"" } else { "" },
+        asset_prefix,
+        index_title
     ));
-    
+
+    // Hamburger toggle (shown on narrow screens; controlled by assets/nav.js).
+    nav.push_str("  <button class=\"nav-toggle\" aria-expanded=\"false\" aria-controls=\"primary-menu\" aria-label=\"Toggle navigation menu\"><span class=\"nav-toggle-bars\" aria-hidden=\"true\"></span></button>\n");
+
+    nav.push_str("  <ul class=\"nav-list\" id=\"primary-menu\">\n");
+
     for item in navbar_items {
         match item {
             NavbarItem::MarkdownFile(relative_path, title) => {
@@ -299,10 +307,11 @@ fn generate_navbar(
                 
                 let is_active = current_page.map(|cp| cp == &rel_key || cp == relative_path.file_stem().and_then(|s| s.to_str()).unwrap_or("")).unwrap_or(false);
                 let link_class = if is_active { "nav-link active" } else { "nav-link" };
-                
+                let aria_current = if is_active { " aria-current=\"page\"" } else { "" };
+
                 nav.push_str(&format!(
-                    "  <li class=\"nav-item\"><a href=\"{}\" class=\"{}\">{}</a></li>\n",
-                    html_path, link_class, title
+                    "  <li class=\"nav-item\"><a href=\"{}\" class=\"{}\"{}>{}</a></li>\n",
+                    html_path, link_class, aria_current, title
                 ));
             }
             NavbarItem::ExternalLink(url, text) => {
@@ -315,18 +324,40 @@ fn generate_navbar(
                 let href = format!("{}{}", asset_prefix, path_base);
                 let is_active = current_page.map(|cp| cp == key).unwrap_or(false);
                 let link_class = if is_active { "nav-link active" } else { "nav-link" };
+                let aria_current = if is_active { " aria-current=\"page\"" } else { "" };
                 nav.push_str(&format!(
-                    "  <li class=\"nav-item\"><a href=\"{}\" class=\"{}\">{}</a></li>\n",
-                    href, link_class, label
+                    "  <li class=\"nav-item\"><a href=\"{}\" class=\"{}\"{}>{}</a></li>\n",
+                    href, link_class, aria_current, label
                 ));
             }
             NavbarItem::Dropdown(dropdown_name) => {
                 // Render dropdown inline
                 if let Some(dropdowns_map) = dropdowns {
                     if let Some(dropdown_value) = dropdowns_map.get(dropdown_name) {
+                        // A URL-safe id for aria-controls / the panel.
+                        let slug: String = dropdown_name
+                            .chars()
+                            .map(|c| if c.is_ascii_alphanumeric() { c.to_ascii_lowercase() } else { '-' })
+                            .collect();
+                        let panel_id = format!("dd-{}", slug);
+
+                        // Highlight the dropdown parent when the current page lives inside it.
+                        let dd_active = current_page.map(|cp| match dropdown_value {
+                            serde_yaml::Value::Sequence(seq) => seq.iter().any(|it| {
+                                it.as_str()
+                                    .map(|pn| cp == pn || cp.starts_with(&format!("{}/", pn)))
+                                    .unwrap_or(false)
+                            }),
+                            _ => false,
+                        }).unwrap_or(false);
+                        let toggle_class = if dd_active { "nav-link dropdown-toggle active" } else { "nav-link dropdown-toggle" };
+
                         nav.push_str("  <li class=\"nav-item dropdown\">\n");
-                        nav.push_str(&format!("    <a class=\"nav-link dropdown-toggle\" tabindex=\"0\">{}</a>\n", dropdown_name));
-                        nav.push_str("    <div class=\"dropdown-content\">\n");
+                        nav.push_str(&format!(
+                            "    <button type=\"button\" class=\"{}\" aria-expanded=\"false\" aria-haspopup=\"true\" aria-controls=\"{}\">{}<svg class=\"dropdown-caret\" width=\"11\" height=\"7\" viewBox=\"0 0 10 6\" aria-hidden=\"true\"><path d=\"M1 1l4 4 4-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>\n",
+                            toggle_class, panel_id, dropdown_name
+                        ));
+                        nav.push_str(&format!("    <div class=\"dropdown-content\" id=\"{}\">\n", panel_id));
                         
                         // Handle different dropdown value types
                         match dropdown_value {
@@ -407,7 +438,7 @@ fn generate_navbar(
         }
     }
     
-    nav.push_str("</ul>\n</nav>\n");
+    nav.push_str("  </ul>\n</div>\n</nav>\n");
     nav
 }
 
@@ -429,53 +460,38 @@ fn generate_html(title: &str, content: &str, navbar: &str, asset_prefix: &str) -
     };
 
     Ok(format!(
-        r#"<!DOCTYPE html>
+        r##"<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{}</title>
-    <link rel="icon" type="image/png" href="{}assets/logo.png" />
-    <link rel="stylesheet" href="{}assets/styles.css" type="text/css" />
+    <link rel="icon" type="image/png" href="{p}assets/favicon.png" />
+    <link rel="stylesheet" href="{p}assets/styles.css" type="text/css" />
     {}
-    <script src="https://kit.fontawesome.com/1ffe760482.js" crossorigin="anonymous"></script>
-    <!-- Highlight.js for code syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js"></script>
+    <!-- Self-hosted syntax highlighting (highlight.js) -->
+    <link rel="stylesheet" href="{p}assets/vendor/highlightjs/github.min.css">
+    <script defer src="{p}assets/vendor/highlightjs/highlight.bundle.min.js"></script>
+    <script defer src="{p}assets/nav.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {{
-        hljs.highlightAll();
+        if (window.hljs) hljs.highlightAll();
     }});
     </script>
     {}
 </head>
 <body>
+    <a class="skip-link" href="#content">Skip to content</a>
     {}
-    <div id="content">
+    <main id="content">
         <div class="blogbody">
             {}
         </div>
-    </div>
+    </main>
     {}
 </body>
-</html>"#,
-        title, asset_prefix, asset_prefix, font_preload, katex_css, navbar, content, footer_content
+</html>"##,
+        title, font_preload, katex_css, navbar, content, footer_content, p = asset_prefix
     ))
 }
 

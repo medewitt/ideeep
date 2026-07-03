@@ -27,7 +27,7 @@ content/            all site content (Markdown); discovered recursively
   index.md, programs.md, research.md, people.md, *.md        top-level & syllabus pages
 figures/            PEP-723 Python scripts -> assets/figures/*.svg (via `just figures`)
   _style.py         shared matplotlib style (palette, apply_style, save)
-assets/             styles.css, footer.html, figures/*.svg, vendor/ (katex, sqljs)
+assets/             styles.css, nav.js, footer.html, fonts/ (Nunito Sans woff2), figures/*.svg, vendor/ (katex, sqljs, highlightjs)
 scripts/            sentence_lint.py, inject_python_output.py (dev tools)
 config.yaml         navbar order and dropdown definitions
 justfile            build / lint / figures / preview recipes
