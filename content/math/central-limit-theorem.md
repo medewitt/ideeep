@@ -60,6 +60,14 @@ for i, n in enumerate((1, 5, 30)):
 plt.tight_layout()
 ```
 
+<!-- python-output:auto -->
+```text
+n= 1 SD=0.986 theory=1.000
+n= 5 SD=0.453 theory=0.447
+n=30 SD=0.181 theory=0.183
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

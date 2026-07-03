@@ -98,6 +98,13 @@ s1, s2 = 0.2, 0.3
 print(iterate(0.05, 1 - s1, 1, 1 - s2))  # ~ 0.6
 ```
 
+<!-- python-output:auto -->
+```text
+0.9999999985559945
+0.5999999999998405
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -83,6 +83,12 @@ print(round(omega, 3))   # 0.5 -> purifying selection
 # print(dN / dS)
 ```
 
+<!-- python-output:auto -->
+```text
+0.5
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

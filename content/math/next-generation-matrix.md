@@ -75,6 +75,12 @@ R0 = max(abs(np.linalg.eigvals(K)))
 print(R0)               # ~2.618, the spectral radius of F V^{-1}
 ```
 
+<!-- python-output:auto -->
+```text
+2.618033988749895
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

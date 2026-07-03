@@ -135,6 +135,14 @@ print({k: round(v/max(ev.values()), 3) for k, v in ev.items()})
 print({k: round(v, 3) for k, v in nx.betweenness_centrality(G).items()})
 ```
 
+<!-- python-output:auto -->
+```text
+{0: 3, 1: 2, 2: 2, 3: 1}
+{0: 1.0, 1: 0.855, 2: 0.855, 3: 0.461}
+{0: 0.667, 1: 0.0, 2: 0.0, 3: 0.0}
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

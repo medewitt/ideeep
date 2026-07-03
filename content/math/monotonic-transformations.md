@@ -117,6 +117,13 @@ h = stats.gamma.pdf(theta, a=3, scale=1)
 print(theta[h.argmax()] == theta[np.log(h).argmax()])   # True
 ```
 
+<!-- python-output:auto -->
+```text
+0.49975819739868915 0.08306185653227188
+True
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

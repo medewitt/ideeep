@@ -95,6 +95,12 @@ fit = minimize_scalar(negloglik, bounds=(1e-6, 1 - 1e-6), method="bounded")
 print(fit.x, x.mean())   # numeric vs closed form
 ```
 
+<!-- python-output:auto -->
+```text
+0.3049994360315715 0.305
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

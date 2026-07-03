@@ -84,6 +84,13 @@ X = sm.add_constant(np.column_stack([snp, pcs]))
 print(sm.OLS(y, X).fit().pvalues[1])                              # non-significant
 ```
 
+<!-- python-output:auto -->
+```text
+4.130440298128386e-11
+0.8336821049074644
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

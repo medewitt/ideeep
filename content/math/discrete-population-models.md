@@ -102,6 +102,12 @@ for r in rs:
 # plt.plot(R, X, ',k')  -> period-doubling route to chaos
 ```
 
+<!-- python-output:auto -->
+```text
+0.6
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

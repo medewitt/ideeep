@@ -127,6 +127,12 @@ sol = solve_ivp(rm, [0, 365], [0.01, 0.0], args=pars,
 print(sol.y[:, -1].round(3))   # endemic eq ~ [0.99, 0.31]
 ```
 
+<!-- python-output:auto -->
+```text
+[0.989 0.597]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

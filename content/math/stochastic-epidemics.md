@@ -138,6 +138,12 @@ sizes = [gillespie_sir()[2] for _ in range(5)]
 print(sizes)   # bimodal: some minor (~few), some major (~800); R0 = 2
 ```
 
+<!-- python-output:auto -->
+```text
+[816, 866, 777, 796, 787]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

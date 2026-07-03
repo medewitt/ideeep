@@ -90,6 +90,12 @@ for _ in range(5000):
 print(V.min(), V.max())         # spread-out range: pattern of spots formed
 ```
 
+<!-- python-output:auto -->
+```text
+7.676706942952306e-226 3.376705577896684e-225
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

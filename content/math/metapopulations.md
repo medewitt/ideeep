@@ -78,6 +78,14 @@ D = 0.5               # habitat destruction
 print(1 - D - e / c)  # 0.25 occupancy after destroying half the patches
 ```
 
+<!-- python-output:auto -->
+```text
+0.7499997354809338
+0.75
+0.25
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

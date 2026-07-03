@@ -107,6 +107,13 @@ print(draws.mean(), np.quantile(draws, [0.025, 0.975]))
 print(gamma.ppf([0.025, 0.975], 14, scale=1/6))         # analytic: 1.28 3.72
 ```
 
+<!-- python-output:auto -->
+```text
+2.338860902947516 [1.27653574 3.74541504]
+[1.27565505 3.70506599]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

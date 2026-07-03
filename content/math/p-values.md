@@ -66,6 +66,13 @@ print(2 * stats.norm.sf(z))               # two-sided z
 print(2 * stats.t.sf(abs(2.11), df=9))    # two-sided t
 ```
 
+<!-- python-output:auto -->
+```text
+0.035728841125633085
+0.06406977491571955
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

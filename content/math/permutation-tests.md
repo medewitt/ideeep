@@ -65,6 +65,12 @@ for i in range(perm.size):
 print((np.sum(np.abs(perm) >= abs(obs)) + 1) / (perm.size + 1))
 ```
 
+<!-- python-output:auto -->
+```text
+0.0978902109789021
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

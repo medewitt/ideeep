@@ -54,6 +54,13 @@ print(np.all(np.diff(a) > 0))   # True
 print(np.all(np.diff(b) < 0))   # True
 ```
 
+<!-- python-output:auto -->
+```text
+True
+True
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

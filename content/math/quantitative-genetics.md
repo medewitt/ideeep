@@ -88,6 +88,12 @@ R = Poff.mean() - P.mean()
 print(S, h2 * S, R)           # R ~ h2 * S
 ```
 
+<!-- python-output:auto -->
+```text
+1.3984519049386284 0.6992259524693142 0.6990948334356657
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

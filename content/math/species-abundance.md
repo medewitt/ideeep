@@ -97,6 +97,12 @@ print(ab[:6])   # few common species, long tail of rare ones
 # import matplotlib.pyplot as plt; plt.semilogy(ab, 'o-')
 ```
 
+<!-- python-output:auto -->
+```text
+[48 45 41 28 27 24]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

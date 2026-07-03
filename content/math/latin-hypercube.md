@@ -99,6 +99,16 @@ R0 = beta / gamma
 print(np.round(np.c_[beta, gamma, R0][:5], 3))
 ```
 
+<!-- python-output:auto -->
+```text
+[[0.584 0.236 2.472]
+ [0.124 0.192 0.645]
+ [0.255 0.121 2.099]
+ [0.31  0.181 1.712]
+ [0.286 0.25  1.144]]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

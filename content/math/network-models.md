@@ -73,6 +73,13 @@ print(np.mean(er_deg), max(er_deg))  # ~4,  ~12   (Poisson: thin tail)
 print(np.mean(ba_deg), max(ba_deg))  # ~4,  ~90+  (scale-free: hubs)
 ```
 
+<!-- python-output:auto -->
+```text
+3.984 11
+3.992 87
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

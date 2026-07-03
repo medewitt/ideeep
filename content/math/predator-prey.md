@@ -140,6 +140,12 @@ ax2.plot(N, P)                        # closed phase-plane orbit
 plt.show()
 ```
 
+<!-- python-output:auto -->
+```text
+200.0 50.0
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

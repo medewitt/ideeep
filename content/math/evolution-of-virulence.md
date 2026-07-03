@@ -95,6 +95,12 @@ res = minimize_scalar(lambda al: -R0(al), bounds=(1e-6, 10), method="bounded")
 print(res.x, R0(res.x))    # ~0.6 (= gamma + mu), ~1.936
 ```
 
+<!-- python-output:auto -->
+```text
+0.6000014256626104 1.9364916731023418
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

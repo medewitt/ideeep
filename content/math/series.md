@@ -70,6 +70,12 @@ closed  = a / (1 - r)                        # 2.0
 print(partial, closed)
 ```
 
+<!-- python-output:auto -->
+```text
+1.998046875 2.0
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -113,6 +113,12 @@ sol = solve_ivp(repl, (0, 50), [0.9, 0.1], t_eval=[50])
 print(sol.y[:, -1])            # -> [0.667, 0.333], Hawk freq = V/C = 2/3
 ```
 
+<!-- python-output:auto -->
+```text
+[0.66673614 0.33326386]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

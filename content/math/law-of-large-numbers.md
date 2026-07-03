@@ -60,6 +60,12 @@ plt.xlabel("n"); plt.ylabel("running mean")
 print(running[-1])   # close to 0.5
 ```
 
+<!-- python-output:auto -->
+```text
+0.4937
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -63,6 +63,13 @@ print(sp.limit(sp.sin(x)/x, x, 0))        # 1
 print(sp.limit((3*n + 1)/n, n, sp.oo))    # 3
 ```
 
+<!-- python-output:auto -->
+```text
+1
+3
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

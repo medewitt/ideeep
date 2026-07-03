@@ -82,6 +82,12 @@ strat = pop.groupby("stratum", group_keys=False).apply(       # stratified 10%
 print(srs["y"].mean(), strat["y"].mean())
 ```
 
+<!-- python-output:auto -->
+```text
+10.34350267409585 10.312518620234567
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

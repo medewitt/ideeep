@@ -77,6 +77,12 @@ c_rec = 0.1
 [D * (1 - c_rec)**t for t in range(11)]              # geometric decay
 ```
 
+<!-- python-output:auto -->
+```text
+0.15000000000000002 0.6000000000000001 0.3600000000000001
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

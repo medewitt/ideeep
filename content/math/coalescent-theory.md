@@ -68,6 +68,12 @@ tmrca = np.array([sim_tmrca(4, 1000) for _ in range(10000)])
 print(tmrca.mean())   # ~ 1500, matching 2*Ne*(1 - 1/n)
 ```
 
+<!-- python-output:auto -->
+```text
+1487.0811141773204
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

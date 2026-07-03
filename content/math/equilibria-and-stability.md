@@ -117,6 +117,13 @@ sol = solve_ivp(f, (0, 20), [1.1, 0.9], rtol=1e-8, dense_output=True)
 print(sol.y[:, -1])                  # ~[3, 0]: settles at the stable node
 ```
 
+<!-- python-output:auto -->
+```text
+[ 0.41421356 -2.41421356]
+[3.00000032e+00 3.98062839e-07]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

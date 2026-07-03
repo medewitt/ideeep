@@ -88,6 +88,12 @@ front = x[u > 0.5].max()          # position of u = 0.5 level set
 print(front / (steps * dt))       # ~0.63  vs  2*sqrt(r*D) = 0.632
 ```
 
+<!-- python-output:auto -->
+```text
+0.6075
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

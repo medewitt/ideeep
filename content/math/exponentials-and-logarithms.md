@@ -73,6 +73,14 @@ print(np.e)                  # 2.718281828...
 print(np.isclose(np.log(3 * 4), np.log(3) + np.log(4)))  # True
 ```
 
+<!-- python-output:auto -->
+```text
+2.7182804690957534
+2.718281828459045
+True
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

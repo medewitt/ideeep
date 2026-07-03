@@ -83,6 +83,12 @@ var  = sp.simplify(EX2 - mean**2)          # lambda
 print(mean, sp.simplify(EX2), var)         # lambda  lambda**2 + lambda  lambda
 ```
 
+<!-- python-output:auto -->
+```text
+lambda lambda*(lambda + 1) lambda
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -69,6 +69,16 @@ print(nx.number_connected_components(g))      # 1
 print(nx.transitivity(g))                     # global clustering
 ```
 
+<!-- python-output:auto -->
+```text
+{1: 2, 2: 2, 3: 3, 4: 2, 5: 1}
+2.0
+0.5
+1
+0.5
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

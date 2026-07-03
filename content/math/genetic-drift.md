@@ -80,6 +80,13 @@ print((reps == 1).mean())  # ~ 0.5 : fraction fixed ~ starting frequency
 print((reps == 0).mean())  # ~ 0.5 : fraction lost
 ```
 
+<!-- python-output:auto -->
+```text
+0.414
+0.389
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

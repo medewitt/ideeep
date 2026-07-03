@@ -97,6 +97,12 @@ print(best, best_det)
 # [-1.  1.] 4.0   -> endpoints are D-optimal
 ```
 
+<!-- python-output:auto -->
+```text
+[-1.  1.] 4.0
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

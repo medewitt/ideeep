@@ -89,6 +89,13 @@ print(means.mean())  # ~170
 print(means.std())   # ~2.0  (= sigma / sqrt(n))
 ```
 
+<!-- python-output:auto -->
+```text
+169.97170187520274
+1.993564883254646
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -123,6 +123,16 @@ for j in range(m):
 # Logistic: sm.Logit(status, X).fit()
 ```
 
+<!-- python-output:auto -->
+```text
+0 0.051 4.6e-01
+1 0.044 5.0e-01
+2 0.446 5.4e-11
+3 0.039 5.6e-01
+4 -0.029 6.7e-01
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

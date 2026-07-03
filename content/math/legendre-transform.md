@@ -65,6 +65,13 @@ print(conjugate(x**2 / 2))           # p**2/2
 print(conjugate(sp.exp(x)))          # p*log(p) - p
 ```
 
+<!-- python-output:auto -->
+```text
+p**2/2
+p*(log(p) - 1)
+```
+<!-- /python-output:auto -->
+
 ### R (numeric conjugate via optimize)
 
 ```r

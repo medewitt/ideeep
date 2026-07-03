@@ -72,6 +72,12 @@ f = lambda x: np.piecewise(x, [x < 0, (x >= 0) & (x <= 1), x > 1],
 print(f(np.array([-3, 0.5, 4])))   # [3.   0.25 1.  ]
 ```
 
+<!-- python-output:auto -->
+```text
+[3.   0.25 1.  ]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

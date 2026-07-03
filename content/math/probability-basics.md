@@ -115,6 +115,12 @@ d2 = rng.integers(1, 7, N)
 print(np.mean(d1 + d2 == 7))   # ~0.1667
 ```
 
+<!-- python-output:auto -->
+```text
+0.166807
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

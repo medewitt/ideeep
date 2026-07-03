@@ -122,6 +122,14 @@ hi = grid[np.argmin(np.abs(cdf - 0.975))]
 print(lo, hi)                          # 0.385 0.782
 ```
 
+<!-- python-output:auto -->
+```text
+0.5909090909090909
+[0.38435439 0.78180314]
+0.384 0.7815
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

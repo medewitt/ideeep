@@ -62,6 +62,12 @@ rng.shuffle(labels)                     # random assignment
 print(list(zip(range(1, 11), labels)))
 ```
 
+<!-- python-output:auto -->
+```text
+[(1, np.str_('control')), (2, np.str_('treat')), (3, np.str_('control')), (4, np.str_('treat')), (5, np.str_('treat')), (6, np.str_('treat')), (7, np.str_('control')), (8, np.str_('control')), (9, np.str_('control')), (10, np.str_('treat'))]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

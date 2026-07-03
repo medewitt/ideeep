@@ -74,6 +74,13 @@ print(stats.ttest_1samp(x, popmean=5))          # continuous
 print(stats.binomtest(18, 40, p=0.5))           # proportion
 ```
 
+<!-- python-output:auto -->
+```text
+TtestResult(statistic=np.float64(1.1216087309978322), pvalue=np.float64(0.2910612434086062), df=np.int64(9))
+BinomTestResult(k=18, n=40, alternative='two-sided', statistic=0.45, pvalue=0.6358280026288412)
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -102,6 +102,13 @@ print(p)                        # ~ [4, 2, 2]
 print(hill(4, *p))              # ~3.2 : effect at C = 4
 ```
 
+<!-- python-output:auto -->
+```text
+[4.02057431 2.02736333 1.98503466]
+3.1921646202469307
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -108,6 +108,14 @@ print(rej)   # [ True  True  True  True False]
 print(q)     # [0.005 0.02  0.0333 0.05  0.5  ]
 ```
 
+<!-- python-output:auto -->
+```text
+[0.005 0.04  0.1   0.2   1.   ]
+[ True  True  True  True False]
+[0.005      0.02       0.03333333 0.05       0.5       ]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

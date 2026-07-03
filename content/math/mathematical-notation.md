@@ -82,6 +82,15 @@ print(math.factorial(n))          # 120
 print(math.comb(n, k))            # 10
 ```
 
+<!-- python-output:auto -->
+```text
+15
+120
+120
+10
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

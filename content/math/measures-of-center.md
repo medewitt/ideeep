@@ -64,6 +64,15 @@ print(np.quantile(x, [.25, .5, .75]))
 print(mode(x.tolist()))              # 4
 ```
 
+<!-- python-output:auto -->
+```text
+23.0
+4.0
+[4. 4. 5.]
+4
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

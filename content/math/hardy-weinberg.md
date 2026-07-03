@@ -92,6 +92,12 @@ pval = stats.chi2.sf(chisq, df=1)                # ~ 1.1e-07
 print(chisq, pval)
 ```
 
+<!-- python-output:auto -->
+```text
+28.124999999999993 1.1372725656979712e-07
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -91,6 +91,15 @@ beta_hat = np.linalg.solve(X.T @ X, X.T @ y)
 print(beta_hat)            # same as fit.params
 ```
 
+<!-- python-output:auto -->
+```text
+[1.1011522  1.04810273]
+[[0.26542075 1.93688366]
+ [0.97833722 1.11786825]]
+[1.1011522  1.04810273]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

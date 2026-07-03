@@ -96,6 +96,13 @@ print(ratio(homog))    # 4.0
 print(ratio(hetero))   # 13.0
 ```
 
+<!-- python-output:auto -->
+```text
+4.0
+13.0
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

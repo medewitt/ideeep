@@ -128,6 +128,13 @@ for y0 in ([50, 700], [900, 50]):
     print(sol.y[:, -1])       # both -> [~897, ~172]: coexistence
 ```
 
+<!-- python-output:auto -->
+```text
+[896.34570986 172.37913759]
+[896.31173928 172.36258286]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

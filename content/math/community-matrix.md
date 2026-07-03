@@ -122,6 +122,14 @@ for sigma in (0.15, 0.25, 0.35):     # sigma*sqrt(S*C) ~ 0.58, 0.97, 1.36
 # ~1.0, ~0.5, ~0.0 : stability collapses past the threshold
 ```
 
+<!-- python-output:auto -->
+```text
+0.15 1.0
+0.25 0.83
+0.35 0.0
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -73,6 +73,14 @@ val, _ = quad(lambda t: t*np.exp(-t**2), 0, np.inf)
 print(val)                                     # 0.4999999999999999
 ```
 
+<!-- python-output:auto -->
+```text
+exp(x**2)
+1/2
+0.5000000000000001
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

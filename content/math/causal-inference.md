@@ -114,6 +114,15 @@ print(f"adjusted (T+Z)  = {adjusted:.3f}")      # adjusted (T+Z)  = 1.998  (~tru
 print(f"naive bias      = {naive - true_effect:.3f}")  # naive bias  = 1.404
 ```
 
+<!-- python-output:auto -->
+```text
+true effect     = 2.000
+naive estimate  = 5.116
+adjusted (T+Z)  = 1.960
+naive bias      = 3.116
+```
+<!-- /python-output:auto -->
+
 ```julia
 using Random, GLM, DataFrames
 

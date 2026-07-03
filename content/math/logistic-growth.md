@@ -85,6 +85,13 @@ print(np.max(np.abs(sol.y[0] - exact)))  # ~1e-6: they match
 print(exact[t == 10.0])                  # ~600 at t = 10
 ```
 
+<!-- python-output:auto -->
+```text
+4.199852662623016e-05
+[599.85960181]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

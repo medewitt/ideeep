@@ -109,6 +109,15 @@ print(stats.norm.pdf(0))                # 0.3989
 print(stats.norm.cdf(1.96))             # 0.975
 ```
 
+<!-- python-output:auto -->
+```text
+0.3750000000000001
+0.5
+0.3989422804014327
+0.9750021048517795
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

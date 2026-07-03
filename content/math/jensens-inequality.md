@@ -67,6 +67,14 @@ print("E[P(T)]    =", round(float(P(T).mean()), 3))   # 0.368 mean performance
 print("Jensen gap =", round(float(P(T.mean()) - P(T).mean()), 3))  # 0.632
 ```
 
+<!-- python-output:auto -->
+```text
+P(mean T)  = 1.0
+E[P(T)]    = 0.368
+Jensen gap = 0.632
+```
+<!-- /python-output:auto -->
+
 ## Simulation
 
 ### R
@@ -94,6 +102,13 @@ lhs, rhs = g(X).mean(), g(X.mean())
 print(lhs, rhs, lhs - rhs)      # ~0.3333 ~0.25 ~0.0833 (gap >= 0)
 print(0.5 * 2 * X.var())        # ~0.0833: (1/2) g''(mu) Var(X)
 ```
+
+<!-- python-output:auto -->
+```text
+0.3336193530309505 0.2503345980567165 0.08328475497423404
+0.08328475497423413
+```
+<!-- /python-output:auto -->
 
 ### Julia
 

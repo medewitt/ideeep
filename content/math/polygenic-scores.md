@@ -96,6 +96,13 @@ print(np.dot([2, 1, 0], beta))               # 0.5  (single individual)
 print(np.corrcoef(pgs, y)[0, 1] ** 2)        # R^2 ~ 0.35
 ```
 
+<!-- python-output:auto -->
+```text
+0.5
+0.0901190504815184
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

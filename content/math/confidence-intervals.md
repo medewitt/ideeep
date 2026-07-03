@@ -63,6 +63,12 @@ print(stats.t.interval(0.95, df=len(x)-1,
                        loc=x.mean(), scale=stats.sem(x)))
 ```
 
+<!-- python-output:auto -->
+```text
+(np.float64(4.595976442189666), np.float64(6.198652417636242))
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -16,6 +16,16 @@ lint-prose:
 fmt-prose:
     python3 scripts/sentence_lint.py --write {{prose_dirs}}
 
+# Execute embedded ```python blocks and inject their stdout beneath each block
+# (idempotent). Needs uv; the injected output is committed so the site build
+# never runs Python.
+python-output:
+    uv run --script scripts/inject_python_output.py --write {{prose_dirs}}
+
+# Check that injected Python outputs are up to date (CI); non-zero if not
+python-output-check:
+    uv run --script scripts/inject_python_output.py --check {{prose_dirs}}
+
 # Render illustrative figures (SVG) from the scripts in figures/ using uv.
 # Each script declares its own dependencies inline (PEP 723); uv builds an
 # ephemeral, cached environment per run. Output SVGs are committed so the

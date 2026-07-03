@@ -76,6 +76,13 @@ print(lam)   # ~1.090
 print(w)     # ~[0.631, 0.289, 0.080]
 ```
 
+<!-- python-output:auto -->
+```text
+1.0899905360790787
+[0.63092527 0.28941777 0.07965696]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

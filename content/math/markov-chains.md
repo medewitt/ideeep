@@ -79,6 +79,13 @@ pi = np.real(vecs[:, np.argmin(abs(vals - 1))])
 print(pi / pi.sum())               # ~ [0.5714, 0.4286]
 ```
 
+<!-- python-output:auto -->
+```text
+[0.57124 0.42876]
+[0.57142857 0.42857143]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

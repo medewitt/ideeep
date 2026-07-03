@@ -74,6 +74,13 @@ x = sp.symbols("x")
 print(sp.integrate(x**2, (x, 0, 1)))   # 1/3
 ```
 
+<!-- python-output:auto -->
+```text
+0.33333333333333337
+1/3
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

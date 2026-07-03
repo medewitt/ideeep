@@ -73,6 +73,12 @@ FST = (HT - HS) / HT              # 0.16
 print(HS, HT, FST)
 ```
 
+<!-- python-output:auto -->
+```text
+0.42000000000000004 0.5 0.15999999999999992
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -85,6 +85,14 @@ val, _ = quad(lambda t: np.exp(-t**2), -np.inf, np.inf)
 print(val, np.sqrt(np.pi))                           # 1.7724538509... 1.7724538509...
 ```
 
+<!-- python-output:auto -->
+```text
+14
+sqrt(pi)
+1.7724538509055159 1.7724538509055159
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -161,6 +161,13 @@ print(round(peak_I))            # ~ 132000
 print(sol.t[sol.y[2].argmax()]) # peak day ~ 70
 ```
 
+<!-- python-output:auto -->
+```text
+143793
+95
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

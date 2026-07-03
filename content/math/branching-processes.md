@@ -203,6 +203,12 @@ P_emerge = 1 - np.exp(-mu * Rw / (1 - Rw) * pi_est)   # ~0.0057
 print(pi_est, P_emerge)               # the R Monte-Carlo check translates directly
 ```
 
+<!-- python-output:auto -->
+```text
+0.6284894704844379 0.005640437894373074
+```
+<!-- /python-output:auto -->
+
 ```julia
 n, pw, pm, mu = 10, 0.09, 0.15, 1e-3
 Rw = n * pw

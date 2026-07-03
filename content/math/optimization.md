@@ -94,6 +94,13 @@ r = minimize_scalar(nll, bounds=(1e-6, 1-1e-6), method="bounded")
 print(r.x)                      # 0.6999... = k/n
 ```
 
+<!-- python-output:auto -->
+```text
+3.0000000000000004 5.0
+0.7000003717141288
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

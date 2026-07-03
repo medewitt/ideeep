@@ -84,6 +84,12 @@ fit = sm.GLM(cases, X, family=sm.families.Poisson(),
 print(np.exp(fit.params))            # B rate ratio ~ 0.5
 ```
 
+<!-- python-output:auto -->
+```text
+[0.003 0.5  ]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

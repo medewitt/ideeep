@@ -83,6 +83,12 @@ tmrca = -res.intercept / rate     # ~ 2015.8
 print(round(rate, 5), round(tmrca, 1))   # 0.0045 2015.8
 ```
 
+<!-- python-output:auto -->
+```text
+0.0045 2015.8
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

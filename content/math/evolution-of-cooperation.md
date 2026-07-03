@@ -169,6 +169,12 @@ for a, b in combinations_with_replacement(strats, 2):
 print(tot)     # {'TFT': 1399, 'ALLC': 1200, 'ALLD': 1404}
 ```
 
+<!-- python-output:auto -->
+```text
+{'TFT': 1399, 'ALLC': 1200, 'ALLD': 1404}
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

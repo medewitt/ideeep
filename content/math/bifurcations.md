@@ -103,6 +103,14 @@ for rv in (-0.5, 0.5):
     print(rv, rv - 2*xs)             # negative -> stable
 ```
 
+<!-- python-output:auto -->
+```text
+1.0066889632107023
+-0.5 -0.5
+0.5 -0.5
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

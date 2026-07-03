@@ -63,6 +63,13 @@ exp_draws = np.random.exponential(scale=1/2, size=1_000_000)
 print(exp_draws.mean())      # ~ 0.5
 ```
 
+<!-- python-output:auto -->
+```text
+3.503028
+0.5008809237171852
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -60,6 +60,13 @@ for n in (25, 100):
           f"SD={means.std(ddof=1):.3f} theory={sigma/np.sqrt(n):.3f}")
 ```
 
+<!-- python-output:auto -->
+```text
+n= 25 mean=50.00 SD=1.993 theory=2.000
+n=100 mean=50.00 SD=1.006 theory=1.000
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

@@ -75,6 +75,14 @@ val, _ = quad(lambda t: t*np.exp(-t), 0, np.inf)
 print(val)                                      # 1.0000000000000002
 ```
 
+<!-- python-output:auto -->
+```text
+(-x - 1)*exp(-x)
+1
+0.9999999999999998
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

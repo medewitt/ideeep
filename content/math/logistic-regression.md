@@ -74,6 +74,17 @@ print(np.exp(fit.params))    # odds ratios; slope ~ exp(1.2) ~ 3.3
 print(fit.predict(X)[:5])    # fitted probabilities
 ```
 
+<!-- python-output:auto -->
+```text
+Optimization terminated successfully.
+         Current function value: 0.530359
+         Iterations 6
+[-0.52992636  1.46561641]
+[0.58864832 4.3302116 ]
+[0.49414214 0.6624543  0.48859389 0.08018361 0.68932769]
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia

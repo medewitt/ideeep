@@ -71,6 +71,16 @@ y = 2 * x + np.random.normal(size=50)
 print(np.cov(x, y)[0, 1], np.corrcoef(x, y)[0, 1])
 ```
 
+<!-- python-output:auto -->
+```text
+n= 25 empirical SE=0.612 theory=0.600
+n=100 empirical SE=0.304 theory=0.300
+n=400 empirical SE=0.152 theory=0.150
+0.9205774355567683 0.9594672665374094
+1.6812880543796045 0.8856975784726173
+```
+<!-- /python-output:auto -->
+
 ### Julia
 
 ```julia
