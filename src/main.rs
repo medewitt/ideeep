@@ -260,116 +260,15 @@ fn generate_navbar(
     current_page: Option<&str>,
     asset_prefix: &str,
 ) -> String {
-    let mut nav = String::from("<nav style=\"background: #000; padding: 10px; margin-bottom: 20px; border-bottom: 2px solid #333;\">\n");
-    nav.push_str("<style>
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #222;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-    z-index: 1000;
-    top: 100%;
-    left: 0;
-    margin-top: 0;
-    padding-top: 5px;
-    border: 1px solid #444;
-}
-.dropdown:hover .dropdown-content,
-.dropdown-content:hover {
-    display: block;
-}
-.dropdown-content::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: transparent;
-}
-.dropdown-content a {
-    color: #fff;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    white-space: nowrap;
-}
-.dropdown-content a:link {
-    color: #fff;
-    text-decoration: none;
-}
-.dropdown-content a:visited {
-    color: #fff;
-    text-decoration: none;
-}
-.dropdown-content a:hover {
-    background-color: #333;
-    color: #8C6D2C;
-    text-decoration: none;
-}
-.dropdown-content a:active {
-    color: #fff;
-    text-decoration: none;
-}
-.dropdown > a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 5px 0;
-    display: block;
-    font-family: Arial, sans-serif;
-    font-size: 1.25rem;
-}
-.nav-link {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-    font-size: 1.25rem;
-}
-.nav-link:link {
-    color: #fff;
-    text-decoration: none;
-}
-.nav-link:visited {
-    color: #fff;
-    text-decoration: none;
-}
-.nav-link:hover {
-    color: #8C6D2C;
-    text-decoration: none;
-}
-.nav-link:active {
-    color: #fff;
-    text-decoration: none;
-}
-.nav-link.active {
-    color: #8C6D2C !important;
-    text-decoration: none;
-}
-.nav-link.active:visited {
-    color: #8C6D2C !important;
-    text-decoration: none;
-}
-.nav-link.active:hover {
-    color: #8C6D2C !important;
-    text-decoration: none;
-}
-</style>\n");
-    nav.push_str("<ul style=\"list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; align-items: center; font-size: 1.25rem;\">\n");
-    
+    let mut nav = String::from("<nav class=\"site-nav\" aria-label=\"Primary\">\n");
+    nav.push_str("<ul class=\"nav-list\">\n");
+
     // Always add logo/IDEEP link at the start
     let index_title = markdown_titles.get("index")
         .cloned()
         .unwrap_or_else(|| "IDEEP".to_string());
     let index_is_active = current_page.map(|cp| cp == "index").unwrap_or(false);
-    let index_link_class = if index_is_active { "nav-link active" } else { "nav-link" };
+    let index_link_class = if index_is_active { "nav-link nav-logo active" } else { "nav-link nav-logo" };
     // Calculate relative path to index.html from current page
     let index_path = if asset_prefix.is_empty() {
         "index.html".to_string()
@@ -377,7 +276,7 @@ fn generate_navbar(
         format!("{}index.html", asset_prefix)
     };
     nav.push_str(&format!(
-        "  <li><a href=\"{}\" class=\"{}\" style=\"display: flex; align-items: center; gap: 10px;\"><img src=\"{}assets/logo-wide.png\" alt=\"Logo\" style=\"height: 40px; width: auto;\">{}</a></li>\n",
+        "  <li class=\"nav-item\"><a href=\"{}\" class=\"{}\"><img class=\"nav-logo-img\" src=\"{}assets/logo-wide.png\" alt=\"IDEEEP home\">{}</a></li>\n",
         index_path, index_link_class, asset_prefix, index_title
     ));
     
@@ -402,13 +301,13 @@ fn generate_navbar(
                 let link_class = if is_active { "nav-link active" } else { "nav-link" };
                 
                 nav.push_str(&format!(
-                    "  <li><a href=\"{}\" class=\"{}\">{}</a></li>\n",
+                    "  <li class=\"nav-item\"><a href=\"{}\" class=\"{}\">{}</a></li>\n",
                     html_path, link_class, title
                 ));
             }
             NavbarItem::ExternalLink(url, text) => {
                 nav.push_str(&format!(
-                    "  <li><a href=\"{}\" class=\"nav-link\" target=\"_blank\" rel=\"noopener noreferrer\">{}</a></li>\n",
+                    "  <li class=\"nav-item\"><a href=\"{}\" class=\"nav-link\" target=\"_blank\" rel=\"noopener noreferrer\">{}</a></li>\n",
                     url, text
                 ));
             }
@@ -417,7 +316,7 @@ fn generate_navbar(
                 let is_active = current_page.map(|cp| cp == key).unwrap_or(false);
                 let link_class = if is_active { "nav-link active" } else { "nav-link" };
                 nav.push_str(&format!(
-                    "  <li><a href=\"{}\" class=\"{}\">{}</a></li>\n",
+                    "  <li class=\"nav-item\"><a href=\"{}\" class=\"{}\">{}</a></li>\n",
                     href, link_class, label
                 ));
             }
@@ -425,8 +324,8 @@ fn generate_navbar(
                 // Render dropdown inline
                 if let Some(dropdowns_map) = dropdowns {
                     if let Some(dropdown_value) = dropdowns_map.get(dropdown_name) {
-                        nav.push_str("  <li class=\"dropdown\">\n");
-                        nav.push_str(&format!("    <a>{}</a>\n", dropdown_name));
+                        nav.push_str("  <li class=\"nav-item dropdown\">\n");
+                        nav.push_str(&format!("    <a class=\"nav-link dropdown-toggle\" tabindex=\"0\">{}</a>\n", dropdown_name));
                         nav.push_str("    <div class=\"dropdown-content\">\n");
                         
                         // Handle different dropdown value types
@@ -515,6 +414,12 @@ fn generate_navbar(
 fn generate_html(title: &str, content: &str, navbar: &str, asset_prefix: &str) -> Result<String, Box<dyn std::error::Error>> {
     let katex_css = format!(r#"<link rel="stylesheet" href="{}assets/vendor/katex/katex.min.css" type="text/css" />"#, asset_prefix);
 
+    // Preload the self-hosted Nunito Sans faces so text paints without a swap flash.
+    let font_preload = format!(
+        "<link rel=\"preload\" href=\"{p}assets/fonts/nunito-sans-latin.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n    <link rel=\"preload\" href=\"{p}assets/fonts/nunito-sans-latin-italic.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>",
+        p = asset_prefix
+    );
+
     // Read footer.html
     let footer_path = Path::new("assets/footer.html");
     let footer_content = if footer_path.exists() {
@@ -532,6 +437,7 @@ fn generate_html(title: &str, content: &str, navbar: &str, asset_prefix: &str) -
     <title>{}</title>
     <link rel="icon" type="image/png" href="{}assets/logo.png" />
     <link rel="stylesheet" href="{}assets/styles.css" type="text/css" />
+    {}
     <script src="https://kit.fontawesome.com/1ffe760482.js" crossorigin="anonymous"></script>
     <!-- Highlight.js for code syntax highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
@@ -557,134 +463,6 @@ fn generate_html(title: &str, content: &str, navbar: &str, asset_prefix: &str) -
         hljs.highlightAll();
     }});
     </script>
-    <style>
-    body {{
-        font-family: Arial, sans-serif;
-        padding-bottom: 0;
-        margin-bottom: 0;
-    }}
-    h1 {{
-        font-family: Garamond, serif;
-    }}
-    #content {{
-        font-family: Arial, sans-serif;
-        margin-bottom: 40px;
-    }}
-    .blogbody {{
-        font-family: Arial, sans-serif;
-        padding-bottom: 20px;
-    }}
-    
-    /* Code block styling */
-    pre {{
-        background-color: #f4f4f4;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 15px;
-        overflow-x: auto;
-        margin: 20px 0;
-    }}
-    
-    code {{
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 0.9em;
-    }}
-    
-    pre code {{
-        display: block;
-        padding: 0;
-        background: transparent;
-        border: none;
-    }}
-    
-    /* Mobile responsive styles */
-    @media screen and (max-width: 768px) {{
-        #content {{
-            margin-left: 10px;
-            margin-right: 10px;
-            width: calc(100% - 20px);
-            padding: 10px;
-        }}
-        
-        nav ul {{
-            flex-direction: column;
-            gap: 10px !important;
-            align-items: flex-start !important;
-        }}
-        
-        nav li {{
-            width: 100%;
-        }}
-        
-        .nav-link {{
-            display: block;
-            padding: 10px 0;
-        }}
-        
-        .dropdown {{
-            width: 100%;
-        }}
-        
-        .dropdown > a {{
-            width: 100%;
-            padding: 10px 0;
-        }}
-        
-        .dropdown-content {{
-            position: relative;
-            width: 100%;
-            box-shadow: none;
-            border: none;
-            margin-top: 5px;
-        }}
-        
-        .blogbody {{
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }}
-        
-        h1 {{
-            font-size: 1.8rem;
-        }}
-        
-        h2 {{
-            font-size: 1.4rem;
-        }}
-        
-        h3 {{
-            font-size: 1.2rem;
-        }}
-    }}
-    
-    @media screen and (max-width: 480px) {{
-        nav {{
-            padding: 5px;
-        }}
-        
-        nav ul {{
-            font-size: 1rem !important;
-        }}
-        
-        .nav-link img {{
-            height: 30px !important;
-        }}
-        
-        #content {{
-            margin-left: 5px;
-            margin-right: 5px;
-            width: calc(100% - 10px);
-            padding: 5px;
-        }}
-        
-        .blogbody {{
-            font-size: 0.85rem;
-        }}
-        
-        h1 {{
-            font-size: 1.5rem;
-        }}
-    }}
-    </style>
     {}
 </head>
 <body>
@@ -697,7 +475,7 @@ fn generate_html(title: &str, content: &str, navbar: &str, asset_prefix: &str) -
     {}
 </body>
 </html>"#,
-        title, asset_prefix, asset_prefix, katex_css, navbar, content, footer_content
+        title, asset_prefix, asset_prefix, font_preload, katex_css, navbar, content, footer_content
     ))
 }
 
