@@ -22,6 +22,7 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 - [Data Representation & File Formats](programming/data-representation-and-formats.md) — encodings, CSV pitfalls, tidy/relational data, SQL, and FASTA/VCF
 - [Regular Expressions & Finite-State Machines](programming/regular-expressions.md) — parsing sequences, logs, and messy field data
 - [Recursion & Dynamic Programming](programming/recursion-and-dynamic-programming.md) — memoization, sequence alignment, HMMs, and tree likelihoods
+- [Graph & Network Algorithms](programming/graph-algorithms.md) — BFS/DFS, shortest paths, and connected components on biological networks
 - [Floating-Point Arithmetic & Numerical Stability](programming/floating-point-and-numerical-stability.md) — log space, the log-sum-exp trick, and why likelihoods hit zero
 - [Numerical Methods for Dynamical Systems](programming/numerical-methods-for-dynamical-systems.md) — integrating ODEs, Euler vs RK4, stiffness, and solvers
 - [Testing & Verification for Scientific Code](programming/testing-scientific-code.md) — unit tests, invariants, and testing stochastic code
