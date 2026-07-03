@@ -66,7 +66,7 @@ The jump from `O(n)` to `O(n²)` is the one that bites working scientists most o
 | `O(log n)` | logarithmic | +1 step | Binary search in a **sorted** gene list; lookup in a balanced tree |
 | `O(n)` | linear | ×2 | Sum a column; scan reads once; filter a data frame |
 | `O(n log n)` | linearithmic | a bit more than ×2 | Sorting; the fastest general-purpose sort |
-| `O(n²)` | quadratic | ×4 | All-vs-all sequence comparison; a pairwise distance matrix; a double `for` loop |
+| `O(n²)` | quadratic | ×4 | Every-pair contact in an individual-based model; all-vs-all sequence comparison; a pairwise distance matrix |
 | `O(n³)` | cubic | ×8 | Naïve matrix multiplication; some dynamic-programming alignments |
 | `O(2ⁿ)` | exponential | ×2 **per point** | Trying every subset of `n` features; brute-force phylogenetic tree search |
 | `O(n!)` | factorial | catastrophic | Every ordering of `n` items; the brute-force travelling-salesman route |
@@ -118,6 +118,32 @@ def binary_search(sorted_x, target):
 ```
 
 **`O(n log n)` — sort, then walk.** Sorting is the workhorse of fast algorithms: many problems that look `O(n²)` become `O(n log n)` if you sort the data first and then make a single linear pass.
+
+## A Population-Biology Example: Individual-Based Models
+
+The `O(n²)` trap shows up constantly in ecology and epidemiology through **individual-based** (agent-based) models.
+Suppose you simulate an epidemic in a population of `N` individuals, and at each timestep you let the infection spread through contact.
+The tempting way to write it is "for each infectious individual, check every other individual":
+
+```python
+# O(N^2) PER TIMESTEP: every individual can contact every other one
+for i in population:
+    for j in population:            # N * N pairs, every single step
+        if infectious(i) and susceptible(j) and contact(i, j):
+            maybe_infect(j)
+```
+
+That inner loop makes each timestep `O(N²)`, and a full run of `T` timesteps costs `O(T · N²)`.
+This is fine for a village of 500, but for a city of 100,000 each timestep checks ten *billion* pairs — the same model that ran in seconds now runs for days.
+
+The fix mirrors the biology.
+Real individuals do not mix with the entire population every day; they contact a limited number of others.
+If each individual only interacts with its `k` neighbours (on a spatial grid, or along a [contact network](../math/ecological-networks.md)), each timestep drops to `O(N · k)` — effectively `O(N)` when `k` is small and fixed.
+
+![An individual-based epidemic model: checking every pair of individuals costs O(N²) per timestep, while restricting to a fixed number of local contacts costs O(N); at a population of 100,000 that is a 10,000-fold difference in work.](../assets/figures/population-model-scaling.svg)
+
+This is why large ecological and epidemic simulations lean on **spatial structure, contact networks, or compartmental (mean-field) models**: each is a way of escaping the all-pairs `O(N²)` cost.
+The same reasoning applies to a pairwise distance matrix between `N` sampled sequences, all-vs-all BLAST, or computing every pairwise relatedness in a population — all `O(N²)` in both time and memory.
 
 ## Measuring Complexity by Simulation
 
