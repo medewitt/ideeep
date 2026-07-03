@@ -9,6 +9,7 @@ navbar_order:
   - people
   - Resources
   - Syllabi
+  - Search
   - url: https://wakeforestid.com
     text: Home
 
