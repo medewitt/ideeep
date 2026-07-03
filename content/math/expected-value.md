@@ -5,6 +5,7 @@ title: "Expected Value"
 # Expected Value
 
 The expected value is the probability-weighted average of a [random variable](random-variables.md) — the number a long run of draws settles around.
+In epidemiology the basic reproduction number $R_0$ is exactly such an expectation: the expected number of secondary infections produced by one case in a fully susceptible population, just as expected survival time is the mean time a patient lives.
 It anchors nearly every summary in statistics, from the [mean](measures-of-center.md) of a distribution to the target of an estimator.
 
 ## Definition

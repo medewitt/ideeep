@@ -7,6 +7,8 @@ title: "Eigenvalues and Eigenvectors"
 An eigenvector of a matrix is a direction that the matrix merely stretches or shrinks without rotating; the eigenvalue is the stretch factor.
 These special directions govern the stability of disease models (via the Jacobian) and the axes of variation in PCA, making them one of the most useful tools in applied statistics.
 
+![Eigenvectors keep their direction under the matrix, scaled by the eigenvalues.](../assets/figures/eigenvectors.svg)
+
 ## Definition
 
 A nonzero vector $v$ is an **eigenvector** of a square matrix $A$ with **eigenvalue** $\lambda$ if

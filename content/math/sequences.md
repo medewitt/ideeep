@@ -5,6 +5,7 @@ title: "Sequences"
 # Sequences
 
 A sequence is an ordered list of numbers indexed by the positive integers.
+In biology a sequence arises naturally as the number of cases in each successive generation of transmission, or as a population census taken year by year.
 Sequences model iterative estimators, sampling schemes, and the limiting behavior that underlies [convergence](limits.md) results in statistics.
 
 ## Definition and notation
@@ -26,6 +27,8 @@ Strict monotonicity matters because a strictly increasing function is **invertib
 Let $a_n = \sqrt{n}$: the terms $1, 1.414, 1.732, 2, \dots$ are strictly increasing and unbounded above.
 
 Let $b_n = 1/n$: the terms $1, 0.5, 0.333, 0.25, \dots$ are strictly decreasing, bounded in $(0, 1]$, and approach $0$ as $n \to \infty$.
+
+An outbreak's case counts often form a sequence that increases, then, being bounded by the finite pool of susceptibles, levels off — the monotone, bounded pattern of an epidemic that grows and then saturates.
 
 ## Computing it
 

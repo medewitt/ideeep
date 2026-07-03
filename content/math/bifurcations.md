@@ -7,6 +7,8 @@ title: "Bifurcations"
 Ecosystems and epidemics rarely change smoothly forever: push a parameter past a threshold and the entire long-term behavior can flip — a population blinks into existence, a disease starts to invade, a stable state gives way to sustained cycles.
 These qualitative switches are called bifurcations, and they are where the interesting biology lives.
 
+![A transcritical bifurcation: two equilibria exchange stability at the threshold (e.g. R0 = 1).](../assets/figures/transcritical-bifurcation.svg)
+
 ## What is a bifurcation?
 
 A **bifurcation** is a qualitative change in the long-term behavior of a dynamical system as a parameter crosses a critical value.

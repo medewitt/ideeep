@@ -5,7 +5,8 @@ title: "u-Substitution"
 # u-Substitution
 
 u-substitution is the *reverse of the [chain rule](chain-rule.md)*: it undoes a composition of functions inside an integral.
-It is the workhorse for integrating the kernels of many [probability densities](random-variables.md), especially the [normal](normal-distribution.md).
+It is the workhorse for integrating the kernels of many [probability densities](random-variables.md), especially the bell-curve kernel $e^{-x^2/2}$ used to model biological measurements like birth weights or blood pressure.
+The same trick handles rate integrals with an exponential inside, such as a drug's exponential elimination.
 
 ## The idea
 

@@ -7,6 +7,8 @@ title: "Bayesian Inference"
 Bayesian inference treats an unknown parameter as a random quantity and updates our beliefs about it as data arrive.
 The engine is Bayes' theorem, which combines what we knew before with what the data tell us.
 
+![Bayesian updating: a Beta prior combined with data gives the Beta posterior.](../assets/figures/bayesian-update.svg)
+
 ## Bayes' theorem for parameters
 
 Let $\theta$ be a parameter and $y$ the observed data.
@@ -165,6 +167,7 @@ These ideas underpin much of modern epidemiological modeling, from estimating pr
 - [Probability Basics](probability-basics.md)
 - [Maximum Likelihood Estimation](maximum-likelihood.md)
 - [Markov Chain Monte Carlo](mcmc.md)
+- [Hierarchical (Multilevel) Models](hierarchical-models.md)
 - [Binomial Distribution](binomial-distribution.md)
 - [Normal Distribution](normal-distribution.md)
 - [Confidence Intervals](confidence-intervals.md)

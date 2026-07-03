@@ -7,6 +7,8 @@ title: "The Molecular Clock and Phylodynamics"
 Because mutations accumulate steadily over time, the number of genetic differences between two sequences acts like a ticking clock.
 Reading that clock lets us date evolutionary events and, for pathogens, turn a set of sampled genomes into a timeline of an outbreak.
 
+![Root-to-tip regression: the slope estimates the substitution rate and the x-intercept the tMRCA.](../assets/figures/molecular-clock-rtt.svg)
+
 ## Substitutions as a clock
 
 If substitutions fix at an approximately constant rate $\mu$ per site per unit time, then over an interval $t$ the expected number of substitutions per site is $$\mathbb{E}[d] \approx \mu\, t.$$ Genetic distance therefore grows roughly linearly with elapsed time, and dividing an observed distance by the rate recovers the time.

@@ -6,6 +6,7 @@ title: "The Law of Large Numbers"
 
 The law of large numbers is the guarantee that averaging works: pile up enough independent observations and the sample mean settles on the true mean.
 It is the formal reason a long-run average is a trustworthy estimate.
+As a study enrolls more people an estimated attack rate or seroprevalence settles onto its true value, and Monte Carlo estimates of an outbreak's extinction probability stabilize as the number of simulated epidemics grows.
 
 ![Running averages of die rolls converge to the true mean of 3.5 as the sample grows.](../assets/figures/law-of-large-numbers.svg)
 

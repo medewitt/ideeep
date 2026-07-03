@@ -7,6 +7,8 @@ title: "Linear Regression"
 Linear regression models a continuous outcome as a straight-line function of one or more predictors.
 It is the workhorse of quantitative data analysis: estimating how exposures, doses, or covariates shift an average response, and providing the foundation for the whole family of regression models used in epidemiology.
 
+![Ordinary least squares fits the line that minimizes the squared residuals.](../assets/figures/linear-regression-fit.svg)
+
 ## The model
 
 We assume each outcome $y_i$ is a linear function of predictors plus random noise: \[ y = X\beta + \varepsilon,\qquad \varepsilon\sim\mathcal N(0,\sigma^2 I). \] Here $y$ is the $n\times 1$ vector of responses, $X$ is the $n\times p$ [design matrix](matrix-notation.md) (with a column of ones for the intercept), $\beta$ is the $p\times 1$ vector of coefficients, and $\varepsilon$ is mean-zero error.

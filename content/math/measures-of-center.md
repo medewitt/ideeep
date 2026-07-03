@@ -6,6 +6,7 @@ title: "Measures of Center"
 
 A measure of center summarizes a [distribution](distributions-overview.md) or dataset with a single "typical" value.
 Choosing the right one — mean, median, or mode — depends on shape, skew, and how much you trust the extremes.
+Medians are prized in biology for just this reason: the median incubation period or median survival time is far more robust than the mean for the right-skewed distributions typical of infectious-disease data.
 
 ## The three classic measures
 

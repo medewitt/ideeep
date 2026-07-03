@@ -117,6 +117,7 @@ Tn(N) = sum((-1)^((n - 1) ÷ 2) * xv^n / factorial(n) for n in 1:2:N)
 The delta method approximates the [variance](measures-of-variability.md) of a transformed estimator $g(\hat\theta)$ via a first-order Taylor expansion, $g(\hat\theta) \approx g(\theta) + g'(\theta)(\hat\theta - \theta)$, so that $\operatorname{Var}(g(\hat\theta)) \approx [g'(\theta)]^2 \operatorname{Var}(\hat\theta)$.
 For example, a proportion $\hat p$ has variance $p(1-p)/n$; the log-odds $g(p) = \log\frac{p}{1-p}$ has derivative $g'(p) = \frac{1}{p(1-p)}$, so the delta method gives $\operatorname{Var}(\log\text{-odds}) \approx \frac{1}{n\,p(1-p)}$ — with $p = 0.2$, $n = 100$ that is a standard error of $0.25$, exactly the log-odds standard error a [logistic regression](logistic-regression.md) reports.
 Second-order expansions of the [log-likelihood](maximum-likelihood.md) give the Fisher information and Newton-Raphson updates for maximum likelihood.
+In epidemiology the same idea linearizes a nonlinear transmission rate around an operating point so a model can be studied near an equilibrium, and the delta method then propagates measurement error into the resulting estimates.
 In short, Taylor series turn intractable nonlinear quantities into tractable linear or quadratic ones.
 
 ## Related

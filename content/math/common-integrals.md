@@ -5,7 +5,7 @@ title: "Common Integrals"
 # Common Integrals
 
 A short reference table of antiderivatives you will use constantly, plus the rules that let you combine them.
-The Gaussian integral at the end underlies the [normal](normal-distribution.md) density.
+These standard forms show up throughout biology: $\int e^{-kt}\,dt$ gives a drug's total exposure or the cumulative decay of a labeled tracer, the reciprocal integral $\int \tfrac1x\,dx$ produces the $\ln$ behind log-scaled assays, and the Gaussian integral at the end normalizes the [normal](normal-distribution.md) density of biological measurements.
 
 ## The table
 

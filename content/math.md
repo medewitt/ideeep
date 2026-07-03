@@ -86,12 +86,14 @@ core idea and notation with a worked example and runnable code in **R**,
 - [p-Values](math/p-values.md)
 - [Confidence Intervals](math/confidence-intervals.md)
 - [Permutation Tests](math/permutation-tests.md)
+- [Diagnostic Testing and Screening](math/diagnostic-testing.md) — sensitivity, specificity, PPV, and ROC
 
 ## Regression & generalized linear models
 
 - [Linear Regression](math/linear-regression.md)
 - [Logistic Regression](math/logistic-regression.md)
 - [Generalized Linear Models](math/generalized-linear-models.md) — GLMs and Poisson regression
+- [Hierarchical (Multilevel) Models](math/hierarchical-models.md) — partial pooling and shrinkage
 
 ## Bayesian inference
 
@@ -201,3 +203,5 @@ core idea and notation with a worked example and runnable code in **R**,
 - [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)
+- [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
+- [Fitting Dynamic Models to Data](math/model-calibration.md) — calibration and identifiability

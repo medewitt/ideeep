@@ -7,6 +7,8 @@ title: "The Binomial Distribution"
 The binomial distribution counts how many "successes" occur in a fixed number of [independent](probability-basics.md) yes/no trials — how many of $n$ vaccinated people avoid infection, how many of $n$ tossed coins land heads, how many of $n$ patients respond to a treatment.
 It is the natural model behind testing a proportion.
 
+![The Binomial(10, 0.3) probability mass function; the mean is np = 3.](../assets/figures/binomial-pmf.svg)
+
 ## Definition
 
 Let $X\sim\mathrm{Binomial}(n,p)$ count the successes in $n$ independent trials, each with success probability $p$.

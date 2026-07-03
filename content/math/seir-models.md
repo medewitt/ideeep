@@ -7,6 +7,8 @@ title: "SEIR and Compartmental Extensions"
 Many pathogens do not make a host infectious the instant they are infected — there is a latent period during which the virus or bacterium replicates unseen.
 The SEIR model captures this by inserting an *Exposed* compartment between susceptible and infectious, and a whole family of extensions builds on the same idea.
 
+![SEIR dynamics: the latent (exposed) class delays and blunts the infectious peak.](../assets/figures/seir-curve.svg)
+
 ## From SIR to SEIR
 
 The [SIR model](sir.md) assumes a newly infected individual is immediately infectious.

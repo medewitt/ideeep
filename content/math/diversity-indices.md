@@ -7,6 +7,8 @@ title: "Diversity Indices"
 A diversity index compresses a whole community's species composition into a single number that captures both how many species are present and how evenly the individuals are spread among them.
 This matters everywhere from gut microbiome surveys to host-parasite systems, because "which community is more diverse?" is really a question about the shape of the relative abundances $p_i$.
 
+![Rank-abundance curves: the even community is more diverse than the uneven one.](../assets/figures/diversity-rank-abundance.svg)
+
 ## Relative abundances
 
 Start from counts of each species and convert them to relative abundances $p_i$, the fraction of all individuals belonging to species $i$.

@@ -7,6 +7,8 @@ title: "Equilibria and Linear Stability"
 Whether a population settles at a carrying capacity, an epidemic burns out, or a predator and its prey cycle forever is decided by a handful of special states and their stability.
 Equilibria are the resting points of a dynamical system, and linear stability analysis tells us which ones the system will actually be found near.
 
+![A phase portrait: trajectories spiral in to a stable equilibrium.](../assets/figures/phase-portrait.svg)
+
 ## Equilibria
 
 An **equilibrium** (or fixed point, or steady state) of an ordinary differential equation system $\frac{d\mathbf{x}}{dt} = \mathbf{f}(\mathbf{x})$ is a state where every rate of change vanishes, $$\frac{d\mathbf{x}}{dt} = \mathbf{0}.$$ Once the system reaches such a point it stays there forever, because nothing is changing.

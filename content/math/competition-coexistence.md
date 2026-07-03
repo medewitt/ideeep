@@ -7,6 +7,8 @@ title: "Competition and Coexistence"
 When two species use the same limiting resources, each depresses the other's growth — yet countless species manage to coexist.
 The Lotka–Volterra competition model and modern coexistence theory explain when a competitor wins, when both persist, and when the winner depends on who arrives first.
 
+![Zero-growth isoclines for stable coexistence, with trajectories converging to the interior equilibrium.](../assets/figures/competition-isoclines.svg)
+
 ## The competition model
 
 We extend [logistic growth](logistic-growth.md) to two species that compete.

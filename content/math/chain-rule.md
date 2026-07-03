@@ -6,6 +6,7 @@ title: "Chain Rule"
 
 The chain rule [differentiates](derivatives.md) a *composition* of functions — a function of a function.
 It is arguably the single most important differentiation rule: it powers backpropagation in neural networks and the delta method in statistics.
+First-order drug decay $C(t) = C_0 e^{-kt}$ and composed dose–response functions are differentiated with the chain rule, which is also what lets the gradient of a log-likelihood pass through nested link functions during model fitting.
 
 ## The rule
 

@@ -5,7 +5,10 @@ title: "Integrals"
 # Integrals
 
 An integral accumulates a quantity — most visually, the *area under a curve*.
-In [probability](probability-basics.md) it is indispensable: the area under a density is a probability, the total area is $1$, and an [expected value](expected-value.md) is an integral.
+In epidemiology it is everywhere: the total number of cases over an outbreak is the area under the incidence curve, so cumulative incidence $= \int \text{incidence}\,dt$.
+In [probability](probability-basics.md) it is equally indispensable: the area under a density is a probability, the total area is $1$, and an [expected value](expected-value.md) is an integral.
+
+![The definite integral as the shaded area under the curve.](../assets/figures/integral-area.svg)
 
 ## Area under a curve
 
@@ -101,6 +104,7 @@ E[X] = \int_{-\infty}^{\infty} x\,f(x)\,dx .
 \]
 
 The cumulative distribution function $F(x) = \int_{-\infty}^{x} f(t)\,dt$ is exactly an antiderivative of the density, so by the FTC $F'(x) = f(x)$.
+The same accumulation logic drives pharmacology: a drug's total exposure (the AUC) is the integral of its concentration–time curve, $\text{AUC} = \int_0^\infty C(t)\,dt$.
 
 ## Related
 

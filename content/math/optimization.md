@@ -6,6 +6,9 @@ title: "Optimization and Critical Points"
 
 Optimization is the search for a function's highest or lowest value.
 It is the mathematical core of [maximum likelihood](maximum-likelihood.md) estimation, least squares, and fitting disease models to data.
+Estimating a pathogen's transmission rate by maximum likelihood, or choosing the vaccination coverage that minimizes total cases, are both optimization problems — and in each the optimum sits where the derivative is zero.
+
+![At a maximum the first derivative is zero and the second derivative is negative.](../assets/figures/optimization-max.svg)
 
 ## Critical points
 

@@ -7,6 +7,8 @@ title: "The Poisson Distribution"
 The Poisson distribution models the number of rare, [independent](probability-basics.md) events that occur in a fixed interval of time or space: new disease cases reported per week, mutations per genome, radioactive decays per second, or calls arriving at a help line.
 It is the go-to model for count data when events happen at a steady average rate.
 
+![The Poisson(3) pmf, where the mean equals the variance equals lambda.](../assets/figures/poisson-pmf.svg)
+
 ## Definition
 
 Let $X\sim\mathrm{Poisson}(\lambda)$ count events in a fixed window with average rate $\lambda$.

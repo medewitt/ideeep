@@ -5,6 +5,7 @@ title: "Limits"
 # Limits
 
 A limit describes the value a function or sequence approaches as its input moves toward some point.
+Biology is full of such limiting behaviour: as an epidemic runs its course the susceptible fraction approaches a fixed limit — the final epidemic size — and long-run averages of case counts converge.
 Limits are the foundation of [derivatives](derivatives.md), [integrals](integrals.md), and the convergence theorems that make [statistical inference](statistical-inference.md) work.
 
 ## Intuitive and formal definition
@@ -38,6 +39,7 @@ For an indeterminate form $\tfrac{0}{0}$ or $\tfrac{\infty}{\infty}$,
 
 **Example:** $\displaystyle \lim_{x\to 0}\frac{\sin x}{x}$ is $\tfrac{0}{0}$.
 Differentiating top and bottom gives $\lim_{x\to 0}\frac{\cos x}{1} = \cos 0 = 1$.
+The same $\tfrac{0}{0}$ manoeuvre appears in disease models when taking small-time or large-population approximations, such as recovering a per-capita infection rate as a time interval shrinks to zero.
 
 ## Worked example
 

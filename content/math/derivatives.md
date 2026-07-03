@@ -5,7 +5,10 @@ title: "Derivatives"
 # Derivatives
 
 A derivative measures the *instantaneous rate of change* of a function — the slope of the line tangent to its graph at a point.
+In an epidemic, $dI/dt$ is exactly this: how fast case counts are changing right now, and its early value is the epidemic growth rate that determines how explosively an outbreak takes off.
 It is the engine behind [optimization](optimization.md), [maximum likelihood](maximum-likelihood.md) estimation, and the differential equations used in disease modeling.
+
+![The derivative as the slope of the tangent line — the instantaneous rate of change.](../assets/figures/derivative-tangent.svg)
 
 ## The limit definition
 

@@ -5,6 +5,7 @@ title: "Functions and Graphs"
 # Functions and Graphs
 
 A function maps each input to exactly one output, $f: x \mapsto f(x)$.
+These same shapes are the shapes of biology: exponential outbreak growth, the logistic sigmoid of a dose–response curve, saturating uptake curves, and the bell-shaped spread of biological measurements.
 Recognizing the shapes of common functions lets you read transformations, link functions, and model curves at a glance.
 
 ## Common functions in statistics

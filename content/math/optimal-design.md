@@ -5,6 +5,7 @@ title: "Optimal Experimental Design"
 # Optimal Experimental Design
 
 When the design region is constrained or irregular — so classical factorials and central composite designs don't fit — **optimal design** picks run locations to make a model's parameter estimates as precise as possible.
+In a pharmacokinetics or dose–response study, for instance, it chooses *which* concentrations to test or *when* to draw blood samples so the model parameters are pinned down most precisely for the fewest, most expensive assays.
 It is model-based: you specify the model, then choose points that [optimize](optimization.md) a criterion on the information [matrix](matrix-operations.md).
 
 ## The information matrix

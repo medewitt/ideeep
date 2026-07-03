@@ -7,6 +7,8 @@ title: "Hypothesis Testing"
 Hypothesis testing is the formal machinery epidemiologists use to decide whether an observed effect—a difference in infection rates, a shift in mean exposure—is more than noise.
 It frames a question as a decision between two competing claims about the world.
 
+![The null distribution with the two-tailed rejection region and an observed test statistic.](../assets/figures/hypothesis-test.svg)
+
 ## The two hypotheses
 
 - The **null hypothesis** $H_0$ states "no effect" or "no difference" (e.g., the [mean](measures-of-center.md) equals a reference value).

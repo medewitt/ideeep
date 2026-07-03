@@ -6,6 +6,7 @@ title: "Integration by Parts"
 
 Integration by parts is the *reverse of the [product rule](product-rule.md)*.
 It turns an integral of a product into an easier one, and it is the standard way to compute the [mean](measures-of-center.md) of the [exponential](exponential-distribution.md) and gamma distributions.
+In survival analysis it yields a clean fact: the mean waiting time is the area under the survival curve, $\mathbb{E}[T] = \int_0^\infty S(t)\,dt$ — for example the mean time to infection or to pathogen clearance.
 
 ## The formula
 

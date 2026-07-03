@@ -67,5 +67,7 @@ This is done by linearizing the system and examining the [Jacobian matrix](jacob
 - [SEIR and Compartmental Extensions](seir-models.md)
 - [Vector-Borne Disease Models](vector-borne.md)
 - [Stochastic Epidemics and the Gillespie Algorithm](stochastic-epidemics.md)
+- [The Effective Reproduction Number and Forecasting](reproduction-number-rt.md)
+- [Fitting Dynamic Models to Data](model-calibration.md)
 - [Pharmacokinetics: Compartment Models](pharmacokinetics.md) — the same compartment framework applied to drugs
 - [Mathematical Biology (BIO 301)](../bio301-math-bio.md) — the course where these models are developed in depth

@@ -90,6 +90,7 @@ Symbolics.derivative(3x^4 - 5x^2 + 7x - 2, x)   # 7 + 12(x^3) - 10x
 
 ## Why it matters for statistics
 
+These building blocks recur throughout biology: the exponential's derivative governs early outbreak growth and the first-order elimination of a drug from the bloodstream, while the log's derivative $1/x$ appears every time we differentiate a log-likelihood to fit a model.
 These few rules cover the derivatives you meet constantly: polynomial regression terms, the $e^x$ in [exponential growth](exponentials-and-logarithms.md) and logistic models, and the $\ln x$ at the heart of every [log-likelihood](maximum-likelihood.md).
 Knowing them cold lets you derive score equations and standard errors without reaching for software.
 

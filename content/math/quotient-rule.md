@@ -6,6 +6,7 @@ title: "Quotient Rule"
 
 The quotient rule [differentiates](derivatives.md) a ratio of two functions.
 Ratios are everywhere in epidemiology — prevalence proportions, hazard ratios, and the logistic curve are all quotients whose rates of change we often need.
+Frequency-dependent transmission $\beta S I / N$ and prevalence $I/N$ are ratios of quantities that all change over time, so differentiating such a per-capita rate calls for the quotient rule.
 
 ## The rule
 

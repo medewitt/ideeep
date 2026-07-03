@@ -7,6 +7,8 @@ title: "The Exponential Distribution"
 The exponential distribution models the waiting time until the next event in a process where events occur at a constant average rate: the time between new infections, the length of an infectious period, the interval between radioactive decays, or the time until a component fails.
 It is the continuous companion of the [Poisson distribution](poisson-distribution.md).
 
+![The exponential density; the mean 1/lambda marks the average waiting time.](../assets/figures/exponential-pdf.svg)
+
 ## Definition
 
 Let $X\sim\mathrm{Exponential}(\lambda)$ be the waiting time with rate $\lambda$.

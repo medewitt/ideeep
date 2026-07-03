@@ -6,6 +6,7 @@ title: "Product Rule"
 
 The product rule tells you how to [differentiate](derivatives.md) a product of two functions.
 It shows up whenever a model multiplies quantities that both change — for example a time-varying rate times a shrinking susceptible pool.
+The incidence term $\beta S I / N$ in an epidemic model is a product of the changing susceptible and infected counts, so differentiating it — say to build the Jacobian for a stability analysis — requires the product rule.
 
 ## The rule
 
