@@ -178,6 +178,21 @@ summarize_by_group <- function(df, min_weight = 0.05) {
 }
 ```
 
+## Learn your editor
+
+You spend more time in your text editor than almost any other tool, so fluency there compounds over a career.
+Pick one and learn it deeply — the specific choice matters less than the investment.
+
+- **[Vim](https://www.vim.org) / [Neovim](https://neovim.io)** — *modal* editors built around composable keystrokes for editing at the speed of thought.
+  Some form of `vi` is preinstalled on essentially every Unix server, so the skill travels everywhere; run `vimtutor` from a terminal for a 30-minute hands-on start.
+  Neovim is the modernized fork, configured in Lua with first-class [Language Server](https://microsoft.github.io/language-server-protocol/) support for completion and diagnostics — a popular starting config is [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim).
+- **[Doom Emacs](https://github.com/doomemacs/doomemacs)** — a fast, batteries-included configuration of [Emacs](https://www.gnu.org/software/emacs/) that ships Vim keybindings (via `evil-mode`), so you get modal editing plus Emacs's ecosystem.
+  Its [Org mode](https://orgmode.org) is a powerful home for literate, reproducible notebooks and notes.
+
+Prefer a conventional IDE?
+[VS Code](https://code.visualstudio.com), [RStudio](https://posit.co/products/open-source/rstudio/), and [Positron](https://positron.posit.co) are all excellent — and most, including these, offer a Vim-keybindings mode so you can borrow the muscle memory without leaving.
+Whatever you choose, pair it with [version control](version-control-git.md) and a task runner so your editor, history, and pipeline reinforce each other.
+
 ## Related
 
 - [Project Workflow](project-workflow.md)

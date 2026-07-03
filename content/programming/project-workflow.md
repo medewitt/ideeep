@@ -116,6 +116,21 @@ clean:
 Now `make` runs only the stages whose inputs changed.
 In R, the [`targets`](https://books.ropensci.org/targets/) package expresses the same DAG natively; in Python, `snakemake` or a simple `Makefile` does the job.
 
+### Make, `just`, or Task?
+
+`make` is not the only option, and the alternatives trade its cryptic, tab-sensitive syntax for readability.
+
+- **[GNU Make](https://www.gnu.org/software/make/)** — the classic, on virtually every machine.
+  It is built around *file* targets and timestamps, so it rebuilds only outputs whose inputs changed; ideal for a data-analysis DAG.
+  The syntax is terse and famously picky about tabs.
+- **[`just`](https://just.systems)** — a modern command runner ([source](https://github.com/casey/just)).
+  A `justfile` holds named *recipes* with a clean syntax and easy parameters, but it does *not* track file dependencies — it runs commands rather than rebuilding stale targets.
+  It is perfect for project shortcuts like `just build` or `just test` (this site is built with one).
+- **[Task](https://taskfile.dev)** — a cross-platform runner configured in a YAML `Taskfile.yml`.
+  It sits in between: readable like `just`, but with optional `sources`/`generates` checks that skip up-to-date tasks like `make`.
+
+Rule of thumb: reach for **Make** or **Task** when you want *rebuild-what-changed* dependency tracking, and **`just`** when you mainly want memorable aliases for the commands you run all day.
+
 ## A README that gets you started
 
 Every project should open with a `README.md` answering: what is this, what do I need installed, and how do I run it (ideally: "run `make`").
