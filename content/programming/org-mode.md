@@ -81,24 +81,91 @@ Your notes, a manuscript, and a talk can all come from one file, which keeps the
 For interlinked, atomic notes, [org-roam](https://www.orgroam.com) adds a lightweight Zettelkasten on top of Org: each note is a file, notes link to each other, and a backlinks buffer shows everything that points at the current note.
 It is an excellent way to grow a personal knowledge base of papers, methods, and ideas over a whole program.
 
+## Creating and navigating notes
+
+Where a note *lives* matters as much as what it says, and a useful split is:
+
+- **Project notes** — an `analysis.org` or `notes.org` kept *inside the project's own directory*, tracked by [Git](version-control-git.md) next to the code and data it documents.
+  This is the right home for a lab notebook, analysis decisions, and to-dos scoped to one study, because the notes then travel and version with the project.
+- **A central knowledge base** — a single `~/org` directory (Org's `org-directory`) or an org-roam store for cross-project notes: papers, methods, and ideas you reuse everywhere.
+- **An inbox** — one `inbox.org` that quick captures land in, to be sorted (refiled) later.
+
+### Create a note in a specific place
+
+To create a project-specific file, just open it by path and Emacs writes it on first save.
+
+- **Vanilla:** `C-x C-f` (find-file), then type the path — e.g. `~/projects/flu/notes.org` — and start writing.
+- **Doom:** `SPC .` opens find-file in the *current* directory, so when you are already visiting a file in the project, typing `notes.org` creates it right there; `SPC f f` finds from anywhere and `SPC f F` from the current file's folder.
+
+Because you are only naming a path, "put this note in this project" and "put it in my central notes" are the same action aimed at different directories — the file system, not a hidden app database, decides where a note lives.
+
+### Route captures to the right file
+
+`org-capture` (`C-c c`, or Doom `SPC X`) writes a note *without* first navigating to a file; capture templates decide where each kind of note is filed.
+Point different templates at different targets — a project's TODO list, a central inbox, a journal:
+
+```elisp
+(setq org-capture-templates
+      '(("t" "Project todo" entry
+         (file+headline "~/projects/flu/notes.org" "Tasks")
+         "* TODO %?\n  %U")
+        ("i" "Inbox note" entry
+         (file+headline "~/org/inbox.org" "Inbox")
+         "* %?\n  %U %a")))   ; %a links back to where capture was invoked
+```
+
+### Find and move between notes
+
+- **Within a file:** `C-c C-j` (org-goto), or Doom `SPC s i` (imenu), jumps to any headline; `TAB` folds a subtree.
+- **Across a project:** Doom `SPC p f` (projectile) lists every file in the current project, so `notes.org` is one keystroke from the code.
+- **Across your knowledge base:** Doom `SPC n f` browses `org-directory`; with org-roam, `SPC n r f` finds a node by title and `SPC n r r` toggles the backlinks buffer to see what points here.
+- **Reorganize:** `C-c C-w` (Doom `SPC m r`) refiles the current subtree into another file or heading — the clean way to move an inbox note into its project.
+
 ## Getting started
 
 - With vanilla Emacs, Org is already included — open any `.org` file and start typing.
-- The fastest fully-featured setup is [Doom Emacs](https://github.com/doomemacs/doomemacs): enable its `org` module (and `org-roam`) and you get sensible defaults plus Vim keybindings.
+- The fastest fully-featured setup is [Doom Emacs](https://github.com/doomemacs/doomemacs): enable its [`org` module](https://github.com/doomemacs/doomemacs/tree/master/modules/lang/org) (and `org-roam`) and you get sensible defaults plus Vim keybindings.
 - Keep the [official manual](https://orgmode.org/manual/) and the community wiki, [Worg](https://orgmode.org/worg/), handy as references.
 
-### A minimal cheat sheet
+### Cheat sheet: vanilla Emacs
+
+The classic `C-c` (Control-c) bindings work in any Emacs, and still work inside Doom.
 
 | Keys        | Action                                  |
 |-------------|-----------------------------------------|
 | `TAB`       | fold / unfold the current subtree       |
 | `S-TAB`     | cycle global folding                    |
 | `C-c C-t`   | cycle TODO state                        |
+| `C-c C-j`   | jump to a headline in this file         |
 | `C-c C-l`   | insert or edit a link                   |
+| `C-c C-w`   | refile the subtree elsewhere            |
 | `C-c c`     | capture a quick note or task            |
 | `C-c a`     | open the agenda                         |
 | `C-c C-c`   | execute a code block / act on context   |
 | `C-c C-e`   | export dispatcher                       |
+
+### Cheat sheet: Doom Emacs
+
+Doom layers a discoverable, `SPC`-leader (spacebar) scheme on top; `SPC m` is the local leader for Org-specific commands.
+The bindings below are Doom defaults — search them live with `SPC h b b` (search keybindings) or `SPC h d h` (Doom help), since they can vary by version and enabled modules.
+
+| Keys          | Action                                       |
+|---------------|----------------------------------------------|
+| `SPC .`       | find file in the current directory (create one here) |
+| `SPC f f`     | find any file · `SPC f F` from this folder   |
+| `SPC p f`     | find a file in the current project           |
+| `SPC X`       | capture a note (`org-capture`)               |
+| `SPC n f`     | browse notes in your `org-directory`         |
+| `SPC n r f`   | find an org-roam node · `SPC n r i` insert a link |
+| `SPC n r r`   | toggle the org-roam backlinks buffer         |
+| `SPC n j`     | open the journal / daily note                |
+| `SPC s i`     | jump to a headline (imenu)                   |
+| `SPC m t`     | set the TODO state                           |
+| `SPC m r`     | refile the current subtree                   |
+| `SPC m l l`   | insert a link                                |
+| `SPC m d d`   | set a deadline · `SPC m d s` schedule        |
+| `SPC m e`     | export dispatcher                            |
+| `SPC m '`     | edit a source block in its own buffer        |
 
 ## Related
 
