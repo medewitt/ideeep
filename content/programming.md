@@ -18,6 +18,7 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 - [A Simulation Toolkit](programming/simulation-toolkit.md) — building fake data and simulation studies
 - [Big-O Notation & Computational Complexity](programming/big-o-and-complexity.md) — how work grows with data, and the `O(n²)` trap
 - [Data Structures & Choosing the Right Container](programming/data-structures.md) — arrays, hash maps, and sets, and the list→set fix
+- [Recursion & Dynamic Programming](programming/recursion-and-dynamic-programming.md) — memoization, sequence alignment, HMMs, and tree likelihoods
 - [Floating-Point Arithmetic & Numerical Stability](programming/floating-point-and-numerical-stability.md) — log space, the log-sum-exp trick, and why likelihoods hit zero
 - [Manipulating Data Frames](math/manipulating-data.md) — dplyr, data.table, pandas, Polars, DataFrames.jl
 - [Computer Basics for Scientists](programming/computer-basics.md) — files, paths, and the command line
