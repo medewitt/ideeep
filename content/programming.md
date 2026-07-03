@@ -16,6 +16,7 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 - [Reproducibility](programming/reproducibility.md) — seeds, environments, and literate code
 - [Debugging and Troubleshooting](programming/debugging-and-troubleshooting.md) — a calm process and the reprex
 - [A Simulation Toolkit](programming/simulation-toolkit.md) — building fake data and simulation studies
+- [Big-O Notation & Computational Complexity](programming/big-o-and-complexity.md) — how work grows with data, and the `O(n²)` trap
 - [Manipulating Data Frames](math/manipulating-data.md) — dplyr, data.table, pandas, Polars, DataFrames.jl
 - [Computer Basics for Scientists](programming/computer-basics.md) — files, paths, and the command line
 - [Running Jobs on an HPC Cluster (SLURM)](programming/hpc-clusters-slurm.md) — the DEAC & DEMON clusters, modules, SSH, and job submission
