@@ -86,6 +86,16 @@ Tie back to infectious-disease ecology / epidemiology.
 
 Notes on paths: nested pages (`content/<section>/page.md`) reference figures as `../assets/figures/…` and the hub as `../<section>.md`; top-level hub pages use `assets/figures/…` and `section/page.md`.
 
+## Write to build intuition
+
+The goal of a topical content page is **understanding**, not just reference.
+Lead with the intuition — the mental picture or the "why" — before the formalism, and let concrete, biological examples carry the ideas (a specific pathogen, a specific timeline, a specific bias) rather than abstractions alone.
+
+Illustrate generously.
+Favor **many graphics and code snippets** over dense prose: a page should usually have at least one figure near the top and one wherever a concept turns visual (a timeline, a distribution, a bias, a curve), plus runnable `R`/`Python`/`Julia` code and a worked numeric example.
+Every figure and code block should *do explanatory work* — make an idea click, expose a mechanism, or let the reader reproduce a result — not just decorate.
+Prefer showing a mechanism (simulate it, plot it, fit it) over asserting it, and keep the reader able to run and modify what they see.
+
 ## Prose convention: one sentence per line
 
 Prose is written **one sentence per line** (semantic line breaks), enforced by `scripts/sentence_lint.py`.
