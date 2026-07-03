@@ -88,6 +88,44 @@
 	--transition: 0.15s ease;
 }
 
+/* 2a. Dark theme ----------------------------------------------------------- */
+/* Follows the system preference by default; a manual toggle sets
+   data-theme="dark|light" on <html> and always wins (see assets/nav.js). */
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--color-bg: #14181e;
+		--color-surface: #1c222b;
+		--color-surface-2: #262d37;
+		--color-ink: #e7ebf0;
+		--color-muted: #a4b0bd;
+		--color-border: #2b333e;
+		--color-accent: #c7a24f;
+		--color-accent-strong: #dcbd77;
+		--color-link: #6fb3e0;
+		--color-link-strong: #9cceef;
+		--color-nav-bg: #0e1116;
+		--color-nav-fg: #ffffff;
+		--color-nav-panel: #1c222b;
+		--color-nav-border: #333b45;
+	}
+}
+:root[data-theme="dark"] {
+	--color-bg: #14181e;
+	--color-surface: #1c222b;
+	--color-surface-2: #262d37;
+	--color-ink: #e7ebf0;
+	--color-muted: #a4b0bd;
+	--color-border: #2b333e;
+	--color-accent: #c7a24f;
+	--color-accent-strong: #dcbd77;
+	--color-link: #6fb3e0;
+	--color-link-strong: #9cceef;
+	--color-nav-bg: #0e1116;
+	--color-nav-fg: #ffffff;
+	--color-nav-panel: #1c222b;
+	--color-nav-border: #333b45;
+}
+
 /* 3. Base elements & typography ------------------------------------------- */
 *,
 *::before,
@@ -390,6 +428,24 @@ hr {
 	color: var(--color-accent);
 }
 
+/* Theme toggle — sun shows in dark mode, moon in light mode */
+.theme-toggle {
+	padding: var(--space-3) 0;
+}
+.theme-toggle svg {
+	display: block;
+	width: 20px;
+	height: 20px;
+}
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
+	:root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+}
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
 /* 6. Content components ---------------------------------------------------- */
 /* Code */
 pre {
@@ -454,6 +510,21 @@ tbody tr:nth-child(even) {
 .blogbody img[src*="/figures/"] {
 	display: block;
 	margin: var(--space-5) auto;
+}
+
+/* Figures are dark-ink SVGs on a transparent ground; give them a light card in
+   dark mode so they stay legible. */
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .blogbody img[src*="/figures/"] {
+		background: #fff;
+		padding: var(--space-4);
+		border-radius: var(--radius);
+	}
+}
+:root[data-theme="dark"] .blogbody img[src*="/figures/"] {
+	background: #fff;
+	padding: var(--space-4);
+	border-radius: var(--radius);
 }
 
 /* Blockquotes / callouts */
@@ -603,5 +674,52 @@ footer {
 		border-radius: 0;
 		padding: 0 0 var(--space-2) var(--space-4);
 		background: transparent;
+	}
+}
+
+/* 10. Print ---------------------------------------------------------------- */
+@media print {
+	.site-nav,
+	.skip-link,
+	footer,
+	.theme-toggle {
+		display: none !important;
+	}
+
+	html, body {
+		background: #fff;
+		color: #000;
+	}
+
+	#content {
+		max-width: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	a {
+		color: #000;
+		text-decoration: underline;
+	}
+
+	/* Expose link targets so a printed page keeps its references */
+	.blogbody a[href^="http"]::after {
+		content: " (" attr(href) ")";
+		font-size: 0.85em;
+		color: #333;
+		word-break: break-all;
+	}
+
+	pre, blockquote, table, img, figure {
+		page-break-inside: avoid;
+	}
+
+	pre {
+		border: 1px solid #bbb;
+		white-space: pre-wrap;
+	}
+
+	h1, h2, h3 {
+		page-break-after: avoid;
 	}
 }

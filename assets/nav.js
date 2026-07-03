@@ -50,6 +50,17 @@
 		if (!nav.contains(e.target)) closeDropdowns(null);
 	});
 
+	/* Theme toggle — flips the effective theme and persists it */
+	var themeBtn = nav.querySelector('.theme-toggle');
+	if (themeBtn && typeof window.__applyTheme === 'function') {
+		themeBtn.addEventListener('click', function () {
+			var current = document.documentElement.getAttribute('data-theme');
+			var effective = current ||
+				(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+			window.__applyTheme(effective === 'dark' ? 'light' : 'dark', true);
+		});
+	}
+
 	/* Escape closes any open dropdown, then the mobile menu; restores focus */
 	document.addEventListener('keydown', function (e) {
 		if (e.key !== 'Escape' && e.key !== 'Esc') return;

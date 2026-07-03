@@ -15,6 +15,7 @@ struct Config {
     page_order: Option<Vec<serde_yaml::Value>>,
     navbar_order: Option<Vec<serde_yaml::Value>>,  // New: allows manual ordering including dropdowns
     dropdowns: Option<std::collections::HashMap<String, serde_yaml::Value>>,
+    site_url: Option<String>,  // Optional canonical origin for absolute OG/Twitter URLs
 }
 
 fn extract_frontmatter(content: &str) -> (Option<FrontMatter>, &str) {
@@ -438,16 +439,102 @@ fn generate_navbar(
         }
     }
     
+    // Theme toggle (last item; handler lives in assets/nav.js)
+    nav.push_str("  <li class=\"nav-item\"><button type=\"button\" class=\"nav-link theme-toggle\" aria-label=\"Toggle dark mode\" title=\"Toggle light/dark theme\"><svg class=\"icon-moon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z\"/></svg><svg class=\"icon-sun\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"4.5\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/></svg></button></li>\n");
+
     nav.push_str("  </ul>\n</div>\n</nav>\n");
     nav
 }
 
-fn generate_html(title: &str, content: &str, navbar: &str, asset_prefix: &str) -> Result<String, Box<dyn std::error::Error>> {
+/// Escape text for use inside an HTML attribute or element text node.
+fn html_escape(s: &str) -> String {
+    s.replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+        .replace('"', "&quot;")
+}
+
+fn generate_html(
+    title: &str,
+    content: &str,
+    navbar: &str,
+    asset_prefix: &str,
+    description: &str,
+    page_url: &str,
+    site_url: &str,
+) -> Result<String, Box<dyn std::error::Error>> {
     let katex_css = format!(r#"<link rel="stylesheet" href="{}assets/vendor/katex/katex.min.css" type="text/css" />"#, asset_prefix);
 
     // Preload the self-hosted Nunito Sans faces so text paints without a swap flash.
     let font_preload = format!(
         "<link rel=\"preload\" href=\"{p}assets/fonts/nunito-sans-latin.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n    <link rel=\"preload\" href=\"{p}assets/fonts/nunito-sans-latin-italic.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>",
+        p = asset_prefix
+    );
+
+    // Pages with no front-matter title (e.g. the home page) fall back to the
+    // program name; others get a " · IDEEEP" suffix for tab/SEO clarity.
+    let esc_title = if title.trim().is_empty() {
+        html_escape("Infectious Disease Ecology, Evolution, and Epidemiology Program (IDEEEP)")
+    } else {
+        html_escape(&format!("{} · IDEEEP", title))
+    };
+    let esc_desc = html_escape(description);
+
+    // Absolute URLs when a site_url is configured; otherwise fall back to
+    // page-relative asset paths (fine for the deploy, best-effort for scrapers).
+    let base = site_url.trim_end_matches('/');
+    let share_image = if base.is_empty() {
+        format!("{}assets/icon-512.png", asset_prefix)
+    } else {
+        format!("{}/assets/icon-512.png", base)
+    };
+    let og_url = if base.is_empty() {
+        String::new()
+    } else {
+        format!("\n    <meta property=\"og:url\" content=\"{}/{}\">", base, page_url)
+    };
+
+    // Metadata: description, icons, manifest, Open Graph & Twitter cards.
+    let meta_block = format!(
+        r##"<meta name="description" content="{desc}">
+    <meta name="theme-color" content="#12151a">
+    <link rel="icon" type="image/png" href="{p}assets/favicon.png" />
+    <link rel="apple-touch-icon" href="{p}assets/apple-touch-icon.png" />
+    <link rel="manifest" href="{p}assets/manifest.webmanifest" />
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="IDEEEP">
+    <meta property="og:title" content="{title}">
+    <meta property="og:description" content="{desc}">
+    <meta property="og:image" content="{img}">{og_url}
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{title}">
+    <meta name="twitter:description" content="{desc}">
+    <meta name="twitter:image" content="{img}">"##,
+        desc = esc_desc,
+        title = esc_title,
+        img = html_escape(&share_image),
+        og_url = og_url,
+        p = asset_prefix,
+    );
+
+    // Syntax-highlight themes swap with the color scheme; an early script applies
+    // any saved manual preference before paint (and toggles the code themes).
+    let hljs_block = format!(
+        r#"<link rel="stylesheet" id="hljs-light" href="{p}assets/vendor/highlightjs/github.min.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" id="hljs-dark" href="{p}assets/vendor/highlightjs/github-dark.min.css" media="(prefers-color-scheme: dark)">
+    <script>
+    window.__applyTheme = function (t, persist) {{
+        var r = document.documentElement, l = document.getElementById('hljs-light'), d = document.getElementById('hljs-dark');
+        if (t === 'dark' || t === 'light') {{ r.setAttribute('data-theme', t); }} else {{ r.removeAttribute('data-theme'); }}
+        if (l && d) {{
+            if (t === 'dark') {{ l.media = 'not all'; d.media = 'all'; }}
+            else if (t === 'light') {{ l.media = 'all'; d.media = 'not all'; }}
+            else {{ l.media = '(prefers-color-scheme: light)'; d.media = '(prefers-color-scheme: dark)'; }}
+        }}
+        if (persist) {{ try {{ localStorage.setItem('theme', t); }} catch (e) {{}} }}
+    }};
+    try {{ var _t = localStorage.getItem('theme'); if (_t) window.__applyTheme(_t, false); }} catch (e) {{}}
+    </script>"#,
         p = asset_prefix
     );
 
@@ -465,12 +552,12 @@ fn generate_html(title: &str, content: &str, navbar: &str, asset_prefix: &str) -
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{}</title>
-    <link rel="icon" type="image/png" href="{p}assets/favicon.png" />
+    <title>{title}</title>
+    {meta_block}
     <link rel="stylesheet" href="{p}assets/styles.css" type="text/css" />
-    {}
+    {font_preload}
     <!-- Self-hosted syntax highlighting (highlight.js) -->
-    <link rel="stylesheet" href="{p}assets/vendor/highlightjs/github.min.css">
+    {hljs_block}
     <script defer src="{p}assets/vendor/highlightjs/highlight.bundle.min.js"></script>
     <script defer src="{p}assets/nav.js"></script>
     <script>
@@ -478,20 +565,28 @@ fn generate_html(title: &str, content: &str, navbar: &str, asset_prefix: &str) -
         if (window.hljs) hljs.highlightAll();
     }});
     </script>
-    {}
+    {katex_css}
 </head>
 <body>
     <a class="skip-link" href="#content">Skip to content</a>
-    {}
+    {navbar}
     <main id="content">
         <div class="blogbody">
-            {}
+            {content}
         </div>
     </main>
-    {}
+    {footer_content}
 </body>
 </html>"##,
-        title, font_preload, katex_css, navbar, content, footer_content, p = asset_prefix
+        title = esc_title,
+        meta_block = meta_block,
+        font_preload = font_preload,
+        hljs_block = hljs_block,
+        katex_css = katex_css,
+        navbar = navbar,
+        content = content,
+        footer_content = footer_content,
+        p = asset_prefix
     ))
 }
 
@@ -647,6 +742,54 @@ fn extract_search_text(markdown: &str) -> String {
     // Collapse runs of whitespace so snippets read cleanly.
     let whitespace_re = Regex::new(r"\s+").unwrap();
     whitespace_re.replace_all(&text, " ").trim().to_string()
+}
+
+/// Derive a ~160-character meta description from the first real prose paragraph,
+/// skipping headings, images, and block quotes. Returns "" if none is found.
+fn extract_description(markdown: &str) -> String {
+    use pulldown_cmark::Tag;
+    let parser = Parser::new_ext(markdown, Options::all());
+    let mut in_para = false;
+    let mut bq_depth = 0i32;
+    let mut img_depth = 0i32;
+    let mut buf = String::new();
+    for event in parser {
+        match event {
+            Event::Start(Tag::BlockQuote) => bq_depth += 1,
+            Event::End(Tag::BlockQuote) => bq_depth -= 1,
+            Event::Start(Tag::Image(..)) => img_depth += 1,
+            Event::End(Tag::Image(..)) => img_depth -= 1,
+            Event::Start(Tag::Paragraph) if bq_depth == 0 => in_para = true,
+            Event::End(Tag::Paragraph) => {
+                if in_para && !buf.trim().is_empty() {
+                    break;
+                }
+                in_para = false;
+            }
+            Event::Text(t) | Event::Code(t) => {
+                if in_para && img_depth == 0 {
+                    buf.push_str(&t);
+                }
+            }
+            Event::SoftBreak | Event::HardBreak => {
+                if in_para {
+                    buf.push(' ');
+                }
+            }
+            _ => {}
+        }
+    }
+    let cleaned = buf.split_whitespace().collect::<Vec<_>>().join(" ");
+    if cleaned.chars().count() > 160 {
+        let head: String = cleaned.chars().take(160).collect();
+        let trimmed = match head.rfind(' ') {
+            Some(i) => &head[..i],
+            None => head.as_str(),
+        };
+        format!("{}…", trimmed.trim_end())
+    } else {
+        cleaned
+    }
 }
 
 /// Build a client-loadable FTS4 SQLite index (`dist/search.db`) over every page.
@@ -982,24 +1125,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Load config file if it exists
     let config_path = Path::new("config.yaml");
-    let (page_order, navbar_order, dropdowns) = if config_path.exists() {
+    let (page_order, navbar_order, dropdowns, site_url) = if config_path.exists() {
         match fs::read_to_string(config_path) {
             Ok(content) => {
                 match serde_yaml::from_str::<Config>(&content) {
-                    Ok(config) => (config.page_order, config.navbar_order, config.dropdowns),
+                    Ok(config) => (config.page_order, config.navbar_order, config.dropdowns, config.site_url.unwrap_or_default()),
                     Err(e) => {
                         eprintln!("Warning: Failed to parse config.yaml: {}", e);
-                        (None, None, None)
+                        (None, None, None, String::new())
                     }
                 }
             }
             Err(e) => {
                 eprintln!("Warning: Failed to read config.yaml: {}", e);
-                (None, None, None)
+                (None, None, None, String::new())
             }
         }
     } else {
-        (None, None, None)
+        (None, None, None, String::new())
     };
 
     // Sort markdown files according to config or alphabetically
@@ -1265,8 +1408,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         
         // Generate navbar HTML with current page highlighted
         let navbar = generate_navbar(&navbar_items, true, dropdowns.as_ref(), &markdown_titles, Some(&rel_key), &asset_prefix);
-        
-        let html_output = generate_html(title, &html_content, &navbar, &asset_prefix)?;
+
+        let description = extract_description(markdown_content);
+        let page_url = format!("{}.html", rel_key);
+        let html_output = generate_html(title, &html_content, &navbar, &asset_prefix, &description, &page_url, &site_url)?;
         
         // Preserve directory structure in dist
         let html_path = dist_dir.join(relative_path.with_extension("html"));
@@ -1292,7 +1437,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some("search"),
         "",
     );
-    let search_html = generate_html("Search", &search_page_content(), &search_navbar, "")?;
+    let search_html = generate_html(
+        "Search",
+        &search_page_content(),
+        &search_navbar,
+        "",
+        "Search across all IDEEEP pages: quantitative methods, programming, epidemiology, and research content.",
+        "search.html",
+        &site_url,
+    )?;
     let search_path = dist_dir.join("search.html");
     fs::write(&search_path, search_html)?;
     println!("Generated: {}", search_path.display());
