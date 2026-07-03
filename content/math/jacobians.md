@@ -6,14 +6,7 @@ title: "Jacobians"
 
 ## Example: SIR Model with Frequency-Dependent Transmission
 
-Consider the SIR model:
-\[
-\begin{aligned}
-\frac{dS}{dt} &= -\beta \frac{S I}{N} \\
-\frac{dI}{dt} &= \beta \frac{S I}{N} - \gamma I \\
-\frac{dR}{dt} &= \gamma I
-\end{aligned}
-\]
+Consider the [SIR model](sir.md): \[ \begin{aligned} \frac{dS}{dt} &= -\beta \frac{S I}{N} \\ \frac{dI}{dt} &= \beta \frac{S I}{N} - \gamma I \\ \frac{dR}{dt} &= \gamma I \end{aligned} \]
 
 where:
 - $\beta$ = transmission rate (frequency dependent)
@@ -31,7 +24,7 @@ J =
 \end{bmatrix}
 \]
 
-This Jacobian can be evaluated at a particular point (for example, the disease-free equilibrium $(S^*, I^*, R^*) = (N, 0, 0)$ to analyze local stability of the dynamical system.
+This Jacobian can be evaluated at a particular point (for example, the disease-free equilibrium $(S^*, I^*, R^*) = (N, 0, 0)$ to analyze [local stability](eigenvalues-and-eigenvectors.md) of the dynamical system.
 
 ## In Julia
 
@@ -106,4 +99,13 @@ u = [N, 0.0, 0.0]  # Disease-free equilibrium
 J = ForwardDiff.jacobian(u -> sir_model(u, p), u)
 ```
 
+## Related
 
+- [Gradient](gradient.md)
+- [Partial Derivatives](partial-derivatives.md)
+- [Eigenvalues and Eigenvectors](eigenvalues-and-eigenvectors.md)
+- [Matrix Operations](matrix-operations.md)
+- [Inverse, Determinant, and Rank](matrix-inverse-and-determinant.md)
+- [Equilibria and Linear Stability](equilibria-and-stability.md)
+- [The Community Matrix and Stability](community-matrix.md)
+- [Compartmental Models (SIR)](sir.md)

@@ -5,6 +5,41 @@ default: build
 build:
     cargo run --release
 
+# Directories whose Markdown prose follows the one-sentence-per-line convention
+prose_dirs := "content/math content/programming"
+
+# Check that prose is one sentence per line (non-zero exit if not); used in CI
+lint-prose:
+    python3 scripts/sentence_lint.py --check {{prose_dirs}}
+
+# Reformat prose to one sentence per line in place
+fmt-prose:
+    python3 scripts/sentence_lint.py --write {{prose_dirs}}
+
+# Execute embedded ```python blocks and inject their stdout beneath each block
+# (idempotent). Needs uv; the injected output is committed so the site build
+# never runs Python.
+python-output:
+    uv run --script scripts/inject_python_output.py --write {{prose_dirs}}
+
+# Check that injected Python outputs are up to date (CI); non-zero if not
+python-output-check:
+    uv run --script scripts/inject_python_output.py --check {{prose_dirs}}
+
+# Render illustrative figures (SVG) from the scripts in figures/ using uv.
+# Each script declares its own dependencies inline (PEP 723); uv builds an
+# ephemeral, cached environment per run. Output SVGs are committed so the
+# site build (cargo run) never needs Python.
+figures:
+    #!/usr/bin/env bash
+    set -e
+    mkdir -p assets/figures
+    for f in figures/*.py; do
+        [ "$(basename "$f")" = "_style.py" ] && continue
+        echo "rendering $f"
+        uv run --quiet --script "$f"
+    done
+
 # Kill any process using the specified port
 kill-port port="8000":
     @lsof -ti:{{port}} | xargs kill -9 2>/dev/null || true

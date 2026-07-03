@@ -106,6 +106,17 @@
 		text-decoration: underline;
 	}
 
+	/* Illustrative figures: keep vector images responsive and centered */
+	.blogbody img {
+		max-width: 100%;
+		height: auto;
+	}
+
+	.blogbody img[src*="/figures/"] {
+		display: block;
+		margin: 1.2em auto;
+	}
+
 	.blognotes {
 		font-family:garamond, palatino, georgia, verdana, arial, sans-serif;
 		color:#333;
