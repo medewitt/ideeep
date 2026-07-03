@@ -8,6 +8,7 @@ use rusqlite::{params, Connection};
 #[derive(Debug, serde::Deserialize)]
 struct FrontMatter {
     title: Option<String>,
+    toc: Option<bool>,
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -266,6 +267,138 @@ fn render_callouts(html: &str) -> String {
     }).into_owned()
 }
 
+/// Drop HTML tags and collapse whitespace, for slugs and TOC labels.
+fn strip_tags(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    let mut in_tag = false;
+    for c in s.chars() {
+        match c {
+            '<' => in_tag = true,
+            '>' => in_tag = false,
+            _ if !in_tag => out.push(c),
+            _ => {}
+        }
+    }
+    out.split_whitespace().collect::<Vec<_>>().join(" ")
+}
+
+/// A URL-safe slug from heading text.
+fn slugify(s: &str) -> String {
+    let text = strip_tags(s)
+        .replace("&amp;", " ")
+        .replace("&lt;", " ")
+        .replace("&gt;", " ")
+        .replace("&quot;", " ")
+        .replace("&#39;", " ");
+    let mut slug = String::new();
+    let mut prev_dash = false;
+    for c in text.chars() {
+        if c.is_ascii_alphanumeric() {
+            slug.push(c.to_ascii_lowercase());
+            prev_dash = false;
+        } else if !slug.is_empty() && !prev_dash {
+            slug.push('-');
+            prev_dash = true;
+        }
+    }
+    slug.trim_matches('-').to_string()
+}
+
+/// Give every h2/h3 a unique id and return the ordered heading list for a TOC.
+fn add_heading_ids(html: &str) -> (String, Vec<(u8, String, String)>) {
+    let re = Regex::new(r"(?is)<h([23])>(.*?)</h[23]>").unwrap();
+    let mut out = String::with_capacity(html.len());
+    let mut last = 0;
+    let mut seen: std::collections::HashMap<String, u32> = std::collections::HashMap::new();
+    let mut headings = Vec::new();
+    for caps in re.captures_iter(html) {
+        let m = caps.get(0).unwrap();
+        let lvl: u8 = caps[1].parse().unwrap_or(2);
+        let inner = &caps[2];
+        let base = {
+            let b = slugify(inner);
+            if b.is_empty() { "section".to_string() } else { b }
+        };
+        let n = seen.entry(base.clone()).or_insert(0);
+        let slug = if *n == 0 { base.clone() } else { format!("{}-{}", base, n) };
+        *n += 1;
+        out.push_str(&html[last..m.start()]);
+        out.push_str(&format!("<h{l} id=\"{s}\">{inner}</h{l}>", l = lvl, s = slug, inner = inner));
+        last = m.end();
+        headings.push((lvl, slug, strip_tags(inner)));
+    }
+    out.push_str(&html[last..]);
+    (out, headings)
+}
+
+/// Build the "On this page" navigation from collected headings.
+fn build_toc(headings: &[(u8, String, String)]) -> String {
+    let mut s = String::from(
+        "<nav class=\"page-toc\" aria-label=\"On this page\">\n<p class=\"page-toc-title\">On this page</p>\n<ul>\n",
+    );
+    for (lvl, slug, text) in headings {
+        let cls = if *lvl == 3 { " class=\"toc-sub\"" } else { "" };
+        // `text` is stripped from already-escaped HTML, so it is safe to emit as-is.
+        s.push_str(&format!(
+            "<li{}><a href=\"#{}\">{}</a></li>\n",
+            cls, slug, text
+        ));
+    }
+    s.push_str("</ul>\n</nav>\n");
+    s
+}
+
+/// Flow flat link lists (>=4 items, mostly links, no nesting) into columns.
+fn columnize_link_lists(html: &str) -> String {
+    let mut out = String::with_capacity(html.len());
+    let mut rest = html;
+    while let Some(pos) = rest.find("<ul>") {
+        out.push_str(&rest[..pos]);
+        let after = &rest[pos..];
+        let b = after.as_bytes();
+        let mut depth = 0i32;
+        let mut idx = 0usize;
+        let mut end = None;
+        while idx < b.len() {
+            if b[idx..].starts_with(b"<ul>") {
+                depth += 1;
+                idx += 4;
+            } else if b[idx..].starts_with(b"</ul>") {
+                depth -= 1;
+                idx += 5;
+                if depth == 0 {
+                    end = Some(idx);
+                    break;
+                }
+            } else {
+                idx += 1;
+            }
+        }
+        match end {
+            Some(e) => {
+                let inner = &after[4..e - 5];
+                let li_count = inner.matches("<li>").count();
+                let link_items = inner.matches("<li><a").count();
+                let nested = inner.contains("<ul");
+                if !nested && li_count >= 4 && link_items * 2 >= li_count {
+                    out.push_str("<ul class=\"col-list\">");
+                    out.push_str(&after[4..e]);
+                } else {
+                    out.push_str(&after[..e]);
+                }
+                rest = &after[e..];
+            }
+            None => {
+                out.push_str(after);
+                rest = "";
+                break;
+            }
+        }
+    }
+    out.push_str(rest);
+    out
+}
+
 fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<String>) -> String {
     // Pre-process math expressions: render them server-side with KaTeX
     let processed_markdown = preprocess_math(markdown);
@@ -276,7 +409,8 @@ fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<S
     html::push_html(&mut html_output, parser);
 
     let linked = convert_internal_links(&html_output, markdown_files);
-    render_callouts(&linked)
+    let with_callouts = render_callouts(&linked);
+    columnize_link_lists(&with_callouts)
 }
 
 #[derive(Clone)]
@@ -1426,9 +1560,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Process each markdown file
     for (full_path, relative_path, title) in &markdown_files {
         let content = fs::read_to_string(full_path)?;
-        let (_, markdown_content) = extract_frontmatter(&content);
+        let (frontmatter, markdown_content) = extract_frontmatter(&content);
         let html_content = markdown_to_html(markdown_content, &markdown_file_names);
-        
+
+        // Give headings ids, then add an "On this page" TOC to long/hub pages.
+        // Front-matter `toc:` overrides the automatic threshold (>= 5 sections).
+        let (html_content, headings) = add_heading_ids(&html_content);
+        let toc_default = headings.iter().filter(|(lvl, _, _)| *lvl == 2).count() >= 5;
+        let toc_enabled = frontmatter.and_then(|fm| fm.toc).unwrap_or(toc_default);
+        let html_content = if toc_enabled && !headings.is_empty() {
+            let toc = build_toc(&headings);
+            let with_lead = html_content.replacen("<p>", "<p class=\"lead\">", 1);
+            match with_lead.find("<h2") {
+                Some(pos) => format!("{}{}{}", &with_lead[..pos], toc, &with_lead[pos..]),
+                None => format!("{}{}", toc, with_lead),
+            }
+        } else {
+            html_content
+        };
+
         let rel_key = relative_path.with_extension("")
             .to_string_lossy()
             .replace('\\', "/");

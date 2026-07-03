@@ -609,6 +609,64 @@ blockquote p + p {
 	:root:not([data-theme="light"]) .callout-warning { --callout-accent: #d8ab54; }
 }
 
+/* "On this page" table of contents (long/hub pages) */
+h2[id], h3[id] {
+	scroll-margin-top: 84px;
+}
+
+.page-toc {
+	margin: var(--space-6) 0;
+	padding: var(--space-4) var(--space-5);
+	background: var(--color-surface);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius);
+}
+.page-toc-title {
+	margin: 0 0 var(--space-3);
+	font-size: var(--text-sm);
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--color-muted);
+}
+.page-toc ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	columns: 2;
+	column-gap: var(--space-6);
+}
+.page-toc li {
+	margin: 0 0 var(--space-1);
+	break-inside: avoid;
+}
+.page-toc a {
+	text-decoration: none;
+}
+.page-toc a:hover,
+.page-toc a:focus {
+	text-decoration: underline;
+}
+.page-toc .toc-sub {
+	padding-left: var(--space-4);
+	font-size: 0.95em;
+}
+@media (max-width: 640px) {
+	.page-toc ul { columns: 1; }
+}
+
+/* Flat link lists flow into columns to shorten dense reference pages */
+.col-list {
+	columns: 2;
+	column-gap: var(--space-6);
+}
+.col-list > li {
+	break-inside: avoid;
+}
+@media (max-width: 640px) {
+	.col-list { columns: 1; }
+}
+
 /* 7. Footer ---------------------------------------------------------------- */
 footer {
 	clear: both;
