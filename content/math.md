@@ -19,6 +19,10 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Functions and Graphs](math/functions-and-graphs.md) — common functions and how to plot them
 - [Exponentials and Logarithms](math/exponentials-and-logarithms.md) — rules, the number $e$, and log identities
 
+## Working with data
+
+- [Manipulating Data Frames](math/manipulating-data.md) — dplyr, data.table, pandas, Polars, and DataFrames.jl
+
 ## Sequences, series & limits
 
 - [Sequences](math/sequences.md) — notation, monotonicity, and boundedness

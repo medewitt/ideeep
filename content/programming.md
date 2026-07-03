@@ -16,6 +16,7 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 - [Reproducibility](programming/reproducibility.md) — seeds, environments, and literate code
 - [Debugging and Troubleshooting](programming/debugging-and-troubleshooting.md) — a calm process and the reprex
 - [A Simulation Toolkit](programming/simulation-toolkit.md) — building fake data and simulation studies
+- [Manipulating Data Frames](math/manipulating-data.md) — dplyr, data.table, pandas, Polars, DataFrames.jl
 - [Computer Basics for Scientists](programming/computer-basics.md) — files, paths, and the command line
 - [Handling Secrets and API Keys](programming/handling-secrets.md) — keys, environment variables, and `.gitignore`
 - [Version Control with Git & GitHub](programming/version-control-git.md)

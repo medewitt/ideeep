@@ -1,7 +1,7 @@
 # /// script
 # requires-python = ">=3.10"
 # dependencies = [
-#     "numpy", "scipy", "sympy", "pandas", "statsmodels",
+#     "numpy", "scipy", "sympy", "pandas", "polars", "statsmodels",
 #     "networkx", "matplotlib", "scikit-learn",
 # ]
 # ///

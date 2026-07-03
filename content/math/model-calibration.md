@@ -109,6 +109,46 @@ fit$par                 # ~0.9, ~0.3
 fit$par[1] / fit$par[2] # estimated R0 ~ 3
 ```
 
+### Bayesian fit with NumPyro
+
+The optimizer above returns a single best-fit point.
+A Bayesian fit instead returns the whole **posterior** over $\beta$, $\gamma$, and $R_0$, so the uncertainty and any parameter trade-offs are explicit (see [MCMC](mcmc.md) and [Bayesian inference](bayesian-inference.md)).
+[NumPyro](https://num.pyro.ai) expresses the model in JAX and samples it with the NUTS Hamiltonian Monte Carlo sampler; here the epidemic is a discrete-time SIR stepped with `lax.scan` so the whole model is differentiable.
+
+```python
+import jax, jax.numpy as jnp
+from jax import random
+import numpyro, numpyro.distributions as dist
+from numpyro.infer import MCMC, NUTS
+
+N = 10000.0
+n_days = obs.shape[0]                       # `obs` = the noisy incidence from above
+
+def sir_model(obs=None):
+    beta = numpyro.sample("beta", dist.LogNormal(jnp.log(0.5), 0.5))   # priors
+    gamma = numpyro.sample("gamma", dist.LogNormal(jnp.log(0.5), 0.5))
+
+    def step(state, _):
+        S, I, R = state
+        inf = beta * S * I / N              # new infections that day
+        rec = gamma * I
+        return (S - inf, I + inf - rec, R + rec), inf
+
+    _, incidence = jax.lax.scan(step, (N - 5.0, 5.0, 0.0), None, length=n_days)
+    numpyro.deterministic("R0", beta / gamma)
+    numpyro.sample("obs", dist.Poisson(jnp.clip(incidence, 1e-6, None)), obs=obs)
+
+mcmc = MCMC(NUTS(sir_model), num_warmup=500, num_samples=1000, progress_bar=False)
+mcmc.run(random.PRNGKey(0), obs=jnp.asarray(obs, float))
+mcmc.print_summary()
+#              mean     std   5.0%  95.0%
+#   beta       0.90    0.01   0.88   0.92
+#   gamma      0.30    0.01   0.29   0.31
+#   R0         3.01    0.05   2.93   3.09     <- posterior for R0, with a credible interval
+```
+
+Instead of a single $\hat R_0 \approx 3$, you get a posterior distribution for it — the honest, uncertainty-aware version of the same calibration.
+
 ## Why it matters
 
 Calibration is how mechanistic models earn their keep in public health: fitting an SIR or SEIR model to surveillance data yields real-time estimates of transmissibility, reporting, and $R_0$ that guide response.
@@ -119,6 +159,9 @@ Understanding the objective, the optimizer, and the limits set by identifiabilit
 - [SIR model](sir.md)
 - [SEIR models](seir-models.md)
 - [Maximum likelihood](maximum-likelihood.md)
+- [Bayesian Inference](bayesian-inference.md)
+- [Markov Chain Monte Carlo](mcmc.md)
+- [The Effective Reproduction Number and Forecasting](reproduction-number-rt.md)
 - [Optimization](optimization.md)
 - [Bayesian inference](bayesian-inference.md)
 - [Reproduction number Rt](reproduction-number-rt.md)
