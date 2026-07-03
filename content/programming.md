@@ -22,6 +22,7 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 - [Recursion & Dynamic Programming](programming/recursion-and-dynamic-programming.md) — memoization, sequence alignment, HMMs, and tree likelihoods
 - [Floating-Point Arithmetic & Numerical Stability](programming/floating-point-and-numerical-stability.md) — log space, the log-sum-exp trick, and why likelihoods hit zero
 - [Numerical Methods for Dynamical Systems](programming/numerical-methods-for-dynamical-systems.md) — integrating ODEs, Euler vs RK4, stiffness, and solvers
+- [Testing & Verification for Scientific Code](programming/testing-scientific-code.md) — unit tests, invariants, and testing stochastic code
 - [Manipulating Data Frames](math/manipulating-data.md) — dplyr, data.table, pandas, Polars, DataFrames.jl
 - [Computer Basics for Scientists](programming/computer-basics.md) — files, paths, and the command line
 - [Running Jobs on an HPC Cluster (SLURM)](programming/hpc-clusters-slurm.md) — the DEAC & DEMON clusters, modules, SSH, and job submission
