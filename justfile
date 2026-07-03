@@ -6,7 +6,7 @@ build:
     cargo run --release
 
 # Directories whose Markdown prose follows the one-sentence-per-line convention
-prose_dirs := "content/math content/programming"
+prose_dirs := "content/math content/programming content/epidemiology content/diagnostics content/scientific-pathways.md content/scientific-writing.md"
 
 # Check that prose is one sentence per line (non-zero exit if not); used in CI
 lint-prose:
