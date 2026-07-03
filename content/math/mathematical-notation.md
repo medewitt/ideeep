@@ -99,6 +99,7 @@ Fluency here is the prerequisite for everything that follows.
 
 ## Related
 
+- [The Language of Mathematics](language-of-mathematics.md)
 - [Functions and Graphs](functions-and-graphs.md)
 - [Series](series.md)
 - [Probability Basics](probability-basics.md)

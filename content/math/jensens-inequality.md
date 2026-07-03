@@ -43,6 +43,30 @@ So $\mathbb{E}[g(X)] = 5 \ge 4 = g(\mathbb{E}[X])$, with a gap of $1$.
 
 Check the variance-gap formula: $\operatorname{Var}(X) = \mathbb{E}[X^2] - \mu^2 = 5 - 4 = 1$ and $g''(x) = 2$, so \[ \tfrac12 g''(\mu)\operatorname{Var}(X) = \tfrac12(2)(1) = 1, \] which matches the gap exactly — the approximation is exact here because $g$ is quadratic (higher derivatives vanish).
 
+## A biological example: performance in a fluctuating environment
+
+Most biological rates — development, metabolism, photosynthesis, even pathogen transmission — depend on temperature through a curved **thermal performance curve** that peaks at an optimum and falls off on either side.
+Near that optimum the curve is *concave*, so Jensen's inequality bites: an organism experiencing a *fluctuating* temperature performs worse, on average, than one held at the same *mean* temperature.
+Ecologists call plugging the mean temperature into a nonlinear rate the "fallacy of the averages" ([Ruel & Ayres, 2001](https://doi.org/10.1016/S0169-5347%2801%2902095-0)).
+
+![A concave thermal performance curve: because performance is concave near the optimum, the average of performance at 20 °C and 36 °C (0.37) sits far below the performance at their mean temperature of 28 °C (1.00).](../assets/figures/jensens-biology.svg)
+
+Take a performance curve peaking at $T_\text{opt} = 28^\circ\text{C}$ and a habitat that spends half its time at $20^\circ$ and half at $36^\circ$ — mean temperature exactly $28^\circ$.
+Performance *at the mean* temperature is the maximum, $P(\bar T) = 1.00$, but the *mean performance* is only $\tfrac12[P(20) + P(36)] = 0.37$: variability alone costs 63% of performance, with no change in the average temperature.
+This is why climate **variability**, not just mean warming, reshapes development rates, vector activity, and transmission — and why a model fed the mean temperature over-predicts.
+The sign can flip: in the accelerating, *convex* low-temperature tail of the same curve, added variability would *raise* mean performance, exactly as $\tfrac12 P''(\mu)\operatorname{Var}(T)$ predicts.
+
+```python
+import numpy as np
+Topt, width = 28.0, 8.0
+P = lambda T: np.exp(-((T - Topt) / width) ** 2)   # concave near the optimum
+
+T = np.array([20.0, 36.0])          # two equally likely temperatures, mean 28
+print("P(mean T)  =", round(float(P(T.mean())), 3))   # 1.0   performance at the mean
+print("E[P(T)]    =", round(float(P(T).mean()), 3))   # 0.368 mean performance
+print("Jensen gap =", round(float(P(T.mean()) - P(T).mean()), 3))  # 0.632
+```
+
 ## Simulation
 
 ### R

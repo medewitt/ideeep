@@ -158,6 +158,7 @@ Understanding the relevance, independence, and exclusion assumptions — and the
 
 ## Related
 
+- [Causal Inference](causal-inference.md)
 - [Mendelian Randomization](mendelian-randomization.md)
 - [Experimental Design](experimental-design.md)
 - [Hypothesis Testing](hypothesis-testing.md)

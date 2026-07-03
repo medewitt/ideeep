@@ -79,6 +79,7 @@ Randomization and control are what make inferred effects causal, and naming the 
 
 ## Related
 
+- [Causal Inference](causal-inference.md)
 - [Factorial designs](factorial-designs.md)
 - [Fractional factorial designs](fractional-factorial-designs.md)
 - [Optimal experimental design](optimal-design.md)

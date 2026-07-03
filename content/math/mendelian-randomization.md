@@ -131,6 +131,7 @@ It shows how a purely observational summary dataset can support causal inference
 
 ## Related
 
+- [Causal Inference](causal-inference.md)
 - [Instrumental Variables](instrumental-variables.md)
 - [Linkage Disequilibrium](linkage-disequilibrium.md)
 - [Genome-Wide Association Studies](gwas.md)

@@ -14,6 +14,7 @@ core idea and notation with a worked example and runnable code in **R**,
 
 ## Foundations & notation
 
+- [The Language of Mathematics](math/language-of-mathematics.md) — number systems, symbols, and how to read an equation
 - [Mathematical Notation](math/mathematical-notation.md) — symbols, sums, products, and LaTeX
 - [Functions and Graphs](math/functions-and-graphs.md) — common functions and how to plot them
 - [Exponentials and Logarithms](math/exponentials-and-logarithms.md) — rules, the number $e$, and log identities
@@ -115,6 +116,7 @@ core idea and notation with a worked example and runnable code in **R**,
 
 ## Causal inference
 
+- [Causal Inference](math/causal-inference.md) — confounding, counterfactuals, and Simpson's paradox
 - [Instrumental Variables](math/instrumental-variables.md) — estimating causal effects under confounding
 - [Mendelian Randomization](math/mendelian-randomization.md) — genetic variants as instruments
 
