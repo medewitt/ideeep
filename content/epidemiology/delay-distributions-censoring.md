@@ -187,7 +187,6 @@ The likelihood is exactly the same; we simply place priors on the parameters and
 Because [NumPyro](https://num.pyro.ai) has no built-in doubly-censored, truncated distribution, we hand it the log-likelihood directly with `numpyro.factor`, reusing the simulated `n`, `c`, and `T` from the Python example above.
 
 ```python
-# no-run: needs numpyro + jax, which the site's output injector does not install
 import jax, jax.numpy as jnp
 import numpyro, numpyro.distributions as dist
 from numpyro.infer import MCMC, NUTS
@@ -211,10 +210,26 @@ def delay_model(n, c, T):
 mcmc = MCMC(NUTS(delay_model), num_warmup=500, num_samples=500, progress_bar=False)
 mcmc.run(jax.random.PRNGKey(0), n=jnp.asarray(n), c=jnp.asarray(c), T=T)
 mcmc.print_summary()
+
+post = mcmc.get_samples()
+implied_mean = jnp.exp(post["meanlog"] + post["sdlog"] ** 2 / 2)
+print(f"implied mean delay = {float(implied_mean.mean()):.2f} d")
 ```
 
+<!-- python-output:auto -->
+```text
+
+                mean       std    median      5.0%     95.0%     n_eff     r_hat
+   meanlog      1.60      0.01      1.60      1.58      1.62    310.82      1.00
+     sdlog      0.51      0.01      0.51      0.49      0.52    253.60      1.00
+
+Number of divergences: 0
+implied mean delay = 5.62 d
+```
+<!-- /python-output:auto -->
+
 The numerator and denominator are the **same censoring-and-truncation-aware likelihood** derived above; `numpyro.factor` just adds its log to the model's log-density.
-Running NUTS on the simulated data recovers the truth with tight credible intervals — posterior means of about `meanlog = 1.60` and `sdlog = 0.51`, an implied mean delay near **5.6 days** — matching the MLE point estimate but now carrying full uncertainty that flows into any downstream $R_t$ or nowcast.
+Running NUTS on the simulated data recovers the truth with tight credible intervals (`r_hat` near 1) — a posterior mean delay near **5.6 days** — matching the MLE point estimate but now carrying full uncertainty that flows into any downstream $R_t$ or nowcast.
 For production work the R and Julia packages above wrap this same model with pre-built censored distributions and run it in Stan or Turing.
 
 ## Why it matters
