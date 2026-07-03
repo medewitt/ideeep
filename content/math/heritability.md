@@ -134,5 +134,6 @@ It is also one of the most misunderstood numbers in science: a high $h^2$ does n
 
 - [Measures of Variability](measures-of-variability.md)
 - [Genome-Wide Association Studies](gwas.md)
+- [Quantitative Genetics and the Breeder's Equation](quantitative-genetics.md)
 - [Polygenic Scores](polygenic-scores.md)
 - [Quantitative Methods](../math.md)

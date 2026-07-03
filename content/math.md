@@ -77,6 +77,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Sampling Distributions](math/sampling-distributions.md)
 - [The Law of Large Numbers](math/law-of-large-numbers.md)
 - [The Central Limit Theorem](math/central-limit-theorem.md)
+- [Markov Chains](math/markov-chains.md) — transition matrices and stationary distributions
 - [Branching Processes](math/branching-processes.md) — Galton–Watson, extinction, and outbreaks
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
 - [Monotonic Transformations](math/monotonic-transformations.md)
@@ -124,6 +125,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Hardy–Weinberg Equilibrium](math/hardy-weinberg.md) — genotype frequencies and the χ² test
 - [Linkage Disequilibrium](math/linkage-disequilibrium.md) — $D$, $D'$, and $r^2$
 - [Genetic Drift and the Wright–Fisher Model](math/genetic-drift.md)
+- [Selection and Mutation–Selection Balance](math/selection-popgen.md)
 - [Population Structure and F_ST](math/population-structure.md)
 - [The Coalescent](math/coalescent-theory.md) — genealogies backward in time
 
@@ -133,12 +135,19 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Multiple Testing and False Discovery Rate](math/multiple-testing.md)
 - [Population Stratification and PCA Control](math/population-stratification.md)
 - [Heritability and Variance Components](math/heritability.md)
+- [Quantitative Genetics and the Breeder's Equation](math/quantitative-genetics.md)
 - [Polygenic Scores](math/polygenic-scores.md)
 
 *Molecular evolution:*
 
 - [Detecting Selection with dN/dS](math/dn-ds.md)
 - [The Molecular Clock and Phylodynamics](math/molecular-clock.md)
+
+## Evolutionary dynamics
+
+- [Evolutionary Game Theory](math/evolutionary-game-theory.md) — ESS and replicator dynamics
+- [The Evolution of Cooperation](math/evolution-of-cooperation.md) — the Prisoner's Dilemma and Nowak's five rules
+- [Adaptive Dynamics and the Evolution of Virulence](math/evolution-of-virulence.md)
 
 ## Population & community ecology
 
@@ -166,6 +175,11 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Bifurcations](math/bifurcations.md) — thresholds and tipping points
 - [The Next-Generation Matrix and R₀](math/next-generation-matrix.md)
 
+*Spatial dynamics & pattern formation:*
+
+- [Reaction–Diffusion and Spatial Spread](math/reaction-diffusion.md) — the Fisher–KPP wave
+- [Turing Patterns](math/turing-patterns.md) — diffusion-driven pattern formation
+
 ## Networks
 
 - [Networks and Graphs](math/networks.md) — adjacency matrices, degree, and structure
@@ -179,6 +193,9 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Pharmacodynamics: Dose–Response](math/pharmacodynamics.md) — the Emax/Hill model
 - [Antimicrobial PK/PD](math/antimicrobial-pkpd.md) — MIC and the PK/PD indices
 
-## Applications
+## Epidemic modeling
 
 - [Compartmental Models](math/sir.md) — the SIR model and $R_0$
+- [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
+- [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
+- [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)

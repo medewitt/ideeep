@@ -142,6 +142,7 @@ Understanding its diagnostics is what separates a trustworthy fit from a chain t
 ## Related
 
 - [Bayesian Inference](bayesian-inference.md)
+- [Markov Chains](markov-chains.md)
 - [Probability Basics](probability-basics.md)
 - [Normal Distribution](normal-distribution.md)
 - [Simulation Toolkit](../programming/simulation-toolkit.md)

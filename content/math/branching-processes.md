@@ -143,5 +143,6 @@ The same machinery underlies nuclear chain reactions, PCR amplification, surname
 - [Moment Generating Functions](moment-generating-functions.md)
 - [Next-Generation Matrix](next-generation-matrix.md)
 - [The SIR Model](sir.md)
+- [Stochastic Epidemics and the Gillespie Algorithm](stochastic-epidemics.md)
 - [Genetic Drift](genetic-drift.md)
 - [Quantitative Methods](../math.md)

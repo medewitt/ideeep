@@ -124,4 +124,5 @@ The unifying lesson is that a handful of structurally special nodes — keystone
 - [The Next-Generation Matrix and R₀](next-generation-matrix.md)
 - [The Community Matrix](community-matrix.md)
 - [Branching Processes](branching-processes.md)
+- [The Evolution of Cooperation](evolution-of-cooperation.md) — network reciprocity
 - [Quantitative Methods](../math.md)

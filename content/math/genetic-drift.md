@@ -105,6 +105,8 @@ Because its strength scales as $1/(2N_e)$, drift dominates in the small, fluctua
 ## Related
 
 - [Hardy–Weinberg Equilibrium](hardy-weinberg.md)
+- [Selection and Mutation–Selection Balance](selection-popgen.md)
+- [Markov Chains](markov-chains.md)
 - [Coalescent Theory](coalescent-theory.md)
 - [Population Structure and F_ST](population-structure.md)
 - [Binomial Distribution](binomial-distribution.md)
