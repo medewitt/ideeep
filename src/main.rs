@@ -1,8 +1,9 @@
 use std::fs;
 use std::path::{Path, PathBuf};
-use pulldown_cmark::{html, Options, Parser};
+use pulldown_cmark::{html, Event, Options, Parser};
 use regex::Regex;
 use katex::{Opts, OutputType};
+use rusqlite::{params, Connection};
 
 #[derive(Debug, serde::Deserialize)]
 struct FrontMatter {
@@ -248,6 +249,7 @@ enum NavbarItem {
     MarkdownFile(PathBuf, String),  // (path, title)
     ExternalLink(String, String),   // (url, text)
     Dropdown(String),                // (dropdown name)
+    InternalPage(String, String, String), // (html path base, label, active key)
 }
 
 fn generate_navbar(
@@ -408,6 +410,15 @@ fn generate_navbar(
                 nav.push_str(&format!(
                     "  <li><a href=\"{}\" class=\"nav-link\" target=\"_blank\" rel=\"noopener noreferrer\">{}</a></li>\n",
                     url, text
+                ));
+            }
+            NavbarItem::InternalPage(path_base, label, key) => {
+                let href = format!("{}{}", asset_prefix, path_base);
+                let is_active = current_page.map(|cp| cp == key).unwrap_or(false);
+                let link_class = if is_active { "nav-link active" } else { "nav-link" };
+                nav.push_str(&format!(
+                    "  <li><a href=\"{}\" class=\"{}\">{}</a></li>\n",
+                    href, link_class, label
                 ));
             }
             NavbarItem::Dropdown(dropdown_name) => {
@@ -822,6 +833,330 @@ fn find_markdown_files(dir: &Path, base_dir: &Path, files: &mut Vec<(PathBuf, Pa
     Ok(())
 }
 
+/// Extract plain, searchable text from a Markdown document. Math delimiters and
+/// formatting are dropped; text and code spans are concatenated so the FTS index
+/// holds readable prose rather than HTML.
+fn extract_search_text(markdown: &str) -> String {
+    let options = Options::all();
+    let parser = Parser::new_ext(markdown, options);
+    let mut text = String::new();
+    for event in parser {
+        match event {
+            Event::Text(t) | Event::Code(t) => {
+                text.push_str(&t);
+                text.push(' ');
+            }
+            Event::SoftBreak | Event::HardBreak => text.push(' '),
+            _ => {}
+        }
+    }
+    // Collapse runs of whitespace so snippets read cleanly.
+    let whitespace_re = Regex::new(r"\s+").unwrap();
+    whitespace_re.replace_all(&text, " ").trim().to_string()
+}
+
+/// Build a client-loadable FTS4 SQLite index (`dist/search.db`) over every page.
+/// One row per page: title, extracted content, relative URL, category, date.
+/// The browser queries this with SQL.js (see `generate_search_page`).
+fn build_search_index(
+    markdown_files: &[(PathBuf, PathBuf, String)],
+    dist_dir: &Path,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let db_path = dist_dir.join("search.db");
+
+    // Rebuild from scratch each run so stale entries never linger.
+    if db_path.exists() {
+        fs::remove_file(&db_path)?;
+    }
+
+    let conn = Connection::open(&db_path)?;
+
+    // FTS4 is more widely supported by SQL.js builds than FTS5.
+    conn.execute(
+        "CREATE VIRTUAL TABLE search_index USING fts4(
+            title,
+            content,
+            url,
+            type,
+            date
+        )",
+        [],
+    )?;
+
+    for (full_path, relative_path, title) in markdown_files {
+        let rel_key = relative_path
+            .with_extension("")
+            .to_string_lossy()
+            .replace('\\', "/");
+
+        // The 404 page is not useful as a search hit.
+        if rel_key.eq_ignore_ascii_case("404") {
+            continue;
+        }
+
+        let content = fs::read_to_string(full_path)?;
+        let (_, markdown_content) = extract_frontmatter(&content);
+        let content_text = extract_search_text(markdown_content);
+
+        // URL relative to the dist root, where search.html lives.
+        let url = format!("{}.html", rel_key);
+
+        // Category = top-level directory (e.g. "math", "programming"); root-level
+        // pages fall back to "page".
+        let category = relative_path
+            .parent()
+            .and_then(|p| p.components().next())
+            .map(|c| c.as_os_str().to_string_lossy().to_string())
+            .filter(|s| !s.is_empty())
+            .unwrap_or_else(|| "page".to_string());
+
+        conn.execute(
+            "INSERT INTO search_index (title, content, url, type, date) VALUES (?1, ?2, ?3, ?4, ?5)",
+            params![title, content_text, url, category, ""],
+        )?;
+    }
+
+    // Merge the FTS b-trees for faster queries and a smaller file.
+    conn.execute("INSERT INTO search_index(search_index) VALUES('optimize')", [])?;
+
+    println!("Built search index at {}", db_path.display());
+    Ok(())
+}
+
+/// The interactive search page body: a form plus the SQL.js loader that fetches
+/// `search.db` and runs FTS queries entirely in the browser. `asset_prefix` is
+/// "" because the page is emitted at the dist root.
+fn search_page_content() -> String {
+    r#"<h1>Search</h1>
+<p class="lead">Search across all pages: math, programming, syllabi, and research content.</p>
+
+<div class="search-container">
+  <form id="search-form" class="search-form">
+    <input
+      type="search"
+      id="search-input"
+      placeholder="Enter search terms..."
+      autocomplete="off"
+      autofocus
+    />
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="search-results" class="search-results"></div>
+  <div id="search-loading" class="search-loading" style="display: none;">
+    Loading search index...
+  </div>
+  <div id="search-error" class="search-error" style="display: none;"></div>
+</div>
+
+<script>
+(function() {
+  let db = null;
+  const searchInput = document.getElementById('search-input');
+  const searchForm = document.getElementById('search-form');
+  const searchResults = document.getElementById('search-results');
+  const searchLoading = document.getElementById('search-loading');
+  const searchError = document.getElementById('search-error');
+
+  // Load SQL.js script
+  function loadSQLJS() {
+    return new Promise((resolve, reject) => {
+      if (typeof initSqlJs !== 'undefined') {
+        resolve();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'assets/vendor/sqljs/sql-wasm.js';
+      script.onload = () => {
+        setTimeout(() => {
+          if (typeof initSqlJs !== 'undefined') {
+            resolve();
+          } else {
+            reject(new Error('initSqlJs not available after loading script'));
+          }
+        }, 100);
+      };
+      script.onerror = () => reject(new Error('Failed to load SQL.js script'));
+      document.head.appendChild(script);
+    });
+  }
+
+  // Initialize SQL.js and load database
+  async function initSearch() {
+    try {
+      searchLoading.style.display = 'block';
+      searchError.style.display = 'none';
+
+      await loadSQLJS();
+
+      const SQL = await initSqlJs({
+        locateFile: file => 'assets/vendor/sqljs/' + file
+      });
+
+      const response = await fetch('search.db');
+      if (!response.ok) {
+        throw new Error('Failed to load search database');
+      }
+
+      const arrayBuffer = await response.arrayBuffer();
+      const uint8Array = new Uint8Array(arrayBuffer);
+      db = new SQL.Database(uint8Array);
+
+      searchLoading.style.display = 'none';
+
+      // Perform search if there's a query parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q');
+      if (query) {
+        searchInput.value = query;
+        performSearch(query);
+      }
+    } catch (error) {
+      searchLoading.style.display = 'none';
+      searchError.style.display = 'block';
+      searchError.textContent = 'Error loading search index: ' + error.message;
+      console.error('Search initialization error:', error);
+    }
+  }
+
+  function performSearch(query) {
+    if (!db || !query || query.trim() === '') {
+      searchResults.innerHTML = '<p class="search-empty">Enter a search term to find content.</p>';
+      return;
+    }
+
+    try {
+      const searchTerm = query.trim();
+
+      // FTS4 returns results in relevance order by default.
+      // Column indices: 0=title, 1=content, 2=url, 3=type, 4=date
+      const stmt = db.prepare(`
+        SELECT
+          title,
+          url,
+          type,
+          date,
+          snippet(search_index, 1, '<mark>', '</mark>', '...', 32) as snippet
+        FROM search_index
+        WHERE search_index MATCH ?
+        LIMIT 50
+      `);
+
+      stmt.bind([searchTerm]);
+
+      const results = [];
+      while (stmt.step()) {
+        const row = stmt.getAsObject();
+        results.push({
+          title: row.title,
+          url: row.url,
+          type: row.type,
+          date: row.date,
+          snippet: row.snippet || ''
+        });
+      }
+
+      stmt.free();
+
+      displayResults(results, searchTerm);
+    } catch (error) {
+      searchResults.innerHTML = '<p class="search-error">Error performing search: ' + error.message + '</p>';
+      console.error('Search error:', error);
+    }
+  }
+
+  function displayResults(results, query) {
+    if (results.length === 0) {
+      searchResults.innerHTML = '<p class="search-empty">No results found for "' + escapeHtml(query) + '".</p>';
+      return;
+    }
+
+    let html = '<div class="search-results-header"><p>Found ' + results.length + ' result' + (results.length !== 1 ? 's' : '') + ':</p></div>';
+    html += '<ul class="search-results-list">';
+
+    for (const result of results) {
+      const url = result.url;
+      const typeLabel = result.type.charAt(0).toUpperCase() + result.type.slice(1);
+      const dateStr = result.date ? ' &middot; ' + result.date : '';
+
+      html += '<li class="search-result-item">';
+      html += '<h3 class="search-result-title">';
+      html += '<a href="' + escapeHtml(url) + '">' + escapeHtml(result.title) + '</a>';
+      html += '</h3>';
+      html += '<p class="search-result-meta">' + escapeHtml(typeLabel) + dateStr + '</p>';
+      if (result.snippet) {
+        html += '<p class="search-result-snippet">' + result.snippet + '</p>';
+      }
+      html += '</li>';
+    }
+
+    html += '</ul>';
+    searchResults.innerHTML = html;
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  searchForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (query) {
+      const url = new URL(window.location);
+      url.searchParams.set('q', query);
+      window.history.pushState({}, '', url);
+      performSearch(query);
+    }
+  });
+
+  searchInput.addEventListener('keyup', function(e) {
+    if (e.key === 'Enter') {
+      searchForm.dispatchEvent(new Event('submit'));
+    }
+  });
+
+  initSearch();
+})();
+</script>
+
+<style>
+.search-container { max-width: 800px; margin: 2rem 0; }
+.search-form { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+.search-form input[type="search"] {
+  flex: 1; padding: 0.75rem; font-size: 1rem;
+  border: 1px solid #ddd; border-radius: 4px;
+}
+.search-form button {
+  padding: 0.75rem 1.5rem; font-size: 1rem;
+  background-color: #000; color: #fff;
+  border: none; border-radius: 4px; cursor: pointer;
+}
+.search-form button:hover { background-color: #8C6D2C; }
+.search-results-header { margin-bottom: 1rem; color: #666; }
+.search-results-list { list-style: none; padding: 0; }
+.search-result-item {
+  margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #eee;
+}
+.search-result-item:last-child { border-bottom: none; }
+.search-result-title { margin: 0 0 0.5rem 0; font-size: 1.25rem; }
+.search-result-title a { color: #003366; text-decoration: none; }
+.search-result-title a:hover { text-decoration: underline; }
+.search-result-meta { margin: 0.25rem 0; font-size: 0.9rem; color: #666; }
+.search-result-snippet { margin: 0.5rem 0 0 0; color: #555; line-height: 1.6; }
+.search-result-snippet mark { background-color: #ffeb3b; padding: 0.1em 0.2em; }
+.search-empty { color: #666; font-style: italic; margin: 2rem 0; }
+.search-loading { color: #666; margin: 2rem 0; }
+.search-error {
+  color: #d32f2f; margin: 2rem 0; padding: 1rem;
+  background-color: #ffebee; border-radius: 4px;
+}
+</style>
+"#
+    .to_string()
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let content_dir = Path::new("content");
     let dist_dir = Path::new("dist");
@@ -976,6 +1311,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for item in order {
             match item {
                 serde_yaml::Value::String(page_name) => {
+                    // Built-in search page (not backed by a markdown file)
+                    if page_name.eq_ignore_ascii_case("search") {
+                        navbar_items.push(NavbarItem::InternalPage(
+                            "search.html".to_string(),
+                            "Search".to_string(),
+                            "search".to_string(),
+                        ));
+                        continue;
+                    }
                     // Check if it's a dropdown name
                     if let Some(ref dropdowns_map) = dropdowns {
                         if dropdowns_map.contains_key(page_name) {
@@ -1030,6 +1374,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for item in order {
             match item {
                 serde_yaml::Value::String(page_name) => {
+                    // Built-in search page (not backed by a markdown file)
+                    if page_name.eq_ignore_ascii_case("search") {
+                        navbar_items.push(NavbarItem::InternalPage(
+                            "search.html".to_string(),
+                            "Search".to_string(),
+                            "search".to_string(),
+                        ));
+                        continue;
+                    }
                     // Simple string - find matching markdown file
                     if let Some((_, relative_path, title)) = markdown_files.iter()
                         .find(|(_, rel_path, _)| {
@@ -1086,6 +1439,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 navbar_items.push(NavbarItem::Dropdown(dropdown_name.clone()));
             }
         }
+        // Search page last when no explicit ordering is configured.
+        navbar_items.push(NavbarItem::InternalPage(
+            "search.html".to_string(),
+            "Search".to_string(),
+            "search".to_string(),
+        ));
     }
 
     // Build a HashSet of markdown file paths (without extension) for link conversion
@@ -1126,6 +1485,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         fs::write(&html_path, html_output)?;
         println!("Generated: {}", html_path.display());
     }
+
+    // Build the full-text search index (dist/search.db) over every page.
+    build_search_index(&markdown_files, dist_dir)?;
+
+    // Emit the interactive search page at the dist root (asset_prefix = "").
+    let search_navbar = generate_navbar(
+        &navbar_items,
+        true,
+        dropdowns.as_ref(),
+        &markdown_titles,
+        Some("search"),
+        "",
+    );
+    let search_html = generate_html("Search", &search_page_content(), &search_navbar, "")?;
+    let search_path = dist_dir.join("search.html");
+    fs::write(&search_path, search_html)?;
+    println!("Generated: {}", search_path.display());
 
     // Copy assets to dist after building
     copy_assets_to_dist()?;
