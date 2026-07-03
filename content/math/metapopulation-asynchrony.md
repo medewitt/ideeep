@@ -4,8 +4,9 @@ title: "Asynchrony and the Inflationary Effect in Metapopulations"
 
 # Asynchrony and the Inflationary Effect in Metapopulations
 
-A population — or a pathogen — that cannot sustain itself anywhere can nonetheless thrive everywhere.
+A population, or a pathogen, that cannot sustain itself anywhere can nonetheless thrive everywhere.
 Two features of patchy, fluctuating landscapes make this possible: variation through *time*, which can *inflate* the abundance of an immigration-fed sink far above its deterministic value, and variation through *space*, whose *asynchrony* lets a patch at its peak rescue a neighbour that has just crashed.
+(A **source** is a patch that more than replaces itself and exports the surplus; a **sink** is one that cannot replace itself and would dwindle to nothing without immigrants arriving from elsewhere.)
 The same mathematics governs a beetle in a scatter of habitat fragments and measles in a network of towns, and it carries a sharp warning for disease control: keeping the *average* reproduction number below one, patch by patch, need not eliminate an infection.
 
 ![The inflationary effect in an immigration-fed sink: when the local growth rate fluctuates around a sub-replacement mean with positive temporal autocorrelation (reddened noise), abundance breaks out in outbreaks and the long-run mean sits well above the deterministic baseline, whereas white noise of the same variance leaves the mean unchanged.](../assets/figures/inflation-outbreak.svg)
