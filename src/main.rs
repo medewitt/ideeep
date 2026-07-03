@@ -163,17 +163,19 @@ fn preprocess_math(md: &str) -> String {
 }
 
 fn convert_internal_links(html: &str, markdown_files: &std::collections::HashSet<String>) -> String {
-    // Create a regex to match <a href="..."> tags
-    let link_pattern = Regex::new(r#"<a\s+href="([^"]+)"([^>]*)>"#).unwrap();
+    // Match <a ...> tags with href anywhere in the tag (attributes may precede
+    // href, e.g. class="card" href="...").
+    let link_pattern = Regex::new(r#"<a\s+([^>]*?)href="([^"]+)"([^>]*)>"#).unwrap();
     let mut result = html.to_string();
-    
+
     // Find all matches and replace from end to start to preserve indices
     let mut replacements: Vec<(usize, usize, String)> = Vec::new();
-    
+
     for cap in link_pattern.captures_iter(html) {
         let full_match = cap.get(0).unwrap();
-        let href = cap.get(1).unwrap().as_str();
-        let attrs = cap.get(2).unwrap().as_str();
+        let pre_attrs = cap.get(1).unwrap().as_str();
+        let href = cap.get(2).unwrap().as_str();
+        let attrs = cap.get(3).unwrap().as_str();
         
         // Skip external links (http, https, mailto, etc.)
         if href.starts_with("http://") || href.starts_with("https://") || 
@@ -222,7 +224,7 @@ fn convert_internal_links(html: &str, markdown_files: &std::collections::HashSet
             continue;
         };
         
-        let new_link = format!(r#"<a href="{}"{}>"#, new_href, attrs);
+        let new_link = format!(r#"<a {}href="{}"{}>"#, pre_attrs, new_href, attrs);
         replacements.push((full_match.start(), full_match.end(), new_link));
     }
     
