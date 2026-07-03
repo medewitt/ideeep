@@ -21,6 +21,7 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 - [Version Control with Git & GitHub](programming/version-control-git.md)
 - [Building a Personal Website](programming/personal-website.md)
 - [LaTeX and Technical Documents](programming/latex-and-documents.md)
+- [Note-Taking with Org Mode](programming/org-mode.md)
 
 ## Resources
 

@@ -129,6 +129,92 @@ end
 println(mean(sim_extinct() for _ in 1:10000))  # ~ 0.20
 ```
 
+## Evolutionary emergence: the Antia–Bergstrom model
+
+A single number $R_0$ hides a subtler question for a newly introduced pathogen: what if the strain that spills over is *poorly adapted* to the new host ($R_0 < 1$) but can **evolve** as it spreads?
+[Antia, Regoes, Koella & Bergstrom (2003)](https://doi.org/10.1038/nature02104) answered this with a multi-type branching process, and it is a beautiful application of everything above.
+
+Model each case's secondary infections as a **binomial** offspring distribution: an infected host contacts $n$ others and infects each independently with probability $p$, so offspring $\sim \text{Binomial}(n, p)$ with mean $R = np$ and PGF $G(s) = (1 - p + p s)^{n}$.
+The introduced **wildtype** is subcritical, $R_w = n p_w < 1$, so on its own it always dies out.
+But at each transmission the pathogen mutates with small probability $\mu$ to an adapted **mutant** with $R_m = n p_m > 1$.
+Emergence is the event that an adapted lineage establishes before the wildtype chain burns out.
+
+Two branching-process facts combine to give the answer.
+First, a single mutant establishes with probability $\pi = 1 - q_m$, where $q_m$ is the extinction probability of the *mutant* process — the smallest root of $q = (1 - p_m + p_m q)^{n}$.
+Second, a subcritical wildtype outbreak seeded by one case produces, in expectation, $\dfrac{R_w}{1 - R_w}$ secondary infections in total (the geometric sum of $R_w^{\,k}$).
+Each of those transmissions throws off a mutant with probability $\mu$, so the expected number of established mutant lineages is $\mu\,\dfrac{R_w}{1-R_w}\,\pi$, and — treating rare mutant lineages as independent — the probability of emergence is
+
+\[
+P_{\text{emerge}} \;\approx\; 1 - \exp\!\left(-\,\mu\,\frac{R_w}{1-R_w}\,\pi\right).
+\]
+
+The headline result is in the factor $\dfrac{R_w}{1-R_w}$: as $R_w \to 1^{-}$ it blows up, so a pathogen that *almost* spreads lingers long enough to give evolution many attempts at rescue.
+A spillover strain with $R_0$ just below $1$ is therefore far more dangerous than its subcritical label suggests — the central public-health message of the paper.
+
+### Worked example
+
+Take $n = 10$ contacts, wildtype $p_w = 0.09$ (so $R_w = 0.9$), mutant $p_m = 0.15$ (so $R_m = 1.5$), and mutation probability $\mu = 10^{-3}$.
+Solving $q = (0.85 + 0.15\,q)^{10}$ gives $q_m \approx 0.37$, so a mutant establishes with probability $\pi \approx 0.63$.
+The wildtype throws off $R_w/(1-R_w) = 0.9/0.1 = 9$ secondary infections on average, so $P_{\text{emerge}} \approx 1 - e^{-10^{-3}\cdot 9 \cdot 0.63} \approx 0.0057$.
+Push the wildtype closer to threshold, $R_w = 0.99$: now it throws off $99$ infections and $P_{\text{emerge}} \approx 1 - e^{-0.0624} \approx 0.061$ — a tenfold jump in emergence risk from the same mutation rate.
+
+```r
+n <- 10; pw <- 0.09; pm <- 0.15; mu <- 1e-3
+Rw <- n * pw; Rm <- n * pm                 # 0.9 (subcritical), 1.5 (supercritical)
+
+# Mutant establishment probability: smallest root of q = (1 - pm + pm q)^n
+q <- 0; for (i in 1:1000) q <- (1 - pm + pm * q)^n
+pi_est <- 1 - q                            # ~0.63
+
+# Rare-mutation emergence probability
+P_emerge <- 1 - exp(-mu * Rw / (1 - Rw) * pi_est)   # ~0.0057
+c(pi_est = pi_est, P_emerge = P_emerge)
+
+# Monte Carlo check: two-type binomial branching process
+set.seed(1)
+establishes <- function(p, gens = 60) {        # does one mutant lineage survive?
+  z <- 1
+  for (g in 1:gens) { z <- sum(rbinom(z, n, p)); if (z == 0) return(FALSE) }
+  TRUE
+}
+emerge_once <- function() {
+  z <- 1
+  for (g in 1:300) {
+    if (z == 0) return(FALSE)                   # wildtype burned out, no emergence
+    kids <- sum(rbinom(z, n, pw))               # wildtype secondary infections
+    n_mut <- rbinom(1, kids, mu)                # how many mutated
+    if (n_mut > 0 && any(replicate(n_mut, establishes(pm)))) return(TRUE)
+    z <- kids - n_mut
+  }
+  FALSE
+}
+mean(replicate(20000, emerge_once()))           # ~0.006, matches the formula
+```
+
+```python
+import numpy as np
+n, pw, pm, mu = 10, 0.09, 0.15, 1e-3
+Rw = n * pw
+q = 0.0
+for _ in range(1000):
+    q = (1 - pm + pm * q) ** n        # mutant extinction prob
+pi_est = 1 - q                        # ~0.63
+P_emerge = 1 - np.exp(-mu * Rw / (1 - Rw) * pi_est)   # ~0.0057
+print(pi_est, P_emerge)               # the R Monte-Carlo check translates directly
+```
+
+```julia
+n, pw, pm, mu = 10, 0.09, 0.15, 1e-3
+Rw = n * pw
+q = 0.0
+for _ in 1:1000
+    q = (1 - pm + pm * q)^n           # mutant extinction prob
+end
+pi_est = 1 - q                        # ~0.63
+P_emerge = 1 - exp(-mu * Rw / (1 - Rw) * pi_est)   # ~0.0057
+println((pi_est, P_emerge))
+```
+
 ## Why it matters
 
 Branching processes turn a vague worry — "could this spread?" — into a precise probability, separating the deterministic message of $R_0$ from the luck of small numbers.
@@ -144,5 +230,6 @@ The same machinery underlies nuclear chain reactions, PCR amplification, surname
 - [Next-Generation Matrix](next-generation-matrix.md)
 - [The SIR Model](sir.md)
 - [Stochastic Epidemics and the Gillespie Algorithm](stochastic-epidemics.md)
+- [Adaptive Dynamics and the Evolution of Virulence](evolution-of-virulence.md)
 - [Genetic Drift](genetic-drift.md)
 - [Quantitative Methods](../math.md)
