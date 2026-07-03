@@ -7,6 +7,8 @@ title: "Reaction–Diffusion and Spatial Spread"
 An invading species, a spreading epidemic, and an advantageous gene all share the same problem: something grows locally while also moving through space.
 Reaction–diffusion equations couple these two ingredients — local dynamics and random movement — and their signature result is a front that advances at a predictable speed.
 
+![A Fisher–KPP traveling wave advancing at speed $\approx 2\sqrt{rD}$ as the population invades empty space.](../assets/figures/reaction-diffusion.svg)
+
 ## The general form
 
 A reaction–diffusion model tracks a density $u(x,t)$ that changes for two reasons.

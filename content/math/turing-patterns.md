@@ -7,6 +7,8 @@ title: "Turing Patterns"
 Diffusion usually smooths things out, blurring any bump back into uniformity.
 Alan Turing's 1952 insight was that in a system of two interacting chemicals, diffusion can do the opposite — it can break a bland uniform state into spots and stripes, the same patterns we see on animal coats and across arid vegetation.
 
+![A Turing pattern emerging from a near-uniform state through diffusion-driven instability (Gray–Scott model).](../assets/figures/turing-patterns.svg)
+
 ## The paradox of diffusion-driven instability
 
 Consider two species (or morphogens) with densities $u$ and $v$ obeying the reaction–diffusion system $$\partial_t u = D_u\,\nabla^2 u + f(u,v), \qquad \partial_t v = D_v\,\nabla^2 v + g(u,v).$$ This is the two-component version of a [reaction–diffusion](reaction-diffusion.md) model, with reaction terms $f$ and $g$ and separate diffusion coefficients $D_u$ and $D_v$.

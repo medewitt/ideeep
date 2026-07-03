@@ -7,6 +7,8 @@ title: "Pharmacokinetics: Compartment Models"
 Pharmacokinetics (PK) is what the body does to a drug — its absorption, distribution, metabolism, and excretion (ADME).
 Remarkably, these processes are described with the same mass-balance ordinary differential equations that power [compartmental epidemic models](sir.md), so the drug concentration in a "compartment" rises and falls by the same first-order kinetics that move individuals between $S$, $I$, and $R$.
 
+![One-compartment pharmacokinetics: IV-bolus decay and an oral absorption profile.](../assets/figures/pharmacokinetics.svg)
+
 ## The one-compartment IV bolus
 
 The simplest model imagines the body as a single well-mixed compartment of volume $V_d$ from which the drug is eliminated at a rate proportional to its concentration.

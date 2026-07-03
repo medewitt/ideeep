@@ -7,6 +7,8 @@ title: "Sampling Distributions"
 A statistic computed from a sample is itself random: draw a new sample and you get a new value.
 The distribution of that statistic over repeated samples — its *sampling distribution* — is the bridge from a single estimate to a statement about uncertainty.
 
+![The sampling distribution of the mean narrows as the sample size $n$ increases (standard error $\sigma/\sqrt{n}$).](../assets/figures/sampling-distributions.svg)
+
 ## The idea
 
 Fix a population and a sample size $n$.

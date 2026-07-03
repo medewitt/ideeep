@@ -7,6 +7,8 @@ title: "Confidence Intervals"
 A confidence interval reports a range of plausible values for a [parameter](statistical-inference.md)—a mean incubation time, a prevalence—together with an estimate's uncertainty.
 It shifts attention from a single point estimate to the precision behind it.
 
+![Across repeated samples, about 95% of 95% confidence intervals cover the true mean (misses highlighted).](../assets/figures/confidence-intervals.svg)
+
 ## The idea
 
 A **confidence interval (CI)** is an interval, computed from data, designed so that the procedure captures the true parameter a specified fraction of the time (the *confidence level*, e.g. 95%) across repeated samples.

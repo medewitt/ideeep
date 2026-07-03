@@ -7,6 +7,8 @@ title: "Discrete-Time Models and the Logistic Map"
 Many organisms breed in discrete seasons, and many diseases are tracked generation by generation, so their dynamics are naturally written as a rule mapping this year's state to next year's.
 These maps are simple to iterate yet capable of astonishingly rich behavior — including deterministic chaos from a one-line equation.
 
+![Bifurcation diagram of the logistic map: as $r$ increases the attractor period-doubles into chaos.](../assets/figures/logistic-map-bifurcation.svg)
+
 ## Geometric growth
 
 The discrete analogue of exponential growth is **geometric growth**, $$N_{t+1}=\lambda N_t,$$ which generates the [sequence](sequences.md) $N_t=\lambda^t N_0$.

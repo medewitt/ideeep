@@ -7,6 +7,8 @@ title: "Centrality and Node Importance"
 Centrality measures rank the nodes of a network by their structural importance, turning a vague notion like "keystone species" or "superspreader" into a number you can compute.
 Different measures capture different kinds of importance — raw connectivity, reach, brokerage, or influence — and each suggests a different node to protect, vaccinate, or remove.
 
+![A network with nodes sized and colored by eigenvector centrality, highlighting the most influential nodes.](../assets/figures/centrality.svg)
+
 ## Setting
 
 A network on $n$ nodes is described by its adjacency matrix $A$, where $A_{ij} = 1$ if there is an edge from $i$ to $j$ and $0$ otherwise (see [networks](networks.md)).

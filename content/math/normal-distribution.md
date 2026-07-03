@@ -7,6 +7,8 @@ title: "The Normal Distribution"
 The normal (Gaussian) distribution is the bell-shaped curve that appears whenever many small, independent influences add together: measurement error, biological variation in heights or blood pressure, and — crucially for statistics — the [sampling distribution](sampling-distributions.md) of an average.
 Its ubiquity is not a coincidence but a consequence of the [central limit theorem](central-limit-theorem.md).
 
+![The normal distribution and the 68–95–99.7 rule.](../assets/figures/normal-distribution.svg)
+
 ## Definition
 
 A [random variable](random-variables.md) $X\sim\mathcal{N}(\mu,\sigma^2)$ has probability density function $$f(x)=\frac{1}{\sigma\sqrt{2\pi}}\,e^{-(x-\mu)^2/(2\sigma^2)}.$$

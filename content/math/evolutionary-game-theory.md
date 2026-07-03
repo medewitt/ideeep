@@ -7,6 +7,8 @@ title: "Evolutionary Game Theory"
 When an individual's fitness depends on what everyone else is doing, evolution becomes a game.
 Instead of climbing a fixed fitness landscape, strategies compete against each other, and the "best" move depends on which moves are currently common.
 
+![Replicator dynamics of the Hawk–Dove game converge to the mixed ESS from any starting frequency.](../assets/figures/evolutionary-game-theory.svg)
+
 ## Payoffs and strategies
 
 A game is specified by a **payoff matrix** that gives the reward to each strategy when it meets each other strategy.

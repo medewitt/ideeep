@@ -7,6 +7,8 @@ title: "Pharmacodynamics: Dose–Response"
 Pharmacodynamics (PD) is what the drug does to the body — the quantitative relationship between drug concentration and the size of its effect.
 Where [pharmacokinetics](pharmacokinetics.md) tells us the concentration over time, PD converts that concentration into an effect, and for antimicrobials the "effect" is the rate at which bacteria are killed.
 
+![Sigmoid $E_{max}$ (Hill) dose–response curves for increasing Hill coefficients.](../assets/figures/pharmacodynamics.svg)
+
 ## The $E_{max}$ model
 
 Almost every dose–response relationship saturates: doubling the concentration does not double the effect once receptors approach full occupancy.

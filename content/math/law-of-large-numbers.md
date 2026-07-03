@@ -7,6 +7,8 @@ title: "The Law of Large Numbers"
 The law of large numbers is the guarantee that averaging works: pile up enough independent observations and the sample mean settles on the true mean.
 It is the formal reason a long-run average is a trustworthy estimate.
 
+![Running averages of die rolls converge to the true mean of 3.5 as the sample grows.](../assets/figures/law-of-large-numbers.svg)
+
 ## Statement
 
 Let $X_1, X_2, \dots$ be [independent](probability-basics.md) and identically distributed with mean $\mu = \mathbb{E}[X_i]$, and let \[ \bar{X}_n = \frac{1}{n}\sum_{i=1}^{n} X_i. \] The **weak law of large numbers** says $\bar{X}_n$ converges to $\mu$ in probability: for any tolerance $\varepsilon > 0$, \[

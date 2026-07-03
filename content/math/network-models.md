@@ -7,6 +7,8 @@ title: "Random-Graph Models"
 Real contact networks and food webs are messy, so we need generative models that explain how their structure could arise and that serve as null models — the baseline you compare data against to decide what is surprising.
 The choice of model shapes everything downstream, because degree heterogeneity governs whether a pathogen fizzles or explodes.
 
+![Degree distributions: Erdős–Rényi is Poisson-like (left) while a scale-free network has a heavy power-law tail (right).](../assets/figures/network-models.svg)
+
 ## The Erdős–Rényi random graph
 
 The simplest model is the **Erdős–Rényi** random graph $G(N,p)$: start with $N$ [nodes](networks.md) and connect each of the $\binom{N}{2}$ possible pairs independently with probability $p$.

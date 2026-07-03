@@ -7,6 +7,8 @@ title: "Logistic Regression"
 Logistic regression models the probability of a binary outcome, such as diseased versus healthy or exposed versus not.
 It is the standard tool for risk modeling and case-control studies in epidemiology, because its coefficients translate directly into odds ratios.
 
+![Binary outcomes with the fitted logistic (sigmoid) probability curve.](../assets/figures/logistic-regression.svg)
+
 ## From probability to log-odds
 
 A [linear regression](linear-regression.md) can predict values outside $[0,1]$, which makes no sense for a probability.

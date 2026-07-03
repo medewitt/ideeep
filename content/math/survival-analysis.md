@@ -7,6 +7,8 @@ title: "Survival Analysis"
 Survival analysis models the time until an event happens: time to death, time to infection, time to clearance of a pathogen, or time to relapse.
 Its defining feature is **censoring** — for some subjects the event has not occurred by the end of follow-up, so we know only that their survival time exceeds some value.
 
+![Kaplan–Meier survival curves for two groups with right-censored data.](../assets/figures/survival-analysis.svg)
+
 ## Time-to-event data and censoring
 
 Let $T\ge 0$ be a random time until the event of interest.

@@ -7,6 +7,8 @@ title: "Genetic Drift and the Wright–Fisher Model"
 Genetic drift is the random change in allele frequency that happens simply because a finite population is a finite sample of gametes each generation.
 It matters wherever population sizes are small — bottlenecked pathogen lineages, isolated host demes, founder events after a colonization — because there chance, not selection, can drive an allele all the way to fixation or loss.
 
+![Wright–Fisher genetic drift: replicate populations wander to fixation or loss purely by chance.](../assets/figures/genetic-drift.svg)
+
 ## The Wright–Fisher model
 
 The Wright–Fisher model is the simplest idealization of drift.

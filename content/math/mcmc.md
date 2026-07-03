@@ -7,6 +7,8 @@ title: "Markov Chain Monte Carlo"
 Many posteriors have no closed form, so we cannot write down their mean or quantiles directly.
 Markov chain Monte Carlo (MCMC) sidesteps this by drawing samples from the target distribution and summarizing them.
 
+![Metropolis–Hastings: the chain's trace (left) and the sampled histogram matching the target density (right).](../assets/figures/mcmc.svg)
+
 ## The idea
 
 The goal of [Bayesian inference](bayesian-inference.md) is to learn a posterior $p(\theta\mid y)$, but for most models the normalizing constant is an intractable integral.

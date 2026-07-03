@@ -7,6 +7,8 @@ title: "Lotka–Volterra Predator–Prey Dynamics"
 Predators and their prey are locked in a coupled feedback loop: more prey feeds more predators, and more predators eat down the prey.
 The Lotka–Volterra model is the simplest mathematical picture of this dance, and it explains why so many natural populations oscillate rather than settle down.
 
+![Lotka–Volterra dynamics: predator and prey oscillate out of phase (left) and trace closed cycles in the phase plane (right).](../assets/figures/predator-prey.svg)
+
 ## The basic model
 
 We track prey density $N$ and predator density $P$ through time.

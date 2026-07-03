@@ -7,6 +7,8 @@ title: "Vector-Borne Disease Models (Ross–Macdonald)"
 Malaria, dengue, and Zika do not pass directly from person to person — they travel through a biting insect, the vector.
 Modeling them means coupling the infection dynamics of two populations, the human host and the mosquito, into a single system.
 
+![$R_0$ grows with the square of the biting rate in the Ross–Macdonald model, so reducing biting is especially effective.](../assets/figures/vector-borne.svg)
+
 ## Why vector-borne is different
 
 In a directly transmitted disease like the [SIR model](sir.md), an infectious human infects another human.
