@@ -7,6 +7,8 @@ title: "The Central Limit Theorem"
 The central limit theorem explains why the bell curve is everywhere: add up or average many independent effects and the result is approximately [normal](normal-distribution.md), no matter what the individual pieces look like.
 It is the reason normal-based inference works so broadly.
 
+![Histograms of the sample mean from a skewed exponential parent for n = 1, 5, 30, approaching the normal curve as n grows.](../assets/figures/central-limit-theorem.svg)
+
 ## Statement
 
 Let $X_1, \dots, X_n$ be iid with mean $\mu$ and finite [variance](measures-of-variability.md) $\sigma^2$.

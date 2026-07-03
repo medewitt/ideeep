@@ -7,6 +7,8 @@ title: "Exponential and Logistic Growth"
 Every population, from a bacterial colony to an outbreak's infected class, starts by growing in proportion to its own size.
 Exponential and logistic growth are the two baseline models that describe this — the first for unlimited resources, the second for the density dependence that eventually reins growth in.
 
+![Exponential growth rises without bound while logistic growth levels off at the carrying capacity K.](../assets/figures/logistic-growth.svg)
+
 ## Exponential growth
 
 When each individual reproduces at a constant per-capita rate and nothing limits them, the population $N$ obeys $$\frac{dN}{dt}=rN,$$ where $r$ is the **intrinsic growth rate** (births minus deaths per individual per unit time).

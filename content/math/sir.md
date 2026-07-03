@@ -8,6 +8,8 @@ Compartmental models have many shapes and sizes.
 They divide a population into distinct **compartments** — groups defined by their status with respect to a disease — and describe how individuals move between them over time.
 Despite their simplicity, compartmental models are one of the most powerful tools in infectious disease ecology and epidemiology.
 
+![Simulated SIR epidemic: susceptibles fall, infectious individuals rise then decline, and recovered individuals accumulate.](../assets/figures/sir.svg)
+
 ## The SIR model
 
 The classic example is the **SIR model**, which divides a population into three compartments:
