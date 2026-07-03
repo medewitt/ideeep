@@ -132,4 +132,5 @@ The base-rate effect explains why mass screening for rare diseases produces most
 - [Hypothesis testing](hypothesis-testing.md)
 - [Confidence intervals](confidence-intervals.md)
 - [Normal distribution](normal-distribution.md)
+- [Proper Scoring Rules](proper-scoring-rules.md)
 - [Quantitative Methods](../math.md)

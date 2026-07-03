@@ -161,6 +161,7 @@ Knowing the same verbs across languages lets you read collaborators' code and pi
 
 ## Related
 
+- [Graphing Data](graphing-data.md)
 - [Good Programming Practices](../programming/good-programming-practices.md)
 - [Reproducibility](../programming/reproducibility.md)
 - [Project Workflow](../programming/project-workflow.md)

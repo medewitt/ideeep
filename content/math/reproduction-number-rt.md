@@ -142,4 +142,5 @@ The renewal equation that defines it also powers nowcasts and short-term forecas
 - [Branching processes](branching-processes.md)
 - [Stochastic epidemics](stochastic-epidemics.md)
 - [Bayesian inference](bayesian-inference.md)
+- [Proper Scoring Rules](proper-scoring-rules.md)
 - [Quantitative Methods](../math.md)

@@ -22,6 +22,7 @@ core idea and notation with a worked example and runnable code in **R**,
 ## Working with data
 
 - [Manipulating Data Frames](math/manipulating-data.md) — dplyr, data.table, pandas, Polars, and DataFrames.jl
+- [Graphing Data](math/graphing-data.md) — matching charts to questions and the grammar of graphics
 
 ## Sequences, series & limits
 
@@ -91,6 +92,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Confidence Intervals](math/confidence-intervals.md)
 - [Permutation Tests](math/permutation-tests.md)
 - [Diagnostic Testing and Screening](math/diagnostic-testing.md) — sensitivity, specificity, PPV, and ROC
+- [Proper Scoring Rules](math/proper-scoring-rules.md) — Brier, log score, CRPS, and forecast calibration
 
 ## Regression & generalized linear models
 
