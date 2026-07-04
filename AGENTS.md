@@ -195,6 +195,7 @@ Cross-reference other pages with relative `.md` links, which are rewritten to `.
 
 ```
 just build            # cargo run --release -> dist/
+just test             # cargo test --release (md-compiler unit tests)
 just figures          # render figures/*.py -> assets/figures/*.svg
 just python-output     # execute python blocks and inject stdout
 just lint-prose        # one-sentence-per-line check
@@ -202,3 +203,24 @@ just preview           # build + serve dist/ on :8000
 ```
 
 Before committing new content, run `just figures`, `just python-output`, `just lint-prose`, and `just build`, and confirm the new pages appear under the right navbar dropdown with figures rendering and internal links resolving.
+
+## Working on the generator (`src/main.rs`) — test-driven
+
+Changes to the Rust generator follow **test-driven development**. The unit
+tests live in the `#[cfg(test)] mod tests` block at the bottom of `src/main.rs`
+and run with `just test` (`cargo test --release`).
+
+- **Every fixed bug needs a test.** When you fix a bug in a Rust file, first add
+  a test that reproduces it (it should fail on the unfixed code), then make it
+  pass. Confirm the test is meaningful by checking it actually fails when the fix
+  is reverted — a test that passes both ways guards nothing.
+- **Changes to `src/main.rs` should include a test where possible.** New or
+  modified rendering behavior (Markdown/KaTeX handling, link rewriting, callouts,
+  metadata) should come with a test that exercises it through the real pipeline —
+  most rendering tests can call `markdown_to_html(md, &HashSet::new())` and assert
+  on the HTML. If a change genuinely has no testable surface (e.g. a log message),
+  say so in the commit rather than skipping silently.
+- **Run `just test` before committing** any Rust change, alongside `just build`.
+
+There is no CI, so these tests only run when you run them — treat `just test` as a
+required local gate for generator changes.

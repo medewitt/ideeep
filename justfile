@@ -5,6 +5,10 @@ default: build
 build:
     cargo run --release
 
+# Run the Rust unit tests (the md-compiler regression suite)
+test:
+    cargo test --release
+
 # Directories whose Markdown prose follows the one-sentence-per-line convention
 prose_dirs := "content/math content/programming content/epidemiology content/diagnostics content/scientific-pathways.md content/scientific-writing.md"
 
