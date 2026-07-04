@@ -6,7 +6,9 @@ description: "A map of research funding — graduate fellowships, postdoctoral a
 
 # Scientific Pathways
 
-A research career is, in large part, a sequence of **fellowships and grants** — funded chapters that each buy the time and resources to do the next piece of work.
+A research career is, in large part, a sequence of **fellowships and grants**, often working as an entrepeneur to convince funders that the work you do matters and that you are the right person to do it.
+If successful, you will be given the money to buy your time and materials to do the science and answer the questions and ask the next question.
+Being able to get funding to pursue your questions is a major part of being an *independent investigator* (meaning that you are funded to pursue your research questions).
 This page maps the major funding mechanisms in the United States and beyond, from graduate fellowships to a first independent research grant, and lays out the basics of writing a competitive application.
 It is a companion to [scientific writing](scientific-writing.md), which covers the craft of the proposal itself.
 
@@ -14,17 +16,18 @@ It is a companion to [scientific writing](scientific-writing.md), which covers t
 
 ## The shape of a research career
 
-Funding mechanisms are keyed to **career stage**, and knowing where you sit tells you which doors are open.
+Funding mechanisms are tied to different **career stage**, and knowing where you sit tells you which doors are open.
+Note that these are the paradigmatic approaches - you can enter the path from a variety of backgrounds, but this is the most traditional approach.
 
 - **Graduate student** — predoctoral fellowships that fund your PhD stipend and signal independence.
 - **Postdoc** — postdoctoral fellowships and **transition awards** that bridge you toward independence.
 - **Early-career faculty** — a first independent research grant, the milestone that establishes a lab.
 
-The ladder is not the only path — many rewarding careers run through industry, government, non-profits, science policy, and teaching-focused institutions — but the mechanisms below are the scaffolding of the academic research track.
+The ladder is not the only path — many rewarding careers run through industry (i.e., working for a pharmaceutical company or in commercial agriculture), government (e.g., CDC, FDA, USDA, DOD), non-profits, science policy, and teaching-focused institutions — but the mechanisms below are the scaffolding of the academic research track.
 
 ## NIH: the National Institutes of Health
 
-The NIH funds biomedical research through **institutes** (NIAID for infectious disease, NIGMS for basic science, and others), each with its own priorities, and its awards are named by an alphanumeric **activity code**.
+The [NIH](https://www.nih.gov) funds biomedical research through **institutes** ([NIAID](https://www.niaid.nih.gov) for infectious disease, [NIGMS](https://www.nigms.nih.gov) for basic science, and others), each with its own priorities, and its awards are named by an alphanumeric **activity code**.
 
 **Fellowships and training (the "F" series, NRSA).**
 

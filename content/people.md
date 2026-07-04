@@ -5,13 +5,11 @@ description: "Faculty and instructors of the IDEEEP concentration at Wake Forest
 
 # People
 
-The IDEEEP concentration is taught and supported by faculty and instructors
-across Wake Forest University, the Wake Forest University School of Medicine, and
-collaborating institutions.
+The IDEEEP concentration is taught and supported by faculty and instructors across Wake Forest University, the Wake Forest University School of Medicine, and collaborating institutions.
 
 ## Faculty and instructors
 
-**Michael E. DeWitt, MS**  
+**Michael E. DeWitt**  
 Infectious disease epidemiology, disease ecology, mathematical modeling, and
 research methods.  
 Email: medewitt@wakehealth.edu · dewime23@wfu.edu
@@ -40,4 +38,3 @@ Prospective students interested in the concentration or in research
 opportunities are encouraged to reach out to Michael DeWitt or to review the
 [program overview](programs.md) and [research](research.md) pages.
 
-> This roster is a scaffold and will be updated as the concentration develops.

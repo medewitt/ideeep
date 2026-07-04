@@ -5,11 +5,9 @@ description: "Research themes, labs, and student opportunities in infectious dis
 
 # Research
 
-Research is central to the IDEEEP concentration. Infectious disease sits at the
-intersection of ecology, evolution, and epidemiology, and progress depends on
-combining field observation, laboratory work, and quantitative analysis.
-Students are encouraged to engage with research early and to develop the
-computational and analytical skills that modern disease science requires.
+Research is central to the IDEEEP concentration. 
+Infectious disease sits at the intersection of ecology, evolution, and epidemiology, and progress depends on combining field observation, laboratory work, and quantitative analysis.
+Students are encouraged to engage with research early and to develop the computational and analytical skills that modern disease science requires.
 
 ## Research themes
 
@@ -41,10 +39,6 @@ Students can participate in research through:
 
 ## Getting started
 
-If you are interested in research, reach out to a faculty
-[mentor](people.md) to discuss your interests, and build the quantitative and
-computational foundations that support independent work. Even early-stage
-students can contribute meaningfully to ongoing projects.
+If you are interested in research, reach out to a faculty [mentor](people.md) to discuss your interests, and build the quantitative and computational foundations that support independent work. 
+Even early-stage students can contribute meaningfully to ongoing projects and the sooner you begin to learn the skills the more effective you will be.
 
-> This page is a scaffold and will grow to include specific projects,
-> publications, and student opportunities.

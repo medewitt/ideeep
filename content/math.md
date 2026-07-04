@@ -8,11 +8,14 @@ description: "Bite-sized references on the calculus, linear algebra, probability
 
 # Quantitative Methods
 
-A growing collection of bite-sized references covering the calculus, linear
-algebra, probability, and statistics that underpin quantitative work in
-infectious disease ecology, evolution, and epidemiology. Each page pairs the
-core idea and notation with a worked example and runnable code in **R**,
-**Python**, and **Julia** for simulation and intuition.
+Quantitative methods are essential for those working in mathematical biology, doing epidemiology, and designing experiments (from basic bench experiementals to large field experiments) -- especially as part of the modern practice of these fields.
+The best way to learn these skills is through constant exposure and solving practical problems.
+
+Here we collate a collection of bite-sized references covering the calculus, linear algebra, probability, and statistics that underpin quantitative work in infectious disease ecology, evolution, and epidemiology. 
+Each page pairs the core idea and notation with a worked example and runnable code in [**R**](https://cran.r-project.org), [**Python**](https://www.python.org), and [**Julia**](https://julialang.org) for simulation and mostly importantly, intuition.
+
+Math is hard.
+It requires practice and repetition.
 
 ## Foundations & notation
 
@@ -24,14 +27,14 @@ core idea and notation with a worked example and runnable code in **R**,
 ## Working with data
 
 - [Manipulating Data Frames](math/manipulating-data.md) — dplyr, data.table, pandas, Polars, and DataFrames.jl
-- [Graphing Data](math/graphing-data.md) — matching charts to questions and the grammar of graphics
+- [Graphing Data](math/graphing-data.md) — matching charts and designing figures to questions and the grammar of graphics
 
 ## Sequences, series & limits
 
 - [Sequences](math/sequences.md) — notation, monotonicity, and boundedness
 - [Limits](math/limits.md) — convergence, properties, and L'Hôpital's rule
 - [Series](math/series.md) — arithmetic, geometric, and power series
-- [Taylor and Maclaurin Series](math/taylor-series.md) — polynomial approximation
+- [Taylor and Maclaurin Series](math/taylor-series.md) — polynomial approximation to functions
 
 ## Differentiation
 
@@ -56,7 +59,7 @@ core idea and notation with a worked example and runnable code in **R**,
 
 ## Convexity & inequalities
 
-- [Jensen's Inequality and Nonlinear Averaging](math/jensens-inequality.md)
+- [Jensen's Inequality and Nonlinear Averaging](math/jensens-inequality.md) -- how you have to make sure you know what you are averaging
 - [The Legendre Transform](math/legendre-transform.md) — convex conjugates
 
 ## Linear algebra
@@ -93,7 +96,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Moment Matching](math/moment-matching.md) — method of moments and distributional approximation
 - [Monotonic Transformations](math/monotonic-transformations.md)
 - [Hypothesis Testing](math/hypothesis-testing.md)
-- [p-Values](math/p-values.md)
+- [p-values](math/p-values.md)
 - [Confidence Intervals](math/confidence-intervals.md)
 - [Permutation Tests](math/permutation-tests.md)
 - [Diagnostic Testing and Screening](math/diagnostic-testing.md) — sensitivity, specificity, PPV, and ROC
@@ -112,7 +115,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Markov Chain Monte Carlo](math/mcmc.md)
 - [Prior Predictive Checks](math/prior-predictive-checks.md) — simulate from the prior to sanity-check it before fitting
 - [Posterior Predictive Checks](math/posterior-predictive-checks.md) — compare replicated data to the observed to test the model
-- [Identifiability](math/identifiability.md) — when the data cannot separate parameters
+- [Identifiability](math/identifiability.md) — when data cannot separate parameters
 
 ## Gaussian processes & spatial statistics
 
@@ -196,12 +199,12 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Exponential and Logistic Growth](math/logistic-growth.md)
 - [Discrete-Time Models and the Logistic Map](math/discrete-population-models.md)
 - [Structured Population Models](math/structured-populations.md) — Leslie matrices
-- [Metapopulations and the Levins Model](math/metapopulations.md)
-- [Asynchrony and the Inflationary Effect](math/metapopulation-asynchrony.md) — how spatiotemporal variation and dispersal inflate abundance and persistence
+- [Metapopulations and the Levins Model](math/metapopulations.md) -- models considering more than patch or population and their interactions
+- [Asynchrony and the Inflationary Effect](math/metapopulation-asynchrony.md) — how spatiotemporal variation and dispersal inflate abundance, persistence, and can increase infection
 
 *Species interactions & stability:*
 
-- [Lotka–Volterra Predator–Prey Dynamics](math/predator-prey.md)
+- [Lotka–Volterra Predator–Prey Dynamics](math/predator-prey.md) - the basis of many models in ecology and infectious diseases
 - [Competition and Coexistence](math/competition-coexistence.md)
 - [The Community Matrix and Stability](math/community-matrix.md)
 
@@ -234,7 +237,7 @@ core idea and notation with a worked example and runnable code in **R**,
 
 - [Pharmacokinetics: Compartment Models](math/pharmacokinetics.md) — ADME, clearance, half-life, AUC
 - [Pharmacodynamics: Dose–Response](math/pharmacodynamics.md) — the Emax/Hill model
-- [Antimicrobial PK/PD](math/antimicrobial-pkpd.md) — MIC and the PK/PD indices
+- [Antimicrobial PK/PD](math/antimicrobial-pkpd.md) — minimum inhibatory concentration (MIC) and the PK/PD indices
 - [PK/PD Target Attainment](math/pkpd-target-attainment.md) — probability of target attainment and dose selection
 
 ## Epidemic modeling

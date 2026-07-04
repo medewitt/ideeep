@@ -13,7 +13,7 @@ Integrated Nested Laplace Approximation ([Rue, Martino & Chopin 2009](https://rs
 
 ## The latent Gaussian model
 
-INLA is not a general-purpose engine; it is fast because it targets one specific, but very broad, structure.
+[INLA](https://www.r-inla.org) is not a general-purpose engine; it is fast because it targets one specific, but very broad, structure.
 A **latent Gaussian model** has three layers.
 First, a vector of hyperparameters $\theta$ (a handful of variances, correlation ranges, and likelihood dispersions) with some prior $\pi(\theta)$.
 Second, a **latent field** $x$ that, given $\theta$, is multivariate Gaussian, $x \mid \theta \sim \mathcal{N}(0, Q(\theta)^{-1})$.

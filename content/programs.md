@@ -5,18 +5,14 @@ description: "An interdisciplinary Wake Forest concentration studying infectious
 
 # The IDEEEP Concentration
 
-The **Infectious Disease Ecology, Evolution, and Epidemiology Program (IDEEEP)**
-is an interdisciplinary concentration for students who want to understand
-infectious disease as a biological, ecological, and quantitative phenomenon.
-Pathogens do not act in isolation — they move through populations, respond to
-selection, and are shaped by the environments and hosts they depend on.
+The **Infectious Disease Ecology, Evolution, and Epidemiology Program (IDEEEP)** is an interdisciplinary concentration for students who want to understand infectious diseases as a biological, ecological, and quantitative phenomenon.
+Pathogens do not act in isolation — they move through populations, respond to selection, and are shaped by the environments and hosts they depend on.
+Infectious diseases transcend model systems from bacteriophages infecting bacteria to helminths infecting sheep to fungal infections in plants to viral zoonoses in humans, infectious diseases are key forces across biology.
 Understanding them requires drawing on ecology, evolution, mathematics,
 statistics, and field epidemiology together.
 
-Biology is a comprehensive subject: principles build on one another, and
-insights from one discipline often intersect with others in unexpected ways.
-The courses and experiences below are designed so those connections become the
-point rather than the exception.
+Biology is a comprehensive and multifacted field of study: principles build on one another, and insights from one discipline often intersect with others in unexpected ways.
+The courses and experiences below are designed so those connections become the point rather than the exception.
 
 ## Program goals
 
@@ -55,8 +51,8 @@ ecology, evolution, and epidemiology.
 | TBD | [Antimicrobial Stewardship and Infection Prevention](stewardship-infection-prevention.md) | Combating resistance and preventing transmission |
 
 > **Note:** Course numbers, credit hours, and offerings are illustrative of the
-> current curriculum and should be confirmed against the official course
-> catalog and the Department of Biology each academic year.
+> current curriculum and should be confirmed against the official course bulletin
+> and the Department of Biology each academic year.
 
 ## Getting involved
 

@@ -5,16 +5,9 @@ author: Michael DeWitt
 date: 2025-12-23
 ---
 
-This course introduces the principles and practice of antimicrobial stewardship
-and infection prevention and control (IPC) — the frontline strategies used to
-slow antimicrobial resistance and reduce the transmission of infections in
-healthcare and community settings.
+This course introduces the principles and practice of antimicrobial stewardship and infection prevention and control (IPC) — the frontline strategies used to slow antimicrobial resistance and reduce the transmission of infections in healthcare and community settings.
 
 The course sketch is shown below.
-
-> **Sketch / draft syllabus.** This is an early scaffold for the concentration.
-> Course number, credit hours, dates, and specific assignments are placeholders
-> and will be finalized before the course is offered.
 
 ---
 
@@ -26,7 +19,7 @@ The course sketch is shown below.
 **Credit Hours:** TBD  
 **Meeting Time:** TBD
 
-**Course Director:** Michael E. DeWitt, MS  
+**Course Director:** Michael E. DeWitt
 **Email:** medewitt@wakehealth.edu or dewime23@wfu.edu  
 
 # Course description
