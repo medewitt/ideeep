@@ -2,6 +2,11 @@
 name = "md-compiler"
 version = "0.1.0"
 edition = "2021"
+# Canonical production origin for the built site. Drives canonical URLs,
+# Open Graph/Twitter cards, JSON-LD, the sitemap, robots.txt, and the web
+# manifest. Change this one line to move the site to a new domain.
+# Write it WITHOUT a trailing slash (the generator appends paths).
+homepage = "https://id3es.com"
 
 [[bin]]
 name = "md-compiler"

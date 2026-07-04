@@ -1,5 +1,6 @@
 ---
 title: Field Epidemiology and Tropical Medicine
+description: "A field epidemiology and tropical medicine course with fieldwork in Tumbes and Lima, Peru — syllabus and course details."
 author: Michael DeWitt
 date: 2025-12-23
 ---
