@@ -1,5 +1,6 @@
 ---
 title: "Quantitative Methods"
+toc: true
 description: "Bite-sized references on the calculus, linear algebra, probability, and statistics behind infectious disease modeling, each with worked examples and R, Python, and Julia code."
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: "Scientific Pathways"
+toc: true
 description: "A map of research funding — graduate fellowships, postdoctoral awards, and first independent grants — and how to write a competitive application."
 ---
 

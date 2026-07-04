@@ -24,6 +24,7 @@ const SITE_DESCRIPTION: &str = "The IDEEEP concentration at Wake Forest Universi
 #[derive(Debug, serde::Deserialize)]
 struct FrontMatter {
     title: Option<String>,
+    toc: Option<bool>,
     /// Optional per-page meta description used for search snippets and social
     /// cards. When absent, the build derives one from the first paragraph.
     description: Option<String>,
@@ -277,17 +278,19 @@ fn preprocess_math(md: &str) -> String {
 }
 
 fn convert_internal_links(html: &str, markdown_files: &std::collections::HashSet<String>) -> String {
-    // Create a regex to match <a href="..."> tags
-    let link_pattern = Regex::new(r#"<a\s+href="([^"]+)"([^>]*)>"#).unwrap();
+    // Match <a ...> tags with href anywhere in the tag (attributes may precede
+    // href, e.g. class="card" href="...").
+    let link_pattern = Regex::new(r#"<a\s+([^>]*?)href="([^"]+)"([^>]*)>"#).unwrap();
     let mut result = html.to_string();
-    
+
     // Find all matches and replace from end to start to preserve indices
     let mut replacements: Vec<(usize, usize, String)> = Vec::new();
-    
+
     for cap in link_pattern.captures_iter(html) {
         let full_match = cap.get(0).unwrap();
-        let href = cap.get(1).unwrap().as_str();
-        let attrs = cap.get(2).unwrap().as_str();
+        let pre_attrs = cap.get(1).unwrap().as_str();
+        let href = cap.get(2).unwrap().as_str();
+        let attrs = cap.get(3).unwrap().as_str();
         
         // Skip external links (http, https, mailto, etc.)
         if href.starts_with("http://") || href.starts_with("https://") || 
@@ -336,7 +339,7 @@ fn convert_internal_links(html: &str, markdown_files: &std::collections::HashSet
             continue;
         };
         
-        let new_link = format!(r#"<a href="{}"{}>"#, new_href, attrs);
+        let new_link = format!(r#"<a {}href="{}"{}>"#, pre_attrs, new_href, attrs);
         replacements.push((full_match.start(), full_match.end(), new_link));
     }
     
@@ -348,16 +351,183 @@ fn convert_internal_links(html: &str, markdown_files: &std::collections::HashSet
     result
 }
 
+/// SVG glyph for each callout type (inline so it themes with currentColor).
+fn callout_icon(kind: &str) -> &'static str {
+    match kind {
+        "tip" => r#"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>"#,
+        "warning" => r#"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>"#,
+        "example" => r#"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg>"#,
+        // note / default
+        _ => r#"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>"#,
+    }
+}
+
+/// Transform GitHub-style admonition blockquotes (`> [!NOTE]`, `[!TIP]`,
+/// `[!WARNING]`, `[!EXAMPLE]`) into styled callout blocks.
+fn render_callouts(html: &str) -> String {
+    let re = Regex::new(r"(?is)<blockquote>\s*<p>\s*\[!(NOTE|TIP|WARNING|EXAMPLE|IMPORTANT|CAUTION)\][ \t]*(?:<br\s*/?>|\n)?(.*?)</blockquote>").unwrap();
+    re.replace_all(html, |caps: &regex::Captures| {
+        let raw = caps[1].to_ascii_lowercase();
+        let (kind, label) = match raw.as_str() {
+            "tip" => ("tip", "Tip"),
+            "warning" | "caution" => ("warning", "Warning"),
+            "example" => ("example", "Example"),
+            _ => ("note", "Note"), // note / important
+        };
+        format!(
+            "<div class=\"callout callout-{kind}\">\n<div class=\"callout-heading\">{icon}<span>{label}</span></div>\n<p>{body}</div>",
+            kind = kind,
+            icon = callout_icon(kind),
+            label = label,
+            body = &caps[2],
+        )
+    }).into_owned()
+}
+
+/// Drop HTML tags and collapse whitespace, for slugs and TOC labels.
+fn strip_tags(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    let mut in_tag = false;
+    for c in s.chars() {
+        match c {
+            '<' => in_tag = true,
+            '>' => in_tag = false,
+            _ if !in_tag => out.push(c),
+            _ => {}
+        }
+    }
+    out.split_whitespace().collect::<Vec<_>>().join(" ")
+}
+
+/// A URL-safe slug from heading text.
+fn slugify(s: &str) -> String {
+    let text = strip_tags(s)
+        .replace("&amp;", " ")
+        .replace("&lt;", " ")
+        .replace("&gt;", " ")
+        .replace("&quot;", " ")
+        .replace("&#39;", " ");
+    let mut slug = String::new();
+    let mut prev_dash = false;
+    for c in text.chars() {
+        if c.is_ascii_alphanumeric() {
+            slug.push(c.to_ascii_lowercase());
+            prev_dash = false;
+        } else if !slug.is_empty() && !prev_dash {
+            slug.push('-');
+            prev_dash = true;
+        }
+    }
+    slug.trim_matches('-').to_string()
+}
+
+/// Give every h2/h3 a unique id and return the ordered heading list for a TOC.
+fn add_heading_ids(html: &str) -> (String, Vec<(u8, String, String)>) {
+    let re = Regex::new(r"(?is)<h([23])>(.*?)</h[23]>").unwrap();
+    let mut out = String::with_capacity(html.len());
+    let mut last = 0;
+    let mut seen: std::collections::HashMap<String, u32> = std::collections::HashMap::new();
+    let mut headings = Vec::new();
+    for caps in re.captures_iter(html) {
+        let m = caps.get(0).unwrap();
+        let lvl: u8 = caps[1].parse().unwrap_or(2);
+        let inner = &caps[2];
+        let base = {
+            let b = slugify(inner);
+            if b.is_empty() { "section".to_string() } else { b }
+        };
+        let n = seen.entry(base.clone()).or_insert(0);
+        let slug = if *n == 0 { base.clone() } else { format!("{}-{}", base, n) };
+        *n += 1;
+        out.push_str(&html[last..m.start()]);
+        out.push_str(&format!("<h{l} id=\"{s}\">{inner}</h{l}>", l = lvl, s = slug, inner = inner));
+        last = m.end();
+        headings.push((lvl, slug, strip_tags(inner)));
+    }
+    out.push_str(&html[last..]);
+    (out, headings)
+}
+
+/// Build the "On this page" navigation from collected headings.
+fn build_toc(headings: &[(u8, String, String)]) -> String {
+    let mut s = String::from(
+        "<nav class=\"page-toc\" aria-label=\"On this page\">\n<p class=\"page-toc-title\">On this page</p>\n<ul>\n",
+    );
+    for (lvl, slug, text) in headings {
+        let cls = if *lvl == 3 { " class=\"toc-sub\"" } else { "" };
+        // `text` is stripped from already-escaped HTML, so it is safe to emit as-is.
+        s.push_str(&format!(
+            "<li{}><a href=\"#{}\">{}</a></li>\n",
+            cls, slug, text
+        ));
+    }
+    s.push_str("</ul>\n</nav>\n");
+    s
+}
+
+/// Flow flat link lists (>=4 items, mostly links, no nesting) into columns.
+fn columnize_link_lists(html: &str) -> String {
+    let mut out = String::with_capacity(html.len());
+    let mut rest = html;
+    while let Some(pos) = rest.find("<ul>") {
+        out.push_str(&rest[..pos]);
+        let after = &rest[pos..];
+        let b = after.as_bytes();
+        let mut depth = 0i32;
+        let mut idx = 0usize;
+        let mut end = None;
+        while idx < b.len() {
+            if b[idx..].starts_with(b"<ul>") {
+                depth += 1;
+                idx += 4;
+            } else if b[idx..].starts_with(b"</ul>") {
+                depth -= 1;
+                idx += 5;
+                if depth == 0 {
+                    end = Some(idx);
+                    break;
+                }
+            } else {
+                idx += 1;
+            }
+        }
+        match end {
+            Some(e) => {
+                let inner = &after[4..e - 5];
+                let li_count = inner.matches("<li>").count();
+                let link_items = inner.matches("<li><a").count();
+                let nested = inner.contains("<ul");
+                if !nested && li_count >= 4 && link_items * 2 >= li_count {
+                    out.push_str("<ul class=\"col-list\">");
+                    out.push_str(&after[4..e]);
+                } else {
+                    out.push_str(&after[..e]);
+                }
+                rest = &after[e..];
+            }
+            None => {
+                out.push_str(after);
+                rest = "";
+                break;
+            }
+        }
+    }
+    out.push_str(rest);
+    out
+}
+
 fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<String>) -> String {
     // Pre-process math expressions: render them server-side with KaTeX
     let processed_markdown = preprocess_math(markdown);
-    
+
     let options = Options::all();
     let parser = Parser::new_ext(&processed_markdown, options);
     let mut html_output = String::new();
     html::push_html(&mut html_output, parser);
-    
-    convert_internal_links(&html_output, markdown_files)
+
+    let linked = convert_internal_links(&html_output, markdown_files);
+    let with_callouts = render_callouts(&linked);
+    columnize_link_lists(&with_callouts)
 }
 
 #[derive(Clone)]
@@ -376,116 +546,11 @@ fn generate_navbar(
     current_page: Option<&str>,
     asset_prefix: &str,
 ) -> String {
-    let mut nav = String::from("<nav style=\"background: #000; padding: 10px; margin-bottom: 20px; border-bottom: 2px solid #333;\">\n");
-    nav.push_str("<style>
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #222;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-    z-index: 1000;
-    top: 100%;
-    left: 0;
-    margin-top: 0;
-    padding-top: 5px;
-    border: 1px solid #444;
-}
-.dropdown:hover .dropdown-content,
-.dropdown-content:hover {
-    display: block;
-}
-.dropdown-content::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: transparent;
-}
-.dropdown-content a {
-    color: #fff;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    white-space: nowrap;
-}
-.dropdown-content a:link {
-    color: #fff;
-    text-decoration: none;
-}
-.dropdown-content a:visited {
-    color: #fff;
-    text-decoration: none;
-}
-.dropdown-content a:hover {
-    background-color: #333;
-    color: #8C6D2C;
-    text-decoration: none;
-}
-.dropdown-content a:active {
-    color: #fff;
-    text-decoration: none;
-}
-.dropdown > a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 5px 0;
-    display: block;
-    font-family: Arial, sans-serif;
-    font-size: 1.25rem;
-}
-.nav-link {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-    font-size: 1.25rem;
-}
-.nav-link:link {
-    color: #fff;
-    text-decoration: none;
-}
-.nav-link:visited {
-    color: #fff;
-    text-decoration: none;
-}
-.nav-link:hover {
-    color: #8C6D2C;
-    text-decoration: none;
-}
-.nav-link:active {
-    color: #fff;
-    text-decoration: none;
-}
-.nav-link.active {
-    color: #8C6D2C !important;
-    text-decoration: none;
-}
-.nav-link.active:visited {
-    color: #8C6D2C !important;
-    text-decoration: none;
-}
-.nav-link.active:hover {
-    color: #8C6D2C !important;
-    text-decoration: none;
-}
-</style>\n");
-    nav.push_str("<ul style=\"list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; align-items: center; font-size: 1.25rem;\">\n");
-    
-    // Always add logo/IDEEP link at the start
-    let index_title = markdown_titles.get("index")
-        .cloned()
-        .unwrap_or_else(|| "IDEEP".to_string());
+    let mut nav = String::from("<nav class=\"site-nav\" aria-label=\"Primary\">\n<div class=\"nav-inner\">\n");
+
+    // Logo/home link sits outside the collapsible menu so it stays visible on mobile.
     let index_is_active = current_page.map(|cp| cp == "index").unwrap_or(false);
-    let index_link_class = if index_is_active { "nav-link active" } else { "nav-link" };
+    let index_link_class = if index_is_active { "nav-logo active" } else { "nav-logo" };
     // Calculate relative path to index.html from current page
     let index_path = if asset_prefix.is_empty() {
         "index.html".to_string()
@@ -493,10 +558,18 @@ fn generate_navbar(
         format!("{}index.html", asset_prefix)
     };
     nav.push_str(&format!(
-        "  <li><a href=\"{}\" class=\"{}\" style=\"display: flex; align-items: center; gap: 10px;\"><img src=\"{}assets/logo-wide.png\" alt=\"IDEEEP — Infectious Disease Ecology, Evolution & Epidemiology Program\" width=\"250\" height=\"40\" style=\"height: 40px; width: auto;\">{}</a></li>\n",
-        index_path, index_link_class, asset_prefix, index_title
+        "  <a href=\"{}\" class=\"{}\"{}><img class=\"nav-logo-img\" src=\"{}assets/emblem.png\" alt=\"\" width=\"40\" height=\"40\"><span class=\"nav-wordmark\"><span class=\"nav-wordmark-main\">Infectious Diseases</span><span class=\"nav-wordmark-sub\">Ecology, Evolution &amp; Epidemiology</span></span></a>\n",
+        index_path,
+        index_link_class,
+        if index_is_active { " aria-current=\"page\"" } else { "" },
+        asset_prefix
     ));
-    
+
+    // Hamburger toggle (shown on narrow screens; controlled by assets/nav.js).
+    nav.push_str("  <button class=\"nav-toggle\" aria-expanded=\"false\" aria-controls=\"primary-menu\" aria-label=\"Toggle navigation menu\"><span class=\"nav-toggle-bars\" aria-hidden=\"true\"></span></button>\n");
+
+    nav.push_str("  <ul class=\"nav-list\" id=\"primary-menu\">\n");
+
     for item in navbar_items {
         match item {
             NavbarItem::MarkdownFile(relative_path, title) => {
@@ -516,15 +589,16 @@ fn generate_navbar(
                 
                 let is_active = current_page.map(|cp| cp == &rel_key || cp == relative_path.file_stem().and_then(|s| s.to_str()).unwrap_or("")).unwrap_or(false);
                 let link_class = if is_active { "nav-link active" } else { "nav-link" };
-                
+                let aria_current = if is_active { " aria-current=\"page\"" } else { "" };
+
                 nav.push_str(&format!(
-                    "  <li><a href=\"{}\" class=\"{}\">{}</a></li>\n",
-                    html_path, link_class, title
+                    "  <li class=\"nav-item\"><a href=\"{}\" class=\"{}\"{}>{}</a></li>\n",
+                    html_path, link_class, aria_current, title
                 ));
             }
             NavbarItem::ExternalLink(url, text) => {
                 nav.push_str(&format!(
-                    "  <li><a href=\"{}\" class=\"nav-link\" target=\"_blank\" rel=\"noopener noreferrer\">{}</a></li>\n",
+                    "  <li class=\"nav-item\"><a href=\"{}\" class=\"nav-link\" target=\"_blank\" rel=\"noopener noreferrer\">{}</a></li>\n",
                     url, text
                 ));
             }
@@ -532,18 +606,40 @@ fn generate_navbar(
                 let href = format!("{}{}", asset_prefix, path_base);
                 let is_active = current_page.map(|cp| cp == key).unwrap_or(false);
                 let link_class = if is_active { "nav-link active" } else { "nav-link" };
+                let aria_current = if is_active { " aria-current=\"page\"" } else { "" };
                 nav.push_str(&format!(
-                    "  <li><a href=\"{}\" class=\"{}\">{}</a></li>\n",
-                    href, link_class, label
+                    "  <li class=\"nav-item\"><a href=\"{}\" class=\"{}\"{}>{}</a></li>\n",
+                    href, link_class, aria_current, label
                 ));
             }
             NavbarItem::Dropdown(dropdown_name) => {
                 // Render dropdown inline
                 if let Some(dropdowns_map) = dropdowns {
                     if let Some(dropdown_value) = dropdowns_map.get(dropdown_name) {
-                        nav.push_str("  <li class=\"dropdown\">\n");
-                        nav.push_str(&format!("    <a>{}</a>\n", dropdown_name));
-                        nav.push_str("    <div class=\"dropdown-content\">\n");
+                        // A URL-safe id for aria-controls / the panel.
+                        let slug: String = dropdown_name
+                            .chars()
+                            .map(|c| if c.is_ascii_alphanumeric() { c.to_ascii_lowercase() } else { '-' })
+                            .collect();
+                        let panel_id = format!("dd-{}", slug);
+
+                        // Highlight the dropdown parent when the current page lives inside it.
+                        let dd_active = current_page.map(|cp| match dropdown_value {
+                            serde_yaml::Value::Sequence(seq) => seq.iter().any(|it| {
+                                it.as_str()
+                                    .map(|pn| cp == pn || cp.starts_with(&format!("{}/", pn)))
+                                    .unwrap_or(false)
+                            }),
+                            _ => false,
+                        }).unwrap_or(false);
+                        let toggle_class = if dd_active { "nav-link dropdown-toggle active" } else { "nav-link dropdown-toggle" };
+
+                        nav.push_str("  <li class=\"nav-item dropdown\">\n");
+                        nav.push_str(&format!(
+                            "    <button type=\"button\" class=\"{}\" aria-expanded=\"false\" aria-haspopup=\"true\" aria-controls=\"{}\">{}<svg class=\"dropdown-caret\" width=\"11\" height=\"7\" viewBox=\"0 0 10 6\" aria-hidden=\"true\"><path d=\"M1 1l4 4 4-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>\n",
+                            toggle_class, panel_id, dropdown_name
+                        ));
+                        nav.push_str(&format!("    <div class=\"dropdown-content\" id=\"{}\">\n", panel_id));
                         
                         // Handle different dropdown value types
                         match dropdown_value {
@@ -624,7 +720,10 @@ fn generate_navbar(
         }
     }
     
-    nav.push_str("</ul>\n</nav>\n");
+    // Theme toggle (last item; handler lives in assets/nav.js)
+    nav.push_str("  <li class=\"nav-item\"><button type=\"button\" class=\"nav-link theme-toggle\" aria-label=\"Toggle dark mode\" title=\"Toggle light/dark theme\"><svg class=\"icon-moon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z\"/></svg><svg class=\"icon-sun\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"4.5\"/><path d=\"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4\"/></svg></button></li>\n");
+
+    nav.push_str("  </ul>\n</div>\n</nav>\n");
     nav
 }
 
@@ -648,6 +747,33 @@ fn generate_html(
         String::new()
     };
 
+    // Preload the self-hosted Nunito Sans faces so text paints without a swap flash.
+    let font_preload = format!(
+        "<link rel=\"preload\" href=\"{p}assets/fonts/nunito-sans-latin.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n    <link rel=\"preload\" href=\"{p}assets/fonts/nunito-sans-latin-italic.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>",
+        p = asset_prefix
+    );
+
+    // Syntax-highlight themes swap with the color scheme; an early script applies
+    // any saved manual preference before paint (and toggles the code themes).
+    let hljs_block = format!(
+        r#"<link rel="stylesheet" id="hljs-light" href="{p}assets/vendor/highlightjs/github.min.css" media="(prefers-color-scheme: light)">
+    <link rel="stylesheet" id="hljs-dark" href="{p}assets/vendor/highlightjs/github-dark.min.css" media="(prefers-color-scheme: dark)">
+    <script>
+    window.__applyTheme = function (t, persist) {{
+        var r = document.documentElement, l = document.getElementById('hljs-light'), d = document.getElementById('hljs-dark');
+        if (t === 'dark' || t === 'light') {{ r.setAttribute('data-theme', t); }} else {{ r.removeAttribute('data-theme'); }}
+        if (l && d) {{
+            if (t === 'dark') {{ l.media = 'not all'; d.media = 'all'; }}
+            else if (t === 'light') {{ l.media = 'all'; d.media = 'not all'; }}
+            else {{ l.media = '(prefers-color-scheme: light)'; d.media = '(prefers-color-scheme: dark)'; }}
+        }}
+        if (persist) {{ try {{ localStorage.setItem('theme', t); }} catch (e) {{}} }}
+    }};
+    try {{ var _t = localStorage.getItem('theme'); if (_t) window.__applyTheme(_t, false); }} catch (e) {{}}
+    </script>"#,
+        p = asset_prefix
+    );
+
     // --- SEO / social metadata -------------------------------------------
     // `canonical_path` is the site-root-relative URL of this page without a
     // leading slash ("" for the home page, "math/sir.html" otherwise).
@@ -658,7 +784,6 @@ fn generate_html(
         format!("{}/{}", SITE_URL, canonical_path)
     };
 
-    // Human-facing title used in cards; the <title> element adds a site suffix.
     let display_title = if title.trim().is_empty() {
         format!("{} · {}", SITE_NAME, SITE_TAGLINE)
     } else {
@@ -672,14 +797,11 @@ fn generate_html(
 
     let og_type = if is_home { "website" } else { "article" };
     let og_image = format!("{}/assets/og-image.png", SITE_URL);
-    let site_name = SITE_NAME;
 
     let t_attr = escape_attr(&display_title);
     let d_attr = escape_attr(description);
 
-    // JSON-LD structured data: a WebPage that is part of the site's WebSite,
-    // published by the IDEAS research group. The WebSite carries a SearchAction
-    // so engines can surface the on-site search box.
+    // JSON-LD structured data: a WebPage that is part of the site's WebSite.
     let json_ld = format!(
         r#"{{"@context":"https://schema.org","@type":"WebPage","name":"{name}","description":"{desc}","url":"{url}","inLanguage":"en","isPartOf":{{"@type":"WebSite","name":"{site} — {tagline}","url":"{site_url}/","potentialAction":{{"@type":"SearchAction","target":{{"@type":"EntryPoint","urlTemplate":"{site_url}/search.html?q={{search_term_string}}"}},"query-input":"required name=search_term_string"}}}},"publisher":{{"@type":"Organization","name":"Infectious Disease Epidemiology and Applied Statistics (IDEAS)","url":"https://wakeforestid.com"}}}}"#,
         name = escape_json(&display_title),
@@ -690,8 +812,7 @@ fn generate_html(
         site_url = SITE_URL,
     );
 
-    // Optional BreadcrumbList structured data (Home › Section › Page). Emitted
-    // only when there is a real trail (two or more crumbs).
+    // Optional BreadcrumbList structured data (Home > Section > Page).
     let breadcrumb_ld = if breadcrumbs.len() >= 2 {
         let items: Vec<String> = breadcrumbs
             .iter()
@@ -706,8 +827,7 @@ fn generate_html(
             })
             .collect();
         format!(
-            r#"
-    <script type="application/ld+json">{{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{}]}}</script>"#,
+            "\n    <script type=\"application/ld+json\">{{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{}]}}</script>",
             items.join(",")
         )
     } else {
@@ -725,8 +845,8 @@ fn generate_html(
     <link rel="canonical" href="{canonical}">
     <meta name="robots" content="{robots}">
     <meta name="author" content="Infectious Disease Epidemiology and Applied Statistics (IDEAS)">
-    <meta name="theme-color" content="#000000">
-    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#12151a">
+    <meta name="color-scheme" content="light dark">
 
     <!-- Open Graph -->
     <meta property="og:type" content="{og_type}">
@@ -744,189 +864,58 @@ fn generate_html(
     <meta name="twitter:image" content="{og_image}">
 
     <!-- Icons / PWA -->
-    <link rel="icon" type="image/png" href="{asset_prefix}assets/logo.png" />
-    <link rel="apple-touch-icon" href="{asset_prefix}assets/apple-touch-icon.png" />
-    <link rel="manifest" href="{asset_prefix}manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="{ap}assets/favicon.png" />
+    <link rel="apple-touch-icon" href="{ap}assets/apple-touch-icon.png" />
+    <link rel="manifest" href="{ap}manifest.webmanifest" />
 
     <script type="application/ld+json">{json_ld}</script>{breadcrumb_ld}
 
-    <link rel="stylesheet" href="{asset_prefix}assets/styles.css" type="text/css" />
-
-    <!-- Third-party assets served from CDNs: warm up the connections early -->
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preconnect" href="https://kit.fontawesome.com" crossorigin>
-    <script src="https://kit.fontawesome.com/1ffe760482.js" crossorigin="anonymous"></script>
-    <!-- Highlight.js for code syntax highlighting (deferred so it never blocks render) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/julia.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/c.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js"></script>
+    <link rel="stylesheet" href="{ap}assets/styles.css" type="text/css" />
+    {font_preload}
+    <!-- Self-hosted syntax highlighting (highlight.js) with light/dark themes -->
+    {hljs_block}
+    <script defer src="{ap}assets/vendor/highlightjs/highlight.bundle.min.js"></script>
+    <script defer src="{ap}assets/nav.js"></script>
     <script>
-    // Deferred scripts execute before DOMContentLoaded, so hljs is defined here.
     document.addEventListener('DOMContentLoaded', function() {{
         if (window.hljs) {{ hljs.highlightAll(); }}
     }});
-    // Register the service worker for offline support / installability.
     if ('serviceWorker' in navigator) {{
         window.addEventListener('load', function() {{
-            navigator.serviceWorker.register('{asset_prefix}sw.js').catch(function() {{}});
+            navigator.serviceWorker.register('{ap}sw.js').catch(function() {{}});
         }});
     }}
     </script>
-    <style>
-    body {{
-        font-family: Arial, sans-serif;
-        padding-bottom: 0;
-        margin-bottom: 0;
-    }}
-    h1 {{
-        font-family: Garamond, serif;
-    }}
-    #content {{
-        font-family: Arial, sans-serif;
-        margin-bottom: 40px;
-    }}
-    .blogbody {{
-        font-family: Arial, sans-serif;
-        padding-bottom: 20px;
-    }}
-    
-    /* Code block styling */
-    pre {{
-        background-color: #f4f4f4;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 15px;
-        overflow-x: auto;
-        margin: 20px 0;
-    }}
-    
-    code {{
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 0.9em;
-    }}
-    
-    pre code {{
-        display: block;
-        padding: 0;
-        background: transparent;
-        border: none;
-    }}
-    
-    /* Mobile responsive styles */
-    @media screen and (max-width: 768px) {{
-        #content {{
-            margin-left: 10px;
-            margin-right: 10px;
-            width: calc(100% - 20px);
-            padding: 10px;
-        }}
-        
-        nav ul {{
-            flex-direction: column;
-            gap: 10px !important;
-            align-items: flex-start !important;
-        }}
-        
-        nav li {{
-            width: 100%;
-        }}
-        
-        .nav-link {{
-            display: block;
-            padding: 10px 0;
-        }}
-        
-        .dropdown {{
-            width: 100%;
-        }}
-        
-        .dropdown > a {{
-            width: 100%;
-            padding: 10px 0;
-        }}
-        
-        .dropdown-content {{
-            position: relative;
-            width: 100%;
-            box-shadow: none;
-            border: none;
-            margin-top: 5px;
-        }}
-        
-        .blogbody {{
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }}
-        
-        h1 {{
-            font-size: 1.8rem;
-        }}
-        
-        h2 {{
-            font-size: 1.4rem;
-        }}
-        
-        h3 {{
-            font-size: 1.2rem;
-        }}
-    }}
-    
-    @media screen and (max-width: 480px) {{
-        nav {{
-            padding: 5px;
-        }}
-        
-        nav ul {{
-            font-size: 1rem !important;
-        }}
-        
-        .nav-link img {{
-            height: 30px !important;
-        }}
-        
-        #content {{
-            margin-left: 5px;
-            margin-right: 5px;
-            width: calc(100% - 10px);
-            padding: 5px;
-        }}
-        
-        .blogbody {{
-            font-size: 0.85rem;
-        }}
-        
-        h1 {{
-            font-size: 1.5rem;
-        }}
-    }}
-    </style>
     {katex_css}
 </head>
 <body>
+    <a class="skip-link" href="#content">Skip to content</a>
     {navbar}
-    <div id="content">
+    <main id="content">
         <div class="blogbody">
             {content}
         </div>
-    </div>
+    </main>
     {footer_content}
 </body>
 </html>"##,
+        head_title = escape_attr(&head_title),
+        d_attr = d_attr,
+        canonical = escape_attr(&canonical),
+        robots = robots,
+        og_type = og_type,
+        site_name = SITE_NAME,
+        t_attr = t_attr,
+        og_image = escape_attr(&og_image),
+        json_ld = json_ld,
+        breadcrumb_ld = breadcrumb_ld,
+        font_preload = font_preload,
+        hljs_block = hljs_block,
+        katex_css = katex_css,
+        navbar = navbar,
+        content = content,
+        footer_content = footer_content,
+        ap = asset_prefix,
     ))
 }
 
@@ -1083,6 +1072,7 @@ fn extract_search_text(markdown: &str) -> String {
     let whitespace_re = Regex::new(r"\s+").unwrap();
     whitespace_re.replace_all(&text, " ").trim().to_string()
 }
+
 
 /// Build a client-loadable FTS4 SQLite index (`dist/search.db`) over every page.
 /// One row per page: title, extracted content, relative URL, category, date.
@@ -1880,6 +1870,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let content = fs::read_to_string(full_path)?;
         let (frontmatter, markdown_content) = extract_frontmatter(&content);
         let html_content = markdown_to_html(markdown_content, &markdown_file_names);
+
+        // Give headings ids, then add an "On this page" TOC where a page opts in
+        // with `toc: true` in its front matter (used on the section hub pages).
+        let (html_content, headings) = add_heading_ids(&html_content);
+        let toc_enabled = frontmatter.as_ref().and_then(|fm| fm.toc).unwrap_or(false);
+        let html_content = if toc_enabled && !headings.is_empty() {
+            let toc = build_toc(&headings);
+            let with_lead = html_content.replacen("<p>", "<p class=\"lead\">", 1);
+            match with_lead.find("<h2") {
+                Some(pos) => format!("{}{}{}", &with_lead[..pos], toc, &with_lead[pos..]),
+                None => format!("{}{}", toc, with_lead),
+            }
+        } else {
+            html_content
+        };
 
         let rel_key = relative_path.with_extension("")
             .to_string_lossy()

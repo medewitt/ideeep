@@ -1,5 +1,6 @@
 ---
 title: "Scientific Writing"
+toc: true
 description: "The craft of scientific communication: generating a testable hypothesis, framing Specific Aims, and structuring a manuscript reviewers can follow."
 ---
 
