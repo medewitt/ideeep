@@ -4,7 +4,7 @@ title: "Stochastic Epidemics and the Gillespie Algorithm"
 
 # Stochastic Epidemics and the Gillespie Algorithm
 
-Deterministic ODE models describe the average behavior of very large populations, but real outbreaks begin with a handful of cases where chance rules.
+Deterministic ordinary differential equation (ODE) models describe the average behavior of very large populations, but real outbreaks begin with a handful of cases where chance rules.
 Even when $R_0>1$ an introduction can fizzle out entirely, and to capture that we model the epidemic as a random process rather than a smooth flow.
 
 ![Stochastic SIR trajectories scatter around the deterministic mean, and some fizzle out entirely.](../assets/figures/stochastic-epidemic.svg)

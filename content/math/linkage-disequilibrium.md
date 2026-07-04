@@ -5,6 +5,7 @@ title: "Linkage Disequilibrium"
 # Linkage Disequilibrium
 
 Linkage disequilibrium (LD) is the non-random association of alleles at different loci — knowing the allele carried at one site tells you something about the allele at another.
+Basically, some genes are more "stuck" to eachother than others (e.g., they are more likely to travel together on a loci than be randomly disperse among others).
 It is what lets a genotyping chip "tag" millions of untyped variants with a few hundred thousand markers, and it is the reason a genetic association can point near, but not exactly at, the causal variant.
 
 ## Defining the association

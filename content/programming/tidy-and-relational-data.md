@@ -5,7 +5,7 @@ description: "Why each variable is a column and each observation a row, when to 
 
 # Tidy and Relational Data
 
-Most of the pain in an analysis is not the model; it is getting the data into a shape the model can use.
+Most of the pain and sometimes major errors in an analysis are not in the modelling; rather it is getting the data into a shape the model can use.
 A consistent shape — one variable per column, one observation per row — lets the same handful of verbs carry you from a raw file to a plot.
 This page is about that shape, how to reshape into it, and how to keep related tables linked without repeating yourself.
 
@@ -13,7 +13,7 @@ This page is about that shape, how to reshape into it, and how to keep related t
 
 ## Tidy data
 
-Hadley Wickham's definition of **tidy data** has three rules.
+[Hadley Wickham's](https://en.wikipedia.org/wiki/Hadley_Wickham) definition of[ **tidy data**](https://en.wikipedia.org/wiki/Third_normal_form) has three rules.
 
 - Each **variable** forms a column.
 - Each **observation** forms a row.
