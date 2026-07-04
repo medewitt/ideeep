@@ -5,7 +5,7 @@ description: "The Hilbert-space (HSGP) approximation replaces a stationary Gauss
 
 # Hilbert-Space Approximations for Gaussian Processes
 
-A [Gaussian process](gaussian-processes.md) is a beautifully flexible prior over functions, but exact inference means factorizing an $n \times n$ covariance matrix, which costs $O(n^3)$ time and $O(n^2)$ memory and stalls on more than a few thousand points.
+A [Gaussian process](gaussian-processes.md) is a beautifully flexible prior over functions, but exact inference means factorizing an $n \times n$ covariance matrix, which costs [$O(n^3)$ time and $O(n^2)$ memory](../programming/big-o-and-complexity.md) and stalls on more than a few thousand points.
 The Hilbert-space approximation (HSGP) sidesteps this by writing the process as a short, fixed sum of deterministic basis functions with independent Gaussian weights, so the model becomes an ordinary linear regression whose cost grows roughly linearly in $n$.
 The trick, due to [Solin and Särkkä (2020)](https://doi.org/10.1007/s11222-019-09886-w) and made practical for probabilistic programming by [Riutort-Mayol et al. (2023)](https://doi.org/10.1007/s11222-022-10167-2), is that a stationary kernel is diagonalized by the eigenfunctions of the Laplacian on a bounded domain.
 

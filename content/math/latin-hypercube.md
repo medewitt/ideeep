@@ -4,8 +4,9 @@ title: "Latin Hypercube Sampling"
 
 # Latin Hypercube Sampling
 
-Latin Hypercube Sampling (LHS) is a space-filling design for sweeping a multi-dimensional parameter space efficiently.
-It is the workhorse of computer experiments and of uncertainty/sensitivity analysis for models — for example, sampling an [SIR model's](sir.md) transmission rate $\beta$ and recovery rate $\gamma$ so that a few dozen runs cover the plausible space far better than plain Monte Carlo.
+[Latin Hypercube Sampling (LHS)](https://en.wikipedia.org/wiki/Latin_hypercube_sampling) is a space-filling design for sweeping a multi-dimensional parameter space efficiently, and helps you to sample parameter space without having to test every possible combination of values.
+This is really important for developing models, estimating parameters, and exploring sensitivity to values when building computations models.
+For example, sampling an [SIR model's](sir.md) transmission rate $\beta$ and recovery rate $\gamma$ so that a few dozen runs cover the plausible space far better than plain Monte Carlo in finite time.
 
 ## The idea: stratify, then permute
 

@@ -5,7 +5,7 @@ title: "Lotka–Volterra Predator–Prey Dynamics"
 # Lotka–Volterra Predator–Prey Dynamics
 
 Predators and their prey are locked in a coupled feedback loop: more prey feeds more predators, and more predators eat down the prey.
-The Lotka–Volterra model is the simplest mathematical picture of this dance, and it explains why so many natural populations oscillate rather than settle down.
+The [Lotka–Volterra model](https://en.wikipedia.org/wiki/Lotka–Volterra_equations) is the simplest mathematical picture of this dance, and it explains why so many natural populations oscillate rather than settle down.
 
 ![Lotka–Volterra dynamics: predator and prey oscillate out of phase (left) and trace closed cycles in the phase plane (right).](../assets/figures/predator-prey.svg)
 
@@ -48,7 +48,7 @@ Enriching the prey (raising $r$) does not raise equilibrium prey — it raises p
 
 ## Neutral cycles and structural instability
 
-Linearizing about $(N^*, P^*)$ gives a [Jacobian](jacobians.md) whose eigenvalues are purely imaginary, $\lambda = \pm i\sqrt{rm}$.
+Linearizing about $(N^*, P^*)$ gives a [Jacobian](jacobians.md) whose [eigenvalues](eigenvalues-and-eigenvectors.md) are purely imaginary, $\lambda = \pm i\sqrt{rm}$.
 Purely imaginary eigenvalues mean the equilibrium is a **center**: trajectories neither spiral in nor out but trace closed loops.
 The system conserves the quantity $V = b\,aN - m\ln N + aP - r\ln P$, so each initial condition sits on its own fixed orbit.
 

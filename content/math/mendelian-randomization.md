@@ -5,11 +5,11 @@ title: "Mendelian Randomization"
 # Mendelian Randomization
 
 Mendelian randomization (MR) uses genetic variants as [instrumental variables](instrumental-variables.md) to estimate the causal effect of a modifiable exposure on an outcome.
-Because alleles are randomly assigned from parents to offspring at conception (Mendel's law of segregation), they are largely independent of the lifestyle and environmental [confounders](experimental-design.md) that plague observational studies — giving MR the flavor of "nature's randomized trial."
+Because [alleles](https://en.wikipedia.org/wiki/Allele) are randomly assigned from parents to offspring at conception (Mendel's law of segregation), they are largely independent of the lifestyle and environmental [confounders](experimental-design.md) that plague observational studies — giving MR the flavor of "nature's randomized trial."
 
 ## Genes as instruments
 
-MR is instrumental-variable analysis in which the instrument is one or more single-nucleotide polymorphisms (SNPs).
+MR is instrumental-variable analysis in which the instrument is one or more [single-nucleotide polymorphisms (SNPs)](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism).
 The three IV assumptions translate into genetic language:
 
 1. **Relevance.** The SNP is robustly associated with the exposure (a genome-wide-significant SNP–exposure association).

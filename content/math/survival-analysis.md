@@ -15,7 +15,7 @@ Let $T\ge 0$ be a random time until the event of interest.
 In most studies we do not observe every $T$ exactly.
 A subject who is still event-free when the study ends, or who drops out, is **right-censored**: we know $T$ is larger than the last time we saw them, but not by how much.
 
-Throwing censored subjects away, or treating their last-seen time as an event, both bias the results.
+Throwing censored subjects away, or treating their last-seen time as an event, biases the results (i.e., these samples have information about the outcome of interest, that it didn't happen during their period at risk and two it would be missing not at random).
 The methods below are built to use censored observations correctly — a censored subject contributes information right up to the moment they leave the risk set.
 
 ## The core functions

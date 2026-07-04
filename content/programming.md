@@ -6,12 +6,16 @@ description: "Practical guides to reproducible scientific computing and good pro
 
 # Programming & Computing
 
-There are some great general resources for learning how to use plain text environments for scientific computing more generally.
+One of the most powerful transitions to rigorous work is the use of a plaintext approach.
+This ranges from using Markdown or $\LaTeX$ to write prose and writing scripts to run your analysis.
+Furthermore, the use of literature programming practices (again using resources like Quarto or even just plain markdown) allow you to take more control of your work
+Plus these tools often unlock the ability to leverage similar powerful tools together, like using scripts to write outputs that you can translate directly to your finished products.
+
+Understanding these approaches along with borrowing key concepts from computer science and more generally programming are a must for those working in quantitative fields.
 
 ## Topics
 
-Bite-sized guides to good programming practice and the everyday tools of
-reproducible scientific computing, with examples in R, Python, and Julia.
+Below are some brief topics ranging from good programming practice and the everyday tools of reproducible scientific computing, with examples in R, Python, and Julia.
 
 - [Good Programming Practices](programming/good-programming-practices.md) — naming, small functions, and clean code
 - [Project Workflow](programming/project-workflow.md) — organizing an analytic project
@@ -23,6 +27,9 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 - [Big-O Notation & Computational Complexity](programming/big-o-and-complexity.md) — how work grows with data, and the `O(n²)` trap
 - [Data Structures & Choosing the Right Container](programming/data-structures.md) — arrays, hash maps, and sets, and the list→set fix
 - [Data Representation & File Formats](programming/data-representation-and-formats.md) — encodings, CSV pitfalls, tidy/relational data, SQL, and FASTA/VCF
+- [Tidy and Relational Data](programming/tidy-and-relational-data.md) — tidy layout, wide vs long, and relational joins
+- [Principles of Data Visualization](programming/data-visualization-principles.md) — matching chart to question, honest axes, and colorblind-safe palettes
+- [Plain Text and File Systems](programming/plain-text-and-filesystems.md) — durable plain-text workflows, paths, and project layout
 - [Regular Expressions & Finite-State Machines](programming/regular-expressions.md) — parsing sequences, logs, and messy field data
 - [Data Ingestion & APIs](programming/data-ingestion-and-apis.md) — pulling from GenBank, GBIF, and GISAID programmatically
 - [Recursion & Dynamic Programming](programming/recursion-and-dynamic-programming.md) — memoization, sequence alignment, HMMs, and tree likelihoods
@@ -46,17 +53,21 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 ### Integrated Development Environments
 These are programs that help you write plain text documents, code, generate things.
 
-- VSCode
-- RStudio/ Posit
-- NeoVim
-- Emacs
+- [VSCode](https://code.visualstudio.com)
+- [RStudio/ Posit](https://posit.co/products/open-source/rstudio)
+- [NeoVim](https://neovim.io)
+- Emacs (often available on MacOS and Linux, with [Doom](https://github.com/doomemacs/core) configurations)
 
 ### Computing Environments
+
+Below are some common open-source tools used for scientific computing.
 
 - R
 - Julia
 - Python
-- Matlab ($)
+
+There are other tools that are often available for purchase (e.g., SAS, MATLAB) or have closed-source platforms (e.g., Mathematica).
+
 
 ## Guides
 

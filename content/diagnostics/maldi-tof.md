@@ -14,7 +14,7 @@ Over the past fifteen years it has become the default identification method in c
 
 The acronym unpacks the method.
 
-- **MALDI** — Matrix-Assisted Laser Desorption/Ionization.
+- **MALDI** — [Matrix-Assisted Laser Desorption/Ionization](https://en.wikipedia.org/wiki/Matrix-assisted_laser_desorption/ionization).
   A speck of the organism is mixed with a chemical **matrix** on a target plate.
   A laser pulse vaporizes and **ionizes** the mixture, lofting intact protein ions into the instrument without shattering them.
 - **TOF** — Time-Of-Flight.

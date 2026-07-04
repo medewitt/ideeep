@@ -5,7 +5,7 @@ title: "Linear Regression"
 # Linear Regression
 
 Linear regression models a continuous outcome as a straight-line function of one or more predictors.
-It is the workhorse of quantitative data analysis: estimating how exposures, doses, or covariates shift an average response, and providing the foundation for the whole family of regression models used in epidemiology.
+It is the bedrock of quantitative data analysis and often the second step (after graphing your data) in data analysis and exploring outcomes: from estimating how exposures, doses, or covariates shift an average response, and providing the foundation for the whole family of regression models used in epidemiology.
 
 ![Ordinary least squares fits the line that minimizes the squared residuals.](../assets/figures/linear-regression-fit.svg)
 
@@ -16,7 +16,10 @@ For a single observation this reads $y_i = x_i^\top\beta + \varepsilon_i$.
 
 ## Ordinary least squares
 
-Ordinary least squares (OLS) chooses $\hat\beta$ to minimize the sum of squared residuals: \[ \hat\beta = \arg\min_\beta \sum_i \left(y_i - x_i^\top\beta\right)^2 = \arg\min_\beta \lVert y - X\beta\rVert^2. \] Setting the gradient to zero gives the *normal equations* $X^\top X\,\hat\beta = X^\top y$, whose closed-form solution is \[ \hat\beta = (X^\top X)^{-1}X^\top y. \] This uses standard [matrix operations](matrix-operations.md) and the [inverse](matrix-inverse-and-determinant.md) of the $p\times p$ matrix $X^\top X$, which exists as long as the columns of $X$ are not collinear.
+Ordinary least squares (OLS) chooses $\hat\beta$ which minimizes the sum of squared residuals: \[ \hat\beta = \arg\min_\beta \sum_i \left(y_i - x_i^\top\beta\right)^2 = \arg\min_\beta \lVert y - X\beta\rVert^2. \] 
+There is a geometric argument here when thinking about finding a plane which minimizes the distance between $\hat y$ and $y$ (so squaring the difference is easier to minimize and also gives equal weight to positive and negative differences).
+Setting the gradient to zero gives the *normal equations* $X^\top X\,\hat\beta = X^\top y$, whose closed-form solution is \[ \hat\beta = (X^\top X)^{-1}X^\top y. \] 
+This uses standard [matrix operations](matrix-operations.md) and the [inverse](matrix-inverse-and-determinant.md) of the $p\times p$ matrix $X^\top X$, which exists as long as the columns of $X$ are not collinear.
 
 ## Interpreting coefficients
 
@@ -34,6 +37,10 @@ OLS is unbiased and efficient when four conditions hold:
 - **Normality:** the errors are approximately normal (needed mainly for exact small-sample inference).
 
 Residuals $r_i = y_i - \hat y_i$ are the diagnostic tool: plotting them against fitted values should show a formless band with no trend or fanning.
+Q-Q plots are also helpful in exploring these assumptions.
+Note that all data sets collected in reality never meet all of these assumptions.
+That's ok!
+The inferences under the linear regression are pretty robust to mild deviations from the assumptions (hence exploring some of the graphical tools to see how severe they are).
 
 ## Inference for coefficients
 

@@ -4,7 +4,7 @@ title: "Selection and Mutation–Selection Balance"
 
 # Selection and Mutation–Selection Balance
 
-Natural selection is the deterministic counterpart to [genetic drift](genetic-drift.md): instead of allele frequencies wandering by chance, they are pushed in a direction by differences in survival and reproduction.
+Natural selection is the deterministic counterpart to [genetic drift](genetic-drift.md): instead of allele frequencies wandering by chance, they are pushed in a direction by differences in survival and reproduction (indicating that a heritable trait results in some reproduction of *successful* offspring).
 This page shows how to turn genotype fitnesses into an allele-frequency recursion, when that recursion drives an allele to fixation versus maintains a polymorphism, and how recurrent mutation balances selection at a low equilibrium frequency.
 
 ## Fitness and the selection recursion

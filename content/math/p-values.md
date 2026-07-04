@@ -4,8 +4,9 @@ title: "p-Values"
 
 # p-Values
 
-The p-value is the most reported—and most misread—number in epidemiology.
+The p-value is among the most reported—and most [misunderstood](https://www.amstat.org/asa/files/pdfs/p-valuestatement.pdf) measures in epidemiology.
 It quantifies how surprising the data are under the [null hypothesis](hypothesis-testing.md), and understanding exactly what it does and does not say is essential for honest [inference](statistical-inference.md).
+Furthermore, the p-value can be taken as a continuous measure of the [plausibility](https://www.tandfonline.com/doi/full/10.1080/01621459.2014.983232) of the null hypothesis given the data.
 
 ## Definition
 
@@ -16,21 +17,24 @@ p = \Pr(\,T \text{ at least as extreme as } t_{\text{obs}} \mid H_0\,).
 \]
 
 "At least as extreme" is determined by $H_a$: one tail for a directional alternative, both tails for a two-sided one.
-Small p-values mean the data would be unusual if $H_0$ held, casting doubt on $H_0$.
+Small p-values mean the data would be unusual if $H_0$ held, casting doubt on $H_0$ (i.e., the null hypothesis is less likely to be true).
 
 ### What a p-value is NOT
 
-- It is **not** $\Pr(H_0 \text{ is true})$.
+Small p-values are not everything.
+
+- It is **not** $\Pr(H_0 \text{ is true})$ (i.e., you cannot prove the alternative hypothesis only disprove the nyll).
   It conditions *on* $H_0$; it does not measure the probability *of* $H_0$.
 - It is **not** the probability the result occurred "by chance."
-- It is **not** the size or importance of an effect—a tiny, irrelevant effect can yield a small p-value with a large sample.
+- It is **not** the size or importance of an effect—a tiny, irrelevant effect can yield a small p-value with a large sample (it's just a matter of the sample size).
 - $1-p$ is **not** the probability $H_a$ is true.
 
 ### Relation to $\alpha$
 
 The significance level $\alpha$ is a fixed threshold chosen *before* seeing data; we reject $H_0$ when $p \le \alpha$.
-This keeps the Type I error rate at $\alpha$.
+This keeps the Type I error rate (long run probability of rejecting the null given that the alternative is true) at $\alpha$.
 The p-value itself is a continuous summary of evidence, not a yes/no verdict.
+Becuase of this, p-values should always be reported as continuous values, not just stars or crude buckets (e.g., "< 0.05").
 
 ## Worked example
 

@@ -4,16 +4,17 @@ title: "Fitting Delay Distributions: Truncation and Censoring"
 
 # Fitting Delay Distributions: Truncation and Censoring
 
-The [intervals](epidemiological-intervals.md) that govern transmission — incubation periods, serial intervals, reporting delays — are things we have to *estimate* from data, usually while an outbreak is still unfolding.
-That data is imperfect in two systematic ways that a naïve fit ignores at its peril: events are recorded only to the nearest day (**censoring**), and, in real time, long delays have not had a chance to be observed yet (**truncation**).
+Characterizing the time between two events of interest is essential in epidemiology and infectious disease dynamics.
+These [intervals](epidemiological-intervals.md) including incubation periods, serial intervals, reporting delays — are things we have to *estimate* from data, usually while an outbreak is still unfolding and more importantly, are often things that we do not get the opportunity to directly observe.
+That data are imperfect in at least two systematic ways that a naïve fit ignores at its peril: events are recorded only to the nearest day (**censoring**), and, in real time, long delays have not had a chance to be observed yet (**truncation**).
 Get the likelihood right and you recover the true distribution; ignore these effects and you will confidently estimate a distribution that is too short and too narrow.
 
 ![Two ways observation distorts a delay: right truncation removes long delays that have not yet completed by the data cutoff, and interval censoring records continuous events only to the day.](../assets/figures/delay-truncation-censoring.svg)
 
 ## Interval censoring
 
-We almost never observe the exact instant of infection or symptom onset.
-We observe a **day**.
+We almost never observe the exact instant of infection or symptom onset, and even more rarely are these events reported with a high degree of accuracy.
+Most often we observe a **day**.
 A delay computed as `onset_day − infection_day` is therefore an integer that could correspond to a range of true continuous delays — this is **interval censoring**.
 
 When *both* the primary event (e.g. infection) and the secondary event (e.g. onset) are censored to the day, the delay is **doubly interval censored**.
@@ -158,6 +159,7 @@ corrected  meanlog=1.595  sdlog=0.506  mean=5.60 d
 <!-- /python-output:auto -->
 
 The naïve fit lands near 5.1 days; the censoring- and truncation-aware fit recovers the true mean of about 5.6 days.
+While this difference of around 12 hours seems small, this can lead to a misestimation of the $R_0$, biasing it higher.
 
 ### Julia
 

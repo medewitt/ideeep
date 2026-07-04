@@ -23,7 +23,7 @@ The course syllabus is shown below.
 **Credit Hours:** 3  
 **Meeting Time:** TBD
 
-**Course Director:** Michael E. DeWitt, MS  
+**Course Director:** Michael E. DeWitt  
 **Email:** medewitt@wakehealth.edu or dewime23@wfu.edu  
 
 # Course description

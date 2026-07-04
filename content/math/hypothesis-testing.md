@@ -11,10 +11,15 @@ It frames a question as a decision between two competing claims about the world.
 
 ## The two hypotheses
 
+The classical hypothesis framework is that of Pearson in a frequentist framework.
+
 - The **null hypothesis** $H_0$ states "no effect" or "no difference" (e.g., the [mean](measures-of-center.md) equals a reference value).
 - The **alternative hypothesis** $H_a$ is what we entertain if the data are incompatible with $H_0$ (e.g., the mean differs).
 
 We summarize the data with a **test statistic**—a single number whose [distribution](distributions-overview.md) *under $H_0$* is known.
+
+What's important to consider and cannot be said enough-- a hypothesis is either supported or rejected given some threshold in the frequentist framework.
+There are Bayesian alternatives and other frequentist frameworks, but the Pearson hypothesis testing approach is most common so we'll cover it here.
 
 ## The logic
 
@@ -35,11 +40,19 @@ Power is $1-\beta$.
 
 ### Choosing a test by data type
 
+There is a common cookbook approach to choosing a test statistic.
+These are just general heuristics, and really, many of the test statistics are related through distributional assumptions.
+The common tests based on the support (i.e., what values a given data generating process can take on) determine the test statistic along with the values that are generated. 
+
+
 | Data | Question | Typical test |
 |---|---|---|
 | Continuous | mean vs. value / two means | z-test (known $\sigma$), $t$-test |
 | Proportions | success rate vs. value / two rates | binomial test, `prop.test` |
 | Counts / categories | association in a table | chi-square, Fisher's exact |
+
+Again, these are simple approaches and there are many more test statistics that can be considered.
+The linear model for instance is highly flexible (and related to most of these tests).
 
 ## Worked example: one-sample $t$-test
 

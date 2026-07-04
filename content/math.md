@@ -8,11 +8,14 @@ description: "Bite-sized references on the calculus, linear algebra, probability
 
 # Quantitative Methods
 
-A growing collection of bite-sized references covering the calculus, linear
-algebra, probability, and statistics that underpin quantitative work in
-infectious disease ecology, evolution, and epidemiology. Each page pairs the
-core idea and notation with a worked example and runnable code in **R**,
-**Python**, and **Julia** for simulation and intuition.
+Quantitative methods are essential for those working in mathematical biology, doing epidemiology, and designing experiments (from basic bench experiementals to large field experiments) -- especially as part of the modern practice of these fields.
+The best way to learn these skills is through constant exposure and solving practical problems.
+
+Here we collate a collection of bite-sized references covering the calculus, linear algebra, probability, and statistics that underpin quantitative work in infectious disease ecology, evolution, and epidemiology. 
+Each page pairs the core idea and notation with a worked example and runnable code in [**R**](https://cran.r-project.org), [**Python**](https://www.python.org), and [**Julia**](https://julialang.org) for simulation and mostly importantly, intuition.
+
+Math is hard.
+It requires practice and repetition.
 
 ## Foundations & notation
 
@@ -24,14 +27,14 @@ core idea and notation with a worked example and runnable code in **R**,
 ## Working with data
 
 - [Manipulating Data Frames](math/manipulating-data.md) — dplyr, data.table, pandas, Polars, and DataFrames.jl
-- [Graphing Data](math/graphing-data.md) — matching charts to questions and the grammar of graphics
+- [Graphing Data](math/graphing-data.md) — matching charts and designing figures to questions and the grammar of graphics
 
 ## Sequences, series & limits
 
 - [Sequences](math/sequences.md) — notation, monotonicity, and boundedness
 - [Limits](math/limits.md) — convergence, properties, and L'Hôpital's rule
 - [Series](math/series.md) — arithmetic, geometric, and power series
-- [Taylor and Maclaurin Series](math/taylor-series.md) — polynomial approximation
+- [Taylor and Maclaurin Series](math/taylor-series.md) — polynomial approximation to functions
 
 ## Differentiation
 
@@ -56,7 +59,7 @@ core idea and notation with a worked example and runnable code in **R**,
 
 ## Convexity & inequalities
 
-- [Jensen's Inequality and Nonlinear Averaging](math/jensens-inequality.md)
+- [Jensen's Inequality and Nonlinear Averaging](math/jensens-inequality.md) -- how you have to make sure you know what you are averaging
 - [The Legendre Transform](math/legendre-transform.md) — convex conjugates
 
 ## Linear algebra
@@ -93,7 +96,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Moment Matching](math/moment-matching.md) — method of moments and distributional approximation
 - [Monotonic Transformations](math/monotonic-transformations.md)
 - [Hypothesis Testing](math/hypothesis-testing.md)
-- [p-Values](math/p-values.md)
+- [p-values](math/p-values.md)
 - [Confidence Intervals](math/confidence-intervals.md)
 - [Permutation Tests](math/permutation-tests.md)
 - [Diagnostic Testing and Screening](math/diagnostic-testing.md) — sensitivity, specificity, PPV, and ROC
@@ -110,6 +113,9 @@ core idea and notation with a worked example and runnable code in **R**,
 
 - [Bayesian Inference](math/bayesian-inference.md) — priors, likelihood, and the posterior
 - [Markov Chain Monte Carlo](math/mcmc.md)
+- [Prior Predictive Checks](math/prior-predictive-checks.md) — simulate from the prior to sanity-check it before fitting
+- [Posterior Predictive Checks](math/posterior-predictive-checks.md) — compare replicated data to the observed to test the model
+- [Identifiability](math/identifiability.md) — when data cannot separate parameters
 
 ## Gaussian processes & spatial statistics
 
@@ -126,6 +132,8 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Areal Models: CAR, ICAR, and BYM](math/areal-models-car.md) — disease mapping on a neighborhood graph
 - [Bayesian Spatial Models with INLA](math/inla.md) — fast latent-Gaussian inference and the SPDE approach
 - [Distances on a Sphere: Haversine and Beyond](math/distance-measures.md) — great-circle vs Euclidean distance
+- [Spatial Cluster Detection](math/spatial-cluster-detection.md) — Moran's I, LISA, and the spatial scan statistic
+- [Spatiotemporal Models](math/spatiotemporal-models.md) — separable and nonseparable space–time covariance
 
 ## Survival analysis
 
@@ -159,6 +167,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Selection and Mutation–Selection Balance](math/selection-popgen.md)
 - [Population Structure and F_ST](math/population-structure.md)
 - [The Coalescent](math/coalescent-theory.md) — genealogies backward in time
+- [Phylodynamics](math/phylodynamics.md) — reading epidemic dynamics from pathogen phylogenies
 
 *Association & complex traits:*
 
@@ -180,6 +189,8 @@ core idea and notation with a worked example and runnable code in **R**,
 - [The Evolution of Cooperation](math/evolution-of-cooperation.md) — the Prisoner's Dilemma and Nowak's five rules
 - [Adaptive Dynamics and the Evolution of Virulence](math/evolution-of-virulence.md)
 - [The Price Equation and Evolutionary Epidemiology](math/price-equation.md) — selection, transmission, and within-host change as an exact identity
+- [Adaptive Dynamics](math/adaptive-dynamics.md) — invasion fitness, singular strategies, and evolutionary branching
+- [The Evolution of Resistance](math/resistance-evolution.md) — selection under drug pressure and the cost of resistance
 
 ## Population & community ecology
 
@@ -188,12 +199,12 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Exponential and Logistic Growth](math/logistic-growth.md)
 - [Discrete-Time Models and the Logistic Map](math/discrete-population-models.md)
 - [Structured Population Models](math/structured-populations.md) — Leslie matrices
-- [Metapopulations and the Levins Model](math/metapopulations.md)
-- [Asynchrony and the Inflationary Effect](math/metapopulation-asynchrony.md) — how spatiotemporal variation and dispersal inflate abundance and persistence
+- [Metapopulations and the Levins Model](math/metapopulations.md) -- models considering more than patch or population and their interactions
+- [Asynchrony and the Inflationary Effect](math/metapopulation-asynchrony.md) — how spatiotemporal variation and dispersal inflate abundance, persistence, and can increase infection
 
 *Species interactions & stability:*
 
-- [Lotka–Volterra Predator–Prey Dynamics](math/predator-prey.md)
+- [Lotka–Volterra Predator–Prey Dynamics](math/predator-prey.md) - the basis of many models in ecology and infectious diseases
 - [Competition and Coexistence](math/competition-coexistence.md)
 - [The Community Matrix and Stability](math/community-matrix.md)
 
@@ -226,7 +237,8 @@ core idea and notation with a worked example and runnable code in **R**,
 
 - [Pharmacokinetics: Compartment Models](math/pharmacokinetics.md) — ADME, clearance, half-life, AUC
 - [Pharmacodynamics: Dose–Response](math/pharmacodynamics.md) — the Emax/Hill model
-- [Antimicrobial PK/PD](math/antimicrobial-pkpd.md) — MIC and the PK/PD indices
+- [Antimicrobial PK/PD](math/antimicrobial-pkpd.md) — minimum inhibatory concentration (MIC) and the PK/PD indices
+- [PK/PD Target Attainment](math/pkpd-target-attainment.md) — probability of target attainment and dose selection
 
 ## Epidemic modeling
 
@@ -235,6 +247,9 @@ core idea and notation with a worked example and runnable code in **R**,
 - [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
 - [Within-Host Dynamics and the Immune Response](math/within-host-dynamics.md) — virus, infected cells, and B-cell/T-cell immunity
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
+- [Reservoir Ecology](math/reservoir-ecology.md) — maintenance hosts, spillover, and multi-host persistence
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)
 - [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
+- [The Renewal Equation](math/renewal-equation.md) — linking incidence, the generation interval, and $R_t$
+- [Population Dynamics of Resistance](math/resistance-dynamics.md) — two-strain competition and the treatment threshold
 - [Fitting Dynamic Models to Data](math/model-calibration.md) — calibration and identifiability
