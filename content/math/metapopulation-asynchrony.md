@@ -131,7 +131,7 @@ Track the per-capita growth rate of each patch, $r_i(t)$.
 For an epidemic this is $r_i(t)=\beta_i(t)\,S_i/N_i-\gamma$ — the **log rate of change of cases**, little $r$ itself — positive while a local outbreak grows and negative once it burns through susceptibles.
 Let $\nu_i(t)=N_i(t)/\bar N(t)$ be each patch's density (here, prevalence) relative to the metapopulation average $\bar N=\tfrac1n\sum_j N_j$.
 
-Because movement only shuffles individuals between patches — it conserves the regional total — the growth rate of the *whole* metapopulation decomposes exactly, by the same algebra as the Price equation of evolutionary theory, into a spatial mean plus a spatial covariance:
+Because movement only shuffles individuals between patches — it conserves the regional total — the growth rate of the *whole* metapopulation decomposes exactly, by the same algebra as the [Price equation](price-equation.md) of evolutionary theory, into a spatial mean plus a spatial covariance:
 
 \[
 \frac{1}{\bar N}\frac{d\bar N}{dt} \;=\; \bar r(t) \;+\; \operatorname{cov}_i\!\big(r_i(t),\,\nu_i(t)\big).

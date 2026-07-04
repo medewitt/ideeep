@@ -160,6 +160,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Evolutionary Game Theory](math/evolutionary-game-theory.md) — ESS and replicator dynamics
 - [The Evolution of Cooperation](math/evolution-of-cooperation.md) — the Prisoner's Dilemma and Nowak's five rules
 - [Adaptive Dynamics and the Evolution of Virulence](math/evolution-of-virulence.md)
+- [The Price Equation and Evolutionary Epidemiology](math/price-equation.md) — selection, transmission, and within-host change as an exact identity
 
 ## Population & community ecology
 
