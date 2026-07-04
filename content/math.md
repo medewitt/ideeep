@@ -236,4 +236,5 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)
 - [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
+- [The Renewal Equation](math/renewal-equation.md) — linking incidence, the generation interval, and $R_t$
 - [Fitting Dynamic Models to Data](math/model-calibration.md) — calibration and identifiability
