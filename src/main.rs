@@ -9,10 +9,14 @@ use rusqlite::{params, Connection};
 // Site-wide SEO / PWA identity
 //
 // These constants feed canonical URLs, Open Graph/Twitter cards, the sitemap,
-// robots.txt, and the web app manifest. `SITE_URL` MUST be the production
-// origin with no trailing slash — it is concatenated with absolute paths.
+// robots.txt, and the web app manifest. `SITE_URL` is the production origin
+// with no trailing slash — it is concatenated with absolute paths.
+//
+// The origin is sourced from the `homepage` field in Cargo.toml (exposed by
+// Cargo as CARGO_PKG_HOMEPAGE at compile time), so moving domains is a
+// one-line change in the project's toml, not a code edit.
 // ---------------------------------------------------------------------------
-const SITE_URL: &str = "https://www.id3es.com";
+const SITE_URL: &str = env!("CARGO_PKG_HOMEPAGE");
 const SITE_NAME: &str = "IDEEEP";
 const SITE_TAGLINE: &str = "Infectious Disease Ecology, Evolution & Epidemiology Program";
 const SITE_DESCRIPTION: &str = "The IDEEEP concentration at Wake Forest University unites ecology, evolutionary biology, and epidemiology to study how infectious diseases emerge, spread, and shape living systems — with quantitative methods, diagnostics, and reproducible computing.";

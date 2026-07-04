@@ -139,7 +139,7 @@ The generator emits search-engine and installable-app metadata automatically —
 
 **What the build produces (per page, in `src/main.rs`):**
 
-- A descriptive `<title>` (`Page Title · IDEEEP`), `<meta name="description">`, and a `<link rel="canonical">` pointing at the production URL (`SITE_URL`, currently `https://www.id3es.com`).
+- A descriptive `<title>` (`Page Title · IDEEEP`), `<meta name="description">`, and a `<link rel="canonical">` pointing at the production URL (currently `https://id3es.com`).
 - Open Graph and Twitter Card tags (title/description/image) so links unfurl on social and chat, using `assets/og-image.png` as the share image.
 - JSON-LD structured data: `WebPage` + `WebSite` (with an on-site `SearchAction`), plus a `BreadcrumbList` (Home › Section hub › Page) on nested pages.
 - PWA hooks: `<link rel="manifest">`, `apple-touch-icon`, `theme-color`, and a registered service worker (`sw.js`) for offline support.
@@ -153,7 +153,7 @@ The generator emits search-engine and installable-app metadata automatically —
 - **Write a strong first paragraph.** When a page has no `description:` in its front matter, the build derives the meta description from the first real prose paragraph (headings and block quotes are skipped), truncated to ~160 characters. Lead with a self-contained sentence that reads well out of context.
 - **Set `description:` explicitly** for hub pages or anywhere the opening prose does not summarize the page.
 - **Keep the H1 and `title:` meaningful** — they feed the `<title>` and social cards.
-- **If the production domain changes**, update `SITE_URL` (and the icon/OG assets) in `src/main.rs`; everything else derives from it.
+- **If the production domain changes**, edit the `homepage` field in `Cargo.toml` (no trailing slash) and rebuild; canonical URLs, social cards, JSON-LD, the sitemap, robots.txt, and the manifest all derive from it. No code edit needed.
 - **Bump the `CACHE` constant in `write_service_worker`** if you change cached core assets and need clients to refresh.
 
 Regenerate the icons (`assets/icon-*.png`, `apple-touch-icon.png`, `og-image.png`) from `assets/logo.png` / `logo-wide.png` only if the logo changes.
