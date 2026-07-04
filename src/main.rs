@@ -2056,3 +2056,70 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::HashSet;
+
+    fn render(md: &str) -> String {
+        markdown_to_html(md, &HashSet::new())
+    }
+
+    /// Regression: KaTeX emits an ASCII tilde (`~`) for `\tilde` accents. Math
+    /// used to be spliced into the Markdown stream before parsing, so GFM
+    /// strikethrough (enabled via `Options::all`) paired those tildes into
+    /// `<del>` runs, dropping mismatched `<del>`/`</del>` tags inside the KaTeX
+    /// spans. That corrupted the DOM and truncated the page at the first
+    /// `\tilde`. The math must render without any strikethrough artifacts.
+    #[test]
+    fn tilde_accent_does_not_produce_strikethrough() {
+        let html = render(r"A bullet with $\tilde F_x$ then $\tilde r_i$ accents.");
+        assert!(
+            !html.contains("<del>") && !html.contains("</del>"),
+            "KaTeX \\tilde output must not be mangled into <del> strikethrough:\n{html}"
+        );
+        // The math itself must actually have rendered.
+        assert!(html.contains("class=\"katex"), "expected rendered KaTeX:\n{html}");
+    }
+
+    /// Reproduces the page structure that failed: a display-math block followed
+    /// by prose containing `\tilde` inline math. The corruption used to swallow
+    /// everything after the block, so assert the trailing content survives.
+    #[test]
+    fn content_after_tilde_math_is_not_truncated() {
+        let md = "Intro paragraph.\n\n\
+                  \\[ \\operatorname{Var}(F) = \\sigma_S^2 + \\sigma_T^2 + \\sigma_{ST}^2 \\]\n\n\
+                  - **Pure spatial**, $\\sigma_S^2=\\operatorname{Var}_x(\\tilde F_x)$: how patches differ.\n\n\
+                  TRAILING_SENTINEL_TEXT";
+        let html = render(md);
+        assert!(
+            html.contains("TRAILING_SENTINEL_TEXT"),
+            "content after \\tilde math was truncated:\n{html}"
+        );
+        assert!(!html.contains("<del>"), "unexpected strikethrough from math:\n{html}");
+    }
+
+    /// The placeholder tokens used to shield math from the Markdown parser must
+    /// never survive into the final HTML.
+    #[test]
+    fn math_placeholders_do_not_leak() {
+        let html = render(r"Inline $x^2$ and display \[ y = mx + b \] math.");
+        assert!(
+            !html.contains(MATH_PLACEHOLDER_OPEN) && !html.contains(MATH_PLACEHOLDER_CLOSE),
+            "math placeholder token leaked into output:\n{html}"
+        );
+        assert!(html.contains("class=\"katex"), "expected rendered KaTeX:\n{html}");
+    }
+
+    /// Guard the fix from over-correcting: genuine Markdown strikethrough in
+    /// prose (`~~...~~`) must still render as `<del>`.
+    #[test]
+    fn prose_strikethrough_still_works() {
+        let html = render("This is ~~struck through~~ text.");
+        assert!(
+            html.contains("<del>struck through</del>"),
+            "GFM strikethrough regressed for real prose:\n{html}"
+        );
+    }
+}
+
