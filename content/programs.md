@@ -1,5 +1,6 @@
 ---
 title: Programs
+description: "An interdisciplinary Wake Forest concentration studying infectious disease through ecology, evolution, mathematics, statistics, and field epidemiology."
 ---
 
 # The IDEEEP Concentration

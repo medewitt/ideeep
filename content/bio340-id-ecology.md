@@ -1,5 +1,6 @@
 ---
 title: "BIO340 Infectious Disease Ecology"
+description: "BIO340 Infectious Disease Ecology: infectious disease as an ecological and evolutionary phenomenon across hosts, vectors, and environments."
 author: Michael DeWitt
 date: 2025-12-23
 ---

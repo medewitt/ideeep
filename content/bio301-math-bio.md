@@ -1,5 +1,6 @@
 ---
 title: "BIO301 Mathematical Biology"
+description: "BIO301 Mathematical Biology: the mathematical tools for describing and predicting biological systems, with an emphasis on population and infectious disease dynamics."
 author: Michael DeWitt
 date: 2025-12-23
 ---

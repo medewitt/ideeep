@@ -1,5 +1,6 @@
 ---
 title: Research
+description: "Research themes, labs, and student opportunities in infectious disease ecology, evolution, and epidemiology at Wake Forest — from field observation to quantitative analysis."
 ---
 
 # Research

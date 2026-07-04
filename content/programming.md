@@ -1,5 +1,6 @@
 ---
 title: "Programming & Computing"
+description: "Practical guides to reproducible scientific computing and good programming practice, with runnable examples in R, Python, and Julia."
 ---
 
 # Programming & Computing

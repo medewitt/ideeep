@@ -141,8 +141,9 @@ The generator emits search-engine and installable-app metadata automatically —
 
 - A descriptive `<title>` (`Page Title · IDEEEP`), `<meta name="description">`, and a `<link rel="canonical">` pointing at the production URL (`SITE_URL`, currently `https://www.id3es.com`).
 - Open Graph and Twitter Card tags (title/description/image) so links unfurl on social and chat, using `assets/og-image.png` as the share image.
-- JSON-LD structured data (`WebPage` + `WebSite` with an on-site `SearchAction`).
+- JSON-LD structured data: `WebPage` + `WebSite` (with an on-site `SearchAction`), plus a `BreadcrumbList` (Home › Section hub › Page) on nested pages.
 - PWA hooks: `<link rel="manifest">`, `apple-touch-icon`, `theme-color`, and a registered service worker (`sw.js`) for offline support.
+- The `content/404.md` page is emitted with `noindex` (Netlify already serves it with an HTTP 404 status); every other page is indexable.
 
 **Site-wide files written to `dist/` at build time:**
 `sitemap.xml` (all pages except 404), `robots.txt` (points at the sitemap), `manifest.webmanifest`, `sw.js`, and Netlify `_headers`.

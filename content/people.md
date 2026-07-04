@@ -1,5 +1,6 @@
 ---
 title: People
+description: "Faculty and instructors of the IDEEEP concentration at Wake Forest University and the Wake Forest University School of Medicine."
 ---
 
 # People

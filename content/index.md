@@ -1,5 +1,6 @@
 ---
 title: ""
+description: "The IDEEEP concentration at Wake Forest University unites ecology, evolution, and epidemiology to study how infectious diseases emerge, spread, and shape living systems."
 ---
 
 # Infectious Disease Ecology, Evolution, and Epidemiology Program (IDEEEP)

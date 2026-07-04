@@ -628,6 +628,8 @@ fn generate_html(
     title: &str,
     description: &str,
     canonical_path: &str,
+    robots: &str,
+    breadcrumbs: &[(String, String)],
     content: &str,
     navbar: &str,
     asset_prefix: &str,
@@ -684,6 +686,30 @@ fn generate_html(
         site_url = SITE_URL,
     );
 
+    // Optional BreadcrumbList structured data (Home › Section › Page). Emitted
+    // only when there is a real trail (two or more crumbs).
+    let breadcrumb_ld = if breadcrumbs.len() >= 2 {
+        let items: Vec<String> = breadcrumbs
+            .iter()
+            .enumerate()
+            .map(|(i, (name, url))| {
+                format!(
+                    r#"{{"@type":"ListItem","position":{},"name":"{}","item":"{}"}}"#,
+                    i + 1,
+                    escape_json(name),
+                    escape_json(url)
+                )
+            })
+            .collect();
+        format!(
+            r#"
+    <script type="application/ld+json">{{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{}]}}</script>"#,
+            items.join(",")
+        )
+    } else {
+        String::new()
+    };
+
     Ok(format!(
         r##"<!DOCTYPE html>
 <html lang="en">
@@ -693,7 +719,7 @@ fn generate_html(
     <title>{head_title}</title>
     <meta name="description" content="{d_attr}">
     <link rel="canonical" href="{canonical}">
-    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="robots" content="{robots}">
     <meta name="author" content="Infectious Disease Epidemiology and Applied Statistics (IDEAS)">
     <meta name="theme-color" content="#000000">
     <meta name="color-scheme" content="light">
@@ -718,7 +744,7 @@ fn generate_html(
     <link rel="apple-touch-icon" href="{asset_prefix}assets/apple-touch-icon.png" />
     <link rel="manifest" href="{asset_prefix}manifest.webmanifest" />
 
-    <script type="application/ld+json">{json_ld}</script>
+    <script type="application/ld+json">{json_ld}</script>{breadcrumb_ld}
 
     <link rel="stylesheet" href="{asset_prefix}assets/styles.css" type="text/css" />
 
@@ -1869,6 +1895,37 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         } else {
             format!("{}.html", rel_key)
         };
+        let canonical_url = if canonical_path.is_empty() {
+            format!("{}/", SITE_URL)
+        } else {
+            format!("{}/{}", SITE_URL, canonical_path)
+        };
+
+        // The 404 page must not be indexed; everything else is indexable.
+        let robots = if rel_key.eq_ignore_ascii_case("404") {
+            "noindex, follow"
+        } else {
+            "index, follow, max-image-preview:large"
+        };
+
+        // Breadcrumb trail: Home › [Section hub] › Page. Skipped for the home
+        // page; the section crumb is added only when the page lives under a
+        // directory that has a hub page of the same name.
+        let mut breadcrumbs: Vec<(String, String)> = Vec::new();
+        if rel_key != "index" {
+            breadcrumbs.push(("Home".to_string(), format!("{}/", SITE_URL)));
+            if let Some(section) = relative_path
+                .parent()
+                .and_then(|p| p.components().next())
+                .map(|c| c.as_os_str().to_string_lossy().to_string())
+                .filter(|s| !s.is_empty())
+            {
+                if let Some(hub_title) = markdown_titles.get(&section) {
+                    breadcrumbs.push((hub_title.clone(), format!("{}/{}.html", SITE_URL, section)));
+                }
+            }
+            breadcrumbs.push((title.clone(), canonical_url.clone()));
+        }
 
         // Calculate asset prefix based on depth (e.g., "../" for one level deep)
         let asset_prefix = calculate_asset_prefix(relative_path);
@@ -1876,7 +1933,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Generate navbar HTML with current page highlighted
         let navbar = generate_navbar(&navbar_items, true, dropdowns.as_ref(), &markdown_titles, Some(&rel_key), &asset_prefix);
 
-        let html_output = generate_html(title, &description, &canonical_path, &html_content, &navbar, &asset_prefix)?;
+        let html_output = generate_html(title, &description, &canonical_path, robots, &breadcrumbs, &html_content, &navbar, &asset_prefix)?;
 
         // Preserve directory structure in dist
         let html_path = dist_dir.join(relative_path.with_extension("html"));
@@ -1904,10 +1961,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     let search_description =
         "Full-text search across IDEEEP: quantitative methods, programming, epidemiology, diagnostics, syllabi, and research.";
+    let search_breadcrumbs = vec![
+        ("Home".to_string(), format!("{}/", SITE_URL)),
+        ("Search".to_string(), format!("{}/search.html", SITE_URL)),
+    ];
     let search_html = generate_html(
         "Search",
         search_description,
         "search.html",
+        "index, follow, max-image-preview:large",
+        &search_breadcrumbs,
         &search_page_content(),
         &search_navbar,
         "",
