@@ -235,6 +235,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Pharmacokinetics: Compartment Models](math/pharmacokinetics.md) — ADME, clearance, half-life, AUC
 - [Pharmacodynamics: Dose–Response](math/pharmacodynamics.md) — the Emax/Hill model
 - [Antimicrobial PK/PD](math/antimicrobial-pkpd.md) — MIC and the PK/PD indices
+- [PK/PD Target Attainment](math/pkpd-target-attainment.md) — probability of target attainment and dose selection
 
 ## Epidemic modeling
 
@@ -242,7 +243,9 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Density-Dependent and Frequency-Dependent Transmission](math/transmission-modes.md) — how the contact rate scales with host density, and the critical density threshold
 - [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
+- [Reservoir Ecology](math/reservoir-ecology.md) — maintenance hosts, spillover, and multi-host persistence
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)
 - [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
 - [The Renewal Equation](math/renewal-equation.md) — linking incidence, the generation interval, and $R_t$
+- [Population Dynamics of Resistance](math/resistance-dynamics.md) — two-strain competition and the treatment threshold
 - [Fitting Dynamic Models to Data](math/model-calibration.md) — calibration and identifiability

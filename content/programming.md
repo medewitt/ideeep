@@ -23,6 +23,9 @@ reproducible scientific computing, with examples in R, Python, and Julia.
 - [Big-O Notation & Computational Complexity](programming/big-o-and-complexity.md) — how work grows with data, and the `O(n²)` trap
 - [Data Structures & Choosing the Right Container](programming/data-structures.md) — arrays, hash maps, and sets, and the list→set fix
 - [Data Representation & File Formats](programming/data-representation-and-formats.md) — encodings, CSV pitfalls, tidy/relational data, SQL, and FASTA/VCF
+- [Tidy and Relational Data](programming/tidy-and-relational-data.md) — tidy layout, wide vs long, and relational joins
+- [Principles of Data Visualization](programming/data-visualization-principles.md) — matching chart to question, honest axes, and colorblind-safe palettes
+- [Plain Text and File Systems](programming/plain-text-and-filesystems.md) — durable plain-text workflows, paths, and project layout
 - [Regular Expressions & Finite-State Machines](programming/regular-expressions.md) — parsing sequences, logs, and messy field data
 - [Data Ingestion & APIs](programming/data-ingestion-and-apis.md) — pulling from GenBank, GBIF, and GISAID programmatically
 - [Recursion & Dynamic Programming](programming/recursion-and-dynamic-programming.md) — memoization, sequence alignment, HMMs, and tree likelihoods

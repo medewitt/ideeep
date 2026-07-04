@@ -26,6 +26,7 @@ Each page pairs the biology and notation with worked examples and runnable code 
 - [Outbreak Investigation](epidemiology/outbreak-investigation.md) — case definitions, the epidemic curve, and testing hypotheses in the field
 - [Nowcasting and Reporting Delays](epidemiology/nowcasting.md) — correcting the recent past for right truncation
 - [Epidemic Forecasting](epidemiology/epidemic-forecasting.md) — short-term projection with uncertainty and forecast scoring
+- [One Health Surveillance](epidemiology/one-health-surveillance.md) — integrating human, animal, and environmental signals
 
 ## Related quantitative methods
 
