@@ -233,6 +233,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Compartmental Models](math/sir.md) — the SIR model and $R_0$
 - [Density-Dependent and Frequency-Dependent Transmission](math/transmission-modes.md) — how the contact rate scales with host density, and the critical density threshold
 - [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
+- [Within-Host Dynamics and the Immune Response](math/within-host-dynamics.md) — virus, infected cells, and B-cell/T-cell immunity
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)
 - [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
