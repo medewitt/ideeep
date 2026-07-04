@@ -127,6 +127,7 @@ When space is patchy rather than continuous, [metapopulation](metapopulations.md
 - [Partial Derivatives](partial-derivatives.md)
 - [Equilibria and Stability](equilibria-and-stability.md)
 - [Turing Patterns](turing-patterns.md)
+- [Spatial Moment Equations](spatial-moment-equations.md)
 - [The SIR Model](sir.md)
 - [Metapopulations](metapopulations.md)
 - [Quantitative Methods](../math.md)

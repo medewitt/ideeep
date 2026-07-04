@@ -109,5 +109,6 @@ Its extinction threshold quantifies how much habitat loss a metapopulation can a
 
 - [Exponential and Logistic Growth](logistic-growth.md)
 - [Equilibria and Stability](equilibria-and-stability.md)
+- [Spatial Moment Equations](spatial-moment-equations.md)
 - [Compartmental Models (SIR)](sir.md)
 - [Quantitative Methods](../math.md)
