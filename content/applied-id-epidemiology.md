@@ -8,8 +8,8 @@ date: 2026-07-04
 This course teaches the classical epidemiologic toolkit applied to infectious
 disease: how to design a study, measure disease and association, reason about
 bias and confounding, run surveillance, and investigate an outbreak. It gives
-IDEEEP students the methods spine that peer programs treat as foundational,
-taught with the reproducible-computing habits already used across the site.
+IDEEEP students the core methods spine of epidemiology, taught with the
+reproducible-computing habits already used across the site.
 
 The course syllabus is shown below.
 
@@ -32,20 +32,17 @@ The course syllabus is shown below.
 
 # Course description
 
-Infectious disease epidemiology rests on a set of methods that every peer
-program treats as core: choosing a study design, measuring disease frequency
-and association, separating real effects from bias and confounding, and turning
-surveillance data into action. This course develops that toolkit and applies it
-to infectious-disease questions. Students measure disease using incidence and
-prevalence, compute risk and rate ratios and attributable fractions, reason
-about study validity, and work through the outbreak investigation from case
-definition to attack rates. The course also covers screening and diagnostic
-test performance and introduces transmission and control. Analysis is done with
-reproducible-computing habits, connecting to the delay-distribution and
-diagnostic material the site already publishes. Peer analogs include Emory EPI
-569 (Concepts and Methods in ID Epidemiology), Iowa EPID 5590 (Applied ID
-Epidemiology), Nebraska CPH 623/723, and LSHTM's Control of Infectious Disease
-sequence.
+Infectious disease epidemiology rests on a core set of methods: choosing a
+study design, measuring disease frequency and association, separating real
+effects from bias and confounding, and turning surveillance data into action.
+This course develops that toolkit and applies it to infectious-disease
+questions. Students measure disease using incidence and prevalence, compute risk
+and rate ratios and attributable fractions, reason about study validity, and
+work through the outbreak investigation from case definition to attack rates.
+The course also covers screening and diagnostic test performance and introduces
+transmission and control. Analysis is done with reproducible-computing habits,
+connecting to the delay-distribution and diagnostic material the site already
+publishes.
 
 # Learning outcomes
 

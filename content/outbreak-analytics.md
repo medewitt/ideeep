@@ -42,10 +42,8 @@ time-varying reproduction number and communicate its uncertainty, fit
 deterministic and stochastic compartmental and branching-process models to
 outbreak data, and produce short-term forecasts scored with proper scoring
 rules. The course leans on the modeling material the site already teaches and
-turns it into applied practice. Peer analogs include Emory EPI 570 (Infectious
-Disease Dynamics: Theories and Models), USU EID 501-504 (Models of Emerging
-Infectious Disease), and UGA ECOL/BIOL 4150 (Population Biology of Infectious
-Disease). The course is cross-listable to graduate students.
+turns it into applied practice. The course is cross-listable to graduate
+students.
 
 # Learning outcomes
 

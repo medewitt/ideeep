@@ -45,8 +45,7 @@ predictive checks, fitting in Stan, convergence diagnostics, and posterior
 predictive checks. We also cover model calibration, identifiability, sensitivity
 analysis, and scoring for model comparison. Students estimate key quantities
 such as the basic reproduction number and the generation interval using the
-next-generation approach and propagate the resulting uncertainty. Peer analogs
-include Emory EPI 570 and Utah State EID 501–504 and PMO 502.
+next-generation approach and propagate the resulting uncertainty.
 
 # Learning outcomes
 

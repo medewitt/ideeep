@@ -45,7 +45,7 @@ We cover evolutionary game theory and the evolution of cooperation among
 pathogens, coalescent theory and phylodynamics, molecular clocks, the evolution
 of drug resistance, and evolutionary emergence of new pathogens. Students learn
 to interpret pathogen phylogenies and molecular-clock estimates in an
-epidemiologic context. A peer analog is UGA ECOL 3820 (Evolutionary Medicine).
+epidemiologic context.
 
 # Learning outcomes
 

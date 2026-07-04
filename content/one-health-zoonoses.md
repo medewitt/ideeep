@@ -40,9 +40,7 @@ the vectors that move it between hosts. Students model vector-borne transmission
 with the Ross-Macdonald approach and analyze the control levers it exposes, and
 they apply source-sink and metapopulation reasoning to decide where control
 matters most. Landscape change, wildlife and livestock disease, and One Health
-surveillance tie the pieces together. Peer analogs include Iowa EPID 5570
-(Zoonotic Diseases), UGA POPH 4010 (Vector Ecology Field Course), and POPH 4125
-(wildlife disease in a changing world).
+surveillance tie the pieces together.
 
 # Learning outcomes
 

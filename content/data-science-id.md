@@ -41,8 +41,6 @@ reproducible project under version control with tested and documented code,
 build clear and honest visualizations that show uncertainty, and reason about
 performance and numerical stability as analyses scale. The material comes from
 the site's Programming and Computing library, sequenced around real datasets.
-Peer analogs include Nebraska CPH 626 (Health Informatics and Surveillance for
-Public Health) and the data-analysis practicals at LSHTM.
 
 This course overlaps with Research Tools and Methods, which covers reproducible
 research craft. The intended split is clean: Research Tools and Methods teaches

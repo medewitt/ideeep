@@ -6,8 +6,7 @@ date: 2026-07-04
 ---
 
 This short course teaches epidemiologic study design and biostatistics side by
-side, following the model of LSHTM's Introductory Course in Epidemiology and
-Medical Statistics.
+side.
 It reaches people the degree tracks miss: clinicians, graduate students, and
 public-health staff who want a practical grounding without enrolling in a
 program.
@@ -26,8 +25,7 @@ epidemiology with the statistics used to measure them.
 Participants learn how to describe health and disease in populations, choose a
 study design, guard against bias and confounding, and fit and interpret the
 regression models that appear throughout applied epidemiology.
-The content is aligned with the LSHTM Introductory Course in Epidemiology and
-Medical Statistics (ICEMS) and taught with worked R examples.
+The material is taught with worked R examples throughout.
 
 By the end of the course, participants will be able to:
 
