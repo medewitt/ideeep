@@ -189,4 +189,5 @@ Understanding when to reach for a stochastic model — small numbers, early phas
 - [Poisson Distribution](poisson-distribution.md)
 - [SEIR and Compartmental Extensions](seir-models.md)
 - [The Next-Generation Matrix and R₀](next-generation-matrix.md)
+- [Spatial Moment Equations](spatial-moment-equations.md)
 - [Quantitative Methods](../math.md)

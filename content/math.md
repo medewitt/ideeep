@@ -193,6 +193,7 @@ core idea and notation with a worked example and runnable code in **R**,
 
 - [Reaction–Diffusion and Spatial Spread](math/reaction-diffusion.md) — the Fisher–KPP wave
 - [Turing Patterns](math/turing-patterns.md) — diffusion-driven pattern formation
+- [Spatial Moment Equations](math/spatial-moment-equations.md) — mean density and spatial covariance from a stochastic individual-based model
 
 ## Networks
 
@@ -210,6 +211,7 @@ core idea and notation with a worked example and runnable code in **R**,
 ## Epidemic modeling
 
 - [Compartmental Models](math/sir.md) — the SIR model and $R_0$
+- [Density-Dependent and Frequency-Dependent Transmission](math/transmission-modes.md) — how the contact rate scales with host density, and the critical density threshold
 - [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)

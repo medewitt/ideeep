@@ -118,4 +118,5 @@ Through its logarithm, the cumulant generating function, it also opens the door 
 - [Normal Distribution](normal-distribution.md)
 - [Poisson Distribution](poisson-distribution.md)
 - [Branching Processes](branching-processes.md)
+- [Spatial Moment Equations](spatial-moment-equations.md)
 - [Quantitative Methods](../math.md)

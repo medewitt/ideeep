@@ -126,6 +126,7 @@ More broadly, it shows that instability and pattern can be an emergent property 
 ## Related
 
 - [Reaction–Diffusion and Spatial Spread](reaction-diffusion.md)
+- [Spatial Moment Equations](spatial-moment-equations.md)
 - [Equilibria and Stability](equilibria-and-stability.md)
 - [Jacobians](jacobians.md)
 - [Eigenvalues and Eigenvectors](eigenvalues-and-eigenvectors.md)

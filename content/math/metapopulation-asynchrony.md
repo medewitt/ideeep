@@ -385,6 +385,7 @@ And because the effect reduces to covariances of the local growth rate $r_i(t)$ 
 - [Jensen's Inequality and Nonlinear Averaging](jensens-inequality.md)
 - [The Effective Reproduction Number and Forecasting](reproduction-number-rt.md)
 - [Stochastic Epidemics and the Gillespie Algorithm](stochastic-epidemics.md)
+- [Spatial Moment Equations](spatial-moment-equations.md)
 - [Discrete-Time Models and the Logistic Map](discrete-population-models.md)
 - [Compartmental Models (SIR)](sir.md)
 - [Markov Chains](markov-chains.md)
