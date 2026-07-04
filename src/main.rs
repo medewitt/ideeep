@@ -161,10 +161,32 @@ fn katex_opts(display: bool) -> Opts {
         .unwrap()
 }
 
-fn preprocess_math(md: &str) -> String {
+/// Rendered KaTeX HTML must not be re-parsed by the Markdown engine: the
+/// output contains characters that are meaningful to GitHub-flavoured Markdown
+/// (most notably the ASCII `~` that KaTeX emits for `\tilde`, which pulldown
+/// pairs into `<del>` strikethrough runs, but also `*`, `_`, etc.). We render
+/// each math span to HTML up front, stash it, and leave an inert placeholder
+/// token in the Markdown stream. `restore_math` swaps the HTML back in after
+/// Markdown parsing. The placeholder is delimited by Private Use Area code
+/// points so it survives parsing untouched and cannot collide with real prose.
+const MATH_PLACEHOLDER_OPEN: char = '\u{E000}';
+const MATH_PLACEHOLDER_CLOSE: char = '\u{E001}';
+
+fn math_placeholder(index: usize) -> String {
+    format!("{}{}{}", MATH_PLACEHOLDER_OPEN, index, MATH_PLACEHOLDER_CLOSE)
+}
+
+fn preprocess_math(md: &str) -> (String, Vec<String>) {
     let mut result = String::with_capacity(md.len() * 2);
+    let mut fragments: Vec<String> = Vec::new();
     let mut chars = md.chars().peekable();
-    
+
+    // Render a math fragment to HTML, store it, and emit its placeholder.
+    let stash = |result: &mut String, fragments: &mut Vec<String>, html: String| {
+        result.push_str(&math_placeholder(fragments.len()));
+        fragments.push(html);
+    };
+
     while let Some(ch) = chars.next() {
         if ch == '$' {
             // Check for display math: $$
@@ -183,7 +205,7 @@ fn preprocess_math(md: &str) -> String {
                 if found_end {
                     let html = katex::render_with_opts(tex.trim(), katex_opts(true))
                         .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, tex));
-                    result.push_str(&html);
+                    stash(&mut result, &mut fragments, html);
                 } else {
                     // Not a valid display math, put it back
                     result.push('$');
@@ -212,7 +234,7 @@ fn preprocess_math(md: &str) -> String {
                 if found_end && !tex.is_empty() {
                     let html = katex::render_with_opts(tex.trim(), katex_opts(false))
                         .unwrap_or_else(|_| format!(r#"<code class="math-error">{}</code>"#, tex));
-                    result.push_str(&html);
+                    stash(&mut result, &mut fragments, html);
                 } else {
                     result.push('$');
                     result.push_str(&tex);
@@ -236,7 +258,7 @@ fn preprocess_math(md: &str) -> String {
                     if found_end {
                         let html = katex::render_with_opts(tex.trim(), katex_opts(false))
                             .unwrap_or_else(|_| format!(r#"<code class="math-error">{}</code>"#, tex));
-                        result.push_str(&html);
+                        stash(&mut result, &mut fragments, html);
                     } else {
                         result.push('\\');
                         result.push('(');
@@ -257,7 +279,7 @@ fn preprocess_math(md: &str) -> String {
                     if found_end {
                         let html = katex::render_with_opts(tex.trim(), katex_opts(true))
                             .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, tex));
-                        result.push_str(&html);
+                        stash(&mut result, &mut fragments, html);
                     } else {
                         result.push('\\');
                         result.push('[');
@@ -273,8 +295,37 @@ fn preprocess_math(md: &str) -> String {
             result.push(ch);
         }
     }
-    
-    result
+
+    (result, fragments)
+}
+
+/// Replace the placeholders left by `preprocess_math` with their rendered
+/// KaTeX HTML, now that Markdown parsing is complete and can no longer mangle
+/// the math output.
+fn restore_math(html: &str, fragments: &[String]) -> String {
+    if fragments.is_empty() {
+        return html.to_string();
+    }
+    let mut out = String::with_capacity(html.len());
+    let mut chars = html.chars();
+    while let Some(ch) = chars.next() {
+        if ch == MATH_PLACEHOLDER_OPEN {
+            let mut digits = String::new();
+            for c in chars.by_ref() {
+                if c == MATH_PLACEHOLDER_CLOSE {
+                    break;
+                }
+                digits.push(c);
+            }
+            if let Some(fragment) = digits.parse::<usize>().ok().and_then(|i| fragments.get(i)) {
+                out.push_str(fragment);
+            }
+            // A placeholder that fails to parse is dropped rather than shown.
+        } else {
+            out.push(ch);
+        }
+    }
+    out
 }
 
 fn convert_internal_links(html: &str, markdown_files: &std::collections::HashSet<String>) -> String {
@@ -517,13 +568,17 @@ fn columnize_link_lists(html: &str) -> String {
 }
 
 fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<String>) -> String {
-    // Pre-process math expressions: render them server-side with KaTeX
-    let processed_markdown = preprocess_math(markdown);
+    // Pre-process math expressions: render them server-side with KaTeX, leaving
+    // inert placeholders in the Markdown so the parser can't mangle the output.
+    let (processed_markdown, math_fragments) = preprocess_math(markdown);
 
     let options = Options::all();
     let parser = Parser::new_ext(&processed_markdown, options);
     let mut html_output = String::new();
     html::push_html(&mut html_output, parser);
+
+    // Splice the rendered KaTeX HTML back in now that parsing is done.
+    let html_output = restore_math(&html_output, &math_fragments);
 
     let linked = convert_internal_links(&html_output, markdown_files);
     let with_callouts = render_callouts(&linked);
