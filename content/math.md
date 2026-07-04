@@ -110,6 +110,9 @@ core idea and notation with a worked example and runnable code in **R**,
 
 - [Bayesian Inference](math/bayesian-inference.md) — priors, likelihood, and the posterior
 - [Markov Chain Monte Carlo](math/mcmc.md)
+- [Prior Predictive Checks](math/prior-predictive-checks.md) — simulate from the prior to sanity-check it before fitting
+- [Posterior Predictive Checks](math/posterior-predictive-checks.md) — compare replicated data to the observed to test the model
+- [Identifiability](math/identifiability.md) — when the data cannot separate parameters
 
 ## Gaussian processes & spatial statistics
 
@@ -126,6 +129,8 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Areal Models: CAR, ICAR, and BYM](math/areal-models-car.md) — disease mapping on a neighborhood graph
 - [Bayesian Spatial Models with INLA](math/inla.md) — fast latent-Gaussian inference and the SPDE approach
 - [Distances on a Sphere: Haversine and Beyond](math/distance-measures.md) — great-circle vs Euclidean distance
+- [Spatial Cluster Detection](math/spatial-cluster-detection.md) — Moran's I, LISA, and the spatial scan statistic
+- [Spatiotemporal Models](math/spatiotemporal-models.md) — separable and nonseparable space–time covariance
 
 ## Survival analysis
 
@@ -159,6 +164,7 @@ core idea and notation with a worked example and runnable code in **R**,
 - [Selection and Mutation–Selection Balance](math/selection-popgen.md)
 - [Population Structure and F_ST](math/population-structure.md)
 - [The Coalescent](math/coalescent-theory.md) — genealogies backward in time
+- [Phylodynamics](math/phylodynamics.md) — reading epidemic dynamics from pathogen phylogenies
 
 *Association & complex traits:*
 
@@ -180,6 +186,8 @@ core idea and notation with a worked example and runnable code in **R**,
 - [The Evolution of Cooperation](math/evolution-of-cooperation.md) — the Prisoner's Dilemma and Nowak's five rules
 - [Adaptive Dynamics and the Evolution of Virulence](math/evolution-of-virulence.md)
 - [The Price Equation and Evolutionary Epidemiology](math/price-equation.md) — selection, transmission, and within-host change as an exact identity
+- [Adaptive Dynamics](math/adaptive-dynamics.md) — invasion fitness, singular strategies, and evolutionary branching
+- [The Evolution of Resistance](math/resistance-evolution.md) — selection under drug pressure and the cost of resistance
 
 ## Population & community ecology
 
