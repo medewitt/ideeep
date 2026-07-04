@@ -87,7 +87,10 @@ core idea and notation with a worked example and runnable code in **R**,
 - [The Central Limit Theorem](math/central-limit-theorem.md)
 - [Markov Chains](math/markov-chains.md) — transition matrices and stationary distributions
 - [Branching Processes](math/branching-processes.md) — Galton–Watson, extinction, and outbreaks
+- [Random Walks and Brownian Motion](math/random-walk-brownian-motion.md) — diffusive scaling and the Wiener process
+- [Copulas](math/copulas.md) — separating dependence from the marginals via Sklar's theorem
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
+- [Moment Matching](math/moment-matching.md) — method of moments and distributional approximation
 - [Monotonic Transformations](math/monotonic-transformations.md)
 - [Hypothesis Testing](math/hypothesis-testing.md)
 - [p-Values](math/p-values.md)
@@ -107,6 +110,22 @@ core idea and notation with a worked example and runnable code in **R**,
 
 - [Bayesian Inference](math/bayesian-inference.md) — priors, likelihood, and the posterior
 - [Markov Chain Monte Carlo](math/mcmc.md)
+
+## Gaussian processes & spatial statistics
+
+*Gaussian processes:*
+
+- [Gaussian Processes](math/gaussian-processes.md) — distributions over functions and GP regression
+- [Covariance Functions and the Matérn Family](math/covariance-functions.md) — kernels, smoothness, and lengthscale
+- [Hilbert-Space Approximations for Gaussian Processes](math/hilbert-space-gp.md) — fast basis-function GPs
+
+*Geostatistics & areal models:*
+
+- [Kriging and Geostatistics](math/kriging.md) — variograms and best linear unbiased prediction
+- [Spatial Point Processes](math/spatial-point-processes.md) — Poisson, Cox, and log-Gaussian Cox processes
+- [Areal Models: CAR, ICAR, and BYM](math/areal-models-car.md) — disease mapping on a neighborhood graph
+- [Bayesian Spatial Models with INLA](math/inla.md) — fast latent-Gaussian inference and the SPDE approach
+- [Distances on a Sphere: Haversine and Beyond](math/distance-measures.md) — great-circle vs Euclidean distance
 
 ## Survival analysis
 
@@ -191,6 +210,7 @@ core idea and notation with a worked example and runnable code in **R**,
 
 *Spatial dynamics & pattern formation:*
 
+- [Spatial Diffusion and the Heat Equation](math/spatial-diffusion.md) — random movement and $\sqrt{t}$ spreading
 - [Reaction–Diffusion and Spatial Spread](math/reaction-diffusion.md) — the Fisher–KPP wave
 - [Turing Patterns](math/turing-patterns.md) — diffusion-driven pattern formation
 
