@@ -4,7 +4,7 @@ title: "Proper Scoring Rules"
 
 # Proper Scoring Rules
 
-A forecast that says "70% chance of an outbreak" should be judged by how well its *probabilities* match what actually happens, not by a single right/wrong call.
+A forecast that says "70% chance of an outbreak" should be judged by how well its *probabilities* match what actually happens, not by a single right/wrong call as reality is basically one draw from a random process.
 A **proper scoring rule** is a way of scoring probabilistic forecasts that a forecaster minimizes only by reporting their honest beliefs — so it rewards calibration and cannot be gamed.
 
 ![Both the Brier score and the logarithmic score are minimized when the reported probability equals the true probability, so honest forecasting is optimal.](../assets/figures/scoring-rules.svg)

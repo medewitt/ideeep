@@ -18,9 +18,9 @@ The reservoir is defined by persistence, not by which host we happen to notice f
 
 Within a reservoir, hosts play different roles.
 
-- A **maintenance host** can sustain the pathogen on its own: infection introduced into that host alone persists, which requires a per-host reproduction number above one, $R_0^{(i)} > 1$.
+- A **maintenance or reservoir host** can sustain the pathogen on its own: infection introduced into that host alone persists, which requires a per-host reproduction number above one, $R_0^{(i)} > 1$. This differs from the **definitive host** which is related to lifecycles and where a sexually reproducing parasite undergoes it's sexual lifecycle if it exists.
 - A **spillover host** (or dead-end host) can be infected but does not pass enough infection onward to sustain transmission, $R_0^{(i)} < 1$.
-  Humans are a dead-end host for rabies, West Nile virus, and most Ebola introductions: they get sick, but the chain of transmission usually dies out.
+  Humans are a dead-end host for rabies, West Nile virus, and Hendra virus: they get sick, but the chain of transmission usually dies out.
 
 The distinction matters for control.
 Vaccinating or culling a dead-end host does nothing to the reservoir; the pathogen keeps circulating in whatever population actually maintains it.

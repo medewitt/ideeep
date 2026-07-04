@@ -5,7 +5,7 @@ description: "Using pharmacodynamic targets and Monte Carlo over patient variabi
 
 # PK/PD Target Attainment
 
-A dose that works in the average patient can still fail in many individuals, because clearance, volume, and MIC all vary.
+A dose that works in the average patient can still fail in many individuals, because clearance, volume, and the minimum inhibition concentration (MIC) all vary.
 Target attainment turns that variability into a probability: given a dose and an organism, what fraction of patients reach the pharmacodynamic target that predicts a good outcome?
 The calculation joins the concentration-time curve from [pharmacokinetics](pharmacokinetics.md) to the [PK/PD indices](antimicrobial-pkpd.md) through a Monte Carlo simulation over between-patient differences.
 
