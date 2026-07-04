@@ -65,6 +65,7 @@ This is done by linearizing the system and examining the [Jacobian matrix](jacob
 - [Exponential and Logistic Growth](logistic-growth.md)
 - [Bifurcations](bifurcations.md) — the $R_0=1$ threshold
 - [SEIR and Compartmental Extensions](seir-models.md)
+- [Within-Host Dynamics and the Immune Response](within-host-dynamics.md)
 - [Vector-Borne Disease Models](vector-borne.md)
 - [Stochastic Epidemics and the Gillespie Algorithm](stochastic-epidemics.md)
 - [The Effective Reproduction Number and Forecasting](reproduction-number-rt.md)

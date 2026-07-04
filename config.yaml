@@ -11,6 +11,8 @@ navbar_order:
   - Methods
   - Professional Development
   - Syllabi
+  - Certificates
+  - Short Courses
   - Search
   - url: https://wakeforestid.com
     text: Home
@@ -31,3 +33,20 @@ dropdowns:
     - bio390-research-tools
     - field-epidemiology
     - stewardship-infection-prevention
+    - applied-id-epidemiology
+    - outbreak-analytics
+    - one-health-zoonoses
+    - data-science-id
+    - statistical-modeling-id
+    - spatial-epidemiology
+    - evolutionary-epidemiology
+    - ideee-seminar
+  Certificates:
+    - certificate-id-modeling-analytics
+    - certificate-quant-stewardship
+    - certificate-global-health-data
+  Short Courses:
+    - shortcourse-intro-epi-biostats
+    - shortcourse-outbreak-analytics
+    - shortcourse-bayesian-stan
+    - shortcourse-computation-math-biology
