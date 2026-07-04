@@ -50,12 +50,8 @@ description: "The IDEEEP concentration at Wake Forest University unites ecology,
 
 ## About the concentration
 
-The **IDEEEP** concentration brings together ecology, evolutionary biology, and
-epidemiology to study how infectious diseases emerge, spread, and shape living
-systems. Students combine coursework in mathematical biology, disease ecology,
-and quantitative research methods with hands-on field and laboratory experience
-to understand pathogens across scales — from molecules to populations to
-ecosystems.
+The **IDEEEP** concentration brings together ecology, evolutionary biology, and epidemiology to study how infectious diseases emerge, spread, and shape living systems.
+Students combine coursework in mathematical biology, disease ecology, and quantitative research methods with hands-on field and laboratory experience to understand pathogens across scales — from molecules to populations to ecosystems.
 
 > [!NOTE]
 > *"Successful organisms attract parasites."* — Dickson Despommier
