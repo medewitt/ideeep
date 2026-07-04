@@ -84,6 +84,7 @@ This suits many bacterial and sexually transmitted infections.
 - **SIRS** — immunity wanes at rate $\omega$, so $R \to S$; the flux $\omega R$ recycles recovered individuals and can sustain recurrent epidemics.
 - **Vector-borne** — coupling a host model to a mosquito population, as in the [Ross–Macdonald model](vector-borne.md) for malaria and dengue.
 - **Stochastic** — replacing the ODEs with a random jump process to capture chance extinction in small populations, treated in [stochastic epidemics](stochastic-epidemics.md).
+- **Within-host** — the same target–infected–virus bookkeeping applied inside a single host, with a B-cell and T-cell immune response, treated in [within-host dynamics](within-host-dynamics.md).
 
 ## Vaccination and herd immunity
 
@@ -202,6 +203,7 @@ Adding vital dynamics, waning immunity, and vaccination turns the same skeleton 
 ## Related
 
 - [The SIR Model](sir.md)
+- [Within-Host Dynamics and the Immune Response](within-host-dynamics.md)
 - [The Next-Generation Matrix and R₀](next-generation-matrix.md)
 - [Equilibria and Linear Stability](equilibria-and-stability.md)
 - [Vector-Borne Disease Models](vector-borne.md)
