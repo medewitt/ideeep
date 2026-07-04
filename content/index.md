@@ -1,6 +1,7 @@
 ---
 title: ""
 toc: false
+description: "The IDEEEP concentration at Wake Forest University unites ecology, evolution, and epidemiology to study how infectious diseases emerge, spread, and shape living systems."
 ---
 
 <header class="hero">

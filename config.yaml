@@ -1,7 +1,3 @@
-# Optional: canonical site origin (no trailing slash) used to build absolute
-# Open Graph / Twitter share URLs. Leave unset to emit page-relative image paths.
-# site_url: "https://ideeep.example.edu"
-
 page_order:
   - programs
   - research

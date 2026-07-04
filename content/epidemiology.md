@@ -1,6 +1,7 @@
 ---
 title: "Epidemiology"
 toc: true
+description: "How epidemiological time intervals — incubation, latent, and infectious periods, serial and generation intervals — structure transmission, and how to estimate them from surveillance data."
 ---
 
 # Epidemiology

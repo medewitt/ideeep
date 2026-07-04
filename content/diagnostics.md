@@ -1,6 +1,7 @@
 ---
 title: "Diagnostics & Surveillance"
 toc: true
+description: "The workhorse laboratory methods of infectious-disease diagnostics and surveillance — qPCR, ELISA, LAMP, culture, MALDI-TOF and more — and the trade-offs that decide which to use."
 ---
 
 # Diagnostics & Surveillance

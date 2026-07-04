@@ -1,5 +1,6 @@
 ---
 title: Research Tools and Methods
+description: "BIO390 Research Tools and Methods: essential training in reproducible, collaborative research tools for the biological and health sciences."
 author: Michael DeWitt
 date: 2025-12-23
 ---

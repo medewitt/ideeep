@@ -1,5 +1,6 @@
 ---
 title: "Antimicrobial Stewardship and Infection Prevention"
+description: "An introduction to antimicrobial stewardship and infection prevention and control (IPC): frontline strategies to slow antimicrobial resistance and reduce transmission."
 author: Michael DeWitt
 date: 2025-12-23
 ---

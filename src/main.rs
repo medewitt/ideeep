@@ -1,14 +1,130 @@
 use std::fs;
 use std::path::{Path, PathBuf};
-use pulldown_cmark::{html, Event, Options, Parser};
+use pulldown_cmark::{html, Event, Options, Parser, Tag};
 use regex::Regex;
 use katex::{Opts, OutputType};
 use rusqlite::{params, Connection};
+
+// ---------------------------------------------------------------------------
+// Site-wide SEO / PWA identity
+//
+// These constants feed canonical URLs, Open Graph/Twitter cards, the sitemap,
+// robots.txt, and the web app manifest. `SITE_URL` is the production origin
+// with no trailing slash — it is concatenated with absolute paths.
+//
+// The origin is sourced from the `homepage` field in Cargo.toml (exposed by
+// Cargo as CARGO_PKG_HOMEPAGE at compile time), so moving domains is a
+// one-line change in the project's toml, not a code edit.
+// ---------------------------------------------------------------------------
+const SITE_URL: &str = env!("CARGO_PKG_HOMEPAGE");
+const SITE_NAME: &str = "IDEEEP";
+const SITE_TAGLINE: &str = "Infectious Disease Ecology, Evolution & Epidemiology Program";
+const SITE_DESCRIPTION: &str = "The IDEEEP concentration at Wake Forest University unites ecology, evolutionary biology, and epidemiology to study how infectious diseases emerge, spread, and shape living systems — with quantitative methods, diagnostics, and reproducible computing.";
 
 #[derive(Debug, serde::Deserialize)]
 struct FrontMatter {
     title: Option<String>,
     toc: Option<bool>,
+    /// Optional per-page meta description used for search snippets and social
+    /// cards. When absent, the build derives one from the first paragraph.
+    description: Option<String>,
+}
+
+/// Escape a string for safe use inside a double-quoted HTML attribute.
+fn escape_attr(s: &str) -> String {
+    s.replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+        .replace('"', "&quot;")
+        .replace('\'', "&#39;")
+}
+
+/// Escape a string for safe embedding inside a JSON string literal (used for
+/// the JSON-LD structured-data block).
+fn escape_json(s: &str) -> String {
+    let mut out = String::with_capacity(s.len() + 8);
+    for c in s.chars() {
+        match c {
+            '"' => out.push_str("\\\""),
+            '\\' => out.push_str("\\\\"),
+            '\n' => out.push_str("\\n"),
+            '\r' => out.push_str("\\r"),
+            '\t' => out.push_str("\\t"),
+            '/' => out.push_str("\\/"), // defensive against a literal </script>
+            c if (c as u32) < 0x20 => out.push_str(&format!("\\u{:04x}", c as u32)),
+            c => out.push(c),
+        }
+    }
+    out
+}
+
+/// Truncate to at most `max` characters on a word boundary, appending an
+/// ellipsis when text was dropped. Used to keep meta descriptions within the
+/// ~160-character window search engines display.
+fn truncate_words(s: &str, max: usize) -> String {
+    if s.chars().count() <= max {
+        return s.to_string();
+    }
+    let mut out: String = s.chars().take(max).collect();
+    if let Some(pos) = out.rfind(' ') {
+        out.truncate(pos);
+    }
+    format!("{}…", out.trim_end())
+}
+
+/// Derive a meta description from the first real prose paragraph of a page,
+/// skipping headings and block quotes. Falls back to the site description.
+fn extract_description(markdown: &str, fallback: &str) -> String {
+    let options = Options::all();
+    let parser = Parser::new_ext(markdown, options);
+
+    let mut blockquote_depth: i32 = 0;
+    let mut in_heading = false;
+    let mut collecting = false;
+    let mut started = false;
+    let mut text = String::new();
+
+    for event in parser {
+        match event {
+            Event::Start(Tag::BlockQuote) => blockquote_depth += 1,
+            Event::End(Tag::BlockQuote) => blockquote_depth -= 1,
+            Event::Start(Tag::Heading(..)) => in_heading = true,
+            Event::End(Tag::Heading(..)) => in_heading = false,
+            Event::Start(Tag::Paragraph) => {
+                if blockquote_depth == 0 && !in_heading {
+                    collecting = true;
+                    started = true;
+                }
+            }
+            Event::End(Tag::Paragraph) => {
+                if started {
+                    break;
+                }
+            }
+            Event::Text(t) | Event::Code(t) => {
+                if collecting {
+                    text.push_str(&t);
+                }
+            }
+            Event::SoftBreak | Event::HardBreak => {
+                if collecting {
+                    text.push(' ');
+                }
+            }
+            _ => {}
+        }
+    }
+
+    // Drop math delimiters and collapse whitespace so the snippet reads cleanly.
+    let cleaned = text.replace('$', "");
+    let whitespace_re = Regex::new(r"\s+").unwrap();
+    let cleaned = whitespace_re.replace_all(cleaned.trim(), " ").to_string();
+
+    if cleaned.is_empty() {
+        fallback.to_string()
+    } else {
+        truncate_words(&cleaned, 160)
+    }
 }
 
 #[derive(Debug, serde::Deserialize)]
@@ -16,7 +132,6 @@ struct Config {
     page_order: Option<Vec<serde_yaml::Value>>,
     navbar_order: Option<Vec<serde_yaml::Value>>,  // New: allows manual ordering including dropdowns
     dropdowns: Option<std::collections::HashMap<String, serde_yaml::Value>>,
-    site_url: Option<String>,  // Optional canonical origin for absolute OG/Twitter URLs
 }
 
 fn extract_frontmatter(content: &str) -> (Option<FrontMatter>, &str) {
@@ -612,75 +727,30 @@ fn generate_navbar(
     nav
 }
 
-/// Escape text for use inside an HTML attribute or element text node.
-fn html_escape(s: &str) -> String {
-    s.replace('&', "&amp;")
-        .replace('<', "&lt;")
-        .replace('>', "&gt;")
-        .replace('"', "&quot;")
-}
-
 fn generate_html(
     title: &str,
+    description: &str,
+    canonical_path: &str,
+    robots: &str,
+    breadcrumbs: &[(String, String)],
     content: &str,
     navbar: &str,
     asset_prefix: &str,
-    description: &str,
-    page_url: &str,
-    site_url: &str,
 ) -> Result<String, Box<dyn std::error::Error>> {
     let katex_css = format!(r#"<link rel="stylesheet" href="{}assets/vendor/katex/katex.min.css" type="text/css" />"#, asset_prefix);
+
+    // Read footer.html
+    let footer_path = Path::new("assets/footer.html");
+    let footer_content = if footer_path.exists() {
+        fs::read_to_string(footer_path)?
+    } else {
+        String::new()
+    };
 
     // Preload the self-hosted Nunito Sans faces so text paints without a swap flash.
     let font_preload = format!(
         "<link rel=\"preload\" href=\"{p}assets/fonts/nunito-sans-latin.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n    <link rel=\"preload\" href=\"{p}assets/fonts/nunito-sans-latin-italic.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>",
         p = asset_prefix
-    );
-
-    // Pages with no front-matter title (e.g. the home page) fall back to the
-    // program name; others get a " · IDEEEP" suffix for tab/SEO clarity.
-    let esc_title = if title.trim().is_empty() {
-        html_escape("Infectious Disease Ecology, Evolution, and Epidemiology Program (IDEEEP)")
-    } else {
-        html_escape(&format!("{} · IDEEEP", title))
-    };
-    let esc_desc = html_escape(description);
-
-    // Absolute URLs when a site_url is configured; otherwise fall back to
-    // page-relative asset paths (fine for the deploy, best-effort for scrapers).
-    let base = site_url.trim_end_matches('/');
-    let share_image = if base.is_empty() {
-        format!("{}assets/icon-512.png", asset_prefix)
-    } else {
-        format!("{}/assets/icon-512.png", base)
-    };
-    let og_url = if base.is_empty() {
-        String::new()
-    } else {
-        format!("\n    <meta property=\"og:url\" content=\"{}/{}\">", base, page_url)
-    };
-
-    // Metadata: description, icons, manifest, Open Graph & Twitter cards.
-    let meta_block = format!(
-        r##"<meta name="description" content="{desc}">
-    <meta name="theme-color" content="#12151a">
-    <link rel="icon" type="image/png" href="{p}assets/favicon.png" />
-    <link rel="apple-touch-icon" href="{p}assets/apple-touch-icon.png" />
-    <link rel="manifest" href="{p}assets/manifest.webmanifest" />
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="IDEEEP">
-    <meta property="og:title" content="{title}">
-    <meta property="og:description" content="{desc}">
-    <meta property="og:image" content="{img}">{og_url}
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{title}">
-    <meta name="twitter:description" content="{desc}">
-    <meta name="twitter:image" content="{img}">"##,
-        desc = esc_desc,
-        title = esc_title,
-        img = html_escape(&share_image),
-        og_url = og_url,
-        p = asset_prefix,
     );
 
     // Syntax-highlight themes swap with the color scheme; an early script applies
@@ -704,10 +774,62 @@ fn generate_html(
         p = asset_prefix
     );
 
-    // Read footer.html
-    let footer_path = Path::new("assets/footer.html");
-    let footer_content = if footer_path.exists() {
-        fs::read_to_string(footer_path)?
+    // --- SEO / social metadata -------------------------------------------
+    // `canonical_path` is the site-root-relative URL of this page without a
+    // leading slash ("" for the home page, "math/sir.html" otherwise).
+    let is_home = canonical_path.is_empty();
+    let canonical = if is_home {
+        format!("{}/", SITE_URL)
+    } else {
+        format!("{}/{}", SITE_URL, canonical_path)
+    };
+
+    let display_title = if title.trim().is_empty() {
+        format!("{} · {}", SITE_NAME, SITE_TAGLINE)
+    } else {
+        title.to_string()
+    };
+    let head_title = if title.trim().is_empty() {
+        format!("{} · {}", SITE_NAME, SITE_TAGLINE)
+    } else {
+        format!("{} · {}", title, SITE_NAME)
+    };
+
+    let og_type = if is_home { "website" } else { "article" };
+    let og_image = format!("{}/assets/og-image.png", SITE_URL);
+
+    let t_attr = escape_attr(&display_title);
+    let d_attr = escape_attr(description);
+
+    // JSON-LD structured data: a WebPage that is part of the site's WebSite.
+    let json_ld = format!(
+        r#"{{"@context":"https://schema.org","@type":"WebPage","name":"{name}","description":"{desc}","url":"{url}","inLanguage":"en","isPartOf":{{"@type":"WebSite","name":"{site} — {tagline}","url":"{site_url}/","potentialAction":{{"@type":"SearchAction","target":{{"@type":"EntryPoint","urlTemplate":"{site_url}/search.html?q={{search_term_string}}"}},"query-input":"required name=search_term_string"}}}},"publisher":{{"@type":"Organization","name":"Infectious Disease Epidemiology and Applied Statistics (IDEAS)","url":"https://wakeforestid.com"}}}}"#,
+        name = escape_json(&display_title),
+        desc = escape_json(description),
+        url = escape_json(&canonical),
+        site = escape_json(SITE_NAME),
+        tagline = escape_json(SITE_TAGLINE),
+        site_url = SITE_URL,
+    );
+
+    // Optional BreadcrumbList structured data (Home > Section > Page).
+    let breadcrumb_ld = if breadcrumbs.len() >= 2 {
+        let items: Vec<String> = breadcrumbs
+            .iter()
+            .enumerate()
+            .map(|(i, (name, url))| {
+                format!(
+                    r#"{{"@type":"ListItem","position":{},"name":"{}","item":"{}"}}"#,
+                    i + 1,
+                    escape_json(name),
+                    escape_json(url)
+                )
+            })
+            .collect();
+        format!(
+            "\n    <script type=\"application/ld+json\">{{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{}]}}</script>",
+            items.join(",")
+        )
     } else {
         String::new()
     };
@@ -718,18 +840,51 @@ fn generate_html(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title}</title>
-    {meta_block}
-    <link rel="stylesheet" href="{p}assets/styles.css" type="text/css" />
+    <title>{head_title}</title>
+    <meta name="description" content="{d_attr}">
+    <link rel="canonical" href="{canonical}">
+    <meta name="robots" content="{robots}">
+    <meta name="author" content="Infectious Disease Epidemiology and Applied Statistics (IDEAS)">
+    <meta name="theme-color" content="#12151a">
+    <meta name="color-scheme" content="light dark">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="{og_type}">
+    <meta property="og:site_name" content="{site_name}">
+    <meta property="og:title" content="{t_attr}">
+    <meta property="og:description" content="{d_attr}">
+    <meta property="og:url" content="{canonical}">
+    <meta property="og:image" content="{og_image}">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{t_attr}">
+    <meta name="twitter:description" content="{d_attr}">
+    <meta name="twitter:image" content="{og_image}">
+
+    <!-- Icons / PWA -->
+    <link rel="icon" type="image/png" href="{ap}assets/favicon.png" />
+    <link rel="apple-touch-icon" href="{ap}assets/apple-touch-icon.png" />
+    <link rel="manifest" href="{ap}manifest.webmanifest" />
+
+    <script type="application/ld+json">{json_ld}</script>{breadcrumb_ld}
+
+    <link rel="stylesheet" href="{ap}assets/styles.css" type="text/css" />
     {font_preload}
-    <!-- Self-hosted syntax highlighting (highlight.js) -->
+    <!-- Self-hosted syntax highlighting (highlight.js) with light/dark themes -->
     {hljs_block}
-    <script defer src="{p}assets/vendor/highlightjs/highlight.bundle.min.js"></script>
-    <script defer src="{p}assets/nav.js"></script>
+    <script defer src="{ap}assets/vendor/highlightjs/highlight.bundle.min.js"></script>
+    <script defer src="{ap}assets/nav.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {{
-        if (window.hljs) hljs.highlightAll();
+        if (window.hljs) {{ hljs.highlightAll(); }}
     }});
+    if ('serviceWorker' in navigator) {{
+        window.addEventListener('load', function() {{
+            navigator.serviceWorker.register('{ap}sw.js').catch(function() {{}});
+        }});
+    }}
     </script>
     {katex_css}
 </head>
@@ -744,15 +899,23 @@ fn generate_html(
     {footer_content}
 </body>
 </html>"##,
-        title = esc_title,
-        meta_block = meta_block,
+        head_title = escape_attr(&head_title),
+        d_attr = d_attr,
+        canonical = escape_attr(&canonical),
+        robots = robots,
+        og_type = og_type,
+        site_name = SITE_NAME,
+        t_attr = t_attr,
+        og_image = escape_attr(&og_image),
+        json_ld = json_ld,
+        breadcrumb_ld = breadcrumb_ld,
         font_preload = font_preload,
         hljs_block = hljs_block,
         katex_css = katex_css,
         navbar = navbar,
         content = content,
         footer_content = footer_content,
-        p = asset_prefix
+        ap = asset_prefix,
     ))
 }
 
@@ -910,53 +1073,6 @@ fn extract_search_text(markdown: &str) -> String {
     whitespace_re.replace_all(&text, " ").trim().to_string()
 }
 
-/// Derive a ~160-character meta description from the first real prose paragraph,
-/// skipping headings, images, and block quotes. Returns "" if none is found.
-fn extract_description(markdown: &str) -> String {
-    use pulldown_cmark::Tag;
-    let parser = Parser::new_ext(markdown, Options::all());
-    let mut in_para = false;
-    let mut bq_depth = 0i32;
-    let mut img_depth = 0i32;
-    let mut buf = String::new();
-    for event in parser {
-        match event {
-            Event::Start(Tag::BlockQuote) => bq_depth += 1,
-            Event::End(Tag::BlockQuote) => bq_depth -= 1,
-            Event::Start(Tag::Image(..)) => img_depth += 1,
-            Event::End(Tag::Image(..)) => img_depth -= 1,
-            Event::Start(Tag::Paragraph) if bq_depth == 0 => in_para = true,
-            Event::End(Tag::Paragraph) => {
-                if in_para && !buf.trim().is_empty() {
-                    break;
-                }
-                in_para = false;
-            }
-            Event::Text(t) | Event::Code(t) => {
-                if in_para && img_depth == 0 {
-                    buf.push_str(&t);
-                }
-            }
-            Event::SoftBreak | Event::HardBreak => {
-                if in_para {
-                    buf.push(' ');
-                }
-            }
-            _ => {}
-        }
-    }
-    let cleaned = buf.split_whitespace().collect::<Vec<_>>().join(" ");
-    if cleaned.chars().count() > 160 {
-        let head: String = cleaned.chars().take(160).collect();
-        let trimmed = match head.rfind(' ') {
-            Some(i) => &head[..i],
-            None => head.as_str(),
-        };
-        format!("{}…", trimmed.trim_end())
-    } else {
-        cleaned
-    }
-}
 
 /// Build a client-loadable FTS4 SQLite index (`dist/search.db`) over every page.
 /// One row per page: title, extracted content, relative URL, category, date.
@@ -1260,6 +1376,196 @@ fn search_page_content() -> String {
     .to_string()
 }
 
+/// Write `dist/sitemap.xml` listing every published page plus the search page.
+/// The 404 page is excluded (it should not be indexed). URLs are absolute and
+/// use the `.html` paths Netlify serves; the home page canonicalises to "/".
+fn write_sitemap(
+    markdown_files: &[(PathBuf, PathBuf, String)],
+    dist_dir: &Path,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let mut urls: Vec<String> = Vec::new();
+
+    for (_, relative_path, _) in markdown_files {
+        let rel_key = relative_path
+            .with_extension("")
+            .to_string_lossy()
+            .replace('\\', "/");
+
+        if rel_key.eq_ignore_ascii_case("404") {
+            continue;
+        }
+
+        let loc = if rel_key == "index" {
+            format!("{}/", SITE_URL)
+        } else {
+            format!("{}/{}.html", SITE_URL, rel_key)
+        };
+        urls.push(loc);
+    }
+    // The interactive search page is a real, linkable destination.
+    urls.push(format!("{}/search.html", SITE_URL));
+
+    urls.sort();
+    urls.dedup();
+
+    let mut xml = String::from(
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n",
+    );
+    for loc in &urls {
+        // Home page is the priority root; hubs and content follow.
+        let priority = if loc == &format!("{}/", SITE_URL) { "1.0" } else { "0.7" };
+        xml.push_str(&format!(
+            "  <url>\n    <loc>{}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>{}</priority>\n  </url>\n",
+            escape_attr(loc),
+            priority
+        ));
+    }
+    xml.push_str("</urlset>\n");
+
+    let path = dist_dir.join("sitemap.xml");
+    fs::write(&path, xml)?;
+    println!("Generated: {}", path.display());
+    Ok(())
+}
+
+/// Write `dist/robots.txt`: allow all crawlers and advertise the sitemap.
+fn write_robots(dist_dir: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    let body = format!(
+        "User-agent: *\nAllow: /\n\nSitemap: {}/sitemap.xml\n",
+        SITE_URL
+    );
+    let path = dist_dir.join("robots.txt");
+    fs::write(&path, body)?;
+    println!("Generated: {}", path.display());
+    Ok(())
+}
+
+/// Write `dist/_headers` (read by Netlify from the publish root). Ensures the
+/// service worker is revalidated on every load so updates ship promptly, and
+/// that the manifest is served with the correct content type.
+fn write_headers(dist_dir: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    let body = "\
+/sw.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: public, max-age=86400
+/assets/figures/*
+  Cache-Control: public, max-age=604800
+";
+    let path = dist_dir.join("_headers");
+    fs::write(&path, body)?;
+    println!("Generated: {}", path.display());
+    Ok(())
+}
+
+/// Write `dist/manifest.webmanifest` describing the installable web app.
+/// Icon paths are absolute so they resolve from any page depth.
+fn write_manifest(dist_dir: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    let manifest = format!(
+        r##"{{
+  "name": "{name}",
+  "short_name": "{short}",
+  "description": "{desc}",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "lang": "en-US",
+  "icons": [
+    {{ "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }},
+    {{ "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }},
+    {{ "src": "/assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }}
+  ]
+}}
+"##,
+        name = escape_json(&format!("{} — {}", SITE_NAME, SITE_TAGLINE)),
+        short = escape_json(SITE_NAME),
+        desc = escape_json(SITE_DESCRIPTION),
+    );
+    let path = dist_dir.join("manifest.webmanifest");
+    fs::write(&path, manifest)?;
+    println!("Generated: {}", path.display());
+    Ok(())
+}
+
+/// Write `dist/sw.js`: a small service worker giving the site offline support.
+/// Documents are network-first (fresh content when online, cached fallback
+/// offline); same-origin static assets are cache-first. Cross-origin CDN
+/// requests are left to the network. Bump `CACHE` to invalidate old caches.
+fn write_service_worker(dist_dir: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    let sw = r#"// IDEEEP service worker — offline support + installability.
+const CACHE = 'ideeep-v1';
+const CORE = [
+  '/',
+  '/index.html',
+  '/search.html',
+  '/manifest.webmanifest',
+  '/assets/styles.css',
+  '/assets/icon-192.png'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE).then((cache) => cache.addAll(CORE)).catch(() => {})
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+
+  const url = new URL(req.url);
+  // Leave cross-origin (CDN) requests to the network.
+  if (url.origin !== self.location.origin) return;
+
+  const isDocument = req.mode === 'navigate' || req.destination === 'document';
+
+  if (isDocument) {
+    // Network-first: prefer fresh HTML, fall back to cache when offline.
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+          return res;
+        })
+        .catch(() => caches.match(req).then((m) => m || caches.match('/index.html')))
+    );
+  } else {
+    // Cache-first for static assets.
+    event.respondWith(
+      caches.match(req).then(
+        (m) =>
+          m ||
+          fetch(req).then((res) => {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+            return res;
+          })
+      )
+    );
+  }
+});
+"#;
+    let path = dist_dir.join("sw.js");
+    fs::write(&path, sw)?;
+    println!("Generated: {}", path.display());
+    Ok(())
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let content_dir = Path::new("content");
     let dist_dir = Path::new("dist");
@@ -1291,24 +1597,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Load config file if it exists
     let config_path = Path::new("config.yaml");
-    let (page_order, navbar_order, dropdowns, site_url) = if config_path.exists() {
+    let (page_order, navbar_order, dropdowns) = if config_path.exists() {
         match fs::read_to_string(config_path) {
             Ok(content) => {
                 match serde_yaml::from_str::<Config>(&content) {
-                    Ok(config) => (config.page_order, config.navbar_order, config.dropdowns, config.site_url.unwrap_or_default()),
+                    Ok(config) => (config.page_order, config.navbar_order, config.dropdowns),
                     Err(e) => {
                         eprintln!("Warning: Failed to parse config.yaml: {}", e);
-                        (None, None, None, String::new())
+                        (None, None, None)
                     }
                 }
             }
             Err(e) => {
                 eprintln!("Warning: Failed to read config.yaml: {}", e);
-                (None, None, None, String::new())
+                (None, None, None)
             }
         }
     } else {
-        (None, None, None, String::new())
+        (None, None, None)
     };
 
     // Sort markdown files according to config or alphabetically
@@ -1568,7 +1874,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Give headings ids, then add an "On this page" TOC where a page opts in
         // with `toc: true` in its front matter (used on the section hub pages).
         let (html_content, headings) = add_heading_ids(&html_content);
-        let toc_enabled = frontmatter.and_then(|fm| fm.toc).unwrap_or(false);
+        let toc_enabled = frontmatter.as_ref().and_then(|fm| fm.toc).unwrap_or(false);
         let html_content = if toc_enabled && !headings.is_empty() {
             let toc = build_toc(&headings);
             let with_lead = html_content.replacen("<p>", "<p class=\"lead\">", 1);
@@ -1583,25 +1889,69 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let rel_key = relative_path.with_extension("")
             .to_string_lossy()
             .replace('\\', "/");
-        
+
+        // Per-page meta description: front matter wins, else first-paragraph text.
+        let description = frontmatter
+            .and_then(|fm| fm.description)
+            .map(|d| d.trim().to_string())
+            .filter(|d| !d.is_empty())
+            .unwrap_or_else(|| extract_description(markdown_content, SITE_DESCRIPTION));
+
+        // Canonical URL path (site-root-relative, no leading slash). The home
+        // page canonicalises to "/" via an empty path.
+        let canonical_path = if rel_key == "index" {
+            String::new()
+        } else {
+            format!("{}.html", rel_key)
+        };
+        let canonical_url = if canonical_path.is_empty() {
+            format!("{}/", SITE_URL)
+        } else {
+            format!("{}/{}", SITE_URL, canonical_path)
+        };
+
+        // The 404 page must not be indexed; everything else is indexable.
+        let robots = if rel_key.eq_ignore_ascii_case("404") {
+            "noindex, follow"
+        } else {
+            "index, follow, max-image-preview:large"
+        };
+
+        // Breadcrumb trail: Home › [Section hub] › Page. Skipped for the home
+        // page; the section crumb is added only when the page lives under a
+        // directory that has a hub page of the same name.
+        let mut breadcrumbs: Vec<(String, String)> = Vec::new();
+        if rel_key != "index" {
+            breadcrumbs.push(("Home".to_string(), format!("{}/", SITE_URL)));
+            if let Some(section) = relative_path
+                .parent()
+                .and_then(|p| p.components().next())
+                .map(|c| c.as_os_str().to_string_lossy().to_string())
+                .filter(|s| !s.is_empty())
+            {
+                if let Some(hub_title) = markdown_titles.get(&section) {
+                    breadcrumbs.push((hub_title.clone(), format!("{}/{}.html", SITE_URL, section)));
+                }
+            }
+            breadcrumbs.push((title.clone(), canonical_url.clone()));
+        }
+
         // Calculate asset prefix based on depth (e.g., "../" for one level deep)
         let asset_prefix = calculate_asset_prefix(relative_path);
-        
+
         // Generate navbar HTML with current page highlighted
         let navbar = generate_navbar(&navbar_items, true, dropdowns.as_ref(), &markdown_titles, Some(&rel_key), &asset_prefix);
 
-        let description = extract_description(markdown_content);
-        let page_url = format!("{}.html", rel_key);
-        let html_output = generate_html(title, &html_content, &navbar, &asset_prefix, &description, &page_url, &site_url)?;
-        
+        let html_output = generate_html(title, &description, &canonical_path, robots, &breadcrumbs, &html_content, &navbar, &asset_prefix)?;
+
         // Preserve directory structure in dist
         let html_path = dist_dir.join(relative_path.with_extension("html"));
-        
+
         // Create parent directories if they don't exist
         if let Some(parent) = html_path.parent() {
             fs::create_dir_all(parent)?;
         }
-        
+
         fs::write(&html_path, html_output)?;
         println!("Generated: {}", html_path.display());
     }
@@ -1618,18 +1968,32 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some("search"),
         "",
     );
+    let search_description =
+        "Full-text search across IDEEEP: quantitative methods, programming, epidemiology, diagnostics, syllabi, and research.";
+    let search_breadcrumbs = vec![
+        ("Home".to_string(), format!("{}/", SITE_URL)),
+        ("Search".to_string(), format!("{}/search.html", SITE_URL)),
+    ];
     let search_html = generate_html(
         "Search",
+        search_description,
+        "search.html",
+        "index, follow, max-image-preview:large",
+        &search_breadcrumbs,
         &search_page_content(),
         &search_navbar,
         "",
-        "Search across all IDEEEP pages: quantitative methods, programming, epidemiology, and research content.",
-        "search.html",
-        &site_url,
     )?;
     let search_path = dist_dir.join("search.html");
     fs::write(&search_path, search_html)?;
     println!("Generated: {}", search_path.display());
+
+    // Emit SEO/PWA support files: sitemap, robots, manifest, service worker.
+    write_sitemap(&markdown_files, dist_dir)?;
+    write_robots(dist_dir)?;
+    write_manifest(dist_dir)?;
+    write_service_worker(dist_dir)?;
+    write_headers(dist_dir)?;
 
     // Copy assets to dist after building
     copy_assets_to_dist()?;
