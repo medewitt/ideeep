@@ -5,7 +5,7 @@ title: "Maximum Likelihood Estimation"
 # Maximum Likelihood Estimation
 
 Maximum likelihood estimation (MLE) is the workhorse for fitting statistical models in epidemiology, from case-fatality proportions to hazard rates.
-It picks the parameter values that make the observed data most probable.
+It picks the parameter values that make the observed data most probable under some assumed likelihood function.
 
 ![The log-likelihood peaks at the maximum-likelihood estimate.](../assets/figures/likelihood.svg)
 

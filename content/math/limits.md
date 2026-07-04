@@ -5,7 +5,7 @@ title: "Limits"
 # Limits
 
 A limit describes the value a function or sequence approaches as its input moves toward some point.
-Biology is full of such limiting behaviour: as an epidemic runs its course the susceptible fraction approaches a fixed limit — the final epidemic size — and long-run averages of case counts converge.
+Biology is full of such limiting behaviors: as an epidemic runs its course the susceptible fraction approaches a fixed limit — the final epidemic size — and long-run averages of case counts converge.
 Limits are the foundation of [derivatives](derivatives.md), [integrals](integrals.md), and the convergence theorems that make [statistical inference](statistical-inference.md) work.
 
 ## Intuitive and formal definition
