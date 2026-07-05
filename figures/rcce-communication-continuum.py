@@ -14,7 +14,7 @@ from _style import apply_style, save, PALETTE, INK, MUTED
 apply_style()
 
 fig, ax = plt.subplots(figsize=(7.6, 3.6))
-ax.set_xlim(0, 12)
+ax.set_xlim(-0.6, 12.6)  # margin so the outer captions are not clipped
 ax.set_ylim(0, 7.4)  # headroom so the title clears the three-line stage labels
 ax.set_aspect("equal")
 ax.axis("off")
@@ -22,18 +22,19 @@ ax.axis("off")
 stages = [
     (2.0, "One-way\ndissemination", "Authority broadcasts;\nno reply expected", PALETTE[0]),
     (6.0, "Two-way\ndialogue", "Community questions\nshape the message", PALETTE[2]),
-    (10.0, "Three-way\ncommunity\nparticipation", "Affected people\nco-design the response", PALETTE[3]),
+    (10.0, "Three-way\ncommunity\nparticipation", "Affected people\nco-design response", PALETTE[3]),
 ]
 
 node_y = 4.1
 node_r = 0.55
 
-# background progression bar showing increasing engagement
+# background progression bar showing increasing engagement (kept low so it
+# does not collide with the per-stage captions above it)
 ax.annotate(
-    "", xy=(11.4, 1.15), xytext=(0.6, 1.15),
+    "", xy=(11.4, 0.5), xytext=(0.6, 0.5),
     arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.4),
 )
-ax.text(6.0, 0.6, "increasing engagement and participation",
+ax.text(6.0, 0.15, "increasing engagement and participation",
         ha="center", va="center", fontsize=9.5, color=MUTED, style="italic")
 
 for i, (x, title, sub, color) in enumerate(stages):
@@ -87,8 +88,8 @@ for i, (x, title, sub, color) in enumerate(stages):
 
     ax.text(x, node_y + node_r + 0.55, title, ha="center", va="bottom",
             fontsize=10.5, fontweight="bold", color=INK)
-    ax.text(x, comm[1] - node_r - 0.35, sub, ha="center", va="top",
-            fontsize=8.2, color=MUTED)
+    ax.text(x, comm[1] - node_r * 0.85 - 0.12, sub, ha="center", va="top",
+            fontsize=8.0, color=MUTED)
 
 # stage-to-stage progression arrows between the top nodes
 for (x0, *_), (x1, *_) in zip(stages[:-1], stages[1:]):
