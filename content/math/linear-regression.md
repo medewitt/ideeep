@@ -16,10 +16,8 @@ For a single observation this reads $y_i = x_i^\top\beta + \varepsilon_i$.
 
 ## Ordinary least squares
 
-Ordinary least squares (OLS) chooses $\hat\beta$ which minimizes the sum of squared residuals: \[ \hat\beta = \arg\min_\beta \sum_i \left(y_i - x_i^\top\beta\right)^2 = \arg\min_\beta \lVert y - X\beta\rVert^2. \] 
-There is a geometric argument here when thinking about finding a plane which minimizes the distance between $\hat y$ and $y$ (so squaring the difference is easier to minimize and also gives equal weight to positive and negative differences).
-Setting the gradient to zero gives the *normal equations* $X^\top X\,\hat\beta = X^\top y$, whose closed-form solution is \[ \hat\beta = (X^\top X)^{-1}X^\top y. \] 
-This uses standard [matrix operations](matrix-operations.md) and the [inverse](matrix-inverse-and-determinant.md) of the $p\times p$ matrix $X^\top X$, which exists as long as the columns of $X$ are not collinear.
+Ordinary least squares (OLS) chooses $\hat\beta$ which minimizes the sum of squared residuals: \[ \hat\beta = \arg\min_\beta \sum_i \left(y_i - x_i^\top\beta\right)^2 = \arg\min_\beta \lVert y - X\beta\rVert^2. \] There is a geometric argument here when thinking about finding a plane which minimizes the distance between $\hat y$ and $y$ (so squaring the difference is easier to minimize and also gives equal weight to positive and negative differences).
+Setting the gradient to zero gives the *normal equations* $X^\top X\,\hat\beta = X^\top y$, whose closed-form solution is \[ \hat\beta = (X^\top X)^{-1}X^\top y. \] This uses standard [matrix operations](matrix-operations.md) and the [inverse](matrix-inverse-and-determinant.md) of the $p\times p$ matrix $X^\top X$, which exists as long as the columns of $X$ are not collinear.
 
 ## Interpreting coefficients
 
