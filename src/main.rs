@@ -1032,6 +1032,10 @@ fn generate_html(
     <meta property="og:description" content="{d_attr}">
     <meta property="og:url" content="{canonical}">
     <meta property="og:image" content="{og_image}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Wake Forest University IDEEEP concentration — Infectious Disease Ecology, Evolution and Epidemiology">
     <meta property="og:locale" content="en_US">
 
     <!-- Twitter -->
@@ -1039,6 +1043,7 @@ fn generate_html(
     <meta name="twitter:title" content="{t_attr}">
     <meta name="twitter:description" content="{d_attr}">
     <meta name="twitter:image" content="{og_image}">
+    <meta name="twitter:image:alt" content="Wake Forest University IDEEEP concentration — Infectious Disease Ecology, Evolution and Epidemiology">
 
     <!-- Icons / PWA -->
     <link rel="icon" type="image/png" href="{ap}assets/favicon.png" />
