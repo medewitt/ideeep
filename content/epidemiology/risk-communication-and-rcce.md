@@ -9,6 +9,8 @@ An outbreak response is only as good as the information that reaches the people 
 Risk communication and community engagement (RCCE) is the timely, accurate, two-way exchange of information, advice, and opinion between experts or officials and the people who face a threat.
 Treated seriously, it is a core epidemiologic function on equal footing with surveillance and case investigation, not a message drafted after the science is done.
 
+![A jargon-heavy message and its plain-language rewrite scored on the Flesch Reading Ease scale, where the rewrite is markedly easier to read.](../assets/figures/risk-communication-and-rcce.svg)
+
 ## A core capacity, not an afterthought
 
 Risk communication is one of the eight core capacities that the International Health Regulations (IHR 2005) require every country to build and maintain.

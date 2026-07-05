@@ -9,6 +9,8 @@ A pathogen does not spread through an undifferentiated crowd; it spreads through
 Those social arrangements decide who is exposed, who is susceptible, who seeks care, and who is ever counted, so they shape the epidemic curve as directly as the pathogen's biology does.
 A model that treats contact as random averages away exactly the structure that drives transmission ([Buckee et al., 2021, Nature](https://consensus.app/papers/details/52a6618f231c5d2b9610def080d25511/?utm_source=claude_desktop)).
 
+![Two contact matrices with identical total contacts per person, where assortative mixing yields a higher basic reproduction number than proportionate mixing.](../assets/figures/social-drivers-of-transmission.svg)
+
 ## Four different things we conflate
 
 "Risk" hides at least four distinct social processes, and confusing them misdirects control.

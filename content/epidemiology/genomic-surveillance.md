@@ -9,6 +9,8 @@ Two patients infected by the same chain carry pathogens whose genomes differ by 
 Genomic surveillance turns that fact into a tool: sequence the pathogen, count the differences, and read who is linked to whom.
 The power comes not from the sequence alone but from joining it to metadata such as date, place, and host, so that a phylogeny becomes an epidemiologic map.
 
+![A pairwise SNP-distance heatmap among sampled genomes, with low-distance blocks on the diagonal outlined as transmission clusters.](../assets/figures/genomic-surveillance.svg)
+
 ## The end-to-end workflow
 
 A genomic-surveillance system is a pipeline, not a single assay.

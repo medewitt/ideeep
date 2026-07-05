@@ -8,6 +8,8 @@ description: "Making the transmission rate time-varying to fold seasonality and 
 Most compartmental models freeze the transmission rate $\beta$ at a single number, but the real world has seasons: measles surges when schools reopen, influenza peaks in winter, and mosquito-borne infections track the rains.
 Climate forcing lets $\beta$ breathe with the calendar, and that one change turns a model that settles to a flat endemic level into one that can beat out annual, biennial, or irregular multi-year cycles.
 
+![A seasonally forced SIR model showing recurrent annual epidemics, with stronger seasonal forcing producing larger swings than weak forcing.](../assets/figures/climate-forcing-in-transmission-models.svg)
+
 ## Seasonal forcing of the transmission rate
 
 The simplest way to inject seasonality is to write the transmission rate as a periodic function of time.

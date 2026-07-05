@@ -9,6 +9,8 @@ Quantitative training teaches you to make an estimate defensible, but rarely to 
 That second question is not a footnote to the science; in outbreak work it is often the science, because the people in your rows are patients, communities, and the source countries of the pathogens you sequence.
 This page treats ethics and governance as a cross-cutting thread woven through every course in the concentration, not a one-time compliance form.
 
+![Quasi-identifier group sizes before and after coarsening, where coarsening lifts the smallest group above the k-anonymity threshold.](../assets/figures/research-data-ethics-and-governance.svg)
+
 ## Human subjects, review, and consent
 
 Any work that collects data about identifiable living people, or uses their existing data, is human-subjects research and needs review before it starts, not after.

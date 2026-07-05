@@ -8,6 +8,8 @@ description: "Coupling human protective behavior to transmission dynamics, where
 Classic compartmental models fix the transmission rate $\beta$ as a constant, but people are not passive substrate for a pathogen: they wash hands, mask, distance, and vaccinate when they perceive risk, and behavior–disease coupled models close the loop by letting the epidemic shape behavior and behavior reshape the epidemic.
 The result is a feedback system whose dynamics — flattened peaks, delays, and recurrent waves — differ qualitatively from any model with a frozen $\beta$.
 
+![Epidemic prevalence over time with and without prevalence-dependent protective behavior, showing behavior flattens and delays the peak.](../assets/figures/behavior-disease-coupled-models.svg)
+
 ## Why a fixed transmission rate fails
 
 Transmission is a product of contact and per-contact risk, and both fall when a population reacts to an outbreak.

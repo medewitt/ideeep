@@ -9,6 +9,8 @@ Pathogens do not circulate in a vacuum; they ride on mosquitoes that breed in wa
 Climate and environment set the stage on which transmission plays out, tuning vector abundance, pathogen replication, and the chance of spillover.
 This page treats that environmental leg quantitatively, because it is the part of [One Health surveillance](one-health-surveillance.md) and planetary health that data-focused programs most often leave thin.
 
+![A unimodal thermal performance curve where relative transmission peaks at an intermediate temperature and falls toward both cold and hot extremes.](../assets/figures/climate-and-disease-transmission.svg)
+
 ## Temperature shapes vector and pathogen traits
 
 Most vectors are ectotherms, so nearly every rate that matters for transmission depends on temperature.

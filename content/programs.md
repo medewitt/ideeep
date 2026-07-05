@@ -65,7 +65,7 @@ analytics, and graduate research. Course numbers are illustrative.
 | BIO 6xx | [Statistical Modeling of Infectious Disease Dynamics](statistical-modeling-id.md) | Masters/PhD |
 | BIO 6xx | [Spatial Epidemiology and Disease Mapping](spatial-epidemiology.md) | Masters/PhD |
 | BIO 6xx | [Evolutionary Epidemiology and the Evolution of Virulence](evolutionary-epidemiology.md) | Masters/PhD |
-| BIO 6xx | [Social and Behavioral Science of Infectious Disease](social-behavioral-id.md) | Masters/PhD |
+| BIO 6xx | [People, Plagues, and Policy: The Human Dimensions of Infectious Disease](people-plagues-policy.md) | Masters/PhD |
 | BIO 6xx | [Applied Genomic and Phylodynamic Epidemiology](genomic-epidemiology.md) | Masters/PhD |
 | BIO 6xx | [Health Economics and Economic Evaluation of ID Interventions](health-economics-id.md) | Masters/PhD |
 | BIO 6xx | [IDEEE Research Seminar and Journal Club](ideee-seminar.md) | Masters/PhD |

@@ -1,16 +1,19 @@
 ---
-title: "Social and Behavioral Science of Infectious Disease"
-description: "The human side of transmission: social and structural drivers, health behavior and behavior-disease feedback, qualitative and mixed methods, and community engagement, integrated with quantitative epidemiology."
+title: "People, Plagues, and Policy"
+description: "The human dimensions of epidemics, taught jointly with anthropology, sociology, and policy: social and structural drivers, behavior and behavior-disease feedback, qualitative and mixed methods, communication, and turning evidence into policy."
 author: Michael DeWitt
 date: 2026-07-05
 ---
 
 This course develops the human dimensions of infectious disease alongside the
 quantitative ones: who is exposed and why, how behavior and transmission feed
-back on one another, and how qualitative and mixed methods answer questions that
-counts and rates cannot. It complements the modeling and analytics courses by
-teaching students to situate a model in the social and cultural world that
-generates the data.
+back on one another, how qualitative and mixed methods answer questions that
+counts and rates cannot, and how evidence becomes policy. It is designed as a
+joint course with anthropology, sociology, and colleagues who work on health
+policy, so students learn the material from the disciplines that produced it. It
+complements the modeling and analytics courses by teaching students to situate a
+model in the social, cultural, and political world that generates the data and
+acts on the results.
 
 The course syllabus is shown below.
 
@@ -22,13 +25,13 @@ The course syllabus is shown below.
 
 # Course title and instructors
 
-**Title:** Social and Behavioral Science of Infectious Disease  
-**Course Number:** BIO 6xx (proposed; cross-listed undergraduate, confirm with the Department of Biology)  
+**Title:** People, Plagues, and Policy: The Human Dimensions of Infectious Disease  
+**Course Number:** BIO 6xx (proposed; jointly offered and cross-listed with Anthropology and Sociology, confirm with the Departments of Biology, Anthropology, and Sociology)  
 **Semester:** TBD  
 **Credit Hours:** 3  
 **Meeting Time:** TBD
 
-**Course Director:** Michael E. DeWitt, MS  
+**Course Director:** Michael E. DeWitt, MS, with co-instructors from Anthropology, Sociology, and health policy  
 **Email:** medewitt@wakehealth.edu or dewime23@wfu.edu  
 
 # Course description
@@ -42,9 +45,14 @@ side of the field. Students study the social and structural determinants of
 transmission, contact structure as a social phenomenon, health-behavior theory
 and behavior-disease feedback models, and the qualitative and mixed methods used
 to understand meaning, context, and barriers to care and to intervention uptake.
-Throughout, the emphasis is on integration: pairing social-science evidence with
-transmission models and surveillance data rather than treating it as a separate
-track.
+Students also learn to translate that evidence into policy: framing findings for
+decision-makers and working through how social and political context shapes what
+interventions are feasible. Throughout, the emphasis is on integration: pairing
+social-science evidence with transmission models and surveillance data rather
+than treating it as a separate track. As a joint offering with anthropology,
+sociology, and policy colleagues, the course is co-taught, and students work in
+mixed teams that mirror the interdisciplinary collaborations the field depends
+on.
 
 # Learning outcomes
 
@@ -59,8 +67,10 @@ Upon successful completion of this course, students will be able to:
 - Design and appraise qualitative and mixed-methods studies, and judge their rigor
 - Integrate social and behavioral evidence with quantitative models and
   surveillance data
-- Work across the epidemiology and social-science boundary as part of an
-  interdisciplinary team
+- Translate social and behavioral evidence into policy-relevant recommendations
+  for decision-makers
+- Work across the epidemiology, social-science, and policy boundaries as part of
+  an interdisciplinary team
 
 # Textbook and other resources
 
@@ -110,7 +120,7 @@ draft outline of topics.
 | 11 | Mixed-methods designs and integration |
 | 12 | Medical anthropology in epidemic response |
 | 13 | Community engagement and behavior change |
-| 14 | Team science across the epi–social-science boundary |
+| 14 | Translating evidence into policy, and interdisciplinary team science |
 | 15 | Project presentations and wrap-up |
 
 Note: Specific dates will be provided at the beginning of the semester. Topics

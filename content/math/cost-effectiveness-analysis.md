@@ -9,6 +9,8 @@ Cost-effectiveness analysis (CEA) asks not just whether an intervention works bu
 It compares each option's extra cost against its extra health benefit, so that a fixed budget buys as much health as possible.
 Economic evaluation is a standard curricular component that quantitative modeling programs often omit, leaving analysts fluent in transmission dynamics but unable to translate a model into a funding decision.
 
+![A cost-effectiveness plane showing two intervention strategies against a willingness-to-pay threshold line through the origin.](../assets/figures/cost-effectiveness-analysis.svg)
+
 ## Costs and health effects
 
 Every option is summarized by two numbers: its total cost $C$ and its total health effect $E$, with costs including downstream care averted or induced and effects measured on a common scale so different diseases compare.

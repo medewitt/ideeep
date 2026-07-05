@@ -9,6 +9,8 @@ A malaria outbreak is not a line of dominoes from rainfall to cases; it is a web
 Systems thinking is the habit of seeing that web — the loops, delays, and boundaries — instead of a single chain of causes, and systems mapping is how a team draws it down so everyone can argue about the same picture.
 It is the cross-cutting meta-competency that ties the seminar and its courses together, because the human-animal-environment problems at the heart of One Health simply do not sit inside one discipline.
 
+![A signed causal-loop diagram linking rainfall, vector abundance, cases, control effort, and complacency, with reinforcing and balancing feedback loops.](../assets/figures/systems-thinking-and-systems-mapping.svg)
+
 ## Why interconnected problems resist reductionism
 
 The reductionist reflex is to cut a problem into pieces, hand each piece to a specialist, and reassemble the answers.

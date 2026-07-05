@@ -9,6 +9,8 @@ Epidemiology counts cases, estimates rates, and compares exposures, but a rate n
 Qualitative methods recover the meaning, context, and mechanism behind the numbers, and mixed-methods designs bind the two kinds of evidence into one account.
 Treated as core epidemiologic tools rather than soft add-ons, they are how a study learns not just how many were infected but why transmission happened and why an intervention did or did not take hold.
 
+![A code-saturation curve where the cumulative number of new themes rises and then plateaus as more interviews are analyzed.](../assets/figures/qualitative-and-mixed-methods.svg)
+
 ## What qualitative research answers that counts cannot
 
 A well-run cohort can tell you that vaccine uptake in a district was 40 percent, but it cannot tell you what the other 60 percent were weighing when they declined.
