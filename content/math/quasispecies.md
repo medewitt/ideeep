@@ -27,6 +27,9 @@ The equilibrium is a mutant cloud whose height falls off with Hamming distance f
 The **Hamming distance** between two sequences of equal length is simply the number of positions at which they differ: line the two genomes up site by site, mark every mismatch, and count the marks.
 For binary sequences it is computed as $d_H(x, y) = \sum_{\ell=1}^{L} \mathbb{1}[x_\ell \neq y_\ell]$ — bitwise XOR the two strings and sum the ones — and for a four-letter nucleotide alphabet it is the same tally of disagreeing sites.
 Because each point mutation flips exactly one site, the Hamming distance from the master is precisely the number of mutations a genome carries, so grouping sequences into *error classes* $k = 0, 1, \dots, L$ by their distance from the master (as the simulation below does) is the natural coordinate for the whole model.
+
+![Two aligned ten-base sequences with three mismatched columns (G→T, C→G, C→A) highlighted; the Hamming distance is the count of differing columns, here three.](../assets/figures/hamming-distance.svg)
+
 Selection concentrates weight on the peak; mutation smears it outward; the balance sets the shape.
 The subtle, important part is that selection does not maximise the fitness of the *most common* sequence — it maximises the mean fitness of the *whole cloud*.
 A slightly lower peak surrounded by fit neighbours (a flat part of the landscape) can outcompete a taller peak surrounded by lethal mutants — the "survival of the flattest" effect that has no analogue in mutation-free selection.
