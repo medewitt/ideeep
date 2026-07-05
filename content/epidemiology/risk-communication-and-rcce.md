@@ -15,8 +15,8 @@ Treated seriously, it is a core epidemiologic function on equal footing with sur
 
 Risk communication is one of the eight core capacities that the International Health Regulations (IHR 2005) require every country to build and maintain.
 It sits alongside surveillance, laboratory diagnostics, and response, because a detection that no one can act on prevents nothing.
-Reviews of the European COVID-19 response found risk communication repeatedly under-resourced and improvised, despite this formal mandate ([Warren et al., 2021, Journal of Risk Research](https://consensus.app/papers/details/a3be4ae9e14258e3964f7460541649e6/?utm_source=claude_desktop)).
-Building the capacity deliberately, rather than assembling it during a crisis, is what the regulation actually asks for ([Capurro et al., 2025, Canadian Journal of Public Health](https://consensus.app/papers/details/d60a215b0a0058aaa36533cbad7ed184/?utm_source=claude_desktop)).
+Reviews of the European COVID-19 response found risk communication repeatedly under-resourced and improvised, despite this formal mandate ([Warren et al., 2021, Journal of Risk Research](https://doi.org/10.1080/13669877.2021.1947874)).
+Building the capacity deliberately, rather than assembling it during a crisis, is what the regulation actually asks for ([Capurro et al., 2025, Canadian Journal of Public Health](https://doi.org/10.17269/s41997-025-01002-y)).
 
 ## The communication continuum
 
@@ -24,7 +24,9 @@ It helps to think of engagement along a continuum of increasing participation.
 One-way dissemination pushes information out: a press release, a poster, a broadcast advisory.
 Two-way dialogue listens back, so that questions, rumors, and lived constraints from the community shape the next message.
 Three-way community participation goes further, treating affected people as partners who help design and deliver the response itself.
-Responses that stop at one-way dissemination tend to fail, because behavior change depends on trust and relevance that only dialogue can build ([Bardosh et al., 2020, Globalization and Health](https://consensus.app/papers/details/96b9bf44b3d75d9cb8dca9e7a541c43b/?utm_source=claude_desktop)).
+Responses that stop at one-way dissemination tend to fail, because behavior change depends on trust and relevance that only dialogue can build ([Bardosh et al., 2020, Globalization and Health](https://doi.org/10.1186/s12992-020-00652-6)).
+
+![The risk-communication continuum from one-way dissemination through two-way dialogue to three-way community participation.](../assets/figures/rcce-communication-continuum.svg)
 
 ## Audiences are not one public
 
@@ -44,6 +46,8 @@ Readability formulas give a rough, automatable check on whether a message has dr
 
 Trust is the currency of risk communication, slow to earn and quick to spend.
 It is built by being first, being right, being credible, and being empathetic, and by openly acknowledging what is not yet known.
+Crucially, trust is earned at the individual level: it is not conferred on institutions by default but built person by person, through each honest and reliable interaction.
+Trust is built by being clear, credible, and openly acknowledging what is not yet known.
 A single confident claim that later proves wrong can undo months of careful engagement, which is why honesty about uncertainty protects trust rather than eroding it.
 
 ## Infodemics and misinformation
@@ -52,6 +56,8 @@ An outbreak of disease now travels alongside an outbreak of information.
 Misinformation is false content shared without intent to harm; disinformation is false content spread deliberately to deceive.
 An infodemic is the overwhelming flood of both, mixed with accurate information, that makes it hard for people to find trustworthy guidance when they need it.
 Infodemic management treats this as a measurable problem: listening for circulating rumors, filling information voids quickly, and amplifying credible sources rather than only debunking false ones.
+
+![A false rumor spreading widely through a social network compared with an accurate pamphlet that is true but reaches far fewer people.](../assets/figures/misinformation-network-reach.svg)
 
 ## Communicating uncertainty honestly
 
@@ -162,8 +168,11 @@ end
 
 The best surveillance and the sharpest model change nothing if the guidance they produce cannot be understood, trusted, and acted on by the people at risk.
 RCCE is the function that closes that gap, and it fails predictably when it is improvised late, written in jargon, or pushed one way into communities that were never engaged.
-Notably, science communication is rarely a formal part of scientific training, so most epidemiologists were never taught it ([Singh et al., 2021, Neuropsychopharmacology](https://consensus.app/papers/details/f2e49b510bfd575abc858886dc6b449e/?utm_source=claude_desktop)).
-The encouraging finding is that structured training measurably improves it, so this is a skill to build rather than a talent to hope for ([Greer et al., 2024, European Journal of Public Health](https://consensus.app/papers/details/719658029a315618b4b6b8506bac15d0/?utm_source=claude_desktop)).
+Notably, science communication is rarely a formal part of scientific training, so most epidemiologists were never taught it ([Singh et al., 2021, Neuropsychopharmacology](https://doi.org/10.1038/s41386-021-01084-5)).
+The encouraging finding is that structured training measurably improves it, so this is a skill to build rather than a talent to hope for ([Greer et al., 2024, European Journal of Public Health](https://doi.org/10.1093/eurpub/ckae144.441)).
+Formal training of this kind already exists and is used in practice: the CDC's Crisis and Emergency Risk Communication (CERC) program is a widely adopted body of training and doctrine that guides how responders communicate during investigations and outbreak responses.
+Its core principles are compact and teachable: be first, be right, be credible, express empathy, promote action, and show respect.
+CERC is a concrete demonstration that risk communication can be taught as a discipline rather than left to improvisation.
 
 ## Related
 

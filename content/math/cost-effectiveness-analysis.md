@@ -19,6 +19,9 @@ The standard reference for these methods is Drummond et al., *Methods for the Ec
 ## Health-outcome metrics
 
 Two metrics dominate.
+Death is the most natural thing to count, but mortality alone captures only a fraction of a disease's burden on a population.
+Much of the damage is non-fatal: acute and chronic symptoms, temporary or permanent disability, long-term sequelae such as post-infectious or "long" syndromes that persist well beyond the initial illness and any hospitalization, the reduced quality of life these impose, and the productivity and caregiving costs they push onto families and communities.
+QALYs and DALYs exist precisely to capture this fuller picture, because each combines length of life with the quality of the health states lived through it, so that non-fatal morbidity is counted alongside deaths averted rather than ignored.
 A **quality-adjusted life year** (QALY) is one year of life weighted by a utility between $0$ (death) and $1$ (full health), so an intervention that adds effects is credited with the *QALYs gained* relative to a comparator.
 A **disability-adjusted life year** (DALY) is a year of healthy life *lost* to illness or premature death, so an intervention is instead credited with the *DALYs averted* — the mirror image of QALYs gained, both signs of more healthy time.
 
@@ -65,7 +68,7 @@ and the option with the largest NMB at a given $\lambda$ is preferred, which avo
 
 For infectious diseases the effect of an intervention is not confined to those who receive it.
 Vaccinating some people lowers everyone's exposure through herd immunity, so the value of a program depends on its coverage — a nonlinear externality that a static per-person calculation misses entirely.
-This is why infectious-disease CEA is built on dynamic [transmission models](sir.md) rather than static decision trees, a point argued for public-health economic evaluation by [Breeze et al., 2023, Health Economics](https://consensus.app/papers/details/e175dbde70fb5650bbd3eb830f46750d/?utm_source=claude_desktop).
+This is why infectious-disease CEA is built on dynamic [transmission models](sir.md) rather than static decision trees, a point argued for public-health economic evaluation by [Breeze et al., 2023, Health Economics](https://doi.org/10.1002/hec.4681).
 
 ## Discounting future costs and effects
 
@@ -82,7 +85,7 @@ typically applied at $r \approx 0.03$ to both costs and effects, which keeps the
 
 Every input — costs, utilities, transmission parameters — is itself uncertain.
 **Probabilistic sensitivity analysis** assigns each input a distribution, samples them jointly many times, and re-runs the model to produce a cloud of ICERs, summarized as the probability that each option is cost-effective across a range of $\lambda$.
-The case for embedding such evaluation in the training of modelers and policymakers is made by [Ofori et al., 2024, Annals of Global Health](https://consensus.app/papers/details/e4841510c8825f80b5dfe01e06dbf034/?utm_source=claude_desktop), and the link between formal decision modeling and cost-effective delivery by [Zouo et al., 2024, Finance & Accounting Research Journal](https://consensus.app/papers/details/e140295926d552d1b7d77ae49bee4d21/?utm_source=claude_desktop).
+The case for embedding such evaluation in the training of modelers and policymakers is made by [Ofori et al., 2024, Annals of Global Health](https://doi.org/10.5334/aogh.4383), and the link between formal decision modeling and cost-effective delivery by [Zouo et al., 2024, Finance & Accounting Research Journal](https://doi.org/10.51594/farj.v6i11.1699).
 
 ## A worked example
 

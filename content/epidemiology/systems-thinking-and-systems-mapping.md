@@ -16,7 +16,7 @@ It is the cross-cutting meta-competency that ties the seminar and its courses to
 The reductionist reflex is to cut a problem into pieces, hand each piece to a specialist, and reassemble the answers.
 That works when the pieces are nearly independent, and it fails exactly when they are not — when the pathogen, the host, the vector, the climate, and the policy response are all coupled and each responds to the others.
 A One Health problem is the second kind: the interesting behavior lives in the interactions, so any single-discipline slice averages away the structure that actually drives the dynamics.
-This is why "systems thinking" is named as a core competency domain for the field rather than an optional flourish ([Frankson et al., 2016, Frontiers in Public Health](https://consensus.app/papers/details/f73f3384df3157f19117c2872c3a3296/?utm_source=claude_desktop)), and why later revisions keep it central as the competencies are updated ([Laing et al., 2023, CABI One Health](https://consensus.app/papers/details/f8c069b3bd235270865949f75d841d98/?utm_source=claude_desktop)).
+This is why "systems thinking" is named as a core competency domain for the field rather than an optional flourish ([Frankson et al., 2016, Frontiers in Public Health](https://doi.org/10.3389/fpubh.2016.00192)), and why later revisions keep it central as the competencies are updated ([Laing et al., 2023, CABI One Health](https://doi.org/10.1079/cabionehealth.2023.0002)).
 
 ## Causal loop diagrams
 
@@ -53,8 +53,8 @@ Boundary-drawing is therefore a design choice to make explicitly and revisit, no
 ## Systems mapping as team science
 
 The deepest value of a systems map is social: it externalizes each expert's private mental model onto a shared canvas where clinicians, veterinarians, ecologists, and policymakers can see where their arrows disagree.
-That shared picture is what lets cross-sector teams reason about the same problem instead of talking past one another, and it maps directly onto the One Health competency domains of **teams and collaboration**, **leadership**, and **roles and responsibilities** alongside **systems thinking** ([Muehlen et al., 2025, One Health Outlook](https://consensus.app/papers/details/86fcb14b71545f3995fb5112ff87ce2a/?utm_source=claude_desktop)).
-Graduate programs increasingly build this capacity deliberately, treating interdisciplinary thinking as a skill to teach rather than a trait to hope for ([Sullivan et al., 2026, One Health](https://consensus.app/papers/details/53964361b4525e25b9a30bffe5c160cd/?utm_source=claude_desktop)), and pairing it with integrative pedagogy that puts learners from different fields around one map ([Cai et al., 2024, Science in One Health](https://consensus.app/papers/details/7f8cd7bbd31d527793176d6e9219c345/?utm_source=claude_desktop)).
+That shared picture is what lets cross-sector teams reason about the same problem instead of talking past one another, and it maps directly onto the One Health competency domains of **teams and collaboration**, **leadership**, and **roles and responsibilities** alongside **systems thinking** ([Muehlen et al., 2025, One Health Outlook](https://doi.org/10.1186/s42522-025-00135-x)).
+Graduate programs increasingly build this capacity deliberately, treating interdisciplinary thinking as a skill to teach rather than a trait to hope for ([Sullivan et al., 2026, One Health](https://doi.org/10.1016/j.onehlt.2026.101455)), and pairing it with integrative pedagogy that puts learners from different fields around one map ([Cai et al., 2024, Science in One Health](https://doi.org/10.1016/j.soh.2024.100079)).
 
 ## A worked example
 
@@ -101,7 +101,14 @@ G = nx.DiGraph()
 for u, v, s in edges:
     G.add_edge(u, v, sign=s)
 
-for cycle in sorted(nx.simple_cycles(G), key=len):
+# Canonicalize each cycle (rotate to start at its smallest node) so the
+# output is deterministic regardless of the order simple_cycles emits them.
+def canon(cycle):
+    i = cycle.index(min(cycle))
+    return cycle[i:] + cycle[:i]
+
+cycles = sorted((canon(c) for c in nx.simple_cycles(G)), key=lambda c: (len(c), c))
+for cycle in cycles:
     ring = cycle + [cycle[0]]
     signs = [G[ring[i]][ring[i + 1]]["sign"] for i in range(len(cycle))]
     n_neg = sum(1 for s in signs if s < 0)
@@ -111,8 +118,8 @@ for cycle in sorted(nx.simple_cycles(G), key=len):
 
 <!-- python-output:auto -->
 ```text
-balancing   (1 neg): vector -> cases -> control -> vector
-reinforcing (2 neg): vector -> cases -> complacency -> control -> vector
+balancing   (1 neg): cases -> control -> vector -> cases
+reinforcing (2 neg): cases -> complacency -> control -> vector -> cases
 ```
 <!-- /python-output:auto -->
 

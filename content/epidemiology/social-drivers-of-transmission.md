@@ -7,7 +7,7 @@ description: "How social, structural, and cultural forces decide who is exposed,
 
 A pathogen does not spread through an undifferentiated crowd; it spreads through a society that has already sorted people into who shares a bedroom, who rides a crowded bus to a job that cannot be done from home, and who can afford to stay home when sick.
 Those social arrangements decide who is exposed, who is susceptible, who seeks care, and who is ever counted, so they shape the epidemic curve as directly as the pathogen's biology does.
-A model that treats contact as random averages away exactly the structure that drives transmission ([Buckee et al., 2021, Nature](https://consensus.app/papers/details/52a6618f231c5d2b9610def080d25511/?utm_source=claude_desktop)).
+A model that treats contact as random averages away exactly the structure that drives transmission ([Buckee et al., 2021, Nature](https://doi.org/10.1038/s41586-021-03694-x)).
 
 ![Two contact matrices with identical total contacts per person, where assortative mixing yields a higher basic reproduction number than proportionate mixing.](../assets/figures/social-drivers-of-transmission.svg)
 
@@ -17,7 +17,7 @@ A model that treats contact as random averages away exactly the structure that d
 **Exposure** is the chance of encountering the pathogen at all, set by housing density, occupation, and mobility.
 **Susceptibility** is the chance that an exposure becomes an infection, shaped by age, nutrition, comorbidity, and prior immunity — themselves patterned by social conditions.
 **Access to care** determines whether an infection is treated and its onward transmission cut short, and it depends on insurance, distance, trust, and time off work.
-**Reporting** decides whether a case ever enters surveillance, so that the people with the least access are also the least visible, and the data quietly understate disease exactly where it is worst ([Noppert et al., 2016, Journal of Epidemiology & Community Health](https://consensus.app/papers/details/df62352c43875bc29e16c2309eeedd92/?utm_source=claude_desktop)).
+**Reporting** decides whether a case ever enters surveillance, so that the people with the least access are also the least visible, and the data quietly understate disease exactly where it is worst ([Noppert et al., 2016, Journal of Epidemiology & Community Health](https://doi.org/10.1136/jech-2016-207967)).
 
 ## Contact structure is a social phenomenon
 
@@ -25,14 +25,14 @@ Transmission requires contact, and contacts are not drawn uniformly at random.
 People mix **assortatively**: children with children, coworkers with coworkers, households within households.
 Epidemiologists encode this in a **who-acquires-infection-from-whom (WAIFW)** or contact matrix $C$, whose entry $C_{ij}$ is the mean number of contacts a member of group $i$ has with members of group $j$ per unit time.
 Under **proportionate mixing**, contacts are shared across groups only in proportion to each group's activity, and the matrix is separable, $C_{ij}\propto a_i a_j$.
-Under **assortative mixing**, the diagonal is inflated because people preferentially contact their own group, and that concentration is what a homogeneous model cannot see ([Arthur et al., 2017, Philosophical Transactions of the Royal Society B](https://consensus.app/papers/details/82e0c9e61a145a1a933419630f12d3c3/?utm_source=claude_desktop)).
+Under **assortative mixing**, the diagonal is inflated because people preferentially contact their own group, and that concentration is what a homogeneous model cannot see ([Arthur et al., 2017, Philosophical Transactions of the Royal Society B](https://doi.org/10.1098/rstb.2016.0454)).
 
 ## Structural determinants are upstream causes
 
 The contact matrix is not given by nature; it is produced by structure.
 Crowded or multigenerational housing raises within-household contact, essential-worker occupations remove the option to distance, and poverty and discrimination compress people into the settings where both exposure and susceptibility are highest.
 These are **upstream causes**: they act before any individual behavior, and they explain why the same pathogen produces sharply different attack rates across neighborhoods that share a climate and a virus.
-Treating the resulting disparity as a fixed group attribute rather than a modifiable structural input is both scientifically wrong and ethically corrosive ([Bedson et al., 2021, Nature Human Behaviour](https://consensus.app/papers/details/49c6e0bc50975414a0e9ea63fe00c01e/?utm_source=claude_desktop)).
+Treating the resulting disparity as a fixed group attribute rather than a modifiable structural input is both scientifically wrong and ethically corrosive ([Bedson et al., 2021, Nature Human Behaviour](https://doi.org/10.1038/s41562-021-01136-2)).
 
 ## Heterogeneity concentrates transmission
 
@@ -127,7 +127,7 @@ println("R0 assortative:   ", round(R0(C_assort), digits=3))
 
 The same virus, the same $q$, and the same average contact rate can produce an $R_0$ of $1.2$ or $2.0$ depending only on how a society arranges contact — so a transmission model that omits social structure is not merely imprecise, it can be qualitatively wrong about whether an outbreak grows.
 Worse, the omission is not neutral: because structural forces put exposure, susceptibility, poor access, and undercounting on the same people, a model blind to structure understates risk exactly where disparities are widest and can steer resources away from the groups driving and bearing transmission.
-Building social and behavioral inputs into the contact matrix, rather than averaging them away, is what lets a model both predict spread and avoid amplifying the inequities that produced it ([Bedson et al., 2021, Nature Human Behaviour](https://consensus.app/papers/details/49c6e0bc50975414a0e9ea63fe00c01e/?utm_source=claude_desktop)).
+Building social and behavioral inputs into the contact matrix, rather than averaging them away, is what lets a model both predict spread and avoid amplifying the inequities that produced it ([Bedson et al., 2021, Nature Human Behaviour](https://doi.org/10.1038/s41562-021-01136-2)).
 
 ## Related
 

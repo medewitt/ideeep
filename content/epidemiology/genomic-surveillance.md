@@ -17,7 +17,7 @@ A genomic-surveillance system is a pipeline, not a single assay.
 A clinical or environmental sample is collected, its nucleic acid extracted, and the pathogen sequenced, most often on Illumina short-read platforms for accuracy or Oxford Nanopore for portable, real-time reads.
 Raw reads are quality-controlled and assembled into a consensus genome, which is aligned against a reference and against other samples.
 Phylogenetic reconstruction then places each genome on a tree, and the tree is only useful once each tip is annotated with its collection date, location, and host.
-That last step, integration with [surveillance metadata](surveillance-systems.md), is what separates genomic epidemiology from sequencing for its own sake ([Hill et al., 2021, Trends in Parasitology](https://consensus.app/papers/details/b580a796765159219179e4863343ba7e/?utm_source=claude_desktop)).
+That last step, integration with [surveillance metadata](surveillance-systems.md), is what separates genomic epidemiology from sequencing for its own sake ([Hill et al., 2021, Trends in Parasitology](https://doi.org/10.1016/j.pt.2021.08.007)).
 
 ## SNP distances and transmission clusters
 
@@ -37,7 +37,7 @@ Layering resistance onto the transmission tree shows not just that a cluster is 
 ## Established systems and tools
 
 Genomic surveillance is already operational, not hypothetical.
-For foodborne disease, the United States runs **PulseNet** and the FDA's **GenomeTrakr**, national networks that routinely sequence enteric pathogens and match isolates across states to detect multi-jurisdiction outbreaks faster than interviews alone ([Gensheimer et al., 2024, Journal of Public Health Management & Practice](https://consensus.app/papers/details/512507a1850859689bdc463c5ba04301/?utm_source=claude_desktop)).
+For foodborne disease, the United States runs **PulseNet** and the FDA's **GenomeTrakr**, national networks that routinely sequence enteric pathogens and match isolates across states to detect multi-jurisdiction outbreaks faster than interviews alone ([Gensheimer et al., 2024, Journal of Public Health Management & Practice](https://doi.org/10.1097/PHH.0000000000002090)).
 For pathogens with faster clocks, **Nextstrain-style** workflows continuously ingest new genomes and render updated phylogenies for public health teams.
 These systems share a design: standardized sequencing, shared reference databases, and automated cluster detection wired directly into response.
 
@@ -45,15 +45,15 @@ These systems share a design: standardized sequencing, shared reference database
 
 A retrospective study sequences an outbreak after it ends and explains what happened.
 Prospective, **actionable** surveillance sequences as cases arrive and changes what happens next: closing a contaminated production line, flagging a resistant clone, or redirecting contact tracing this week.
-The scientific content can be identical, but the value depends on turnaround, because a cluster detected months late informs the literature while one detected in days informs control ([Stockdale et al., 2022, Nature Microbiology](https://consensus.app/papers/details/17ea70c5760d59d79e155de7f759c77e/?utm_source=claude_desktop)).
+The scientific content can be identical, but the value depends on turnaround, because a cluster detected months late informs the literature while one detected in days informs control ([Stockdale et al., 2022, Nature Microbiology](https://doi.org/10.1038/s41564-022-01233-6)).
 Building prospective capacity is largely an operational problem of speed, integration, and trust, distinct from the analysis itself.
 
 ## The workforce and governance gap
 
 The binding constraint is rarely the sequencer; it is people, computing, and agreements.
-Consensus calling, alignment, and phylogenetics demand bioinformatics skills and high-performance computing that many surveillance settings lack, and training provision is unevenly distributed across regions and institutions ([Matimba et al., 2026, Frontiers in Public Health](https://consensus.app/papers/details/62fd70c777265b4095488e1d8d1267f4/?utm_source=claude_desktop)).
+Consensus calling, alignment, and phylogenetics demand bioinformatics skills and high-performance computing that many surveillance settings lack, and training provision is unevenly distributed across regions and institutions ([Matimba et al., 2026, Frontiers in Public Health](https://doi.org/10.3389/fpubh.2026.1768827)).
 Sequences are also only comparable when metadata follow shared standards, and only useful globally when data are shared equitably rather than trapped by legal or political friction.
-Closing this gap is a stated priority: sustained investment in the genomics and bioinformatics workforce is what turns hardware into a functioning surveillance system ([Onywera et al., 2023, The Lancet Infectious Diseases](https://consensus.app/papers/details/0347c1547c2b549bb5dae9d0d2a7f806/?utm_source=claude_desktop)).
+Closing this gap is a stated priority: sustained investment in the genomics and bioinformatics workforce is what turns hardware into a functioning surveillance system ([Onywera et al., 2023, The Lancet Infectious Diseases](https://doi.org/10.1016/S1473-3099(23)00394-8)).
 This is why applied, surveillance-oriented training differs from generic bioinformatics coursework: it centers metadata, turnaround, and public-health decisions, not algorithms in isolation.
 
 ## A worked example

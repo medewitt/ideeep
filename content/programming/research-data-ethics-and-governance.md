@@ -22,7 +22,7 @@ Secondary use of data collected for another purpose, such as clinical records re
 
 Emergencies do not suspend ethics; they raise the stakes, because power is unequal and the pressure to act fast is enormous.
 Data gathered under duress — from displaced people, during a lockdown, or from patients desperate for care — carries a heightened risk of coercion and of harms that outlast the outbreak.
-Bardosh and colleagues argue that outbreak response needs formal codes of conduct and real integration of social science, so that communities are partners rather than subjects (Bardosh et al., 2020, *Globalization and Health*: [link](https://consensus.app/papers/details/96b9bf44b3d75d9cb8dca9e7a541c43b/?utm_source=claude_desktop)).
+Bardosh and colleagues argue that outbreak response needs formal codes of conduct and real integration of social science, so that communities are partners rather than subjects (Bardosh et al., 2020, *Globalization and Health*: [link](https://doi.org/10.1186/s12992-020-00652-6)).
 The practical test is simple: collect the minimum you need, be honest about what you will do with it, and plan for the data's whole life before you gather the first record.
 
 ## Data governance, stewardship, and FAIR
@@ -44,7 +44,7 @@ When a combination is too rare you coarsen it — widen an age band, drop the la
 Fast, open sharing of pathogen genomes powers genomic surveillance, but it also raises questions of fairness that a FASTA file hides.
 "Helicopter research" is the pattern where samples and data flow from lower-income settings to distant labs that publish first and share no benefit back.
 Equitable sharing means rich, standardized metadata, clear provenance, authorship for the people who generated the samples, and benefit-sharing agreements negotiated up front.
-Lukhele and colleagues review how genomic data science depends on exactly this governance layer to be both useful and just (Lukhele et al., 2025, *Annual Review of Genomics and Human Genetics*: [link](https://consensus.app/papers/details/2134b9b77e9a51dabe4c898e371fefc6/?utm_source=claude_desktop)).
+Lukhele and colleagues review how genomic data science depends on exactly this governance layer to be both useful and just (Lukhele et al., 2025, *Annual Review of Genomics and Human Genetics*: [link](https://doi.org/10.1146/annurev-genom-012224-122440)).
 
 ## Dual-use research and biosafety
 
@@ -55,8 +55,8 @@ You do not need to be a biosecurity specialist to hold this responsibility; you 
 ## Where this sits in the One Health competencies
 
 None of this is peripheral to the field's own definition of what a practitioner should know.
-The One Health core-competency frameworks place "values and ethics" and "roles and responsibilities" at the center, alongside the technical domains (Frankson et al., 2016, *Frontiers in Public Health*: [link](https://consensus.app/papers/details/f73f3384df3157f19117c2872c3a3296/?utm_source=claude_desktop)).
-The updated competencies keep ethics and stewardship as a foundational, cross-cutting domain rather than an optional add-on (Laing et al., 2023, *CABI One Health*: [link](https://consensus.app/papers/details/f8c069b3bd235270865949f75d841d98/?utm_source=claude_desktop)).
+The One Health core-competency frameworks place "values and ethics" and "roles and responsibilities" at the center, alongside the technical domains (Frankson et al., 2016, *Frontiers in Public Health*: [link](https://doi.org/10.3389/fpubh.2016.00192)).
+The updated competencies keep ethics and stewardship as a foundational, cross-cutting domain rather than an optional add-on (Laing et al., 2023, *CABI One Health*: [link](https://doi.org/10.1079/cabionehealth.2023.0002)).
 
 ## A worked example
 

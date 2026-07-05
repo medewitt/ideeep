@@ -31,7 +31,7 @@ Each page pairs the biology and notation with worked examples and runnable code 
 
 ## Social, behavioral, and communication science
 
-The human side of transmission: who is exposed and why, how behavior and disease feed back on one another, and how we study meaning, context, and communication.
+The human side of transmission — and the human response to it — shapes disease not only in people but across animals and plants: who is exposed and why, how behavior and disease feed back on one another, and how we study meaning, context, and communication. Behavior and policy are just as central to disease in wildlife and agriculture, from biosecurity and food safety across crops and agricultural animals to the management of pollinator and other social-insect diseases, where colony behavior itself drives transmission.
 
 - [Social and Structural Drivers of Transmission](epidemiology/social-drivers-of-transmission.md) — exposure, susceptibility, care-seeking, mixing, and disparities
 - [Qualitative and Mixed Methods in Epidemiology](epidemiology/qualitative-and-mixed-methods.md) — interviews, coding, rigor, and mixed-methods designs

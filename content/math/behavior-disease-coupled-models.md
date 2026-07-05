@@ -14,7 +14,7 @@ The result is a feedback system whose dynamics — flattened peaks, delays, and 
 
 Transmission is a product of contact and per-contact risk, and both fall when a population reacts to an outbreak.
 As prevalence climbs, awareness rises, protective behavior spreads, and the *effective* transmission rate drops well below the value estimated early in an epidemic.
-A model with constant $\beta$ therefore overshoots and mistimes the true peak, treating a behaving population as if it never learned the disease was there; the systematic review of [Verelst et al., 2016, J. R. Soc. Interface](https://consensus.app/papers/details/52255977566d5eb2960a9a8b6b6db4ad/?utm_source=claude_desktop) catalogues how widely this assumption has been relaxed.
+A model with constant $\beta$ therefore overshoots and mistimes the true peak, treating a behaving population as if it never learned the disease was there; the systematic review of [Verelst et al., 2016, J. R. Soc. Interface](https://doi.org/10.1098/rsif.2016.0820) catalogues how widely this assumption has been relaxed.
 
 ## The feedback loop
 
@@ -25,7 +25,7 @@ More infection raises perceived risk and awareness, which increases adoption of 
 \text{infection} \;\to\; \text{awareness/behavior} \;\to\; \downarrow \text{transmission} \;\to\; \downarrow \text{infection} \;\to\; \text{relaxation} \;\to\; \cdots
 \]
 
-This is negative feedback with a delay — the classic recipe for oscillation — and the review by [Weston et al., 2018, BMC Public Health](https://consensus.app/papers/details/bfabd6541432563094261a226c61b878/?utm_source=claude_desktop) surveys how infection-prevention behaviors have been written into this loop.
+This is negative feedback with a delay — the classic recipe for oscillation — and the review by [Weston et al., 2018, BMC Public Health](https://doi.org/10.1186/s12889-018-5223-1) surveys how infection-prevention behaviors have been written into this loop.
 
 ## Ways behavior is encoded
 
@@ -37,9 +37,9 @@ Modelers close the loop in several distinct ways, ordered roughly from phenomeno
 
 **Imitation and game-theoretic decisions.** Individuals weigh the cost of protecting against the perceived cost of infection and copy successful neighbors, as in the economic and evolutionary-game framing shared with [evolutionary game theory](evolutionary-game-theory.md) and the [evolution of cooperation](evolution-of-cooperation.md).
 
-**Behavior-change theories.** Embed a psychological model such as the Health Belief Model, so adoption depends on perceived susceptibility, severity, benefits, and barriers; [Ryan et al., 2024, J. R. Soc. Interface](https://consensus.app/papers/details/fb92550b2936584fbaf1ce9433efa507/?utm_source=claude_desktop) fit exactly this into an SIRS transmission model.
+**Behavior-change theories.** Embed a psychological model such as the Health Belief Model, so adoption depends on perceived susceptibility, severity, benefits, and barriers; [Ryan et al., 2024, J. R. Soc. Interface](https://doi.org/10.1098/rsif.2024.0038) fit exactly this into an SIRS transmission model.
 
-The broad landscape of these couplings is mapped by [Reitenbach et al., 2024, Rep. Prog. Phys.](https://consensus.app/papers/details/3de3db795bc158818a5c324af264a007/?utm_source=claude_desktop).
+The broad landscape of these couplings is mapped by [Reitenbach et al., 2024, Rep. Prog. Phys.](https://doi.org/10.1088/1361-6633/ad90ef).
 
 ## A prevalence-dependent SIRS model
 
@@ -154,7 +154,7 @@ The printed peaks show the behavior off run cresting near $I \approx 0.31$ aroun
 ## Why it matters
 
 Because the feedback is negative and delayed, coupled models naturally generate the recurrent waves and damped oscillations that constant-$\beta$ models can only produce by hand: behavior that relaxes as prevalence falls sets up the next wave, so multiple peaks emerge endogenously rather than being assumed.
-This matters for forecasting and for policy design, since an intervention's effect depends on how people will respond to it, and integrating social and behavioral factors is a recognized priority for outbreak modeling ([Bedson et al., 2021, Nat. Hum. Behav.](https://consensus.app/papers/details/49c6e0bc50975414a0e9ea63fe00c01e/?utm_source=claude_desktop)).
+This matters for forecasting and for policy design, since an intervention's effect depends on how people will respond to it, and integrating social and behavioral factors is a recognized priority for outbreak modeling ([Bedson et al., 2021, Nat. Hum. Behav.](https://doi.org/10.1038/s41562-021-01136-2)).
 The central open problem is empirical: adoption functions like $P(I)$ are rarely fit to behavioral data, and this validation gap — models rich in mechanism but thin on measurement — is the recurring caution across the reviews cited above.
 
 ## Related

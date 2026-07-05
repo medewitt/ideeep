@@ -16,7 +16,7 @@ Treated as core epidemiologic tools rather than soft add-ons, they are how a stu
 A well-run cohort can tell you that vaccine uptake in a district was 40 percent, but it cannot tell you what the other 60 percent were weighing when they declined.
 Qualitative research targets exactly this: meaning (what an illness or a control measure signifies to people), context (the household, economic, and political conditions that shape exposure), mechanism (the causal steps between a policy and a behavior), and barriers to both care-seeking and intervention uptake.
 These are questions about process and reason, not frequency, and they are answered by listening in depth rather than by tabulating.
-The argument that these are epidemiologic questions, answerable by epidemiologic methods, is made directly by [Stelson et al., 2025, American Journal of Epidemiology](https://consensus.app/papers/details/078e479585bf51388ca5a7939dc06dc2/?utm_source=claude_desktop), and the field's incompleteness without them is argued by [Lane-Fall, 2023, American Journal of Epidemiology](https://consensus.app/papers/details/6ee0afdb7715556c94e5b054d69716ca/?utm_source=claude_desktop).
+The argument that these are epidemiologic questions, answerable by epidemiologic methods, is made directly by [Stelson et al., 2025, American Journal of Epidemiology](https://doi.org/10.1093/aje/kwaf083), and the field's incompleteness without them is argued by [Lane-Fall, 2023, American Journal of Epidemiology](https://doi.org/10.1093/aje/kwad050).
 
 ## Core methods
 
@@ -51,15 +51,15 @@ The value lives in **integration** — the explicit joining of strands, not thei
 ## Rapid qualitative research during outbreaks
 
 Outbreaks compress every timescale, and qualitative research adapts by going fast.
-Rapid designs, deployed at scale during COVID-19 by [Vindrola-Padrós et al., 2020, Qualitative Health Research](https://consensus.app/papers/details/4450d6451b345fd9a54c0737c81274aa/?utm_source=claude_desktop), can deliver actionable findings on isolation adherence or health-worker strain within a week.
+Rapid designs, deployed at scale during COVID-19 by [Vindrola-Padrós et al., 2020, Qualitative Health Research](https://doi.org/10.1177/1049732320951526), can deliver actionable findings on isolation adherence or health-worker strain within a week.
 The trade-offs are real: fewer interviews, shallower analysis, and less time to reach saturation, so speed is bought with some loss of depth and certainty.
 The discipline is to be explicit about that trade so that a rapid finding is used as timely guidance rather than mistaken for a settled result.
 
 ## The role of medical anthropology
 
 In epidemic response, anthropology is often reduced to improving "message uptake," as though the only problem were getting people to accept a fixed instruction.
-Its actual contribution is to reframe the response itself around local realities of trust, kinship, burial, livelihood, and power, as argued by [Stellmach et al., 2018, BMJ Global Health](https://consensus.app/papers/details/047955b05e2b57339428d627b37784c5/?utm_source=claude_desktop).
-The broader anthropology of how infectious diseases emerge and how epidemics are actually controlled is synthesized by [Giles-Vernick et al., 2025, Clinical Microbiology and Infection](https://consensus.app/papers/details/6a2a9cbf4d6b50b1bdfbbc4c5198165c/?utm_source=claude_desktop).
+Its actual contribution is to reframe the response itself around local realities of trust, kinship, burial, livelihood, and power, as argued by [Stellmach et al., 2018, BMJ Global Health](https://doi.org/10.1136/bmjgh-2017-000534).
+The broader anthropology of how infectious diseases emerge and how epidemics are actually controlled is synthesized by [Giles-Vernick et al., 2025, Clinical Microbiology and Infection](https://doi.org/10.1016/j.cmi.2025.04.019).
 The lesson is that community engagement shapes what interventions are even possible, not merely how they are advertised.
 
 ## A worked example

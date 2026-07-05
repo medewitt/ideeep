@@ -68,6 +68,8 @@ Upon successful completion of this course, students will be able to:
 
 There is no single required textbook. Recommended references include:
 
+- Black A, Dudas G. *Applied Genomic Epidemiology Handbook*. An applied,
+  practical guide to genomic epidemiology. https://alliblk.github.io/genepi-book/
 - Hill V, et al. Progress and challenges in virus genomic epidemiology. *Trends
   Parasitol* 2021. https://doi.org/10.1016/j.pt.2021.08.007
 - Selected primary literature on phylodynamics, genomic surveillance, and

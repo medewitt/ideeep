@@ -7,6 +7,9 @@ description: "How temperature, water, and ecological change drive infectious-dis
 
 Pathogens do not circulate in a vacuum; they ride on mosquitoes that breed in warm standing water, on rodents that follow shifting rainfall, and on human contact with disturbed ecosystems.
 Climate and environment set the stage on which transmission plays out, tuning vector abundance, pathogen replication, and the chance of spillover.
+Yet climate rarely acts by temperature alone; it more often works through multi-step ecological chains in which one link cascades into the next.
+A warm, mast year of heavy acorn production, for instance, feeds a boom in white-footed mice and other small mammals, and that rodent surge later amplifies Lyme-disease risk by enlarging the reservoir on which infected ticks feed.
+Shifts in moisture and temperature can likewise favour fungal pathogens, driving disease in wildlife, in crops, and in people, so the climate signal often reaches health through the ecology it reshapes rather than through direct physiology alone.
 This page treats that environmental leg quantitatively, because it is the part of [One Health surveillance](one-health-surveillance.md) and planetary health that data-focused programs most often leave thin.
 
 ![A unimodal thermal performance curve where relative transmission peaks at an intermediate temperature and falls toward both cold and hot extremes.](../assets/figures/climate-and-disease-transmission.svg)
@@ -39,7 +42,13 @@ f(T) = c \, T \, (T - T_0) \, \sqrt{T_m - T}, \qquad T_0 \le T \le T_m,
 and $f(T) = 0$ outside $[T_0, T_m]$.
 Here $T_0$ is the lower thermal limit, $T_m$ the upper thermal limit, and $c$ a scaling constant.
 The curve rises from zero at $T_0$, peaks at an optimum skewed toward the warm end, and drops back to zero at $T_m$.
+
+![The Briere thermal-response function for several parameter sets, showing how the thermal optimum and breadth shift with the parameters.](../assets/figures/briere-thermal-response.svg)
+
 This is why the same disease can be limited by cold at high latitudes and by heat in the hottest seasons, with a transmission belt in between.
+Temperature never acts entirely on its own, though, because it interacts with water at the scale of the individual organism.
+Relative humidity and the vapour-pressure deficit set how fast a vector loses water, so dry air raises desiccation and depresses survival and abundance even when temperatures sit near the thermal optimum.
+Soil-borne pathogens show the same coupling from the other direction: many need a specific window of moisture and temperature for their spores to mature before wind can disperse them and hosts can take them up.
 
 ## Precipitation, water, and climate variability
 
@@ -47,7 +56,7 @@ Temperature is only one axis; water is the other.
 Rainfall creates the standing pools where *Aedes* and *Anopheles* mosquitoes lay eggs, so transmission often tracks the rainy season with a lag of a few weeks.
 Yet the relationship is not monotone: heavy rain can flush out breeding sites, and drought can concentrate people and vectors around the few remaining water sources.
 Climate variability adds a lower-frequency rhythm, and the **El Niño–Southern Oscillation (ENSO)** is the clearest example, with El Niño years reshaping temperature and rainfall enough to trigger malaria, dengue, and cholera anomalies across whole regions.
-Arthur and colleagues emphasize that these environmental forces act alongside social ones, so climate signals must be read against human context rather than in isolation ([Arthur et al., 2017, Philosophical Transactions of the Royal Society B](https://consensus.app/papers/details/82e0c9e61a145a1a933419630f12d3c3/?utm_source=claude_desktop)).
+Arthur and colleagues emphasize that these environmental forces act alongside social ones, so climate signals must be read against human context rather than in isolation ([Arthur et al., 2017, Philosophical Transactions of the Royal Society B](https://doi.org/10.1098/rstb.2016.0454)).
 
 ## Range shifts, land use, and spillover
 
@@ -55,7 +64,9 @@ As the climate warms, thermal envelopes move, and so do the diseases tied to the
 Vectors and their pathogens expand into newly suitable altitudes and latitudes, exposing populations with no prior immunity and health systems with no prior experience.
 At the same time, **land-use change**, deforestation, agricultural expansion, and urban encroachment on wildlife habitat, brings people into novel contact with reservoir species.
 Biodiversity loss can concentrate transmission in the competent hosts that persist in degraded landscapes, raising **spillover** risk at the human–wildlife interface, the theme of [reservoir ecology](../math/reservoir-ecology.md).
-The planetary-health framing makes this explicit: ecosystem change is not a backdrop to human health but a direct driver of it, and warming is expanding the caseload that clinicians must handle ([Öncü et al., 2025, Infection](https://consensus.app/papers/details/ab1887a54b445d15acf0562528d7f850/?utm_source=claude_desktop)).
+One influential but still-debated idea, the **dilution-effect hypothesis**, frames this mechanism explicitly: higher host biodiversity may dilute transmission by adding poorly competent species that absorb infectious contacts, so that biodiversity loss would concentrate transmission and spillover among the competent [reservoir and maintenance hosts](../math/reservoir-ecology.md) that survive in disturbed habitat.
+The evidence for it is genuinely mixed and context-dependent, holding for some systems such as Lyme disease yet failing to generalize to others, so it is best carried as a working hypothesis rather than a settled rule.
+The planetary-health framing makes this explicit: ecosystem change is not a backdrop to human health but a direct driver of it, and warming is expanding the caseload that clinicians must handle ([Öncü et al., 2025, Infection](https://doi.org/10.1007/s15010-025-02597-7)).
 
 ## WASH, environmental pathways, and surveillance
 
@@ -63,6 +74,14 @@ Not all environmental transmission runs through a vector.
 Water, sanitation, and hygiene (**WASH**) govern the fecal–oral pathogens, so a cholera or rotavirus outbreak is often an environmental-infrastructure failure as much as a biological event.
 Pathogens also persist in soil, surface water, and air, and monitoring those compartments is how the environment becomes a data stream rather than only a risk factor.
 **Environmental surveillance**, wastewater sampling for viral shedding and systematic vector trapping and identification, turns the environment into an early-warning sensor, feeding the integrated signal described in [one-health surveillance](one-health-surveillance.md).
+
+## Biosecurity in agricultural settings
+
+Where livestock production meets wildlife and people, **biosecurity** is the practical lever that keeps environmental exposure from becoming an outbreak.
+Pig farming is a clear worked example, because swine sit at the interface of zoonotic and reverse-zoonotic risk for pathogens such as influenza and African swine fever.
+On a well-run farm, controlled access with hygiene barriers, **all-in/all-out** batch management that empties and disinfects a barn between cohorts, and routine sanitation together cut the chance that a pathogen enters, establishes, and spreads.
+The same operation shrinks its environmental footprint by treating waste and manure before release, limiting the nutrient and pathogen load that would otherwise run off into soil and water.
+Read through a One Health and planetary-health lens, biosecurity is where reducing human and animal exposure and protecting the surrounding ecosystem become a single decision rather than competing goals.
 
 ## A worked example
 
@@ -144,7 +163,7 @@ end
 
 Treating the environment as a first-class driver, not a footnote, changes what a transmission model can explain and predict.
 The unimodal thermal response alone tells us that warming does not raise risk everywhere; it shifts risk poleward and upward while eventually suppressing transmission where it becomes too hot.
-This is the leg of One Health that postgraduate and quantitative training most neglects, with environment and conservation under-represented relative to human and animal health ([Adeyemi et al., 2024, One Health Outlook](https://consensus.app/papers/details/738b691d2ad75509a84b673bc00bbb74/?utm_source=claude_desktop)).
+This is the leg of One Health that postgraduate and quantitative training most neglects, with environment and conservation under-represented relative to human and animal health ([Adeyemi et al., 2024, One Health Outlook](https://doi.org/10.1186/s42522-024-00097-6)).
 Building environmental drivers, temperature, water, land use, and surveillance streams, into our models is how planetary health becomes something we can measure and act on rather than merely invoke.
 
 ## Related

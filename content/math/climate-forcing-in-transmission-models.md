@@ -7,6 +7,8 @@ description: "Making the transmission rate time-varying to fold seasonality and 
 
 Most compartmental models freeze the transmission rate $\beta$ at a single number, but the real world has seasons: measles surges when schools reopen, influenza peaks in winter, and mosquito-borne infections track the rains.
 Climate forcing lets $\beta$ breathe with the calendar, and that one change turns a model that settles to a flat endemic level into one that can beat out annual, biennial, or irregular multi-year cycles.
+Despite the name, periodic forcing is not reserved for climate-driven diseases: the same time-varying-transmission machinery captures any recurring change in contact or transmission over time.
+A time-dependent $\beta(t)$ can encode changing contact rates from any source — school-term forcing of childhood infections such as measles, holiday travel and seasonal aggregation, weekly rhythms of work and social mixing, or other behavioral and social periodicity — not just temperature.
 
 ![A seasonally forced SIR model showing recurrent annual epidemics, with stronger seasonal forcing producing larger swings than weak forcing.](../assets/figures/climate-forcing-in-transmission-models.svg)
 
@@ -30,7 +32,7 @@ For directly transmitted childhood infections the dominant driver is the school 
 For respiratory viruses, low humidity and cold temperatures stabilise airborne particles and dry out mucosal defences, raising the per-contact transmission probability.
 For vector-borne diseases the forcing is thermal: temperature controls the mosquito biting rate, development, and survival, and rainfall sets breeding-habitat availability, so the effective $\beta$ inherits the seasonality of the climate itself.
 This mechanistic layer connects to the [climate and disease transmission](../epidemiology/climate-and-disease-transmission.md) page, where the thermal-response curves of vector traits are unpacked — exactly what a covariate-driven $\beta(t)$ should encode.
-Disease ecologists have long argued that these environmental forces belong at the centre of transmission theory, not the margin ([Arthur et al., 2017, Philosophical Transactions of the Royal Society B](https://consensus.app/papers/details/82e0c9e61a145a1a933419630f12d3c3/?utm_source=claude_desktop)).
+Disease ecologists have long argued that these environmental forces belong at the centre of transmission theory, not the margin ([Arthur et al., 2017, Philosophical Transactions of the Royal Society B](https://doi.org/10.1098/rstb.2016.0454)).
 
 ## Time-averaged and seasonal reproduction numbers
 
@@ -59,7 +61,7 @@ Beyond a bare sinusoid, one can make parameters explicit functions of measured c
 Writing $\beta(t) = \beta_0\, g\!\big(T_{\text{air}}(t),\, H(t),\, P(t)\big)$ lets temperature $T_{\text{air}}$, humidity $H$, and rainfall $P$ enter through a fitted or mechanistic response $g$, often a thermal-performance curve borrowed from vector physiology.
 This is the natural bridge between statistical climate–disease regressions and dynamical models: the covariate supplies the shape of the forcing, and the transmission model supplies the nonlinear amplification that turns a smooth climate signal into a sharp epidemic.
 It also exposes a practical caution: projecting such a model forward under climate change means extrapolating $g$ beyond the range where it was fitted, into a non-stationary regime where the historical relationship may not hold.
-The environmental leg of this reasoning is also the one most often under-served in applied training, a gap noted for One Health curricula by [Adeyemi et al., 2024, One Health Outlook](https://consensus.app/papers/details/738b691d2ad75509a84b673bc00bbb74/?utm_source=claude_desktop).
+The environmental leg of this reasoning is also the one most often under-served in applied training, a gap noted for One Health curricula by [Adeyemi et al., 2024, One Health Outlook](https://doi.org/10.1186/s42522-024-00097-6).
 
 ## The forced model
 
