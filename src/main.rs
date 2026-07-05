@@ -567,7 +567,93 @@ fn columnize_link_lists(html: &str) -> String {
     out
 }
 
+/// Directory (relative to the project root) that holds reusable Markdown
+/// fragments. A page injects one with a `:::{fragment-name.md}:::` shortcode on
+/// its own line (the `.md` extension is optional). Fragments live under a
+/// leading-underscore directory so `find_markdown_files` skips them and they are
+/// never compiled into standalone pages of their own — they exist only to be
+/// spliced into the pages that reference them.
+const FRAGMENTS_DIR: &str = "content/_fragments";
+
+/// Expand `:::{fragment.md}:::` include shortcodes by splicing the referenced
+/// fragment's Markdown into the stream *before* it is parsed, so a fragment
+/// renders exactly as if its text had been written inline (headings, tables,
+/// callouts and math all work). Update the fragment once and every page that
+/// includes it changes on the next build.
+///
+/// Includes may nest (a fragment can include another). A per-branch stack guards
+/// against cycles, and shortcodes that reference a missing file or try to escape
+/// the fragments directory are left as a visible, logged marker rather than
+/// silently dropping content — a lost policy section should never pass unnoticed.
+fn expand_includes(markdown: &str) -> String {
+    fn expand(md: &str, stack: &mut Vec<String>) -> String {
+        // A shortcode occupies its own line: optional indentation, then
+        // `:::{ name }:::`, then optional trailing whitespace.
+        let re = Regex::new(r"(?m)^[ \t]*:::\{\s*([^{}]+?)\s*\}:::[ \t]*$").unwrap();
+        re.replace_all(md, |caps: &regex::Captures| {
+            let raw = caps[1].trim();
+            let name = if raw.ends_with(".md") {
+                raw.to_string()
+            } else {
+                format!("{}.md", raw)
+            };
+
+            // Refuse anything that could reach outside the fragments directory.
+            if name.contains("..")
+                || name.starts_with('/')
+                || name.starts_with('\\')
+                || Path::new(&name).is_absolute()
+            {
+                eprintln!("Warning: ignoring unsafe fragment include: {}", raw);
+                return format!("<!-- unsafe fragment include: {} -->", raw);
+            }
+
+            // A fragment that (transitively) includes itself would loop forever.
+            if stack.iter().any(|n| n == &name) {
+                eprintln!("Warning: skipping recursive fragment include: {}", name);
+                return format!("<!-- recursive fragment include: {} -->", name);
+            }
+
+            let path = Path::new(FRAGMENTS_DIR).join(&name);
+            match fs::read_to_string(&path) {
+                Ok(text) => {
+                    stack.push(name.clone());
+                    let expanded = expand(&text, stack);
+                    stack.pop();
+                    // Set the fragment off as its own block(s): blank lines above
+                    // and below guarantee the splice can't fuse with adjacent
+                    // prose (e.g. a heading running into a preceding paragraph).
+                    format!("\n\n{}\n\n", expanded.trim())
+                }
+                Err(_) => {
+                    eprintln!(
+                        "Warning: template fragment not found: {}",
+                        path.display()
+                    );
+                    format!(
+                        "\n\n<div class=\"fragment-error\">Missing template fragment: <code>{}</code></div>\n\n",
+                        name
+                    )
+                }
+            }
+        })
+        .into_owned()
+    }
+
+    // Fast path: most pages contain no shortcodes at all.
+    if !markdown.contains(":::{") {
+        return markdown.to_string();
+    }
+    let mut stack: Vec<String> = Vec::new();
+    expand(markdown, &mut stack)
+}
+
 fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<String>) -> String {
+    // Splice in any `:::{fragment.md}:::` template fragments first, so the rest
+    // of the pipeline sees one flat Markdown document.
+    let markdown = expand_includes(markdown);
+    let markdown = markdown.as_str();
+
     // Pre-process math expressions: render them server-side with KaTeX, leaving
     // inert placeholders in the Markdown so the parser can't mangle the output.
     let (processed_markdown, math_fragments) = preprocess_math(markdown);
@@ -1091,6 +1177,17 @@ fn find_markdown_files(dir: &Path, base_dir: &Path, files: &mut Vec<(PathBuf, Pa
         let path = entry.path();
         
         if path.is_dir() {
+            // Skip leading-underscore directories (e.g. `_fragments`): they hold
+            // reusable include fragments, not standalone pages, so they must not
+            // be compiled to HTML on their own.
+            if path
+                .file_name()
+                .and_then(|s| s.to_str())
+                .map(|n| n.starts_with('_'))
+                .unwrap_or(false)
+            {
+                continue;
+            }
             // Recursively search subdirectories
             find_markdown_files(&path, base_dir, files)?;
         } else if path.extension().and_then(|s| s.to_str()) == Some("md") {
@@ -1194,7 +1291,10 @@ fn build_search_index(
 
         let content = fs::read_to_string(full_path)?;
         let (_, markdown_content) = extract_frontmatter(&content);
-        let content_text = extract_search_text(markdown_content);
+        // Expand template fragments so injected sections (course/university
+        // policies, etc.) are searchable on the pages that include them.
+        let markdown_content = expand_includes(markdown_content);
+        let content_text = extract_search_text(&markdown_content);
 
         // URL relative to the dist root, where search.html lives.
         let url = format!("{}.html", rel_key);
@@ -2144,6 +2244,35 @@ mod tests {
             html.contains("<del>struck through</del>"),
             "GFM strikethrough regressed for real prose:\n{html}"
         );
+    }
+
+    /// A missing fragment must degrade to a visible, logged marker rather than
+    /// silently vanishing — a dropped policy section should be obvious.
+    #[test]
+    fn missing_fragment_is_visible() {
+        let html = render(":::{definitely-not-a-real-fragment.md}:::");
+        assert!(
+            html.contains("Missing template fragment")
+                && html.contains("definitely-not-a-real-fragment.md"),
+            "missing include should render a visible marker:\n{html}"
+        );
+    }
+
+    /// A shortcode that tries to escape the fragments directory is refused.
+    #[test]
+    fn unsafe_fragment_include_is_refused() {
+        let html = render(":::{../../etc/passwd}:::");
+        assert!(
+            !html.contains("root:") && html.contains("unsafe fragment include"),
+            "path-traversal include must be refused:\n{html}"
+        );
+    }
+
+    /// Text with no shortcode is passed through untouched (fast path).
+    #[test]
+    fn expand_includes_is_noop_without_shortcode() {
+        let md = "Just a normal paragraph with a :: colon but no shortcode.";
+        assert_eq!(expand_includes(md), md);
     }
 
     /// A mapping-style dropdown (custom label -> URL) must resolve relative URLs

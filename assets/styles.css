@@ -609,6 +609,23 @@ blockquote p + p {
 	:root:not([data-theme="light"]) .callout-warning { --callout-accent: #d8ab54; }
 }
 
+/* Build-time marker for a `:::{fragment.md}:::` include that could not be
+   resolved. Deliberately loud so a dropped section is caught in review. */
+.fragment-error {
+	margin: var(--space-4) 0;
+	padding: var(--space-3) var(--space-4);
+	border: 1px solid #d33;
+	border-left-width: 4px;
+	border-radius: 6px;
+	background: rgba(221, 51, 51, 0.08);
+	color: #b02020;
+	font-weight: 600;
+}
+:root[data-theme="dark"] .fragment-error { color: #f3a3a3; }
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .fragment-error { color: #f3a3a3; }
+}
+
 /* "On this page" table of contents (long/hub pages) */
 h2[id], h3[id] {
 	scroll-margin-top: 84px;
