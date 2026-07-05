@@ -57,6 +57,8 @@ Upon successful completion of this course, students will be able to:
 - Explain superspreading and its effect on outbreak dynamics through
   branching-process reasoning
 - Apply nowcasting to correct for censoring in recent case counts
+- Coordinate the analytic workflow within a response team, clarifying roles and
+  translating results into clear recommendations for decision-makers
 
 # Textbook and other resources
 
@@ -83,7 +85,15 @@ material:
 - [Model calibration](math/model-calibration.md)
 - [Proper scoring rules](math/proper-scoring-rules.md)
 - [Delay distributions and censoring](epidemiology/delay-distributions-censoring.md)
+- [Risk communication and community engagement](epidemiology/risk-communication-and-rcce.md)
+- [Systems thinking and systems mapping](epidemiology/systems-thinking-and-systems-mapping.md)
 - [Mathematical Biology](bio301-math-bio.md)
+
+A live response is also a coordination problem: analytics feed decisions only
+when roles are clear and results are communicated well, so the course threads in
+the collaboration and communication skills from [systems thinking and systems
+mapping](epidemiology/systems-thinking-and-systems-mapping.md) and [risk
+communication](epidemiology/risk-communication-and-rcce.md).
 
 New concept pages on nowcasting, epidemic forecasting, and the renewal equation
 are planned and will be linked here as they are published.

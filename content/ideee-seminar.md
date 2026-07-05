@@ -58,6 +58,8 @@ Upon successful completion of this course, students will be able to:
   constructive critique
 - Situate current outbreaks and methods debates in the broader field
 - Lead and sustain scholarly discussion across labs
+- Use structured peer critique and systems thinking to give roles-aware,
+  cross-disciplinary feedback and to build collaborative research teams
 
 # Textbook and other resources
 
@@ -70,8 +72,16 @@ This seminar draws on the following IDEEE pages:
 
 - [Scientific writing](scientific-writing.md)
 - [Scientific pathways](scientific-pathways.md)
+- [Systems thinking and systems mapping](epidemiology/systems-thinking-and-systems-mapping.md)
 - [Research](research.md)
 - [People](people.md)
+
+The seminar is also where the concentration's cross-cutting collaboration skills
+are practiced: structured peer feedback, systems thinking about the
+human-animal-environment problems behind each paper, and the roles and
+responsibilities of interdisciplinary teams. See [systems thinking and systems
+mapping](epidemiology/systems-thinking-and-systems-mapping.md) for the underlying
+ideas.
 
 Topic reference pages from the math, epidemiology, programming, and diagnostics
 libraries are assigned as they match each term's outbreaks and selected papers.
