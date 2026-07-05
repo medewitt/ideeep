@@ -42,6 +42,13 @@ Neglecting the rare back-mutations that land exactly on the master, the master s
 The threshold cuts both ways.
 Read as $L_{\max} = \ln\sigma / \mu$, it caps how long a genome can be at a given fidelity, which is why the most error-prone replicators are also the shortest, and why no known RNA virus carries a genome much beyond $\sim\!30$ kb without evolving proofreading.
 
+![Genome length versus per-site mutation rate for several RNA viruses, plotted against the error-threshold ceiling L_max = ln(sigma)/mu; RNA viruses cluster just below the ceiling while proofreading coronaviruses sit far to the low-mutation, long-genome corner.](../assets/figures/quasispecies-virus-limit.svg)
+
+Plotting real viruses against this ceiling makes the constraint concrete.
+Fast-mutating RNA viruses — bacteriophage Qβ, poliovirus, hepatitis C, measles, influenza, HIV — all crowd into a diagonal band just beneath the threshold, with a genomic mutation rate $L\mu$ of order one (roughly one mutation per genome per replication), exactly where the theory says a replicator can sit without losing its master sequence.
+The conspicuous outlier is the coronaviruses: their genomes reach $\sim\!30$ kb, far longer than the ceiling would otherwise permit, because they alone among RNA viruses encode a proofreading exonuclease (nsp14) that lowers $\mu$ and lifts $L_{\max}$.
+Values here are approximate order-of-magnitude estimates drawn from viral mutation-rate reviews ([Sanjuán et al. 2010](https://doi.org/10.1128/JVI.00694-10); [Drake & Holland 1999](https://doi.org/10.1073/pnas.96.24.13910)).
+
 ## Worked example
 
 Take a genome of $L = 20$ sites and a master that replicates $\sigma = 4$ times faster than its mutants.
