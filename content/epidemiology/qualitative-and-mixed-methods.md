@@ -5,22 +5,22 @@ description: "How qualitative research and mixed-methods designs answer the ques
 
 # Qualitative and Mixed Methods in Epidemiology
 
-Epidemiology counts cases, estimates rates, and compares exposures, but a rate never explains why people do what they do.
+Epidemiology counts cases, estimates rates, and compares exposures, but a rate will never explain why people do what they do.
 Qualitative methods recover the meaning, context, and mechanism behind the numbers, and mixed-methods designs bind the two kinds of evidence into one account.
-Treated as core epidemiologic tools rather than soft add-ons, they are how a study learns not just how many were infected but why transmission happened and why an intervention did or did not take hold.
+Treated as core epidemiologic tools, they are how a study learns not just how many were infected but why transmission happened and why an intervention did or did not take hold.
 
 ![A code-saturation curve where the cumulative number of new themes rises and then plateaus as more interviews are analyzed.](../assets/figures/qualitative-and-mixed-methods.svg)
 
 ## What qualitative research answers that counts cannot
 
-A well-run cohort can tell you that vaccine uptake in a district was 40 percent, but it cannot tell you what the other 60 percent were weighing when they declined.
+A well-run cohort can tell you that vaccine uptake in a district was 40 percent, but it cannot tell you what the other 60 percent were thinking about or what information they were weighing when they declined.
 Qualitative research targets exactly this: meaning (what an illness or a control measure signifies to people), context (the household, economic, and political conditions that shape exposure), mechanism (the causal steps between a policy and a behavior), and barriers to both care-seeking and intervention uptake.
 These are questions about process and reason, not frequency, and they are answered by listening in depth rather than by tabulating.
 The argument that these are epidemiologic questions, answerable by epidemiologic methods, is made directly by [Stelson et al., 2025, American Journal of Epidemiology](https://doi.org/10.1093/aje/kwaf083), and the field's incompleteness without them is argued by [Lane-Fall, 2023, American Journal of Epidemiology](https://doi.org/10.1093/aje/kwad050).
 
 ## Core methods
 
-The workhorse designs are few and well defined.
+Qualitative designs are few and well defined.
 **Semi-structured interviews** follow a guide of open questions but let the participant lead, trading standardization for depth.
 **Focus groups** convene six to ten people so that norms, disagreements, and shared vocabulary surface in the interaction itself.
 **Participant observation** places the researcher in the setting over time, recording what people do rather than only what they say.
@@ -84,6 +84,7 @@ Cohen's kappa corrects the observed agreement for this chance:
 \[ \kappa = \frac{p_o - p_e}{1 - p_e} = \frac{0.85 - 0.51}{1 - 0.51} \approx 0.69. \]
 
 A kappa of about 0.69 is substantial agreement, high enough to treat the two coders' shared scheme as dependable.
+A note on Cohen's kappa: pooling many items into a single measure can inflate the value structurally, so be careful when combining multiple scales.
 
 ## In code
 

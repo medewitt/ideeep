@@ -34,9 +34,9 @@ panels = [("Proportionate mixing", C_prop), ("Assortative mixing", C_assort)]
 
 vmax = max(C_prop.max(), C_assort.max())
 
-fig, axes = plt.subplots(1, 2, figsize=(6.6, 3.6))
+fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.6), gridspec_kw={"wspace": 0.35})
 im = None
-for ax, (name, C) in zip(axes, panels):
+for k, (ax, (name, C)) in enumerate(zip(axes, panels)):
     ax.grid(False)
     im = ax.imshow(C, cmap="Blues", vmin=0, vmax=vmax)
     for i in range(2):
@@ -45,9 +45,14 @@ for ax, (name, C) in zip(axes, panels):
             ax.text(j, i, f"{val:.2f}", ha="center", va="center",
                     color="white" if val > 0.6 * vmax else INK, fontsize=11)
     ax.set_xticks([0, 1], groups, fontsize=8, color=MUTED)
-    ax.set_yticks([0, 1], groups, fontsize=8, color=MUTED)
     ax.set_xlabel("contacts with group $j$")
-    ax.set_ylabel("group $i$")
+    # Label the y axis only on the left panel so the label does not collide
+    # with the left panel's cells.
+    if k == 0:
+        ax.set_yticks([0, 1], groups, fontsize=8, color=MUTED)
+        ax.set_ylabel("group $i$")
+    else:
+        ax.set_yticks([0, 1], ["", ""])
     ax.set_title(f"{name}\n$R_0 = {R0(C):.2f}$", fontsize=11)
     for spine in ax.spines.values():
         spine.set_visible(False)

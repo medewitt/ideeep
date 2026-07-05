@@ -15,7 +15,7 @@ apply_style()
 
 fig, ax = plt.subplots(figsize=(7.6, 3.6))
 ax.set_xlim(0, 12)
-ax.set_ylim(0, 6)
+ax.set_ylim(0, 7.4)  # headroom so the title clears the three-line stage labels
 ax.set_aspect("equal")
 ax.axis("off")
 
