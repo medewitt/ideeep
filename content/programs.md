@@ -17,6 +17,11 @@ statistics, and field epidemiology together.
 Biology is a comprehensive and multifaceted field of study: principles build on one another, and insights from one discipline often intersect with others in unexpected ways.
 The courses and experiences below are designed so those connections become the point rather than the exception.
 
+<figure class="photo">
+  <img src="assets/photos/modeling-whiteboard.jpg" alt="Two students work through disease-transmission models at a whiteboard covered in equations and epidemic curves." loading="lazy">
+  <figcaption>Students work through transmission models and epidemic curves — the quantitative core of the concentration.</figcaption>
+</figure>
+
 ## Program goals
 
 Students who complete the concentration will be able to:

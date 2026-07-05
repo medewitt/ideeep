@@ -9,6 +9,10 @@ The IDEEEP concentration is taught and supported by faculty and instructors acro
 
 ## Faculty and instructors
 
+<div class="person">
+  <img class="headshot" src="assets/photos/michael-dewitt.jpg" alt="Portrait of Michael E. DeWitt.">
+  <div class="person-body">
+
 **Michael E. DeWitt**  
 Infectious disease epidemiology, disease ecology, mathematical modeling, and
 research methods.
@@ -17,6 +21,9 @@ computational methods that turn surveillance and field data into decisions.
 *Students who work with him* build quantitative and programming skills and apply
 them to real modeling and analysis problems in disease dynamics.  
 Email: medewitt@wakehealth.edu · dewime23@wfu.edu
+
+  </div>
+</div>
 
 **John W. Sanders, MD, MPHT&M**  
 Tropical medicine, global health, and field epidemiology.

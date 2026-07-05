@@ -1145,3 +1145,25 @@ figure.photo figcaption {
 }
 .interest-form .check input { margin-top: 0.25rem; flex: 0 0 auto; }
 .interest-form button[type="submit"] { margin-top: var(--space-2); cursor: pointer; }
+
+/* Faculty / person entries with a headshot */
+.person {
+	display: flex;
+	gap: var(--space-4);
+	align-items: flex-start;
+	margin: var(--space-5) 0;
+}
+.person img.headshot {
+	flex: 0 0 auto;
+	width: 128px;
+	height: 128px;
+	object-fit: cover;
+	border-radius: 50%;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+.person .person-body { min-width: 0; }
+.person .person-body > :first-child { margin-top: 0; }
+@media (max-width: 520px) {
+	.person { flex-direction: column; }
+	.person img.headshot { width: 104px; height: 104px; }
+}

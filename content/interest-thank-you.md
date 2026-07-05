@@ -8,6 +8,10 @@ description: "Thanks for your interest in the IDEEEP concentration at Wake Fores
 We have received your information and will be in touch as courses, certificates,
 and research opportunities open.
 
+<figure class="photo">
+  <img src="assets/photos/modeling-whiteboard.jpg" alt="Students work through disease-transmission models at a whiteboard." loading="lazy">
+</figure>
+
 In the meantime:
 
 - Explore the [Field Epidemiology and Tropical Medicine](field-epidemiology.md)

@@ -26,6 +26,10 @@ Watch a short video about the course:
 
 <div class="photo-grid">
   <figure class="photo">
+    <img src="assets/photos/field-surveillance-emerge.jpg" alt="A field team in EMERGE vests conducts house-to-house disease surveillance in a Peruvian neighborhood." loading="lazy">
+    <figcaption>House-to-house surveillance alongside local partners — field epidemiology in practice.</figcaption>
+  </figure>
+  <figure class="photo">
     <img src="assets/photos/field-microscopy.jpg" alt="A digital microscope displays a specimen during field laboratory work." loading="lazy">
     <figcaption>Hands-on laboratory and diagnostic work in the field.</figcaption>
   </figure>
@@ -34,8 +38,16 @@ Watch a short video about the course:
     <figcaption>Nighttime reservoir sampling — studying zoonotic hosts in the field.</figcaption>
   </figure>
   <figure class="photo">
+    <img src="assets/photos/field-rice-sampling.jpg" alt="Two researchers in field gear collect samples at the edge of a rice field." loading="lazy">
+    <figcaption>Environmental and vector sampling across agricultural landscapes.</figcaption>
+  </figure>
+  <figure class="photo">
     <img src="assets/photos/tumbes-coast.jpg" alt="Sunset over the Pacific coast at Tumbes, Peru." loading="lazy">
     <figcaption>The Pacific coast at Tumbes, one of the course field sites.</figcaption>
+  </figure>
+  <figure class="photo">
+    <img src="assets/photos/tumbes-beach.jpg" alt="A palm-lined beach on the Pacific coast at Tumbes, Peru." loading="lazy">
+    <figcaption>Tumbes, on Peru's northern coast — where much of the fieldwork is based.</figcaption>
   </figure>
 </div>
 
