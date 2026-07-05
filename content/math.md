@@ -249,4 +249,10 @@ It requires practice and repetition.
 - [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
 - [The Renewal Equation](math/renewal-equation.md) — linking incidence, the generation interval, and $R_t$
 - [Population Dynamics of Resistance](math/resistance-dynamics.md) — two-strain competition and the treatment threshold
+- [Behavior–Disease Coupled Models](math/behavior-disease-coupled-models.md) — prevalence-dependent behavior and the feedback between action and transmission
+- [Climate Forcing in Transmission Models](math/climate-forcing-in-transmission-models.md) — seasonal forcing, temperature-dependent parameters, and resonance
 - [Fitting Dynamic Models to Data](math/model-calibration.md) — calibration and identifiability
+
+## Health economics & decision analysis
+
+- [Cost-Effectiveness Analysis](math/cost-effectiveness-analysis.md) — costs, QALYs and DALYs, the ICER, and the willingness-to-pay threshold

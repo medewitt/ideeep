@@ -27,6 +27,20 @@ Each page pairs the biology and notation with worked examples and runnable code 
 - [Nowcasting and Reporting Delays](epidemiology/nowcasting.md) — correcting the recent past for right truncation
 - [Epidemic Forecasting](epidemiology/epidemic-forecasting.md) — short-term projection with uncertainty and forecast scoring
 - [One Health Surveillance](epidemiology/one-health-surveillance.md) — integrating human, animal, and environmental signals
+- [Genomic Surveillance](epidemiology/genomic-surveillance.md) — linking pathogen genomes to metadata to detect and reconstruct transmission
+
+## Social, behavioral, and communication science
+
+The human side of transmission: who is exposed and why, how behavior and disease feed back on one another, and how we study meaning, context, and communication.
+
+- [Social and Structural Drivers of Transmission](epidemiology/social-drivers-of-transmission.md) — exposure, susceptibility, care-seeking, mixing, and disparities
+- [Qualitative and Mixed Methods in Epidemiology](epidemiology/qualitative-and-mixed-methods.md) — interviews, coding, rigor, and mixed-methods designs
+- [Risk Communication and Community Engagement (RCCE)](epidemiology/risk-communication-and-rcce.md) — plain language, uncertainty, trust, and misinformation
+- [Systems Thinking and Systems Mapping](epidemiology/systems-thinking-and-systems-mapping.md) — causal loops, feedback, and leverage points across sectors
+
+## Climate and the environment
+
+- [Climate and Disease Transmission](epidemiology/climate-and-disease-transmission.md) — temperature, precipitation, range shifts, land-use change, and planetary health
 
 ## Related quantitative methods
 

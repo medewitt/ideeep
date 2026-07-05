@@ -60,11 +60,14 @@ analytics, and graduate research. Course numbers are illustrative.
 |--------|-------|-------|
 | BIO 3xx | [Applied Infectious Disease Epidemiology](applied-id-epidemiology.md) | Undergraduate |
 | BIO 3xx | [Outbreak Analytics and Modeling](outbreak-analytics.md) | Undergraduate |
-| BIO 3xx | [One Health and Zoonotic Disease Ecology](one-health-zoonoses.md) | Undergraduate |
+| BIO 3xx | [One Health and Planetary Health](one-health-zoonoses.md) | Undergraduate |
 | BIO 3xx | [Data Science for Infectious Disease](data-science-id.md) | Undergraduate |
 | BIO 6xx | [Statistical Modeling of Infectious Disease Dynamics](statistical-modeling-id.md) | Masters/PhD |
 | BIO 6xx | [Spatial Epidemiology and Disease Mapping](spatial-epidemiology.md) | Masters/PhD |
 | BIO 6xx | [Evolutionary Epidemiology and the Evolution of Virulence](evolutionary-epidemiology.md) | Masters/PhD |
+| BIO 6xx | [Social and Behavioral Science of Infectious Disease](social-behavioral-id.md) | Masters/PhD |
+| BIO 6xx | [Applied Genomic and Phylodynamic Epidemiology](genomic-epidemiology.md) | Masters/PhD |
+| BIO 6xx | [Health Economics and Economic Evaluation of ID Interventions](health-economics-id.md) | Masters/PhD |
 | BIO 6xx | [IDEEE Research Seminar and Journal Club](ideee-seminar.md) | Masters/PhD |
 
 ### Recommended Biology electives
@@ -109,6 +112,7 @@ certificate of attendance.
 - [Outbreak Analytics Bootcamp](shortcourse-outbreak-analytics.md)
 - [Bayesian Modeling for Epidemiology with Stan](shortcourse-bayesian-stan.md)
 - [Introduction to Computation and Math for Biology](shortcourse-computation-math-biology.md)
+- [Risk Communication for Epidemiology and Outbreak Response](shortcourse-risk-communication.md)
 
 ## Getting involved
 
