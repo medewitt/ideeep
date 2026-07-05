@@ -699,17 +699,41 @@ fn generate_navbar(
                         // Handle different dropdown value types
                         match dropdown_value {
                             serde_yaml::Value::Mapping(map) => {
-                                // For mappings like Syllabi: {index: url, stuff: url}
+                                // For mappings the key is the display label and the
+                                // value is the target URL, e.g.
+                                //   Program:
+                                //     Program Overview: programs.html
+                                //     Courses & Syllabi: programs.html#curriculum
+                                // Relative URLs are resolved against the page being
+                                // rendered, so they must carry the same asset_prefix
+                                // the rest of the navbar uses; absolute URLs and pure
+                                // fragment links are emitted verbatim.
                                 for (key, value) in map {
                                     let page_name = key.as_str().unwrap_or("");
                                     let url = value.as_str().unwrap_or("");
                                     let display_title = markdown_titles.get(page_name)
                                         .cloned()
                                         .unwrap_or_else(|| page_name.to_string());
-                                    nav.push_str(&format!(
-                                        "      <a href=\"{}\">{}</a>\n",
-                                        url, display_title
-                                    ));
+                                    let is_external = url.starts_with("http://")
+                                        || url.starts_with("https://")
+                                        || url.starts_with("//");
+                                    let is_rooted = url.starts_with('/') || url.starts_with('#');
+                                    if is_external {
+                                        nav.push_str(&format!(
+                                            "      <a href=\"{}\" target=\"_blank\" rel=\"noopener noreferrer\">{}</a>\n",
+                                            url, display_title
+                                        ));
+                                    } else {
+                                        let href = if is_rooted {
+                                            url.to_string()
+                                        } else {
+                                            format!("{}{}", asset_prefix, url)
+                                        };
+                                        nav.push_str(&format!(
+                                            "      <a href=\"{}\">{}</a>\n",
+                                            href, display_title
+                                        ));
+                                    }
                                 }
                             }
                             serde_yaml::Value::Sequence(seq) => {
@@ -2119,6 +2143,51 @@ mod tests {
         assert!(
             html.contains("<del>struck through</del>"),
             "GFM strikethrough regressed for real prose:\n{html}"
+        );
+    }
+
+    /// A mapping-style dropdown (custom label -> URL) must resolve relative URLs
+    /// against the current page's asset_prefix, so anchor links like
+    /// `programs.html#curriculum` don't break on nested pages. Absolute and pure
+    /// fragment targets are emitted verbatim.
+    #[test]
+    fn mapping_dropdown_links_respect_asset_prefix() {
+        use std::collections::HashMap;
+        let mut inner = serde_yaml::Mapping::new();
+        inner.insert(
+            serde_yaml::Value::String("Courses & Syllabi".to_string()),
+            serde_yaml::Value::String("programs.html#curriculum".to_string()),
+        );
+        inner.insert(
+            serde_yaml::Value::String("Home".to_string()),
+            serde_yaml::Value::String("https://example.com".to_string()),
+        );
+        let mut dropdowns: HashMap<String, serde_yaml::Value> = HashMap::new();
+        dropdowns.insert("Program".to_string(), serde_yaml::Value::Mapping(inner));
+        let items = vec![NavbarItem::Dropdown("Program".to_string())];
+        let titles: HashMap<String, String> = HashMap::new();
+
+        // Rendered from a nested page (asset_prefix "../").
+        let nav = generate_navbar(&items, true, Some(&dropdowns), &titles, Some("math/sir"), "../");
+        assert!(
+            nav.contains("href=\"../programs.html#curriculum\""),
+            "relative mapping URL must be prefixed with asset_prefix:\n{nav}"
+        );
+        assert!(
+            nav.contains(">Courses & Syllabi</a>"),
+            "mapping key should be used as the link label:\n{nav}"
+        );
+        // External URLs are left untouched and open in a new tab.
+        assert!(
+            nav.contains("href=\"https://example.com\" target=\"_blank\""),
+            "external mapping URL must be emitted verbatim with target=_blank:\n{nav}"
+        );
+
+        // From the site root there is no prefix to add.
+        let nav_root = generate_navbar(&items, true, Some(&dropdowns), &titles, Some("index"), "");
+        assert!(
+            nav_root.contains("href=\"programs.html#curriculum\""),
+            "root-level mapping URL must be unprefixed:\n{nav_root}"
         );
     }
 }
