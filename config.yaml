@@ -3,50 +3,33 @@ page_order:
   - research
   - people
 
+# Navbar: four audience-facing groups instead of a long flat list.
+#   Program   — what you can study (overview, courses, certificates, short courses)
+#   Research  — what the program discovers
+#   People    — who to contact
+#   Resources — the open learning library (methods, computing, epi, diagnostics, careers)
+# The Program dropdown links into sections of the Programs page (which already
+# describes every course, certificate, and short course) rather than exposing
+# every syllabus in the menu.
 navbar_order:
-  - programs
+  - Program
   - research
   - people
   - Resources
-  - Methods
-  - Professional Development
-  - Syllabi
-  - Certificates
-  - Short Courses
   - Search
   - url: https://wakeforestid.com
     text: Home
 
 dropdowns:
+  Program:
+    Program Overview: programs.html
+    Courses & Syllabi: programs.html#curriculum
+    Certificates: programs.html#graduate-certificates
+    Short Courses: programs.html#short-courses
   Resources:
     - math
     - programming
-  Methods:
     - epidemiology
     - diagnostics
-  Professional Development:
-    - scientific-pathways
     - scientific-writing
-  Syllabi:
-    - bio301-math-bio
-    - bio340-id-ecology
-    - bio390-research-tools
-    - field-epidemiology
-    - stewardship-infection-prevention
-    - applied-id-epidemiology
-    - outbreak-analytics
-    - one-health-zoonoses
-    - data-science-id
-    - statistical-modeling-id
-    - spatial-epidemiology
-    - evolutionary-epidemiology
-    - ideee-seminar
-  Certificates:
-    - certificate-id-modeling-analytics
-    - certificate-quant-stewardship
-    - certificate-global-health-data
-  Short Courses:
-    - shortcourse-intro-epi-biostats
-    - shortcourse-outbreak-analytics
-    - shortcourse-bayesian-stan
-    - shortcourse-computation-math-biology
+    - scientific-pathways

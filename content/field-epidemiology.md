@@ -44,6 +44,7 @@ This intensive summer course offers a thorough overview of epidemiological princ
 - Understand the principles of infectious disease ecology and zoonoses and their relevance to outbreaks of pathogens of animal and human importance
 - Understand how to design, conduct, and publish field epidemiology investigations
 - Learn the techniques used to identify reservoirs including small mammals and vectors
+- Conduct field investigations ethically, with attention to informed consent, community engagement and benefit-sharing, and responsible handling of field and personal data
 
 # Textbook and other resources
 
@@ -58,11 +59,11 @@ Some articles that we will review will include:
 - Goodman RA, Buehler JW, Koplan JP. THE EPIDEMIOLOGIC FIELD INVESTIGATION: SCIENCE AND JUDGMENT IN PUBLIC HEALTH PRACTICE. American Journal of Epidemiology 1990;132:9–16. https://doi.org/10.1093/oxfordjournals.aje.a115647.
 - Lloyd-Smith JO, George DB, Pepin KM, Pitzer VE, Pulliam JRC, Dobson AP, et al. Epidemic dynamics at the human-animal interface. Science 2009;326:1362–7. https://doi.org/10.1126/science.1177345. 
 
-
 Some additional resources that are useful for a deeper understanding of this course include:
 
 - The CDC Field Epidemiology Manual by Rasmussen and Goodman
 - The Outbreak Atlas by Katz and Moore
+- [Research and data ethics, governance, and responsible sharing](programming/research-data-ethics-and-governance.md) — field-data consent, benefit-sharing, and privacy for outbreak investigations
 
 # Course structure and schedule
 
@@ -89,7 +90,6 @@ This course is composed into two parts:
 | 11. Epidemiology 101: The basics of epidemiology | May 30 | Bellotti & DeWitt
 | 12. Data management and geospatial analysis for field epidemiology | May 30 | DeWitt
 | 13. An overview of Northern Peru | May 30 | TBD
-
 
 ## Part 2: Field-based activities
 
@@ -130,7 +130,6 @@ Aedes traps: BG, ovitrap, prokopack. | June 6 | Gorgas |
 | 27. Introduction to the management of geographic data | June 10 | Gorgas |
 | 28. Shadow hospital rounds at Instituto de Medicina Tropical Alexander von Humboldt | June 11 | Lescano |
 
-
 # Grades and assignments
 
 Students' evaluation will be based on their attendance and participation on course activities, as well as their performance during all the course activities in Lima and Tumbes.
@@ -145,7 +144,6 @@ In addition to the post-field experience reflect, students taking the laboratory
 |Performance during field activities | 50% |
 |Post-field experience reflection | 20% |
 |Pre-trip reading and reflection assignment | 20% |
-
 
 # Course policies
 
@@ -163,7 +161,6 @@ In no way can these tools take the place of your own work and understanding of t
 You are ultimately responsible for your work including content and the use of valid citations and references.
 Using these tools without proper attribution is plagiarism and will be treated as such.
 
-
 # Department/School/University policies
 
 **Academic Integrity:** Wake Forest University is committed to a culture of academic integrity. As a part of this community, you share the responsibility for creating a place of honesty, intellectual curiosity, and individual accountability. As you committed to with your honor pledge signature, you agree “not to deceive any member of the community; not to steal, cheat, or plagiarize on academic work; and not to engage in any other form of academic misconduct.” If you have questions about documenting your work, working with external sources, working with peers on assigned work, etc., consult with me as soon as possible. Instances of academic dishonesty will be referred to the Honor and Ethics Council.
@@ -174,8 +171,4 @@ Using these tools without proper attribution is plagiarism and will be treated a
 
 **Class recordings** In case any class recordings are provided they are reserved only for students in this class for educational purposes and are protected under FERPA. The recordings should not be shared outside the class in any form. Violation of this restriction by a student could lead to Student Misconduct proceedings.
 
-# Syllabus change notice
-
-This syllabus and the dates herein are subject to change.
-
-
+:::{syllabus-change-notice.md}:::

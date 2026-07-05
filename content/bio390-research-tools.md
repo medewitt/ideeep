@@ -36,6 +36,7 @@ Upon successful completion of this course, students will be able to:
 - Organize research projects following best practices for reproducibility
 - Apply computational tools to enhance research workflow efficiency
 - Understand the principles of reproducible research and data management
+- Apply research and data ethics — informed consent, IRB basics, data governance, and FAIR principles — to responsible, reproducible data handling
 - Navigate command-line interfaces for file management and tool execution
 
 # Textbook and other resources
@@ -46,6 +47,7 @@ There is no required textbook for this course. All materials will be provided th
 - *The Markdown Guide* (available online at https://www.markdownguide.org)
 - *The LaTeX Companion* by Frank Mittelbach et al. (available online through university library)
 - *Reproducible Research with R and R Studio* by Christopher Gandrud
+- [Research and data ethics, governance, and responsible sharing](programming/research-data-ethics-and-governance.md) — the concentration's reference on IRB and consent, FAIR data, re-identification risk, and equitable data sharing
 
 Additional online resources and documentation will be provided throughout the course for specific tools and topics.
 
@@ -66,7 +68,7 @@ This course meets once per week for one hour over 15 weeks. Each session will co
 | 9 | Data storage: File formats, organization, and naming conventions | TBD | DeWitt |
 | 10 | Data storage: Introduction to relational databases | TBD | DeWitt |
 | 11 | Data storage: NoSQL databases and cloud storage options | TBD | DeWitt |
-| 12 | Data management: Best practices for research data | TBD | DeWitt |
+| 12 | Data management, research ethics, and data governance (IRB, consent, FAIR, privacy) | TBD | DeWitt |
 | 13 | Reproducible research: Virtual environments and containers | TBD | DeWitt |
 | 14 | Integration: Project organization and putting it all together | TBD | DeWitt |
 | 15 | Final project presentations and course wrap-up | TBD | DeWitt |
@@ -109,7 +111,4 @@ Students' evaluation will be based on their attendance, participation in class a
 
 **Class recordings** In case any class recordings are provided they are reserved only for students in this class for educational purposes and are protected under FERPA. The recordings should not be shared outside the class in any form. Violation of this restriction by a student could lead to Student Misconduct proceedings.
 
-# Syllabus change notice
-
-This syllabus and the dates herein are subject to change.
-
+:::{syllabus-change-notice.md}:::

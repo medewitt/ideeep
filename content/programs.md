@@ -1,6 +1,7 @@
 ---
 title: Programs
 description: "An interdisciplinary Wake Forest concentration studying infectious disease through ecology, evolution, mathematics, statistics, and field epidemiology."
+toc: true
 ---
 
 # The IDEEEP Concentration
@@ -10,6 +11,10 @@ Pathogens do not act in isolation — they move through populations, respond to 
 Infectious diseases transcend model systems from bacteriophages infecting bacteria to helminths infecting sheep to fungal infections in plants to viral zoonoses in humans, infectious diseases are key forces across biology.
 Understanding them requires drawing on ecology, evolution, mathematics,
 statistics, and field epidemiology together.
+That quantitative and ecological work stays at the core of the concentration,
+complemented by exposure to the social sciences, economics, and medical
+anthropology, so students graduate with a quantitatively focused but holistically
+well-rounded view of infectious disease.
 
 Biology is a comprehensive and multifacted field of study: principles build on one another, and insights from one discipline often intersect with others in unexpected ways.
 The courses and experiences below are designed so those connections become the point rather than the exception.
@@ -28,6 +33,14 @@ Students who complete the concentration will be able to:
   results
 - Apply a One Health perspective that connects human, animal, and environmental
   health
+- Link pathogen genomes to epidemiologic data to detect and reconstruct
+  transmission
+- Communicate risk and uncertainty, and translate evidence into recommendations
+  for decision-makers
+- Draw on exposure to the social sciences, economics, and medical anthropology to
+  place quantitative findings in their human, economic, and policy context
+- Collaborate ethically across disciplines and sectors, applying systems thinking
+  and responsible data governance
 
 ## Curriculum
 
@@ -52,18 +65,23 @@ ecology, evolution, and epidemiology.
 
 ### Proposed additional courses
 
-These proposed courses extend the concentration into applied epidemiology,
-analytics, and graduate research. Course numbers are illustrative.
+These proposed courses extend the concentration into applied epidemiology and
+analytics, pathogen genomics, economic evaluation, and graduate research, with
+some exposure to the human and policy dimensions of epidemics. Course numbers are
+illustrative.
 
 | Course | Title | Level |
 |--------|-------|-------|
 | BIO 3xx | [Applied Infectious Disease Epidemiology](applied-id-epidemiology.md) | Undergraduate |
 | BIO 3xx | [Outbreak Analytics and Modeling](outbreak-analytics.md) | Undergraduate |
-| BIO 3xx | [One Health and Zoonotic Disease Ecology](one-health-zoonoses.md) | Undergraduate |
+| BIO 3xx | [One Health and Planetary Health](one-health-zoonoses.md) | Undergraduate |
 | BIO 3xx | [Data Science for Infectious Disease](data-science-id.md) | Undergraduate |
 | BIO 6xx | [Statistical Modeling of Infectious Disease Dynamics](statistical-modeling-id.md) | Masters/PhD |
 | BIO 6xx | [Spatial Epidemiology and Disease Mapping](spatial-epidemiology.md) | Masters/PhD |
 | BIO 6xx | [Evolutionary Epidemiology and the Evolution of Virulence](evolutionary-epidemiology.md) | Masters/PhD |
+| BIO 6xx | [People, Plagues, and Policy: The Human Dimensions of Infectious Disease](people-plagues-policy.md) | Masters/PhD |
+| BIO 6xx | [Applied Genomic and Phylodynamic Epidemiology](genomic-epidemiology.md) | Masters/PhD |
+| BIO 6xx | [Health Economics and Economic Evaluation of ID Interventions](health-economics-id.md) | Masters/PhD |
 | BIO 6xx | [IDEEE Research Seminar and Journal Club](ideee-seminar.md) | Masters/PhD |
 
 ### Recommended Biology electives
@@ -87,6 +105,31 @@ be taken as electives.
 > should be confirmed against the official course catalog and the Department of
 > Biology each academic year.
 
+### Cross-cutting threads
+
+Some capabilities are not standalone courses but run *through* the concentration,
+taught where they are used rather than in isolation. They are what let a student
+move from building a result to acting on it responsibly.
+
+- **Research and data ethics and governance** — IRB and consent, FAIR data,
+  privacy and re-identification risk, and equitable data sharing — woven into
+  [Research Tools and Methods](bio390-research-tools.md),
+  [Data Science for Infectious Disease](data-science-id.md),
+  [Field Epidemiology](field-epidemiology.md), and
+  [Applied Genomic and Phylodynamic Epidemiology](genomic-epidemiology.md). See
+  [research and data ethics, governance, and responsible sharing](programming/research-data-ethics-and-governance.md).
+- **Systems thinking, collaboration, and leadership** — the One Health
+  meta-competencies — practiced in the
+  [IDEEE Research Seminar](ideee-seminar.md),
+  [Outbreak Analytics and Modeling](outbreak-analytics.md), and
+  [One Health and Planetary Health](one-health-zoonoses.md). See
+  [systems thinking and systems mapping](epidemiology/systems-thinking-and-systems-mapping.md).
+- **Risk communication and translating evidence for policy** — carried by
+  [People, Plagues, and Policy](people-plagues-policy.md) and the
+  [Risk Communication short course](shortcourse-risk-communication.md), and
+  reinforced wherever results meet decision-makers. See
+  [risk communication and community engagement](epidemiology/risk-communication-and-rcce.md).
+
 ## Graduate certificates
 
 For post-baccalaureate trainees and practicing clinicians, the concentration
@@ -108,6 +151,7 @@ certificate of attendance.
 - [Outbreak Analytics Bootcamp](shortcourse-outbreak-analytics.md)
 - [Bayesian Modeling for Epidemiology with Stan](shortcourse-bayesian-stan.md)
 - [Introduction to Computation and Math for Biology](shortcourse-computation-math-biology.md)
+- [Risk Communication for Epidemiology and Outbreak Response](shortcourse-risk-communication.md)
 
 ## Getting involved
 

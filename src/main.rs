@@ -567,7 +567,105 @@ fn columnize_link_lists(html: &str) -> String {
     out
 }
 
+/// Directory (relative to the project root) that holds reusable Markdown
+/// fragments. A page injects one with a `:::{fragment-name.md}:::` shortcode on
+/// its own line (the `.md` extension is optional). Fragments live under a
+/// leading-underscore directory so `find_markdown_files` skips them and they are
+/// never compiled into standalone pages of their own — they exist only to be
+/// spliced into the pages that reference them.
+const FRAGMENTS_DIR: &str = "content/_fragments";
+
+/// Expand `:::{fragment.md}:::` include shortcodes by splicing the referenced
+/// fragment's Markdown into the stream *before* it is parsed, so a fragment
+/// renders exactly as if its text had been written inline (headings, tables,
+/// callouts and math all work). Update the fragment once and every page that
+/// includes it changes on the next build.
+///
+/// Includes may nest (a fragment can include another). A per-branch stack guards
+/// against cycles, and shortcodes that reference a missing file or try to escape
+/// the fragments directory are left as a visible, logged marker rather than
+/// silently dropping content — a lost policy section should never pass unnoticed.
+fn expand_includes(markdown: &str) -> String {
+    expand_includes_from(markdown, Path::new(FRAGMENTS_DIR))
+}
+
+/// Core of `expand_includes`, parameterised by the fragments directory so it can
+/// be exercised against fixtures in tests. `stack` is the chain of fragments
+/// currently being expanded on this branch; a name already on it would form a
+/// cycle (direct `a→a` or mutual `a→b→a`) and is refused instead of recursed
+/// into, which is what stops the expansion from looping forever.
+fn expand_includes_from(markdown: &str, dir: &Path) -> String {
+    fn expand(md: &str, dir: &Path, stack: &mut Vec<String>) -> String {
+        // A shortcode occupies its own line: optional indentation, then
+        // `:::{ name }:::`, then optional trailing whitespace.
+        let re = Regex::new(r"(?m)^[ \t]*:::\{\s*([^{}]+?)\s*\}:::[ \t]*$").unwrap();
+        re.replace_all(md, |caps: &regex::Captures| {
+            let raw = caps[1].trim();
+            let name = if raw.ends_with(".md") {
+                raw.to_string()
+            } else {
+                format!("{}.md", raw)
+            };
+
+            // Refuse anything that could reach outside the fragments directory.
+            if name.contains("..")
+                || name.starts_with('/')
+                || name.starts_with('\\')
+                || Path::new(&name).is_absolute()
+            {
+                eprintln!("Warning: ignoring unsafe fragment include: {}", raw);
+                return format!("<!-- unsafe fragment include: {} -->", raw);
+            }
+
+            // A fragment already active on this branch would loop forever if
+            // re-entered (self-reference or a mutual `a→b→a` cycle). Diamonds
+            // (the same fragment included twice on *separate* branches) are fine
+            // because each name is popped once its subtree finishes expanding.
+            if stack.iter().any(|n| n == &name) {
+                eprintln!("Warning: skipping recursive fragment include: {}", name);
+                return format!("<!-- recursive fragment include: {} -->", name);
+            }
+
+            let path = dir.join(&name);
+            match fs::read_to_string(&path) {
+                Ok(text) => {
+                    stack.push(name.clone());
+                    let expanded = expand(&text, dir, stack);
+                    stack.pop();
+                    // Set the fragment off as its own block(s): blank lines above
+                    // and below guarantee the splice can't fuse with adjacent
+                    // prose (e.g. a heading running into a preceding paragraph).
+                    format!("\n\n{}\n\n", expanded.trim())
+                }
+                Err(_) => {
+                    eprintln!(
+                        "Warning: template fragment not found: {}",
+                        path.display()
+                    );
+                    format!(
+                        "\n\n<div class=\"fragment-error\">Missing template fragment: <code>{}</code></div>\n\n",
+                        name
+                    )
+                }
+            }
+        })
+        .into_owned()
+    }
+
+    // Fast path: most pages contain no shortcodes at all.
+    if !markdown.contains(":::{") {
+        return markdown.to_string();
+    }
+    let mut stack: Vec<String> = Vec::new();
+    expand(markdown, dir, &mut stack)
+}
+
 fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<String>) -> String {
+    // Splice in any `:::{fragment.md}:::` template fragments first, so the rest
+    // of the pipeline sees one flat Markdown document.
+    let markdown = expand_includes(markdown);
+    let markdown = markdown.as_str();
+
     // Pre-process math expressions: render them server-side with KaTeX, leaving
     // inert placeholders in the Markdown so the parser can't mangle the output.
     let (processed_markdown, math_fragments) = preprocess_math(markdown);
@@ -699,17 +797,41 @@ fn generate_navbar(
                         // Handle different dropdown value types
                         match dropdown_value {
                             serde_yaml::Value::Mapping(map) => {
-                                // For mappings like Syllabi: {index: url, stuff: url}
+                                // For mappings the key is the display label and the
+                                // value is the target URL, e.g.
+                                //   Program:
+                                //     Program Overview: programs.html
+                                //     Courses & Syllabi: programs.html#curriculum
+                                // Relative URLs are resolved against the page being
+                                // rendered, so they must carry the same asset_prefix
+                                // the rest of the navbar uses; absolute URLs and pure
+                                // fragment links are emitted verbatim.
                                 for (key, value) in map {
                                     let page_name = key.as_str().unwrap_or("");
                                     let url = value.as_str().unwrap_or("");
                                     let display_title = markdown_titles.get(page_name)
                                         .cloned()
                                         .unwrap_or_else(|| page_name.to_string());
-                                    nav.push_str(&format!(
-                                        "      <a href=\"{}\">{}</a>\n",
-                                        url, display_title
-                                    ));
+                                    let is_external = url.starts_with("http://")
+                                        || url.starts_with("https://")
+                                        || url.starts_with("//");
+                                    let is_rooted = url.starts_with('/') || url.starts_with('#');
+                                    if is_external {
+                                        nav.push_str(&format!(
+                                            "      <a href=\"{}\" target=\"_blank\" rel=\"noopener noreferrer\">{}</a>\n",
+                                            url, display_title
+                                        ));
+                                    } else {
+                                        let href = if is_rooted {
+                                            url.to_string()
+                                        } else {
+                                            format!("{}{}", asset_prefix, url)
+                                        };
+                                        nav.push_str(&format!(
+                                            "      <a href=\"{}\">{}</a>\n",
+                                            href, display_title
+                                        ));
+                                    }
                                 }
                             }
                             serde_yaml::Value::Sequence(seq) => {
@@ -1067,6 +1189,17 @@ fn find_markdown_files(dir: &Path, base_dir: &Path, files: &mut Vec<(PathBuf, Pa
         let path = entry.path();
         
         if path.is_dir() {
+            // Skip leading-underscore directories (e.g. `_fragments`): they hold
+            // reusable include fragments, not standalone pages, so they must not
+            // be compiled to HTML on their own.
+            if path
+                .file_name()
+                .and_then(|s| s.to_str())
+                .map(|n| n.starts_with('_'))
+                .unwrap_or(false)
+            {
+                continue;
+            }
             // Recursively search subdirectories
             find_markdown_files(&path, base_dir, files)?;
         } else if path.extension().and_then(|s| s.to_str()) == Some("md") {
@@ -1170,7 +1303,10 @@ fn build_search_index(
 
         let content = fs::read_to_string(full_path)?;
         let (_, markdown_content) = extract_frontmatter(&content);
-        let content_text = extract_search_text(markdown_content);
+        // Expand template fragments so injected sections (course/university
+        // policies, etc.) are searchable on the pages that include them.
+        let markdown_content = expand_includes(markdown_content);
+        let content_text = extract_search_text(&markdown_content);
 
         // URL relative to the dist root, where search.html lives.
         let url = format!("{}.html", rel_key);
@@ -2119,6 +2255,154 @@ mod tests {
         assert!(
             html.contains("<del>struck through</del>"),
             "GFM strikethrough regressed for real prose:\n{html}"
+        );
+    }
+
+    /// A missing fragment must degrade to a visible, logged marker rather than
+    /// silently vanishing — a dropped policy section should be obvious.
+    #[test]
+    fn missing_fragment_is_visible() {
+        let html = render(":::{definitely-not-a-real-fragment.md}:::");
+        assert!(
+            html.contains("Missing template fragment")
+                && html.contains("definitely-not-a-real-fragment.md"),
+            "missing include should render a visible marker:\n{html}"
+        );
+    }
+
+    /// A shortcode that tries to escape the fragments directory is refused.
+    #[test]
+    fn unsafe_fragment_include_is_refused() {
+        let html = render(":::{../../etc/passwd}:::");
+        assert!(
+            !html.contains("root:") && html.contains("unsafe fragment include"),
+            "path-traversal include must be refused:\n{html}"
+        );
+    }
+
+    /// Text with no shortcode is passed through untouched (fast path).
+    #[test]
+    fn expand_includes_is_noop_without_shortcode() {
+        let md = "Just a normal paragraph with a :: colon but no shortcode.";
+        assert_eq!(expand_includes(md), md);
+    }
+
+    /// Build a throwaway fragments directory for an include test, returning its
+    /// path. Uses the process id so parallel test runs don't collide, and is
+    /// cleaned up by the caller.
+    fn write_fixtures(tag: &str, files: &[(&str, &str)]) -> std::path::PathBuf {
+        let dir = std::env::temp_dir().join(format!("ideeep-frag-{}-{}", tag, std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        for (name, body) in files {
+            fs::write(dir.join(name), body).unwrap();
+        }
+        dir
+    }
+
+    /// A fragment that includes itself must be caught, not recursed into
+    /// forever. If the guard were missing this test would hang rather than fail.
+    #[test]
+    fn direct_self_reference_is_broken() {
+        let dir = write_fixtures("self", &[("a.md", "top\n\n:::{a.md}:::\n\nbottom")]);
+        let out = expand_includes_from(":::{a.md}:::", &dir);
+        let _ = fs::remove_dir_all(&dir);
+        assert!(
+            out.contains("recursive fragment include: a.md"),
+            "self-include should be refused with a marker:\n{out}"
+        );
+        // The first level of `a` still expands; only the re-entry is cut.
+        assert!(out.contains("top") && out.contains("bottom"));
+    }
+
+    /// A mutual cycle `a → b → a` must terminate at the re-entry of `a`, leaving
+    /// a marker rather than looping. This is the exact scenario from the report:
+    /// a includes b, b includes a.
+    #[test]
+    fn mutual_cycle_is_broken() {
+        let dir = write_fixtures(
+            "mutual",
+            &[
+                ("a.md", "A-start\n\n:::{b.md}:::\n\nA-end"),
+                ("b.md", "B-start\n\n:::{a.md}:::\n\nB-end"),
+            ],
+        );
+        let out = expand_includes_from("page\n\n:::{a.md}:::", &dir);
+        let _ = fs::remove_dir_all(&dir);
+        // Both fragments expanded one level deep, and the loop back into `a` was
+        // cut with a marker.
+        assert!(out.contains("A-start") && out.contains("A-end"), "a not expanded:\n{out}");
+        assert!(out.contains("B-start") && out.contains("B-end"), "b not expanded:\n{out}");
+        assert!(
+            out.contains("recursive fragment include: a.md"),
+            "the a→b→a cycle should be cut with a marker:\n{out}"
+        );
+    }
+
+    /// A diamond (the same fragment included on two independent branches) is NOT
+    /// a cycle and must expand in both places — the guard must not over-fire.
+    #[test]
+    fn diamond_include_is_allowed_twice() {
+        let dir = write_fixtures(
+            "diamond",
+            &[
+                ("leaf.md", "LEAF"),
+                ("left.md", ":::{leaf.md}:::"),
+                ("right.md", ":::{leaf.md}:::"),
+            ],
+        );
+        let out = expand_includes_from(":::{left.md}:::\n\n:::{right.md}:::", &dir);
+        let _ = fs::remove_dir_all(&dir);
+        assert_eq!(
+            out.matches("LEAF").count(),
+            2,
+            "leaf should expand on both branches, not be treated as a cycle:\n{out}"
+        );
+        assert!(!out.contains("recursive fragment include"), "diamond wrongly flagged:\n{out}");
+    }
+
+    /// A mapping-style dropdown (custom label -> URL) must resolve relative URLs
+    /// against the current page's asset_prefix, so anchor links like
+    /// `programs.html#curriculum` don't break on nested pages. Absolute and pure
+    /// fragment targets are emitted verbatim.
+    #[test]
+    fn mapping_dropdown_links_respect_asset_prefix() {
+        use std::collections::HashMap;
+        let mut inner = serde_yaml::Mapping::new();
+        inner.insert(
+            serde_yaml::Value::String("Courses & Syllabi".to_string()),
+            serde_yaml::Value::String("programs.html#curriculum".to_string()),
+        );
+        inner.insert(
+            serde_yaml::Value::String("Home".to_string()),
+            serde_yaml::Value::String("https://example.com".to_string()),
+        );
+        let mut dropdowns: HashMap<String, serde_yaml::Value> = HashMap::new();
+        dropdowns.insert("Program".to_string(), serde_yaml::Value::Mapping(inner));
+        let items = vec![NavbarItem::Dropdown("Program".to_string())];
+        let titles: HashMap<String, String> = HashMap::new();
+
+        // Rendered from a nested page (asset_prefix "../").
+        let nav = generate_navbar(&items, true, Some(&dropdowns), &titles, Some("math/sir"), "../");
+        assert!(
+            nav.contains("href=\"../programs.html#curriculum\""),
+            "relative mapping URL must be prefixed with asset_prefix:\n{nav}"
+        );
+        assert!(
+            nav.contains(">Courses & Syllabi</a>"),
+            "mapping key should be used as the link label:\n{nav}"
+        );
+        // External URLs are left untouched and open in a new tab.
+        assert!(
+            nav.contains("href=\"https://example.com\" target=\"_blank\""),
+            "external mapping URL must be emitted verbatim with target=_blank:\n{nav}"
+        );
+
+        // From the site root there is no prefix to add.
+        let nav_root = generate_navbar(&items, true, Some(&dropdowns), &titles, Some("index"), "");
+        assert!(
+            nav_root.contains("href=\"programs.html#curriculum\""),
+            "root-level mapping URL must be unprefixed:\n{nav_root}"
         );
     }
 }
