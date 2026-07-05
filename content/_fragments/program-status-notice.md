@@ -8,4 +8,4 @@
 > Course numbers, credit hours, and schedules are illustrative and subject to
 > change.
 > If you would like to hear when offerings open, [tell us you are
-> interested](people.md).
+> interested](prospective-students.md).

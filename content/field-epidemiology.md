@@ -7,13 +7,39 @@ date: 2025-12-23
 
 This is an exciting course which takes place in a variety of locations including Tumbes and Lima, Peru.
 
+<figure class="photo">
+  <img src="assets/photos/field-team-ppe.jpg" alt="Students in protective suits and powered air-purifying respirators during field outbreak-response training in Peru." loading="lazy">
+  <figcaption>Students train in personal protective equipment during hands-on outbreak-response fieldwork in Peru.</figcaption>
+</figure>
+
 > [!TIP]
 > **This course is offered and open to students.** The next section runs in
 > **Summer 2027**. It is an established Wake Forest course (BIO 301/302) and
 > runs independently of the in-development IDEEEP concentration, so you can
 > enroll now. Contact Course Director John W. Sanders to express interest.
 
-The course syllabus is shown below, and a [video about the course is available here](https://youtu.be/9gjW50o6cJk?si=a0Tsy2e180M8SbYm).
+Watch a short video about the course:
+
+<div class="video-embed">
+  <iframe src="https://www.youtube-nocookie.com/embed/9gjW50o6cJk" title="Field Epidemiology and Tropical Medicine course video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+<div class="photo-grid">
+  <figure class="photo">
+    <img src="assets/photos/field-microscopy.jpg" alt="A digital microscope displays a specimen during field laboratory work." loading="lazy">
+    <figcaption>Hands-on laboratory and diagnostic work in the field.</figcaption>
+  </figure>
+  <figure class="photo">
+    <img src="assets/photos/bat-mist-net.jpg" alt="A bat caught in a mist net at night during reservoir sampling." loading="lazy">
+    <figcaption>Nighttime reservoir sampling — studying zoonotic hosts in the field.</figcaption>
+  </figure>
+  <figure class="photo">
+    <img src="assets/photos/tumbes-coast.jpg" alt="Sunset over the Pacific coast at Tumbes, Peru." loading="lazy">
+    <figcaption>The Pacific coast at Tumbes, one of the course field sites.</figcaption>
+  </figure>
+</div>
+
+The course syllabus is shown below.
 
 ---
 

@@ -24,6 +24,17 @@ Students are encouraged to engage with research early and to develop the computa
 - **Evolution of host–pathogen systems** — virulence, resistance, and
   coevolution
 
+<div class="photo-grid">
+  <figure class="photo">
+    <img src="assets/photos/bat-mist-net.jpg" alt="A bat caught in a mist net at night during reservoir sampling." loading="lazy">
+    <figcaption>Reservoir sampling in the field — tracing where pathogens spill over.</figcaption>
+  </figure>
+  <figure class="photo">
+    <img src="assets/photos/parasite-microscopy.jpg" alt="A parasite viewed under the microscope during laboratory diagnostics." loading="lazy">
+    <figcaption>Microscopy and diagnostics — identifying the pathogens behind disease.</figcaption>
+  </figure>
+</div>
+
 ## Opportunities for students
 
 Students can participate in research through:

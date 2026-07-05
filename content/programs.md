@@ -132,4 +132,5 @@ Students interested in the concentration are encouraged to:
 4. Consider the [field epidemiology](field-epidemiology.md) experience for
    immersive, applied training
 
-To learn more or express interest, [contact the program](people.md).
+To learn more or express interest, fill out the [prospective-student interest
+form](prospective-students.md) or [contact the program](people.md).

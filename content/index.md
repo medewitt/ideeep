@@ -48,6 +48,16 @@ description: "The IDEEEP concentration at Wake Forest University unites ecology,
   </a>
 </section>
 
+<section class="feature" aria-label="Featured course">
+  <img src="assets/photos/field-team-ppe.jpg" alt="Students in protective suits and respirators during field outbreak-response training in Peru.">
+  <div>
+    <span class="feature-badge">Offered — Summer 2027</span>
+    <h2>Field Epidemiology &amp; Tropical Medicine</h2>
+    <p>Do real outbreak investigation and tropical-medicine fieldwork in Tumbes and Lima, Peru — from reservoir sampling to field diagnostics. It runs now as an established Wake Forest course while the rest of the concentration is being developed, so you can take it without waiting.</p>
+    <p><a class="btn btn-primary" href="field-epidemiology.md">Explore the field course</a></p>
+  </div>
+</section>
+
 ## About the program
 
 :::{program-status-notice.md}:::
