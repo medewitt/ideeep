@@ -43,6 +43,7 @@ Below are some brief topics ranging from good programming practice and the every
 - [Computer Basics for Scientists](programming/computer-basics.md) — files, paths, and the command line
 - [Running Jobs on an HPC Cluster (SLURM)](programming/hpc-clusters-slurm.md) — the DEAC & DEMON clusters, modules, SSH, and job submission
 - [Handling Secrets and API Keys](programming/handling-secrets.md) — keys, environment variables, and `.gitignore`
+- [Research and Data Ethics, Governance, and Responsible Sharing](programming/research-data-ethics-and-governance.md) — IRB and consent, FAIR data, re-identification risk, and equitable data sharing
 - [Version Control with Git & GitHub](programming/version-control-git.md)
 - [Building a Personal Website](programming/personal-website.md)
 - [LaTeX and Technical Documents](programming/latex-and-documents.md)
