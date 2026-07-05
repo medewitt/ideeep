@@ -6,13 +6,15 @@ toc: true
 
 # The IDEEEP Concentration
 
+:::{program-status-notice.md}:::
+
 The **Infectious Disease Ecology, Evolution, and Epidemiology Program (IDEEEP)** is an interdisciplinary concentration for students who want to understand infectious diseases as a biological, ecological, and quantitative phenomenon.
 Pathogens do not act in isolation — they move through populations, respond to selection, and are shaped by the environments and hosts they depend on.
 Infectious diseases transcend model systems from bacteriophages infecting bacteria to helminths infecting sheep to fungal infections in plants to viral zoonoses in humans, infectious diseases are key forces across biology.
 Understanding them requires drawing on ecology, evolution, mathematics,
 statistics, and field epidemiology together.
 
-Biology is a comprehensive and multifacted field of study: principles build on one another, and insights from one discipline often intersect with others in unexpected ways.
+Biology is a comprehensive and multifaceted field of study: principles build on one another, and insights from one discipline often intersect with others in unexpected ways.
 The courses and experiences below are designed so those connections become the point rather than the exception.
 
 ## Program goals

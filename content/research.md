@@ -5,6 +5,8 @@ description: "Research themes, labs, and student opportunities in infectious dis
 
 # Research
 
+:::{program-status-notice.md}:::
+
 Research is central to the IDEEEP concentration. 
 Infectious disease sits at the intersection of ecology, evolution, and epidemiology, and progress depends on combining field observation, laboratory work, and quantitative analysis.
 Students are encouraged to engage with research early and to develop the computational and analytical skills that modern disease science requires.

@@ -9,6 +9,10 @@ This is an exciting course which takes place in a variety of locations including
 
 The course syllabus is shown below, and a [video about the course is available here](https://youtu.be/9gjW50o6cJk?si=a0Tsy2e180M8SbYm).
 
+> **Draft syllabus.** This course is being developed as part of the IDEEEP
+> concentration. Dates, locations, and specific requirements are subject to
+> change and will be finalized before each offering.
+
 ---
 
 # Course title and instructors
