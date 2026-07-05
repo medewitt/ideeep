@@ -220,4 +220,5 @@ The same five thresholds guide practical problems from managing microbial public
 - [Ecological Networks](ecological-networks.md)
 - [Centrality](centrality.md)
 - [Genetic Drift](genetic-drift.md)
+- [Kin Selection and Inclusive Fitness](kin-selection.md) — Hamilton's rule and relatedness developed in full as the first of Nowak's mechanisms
 - [Quantitative Methods](../math.md)

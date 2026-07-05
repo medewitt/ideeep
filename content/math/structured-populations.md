@@ -111,4 +111,5 @@ The same matrix-eigenvalue logic underlies the next-generation matrix that yield
 - [Matrix Operations](matrix-operations.md)
 - [Matrix Notation](matrix-notation.md)
 - [The Next-Generation Matrix](next-generation-matrix.md)
+- [Reproductive Value and Demographic Sensitivity](reproductive-value.md) — how the left eigenvector weights each stage and how sensitivities read off the projection matrix
 - [Quantitative Methods](../math.md)

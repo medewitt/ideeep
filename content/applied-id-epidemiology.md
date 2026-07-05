@@ -85,6 +85,15 @@ material:
 - [Generalized linear models](math/generalized-linear-models.md)
 - [Diagnostics and surveillance](diagnostics.md)
 - [Research Tools and Methods](bio390-research-tools.md)
+- [The speed and strength of epidemic
+  control](epidemiology/epidemic-control.md) — how fast versus how hard an
+  intervention must act
+- [The Euler–Lotka equation and the r–R₀
+  relationship](epidemiology/euler-lotka.md) — turning an epidemic growth rate
+  into a reproduction number
+- [Critical community size and epidemic
+  fade-out](epidemiology/critical-community-size.md) — the population size below
+  which transmission fades out
 - [Mathematical Biology](bio301-math-bio.md)
 
 New concept pages on study designs, measures of association and impact, the

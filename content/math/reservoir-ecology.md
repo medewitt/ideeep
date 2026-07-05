@@ -150,4 +150,5 @@ The same next-generation-matrix reasoning that gives $R_0$ for a single populati
 - [The Next-Generation Matrix and R₀](next-generation-matrix.md)
 - [Ecological Networks](ecological-networks.md)
 - [One Health Surveillance](../epidemiology/one-health-surveillance.md)
+- [Pathways to Zoonotic Spillover](../epidemiology/zoonotic-spillover.md) — the barriers a reservoir pathogen must cross to reach and transmit in humans
 - [Quantitative Methods](../math.md)

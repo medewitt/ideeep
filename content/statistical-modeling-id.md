@@ -92,6 +92,14 @@ This course draws on the following IDEEE reference pages:
 - [SEIR models](math/seir-models.md)
 - [Epidemiological intervals](epidemiology/epidemiological-intervals.md)
 - [Delay distributions and censoring](epidemiology/delay-distributions-censoring.md)
+- [The Euler–Lotka equation and the r–R₀
+  relationship](epidemiology/euler-lotka.md) — estimating R₀ from a growth rate
+  and the generation interval
+- [Multi-scale (nested) models](epidemiology/nested-models.md) — linking
+  within-host and between-host processes in a fitted model
+- [Critical transitions and early-warning
+  signals](math/critical-transitions.md) — detecting approaching thresholds from
+  fluctuations in time series
 
 Planned reference pages on prior predictive checks, posterior predictive
 checks, and identifiability will be added and assigned as they come online.
