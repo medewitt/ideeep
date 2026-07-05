@@ -586,7 +586,16 @@ const FRAGMENTS_DIR: &str = "content/_fragments";
 /// the fragments directory are left as a visible, logged marker rather than
 /// silently dropping content — a lost policy section should never pass unnoticed.
 fn expand_includes(markdown: &str) -> String {
-    fn expand(md: &str, stack: &mut Vec<String>) -> String {
+    expand_includes_from(markdown, Path::new(FRAGMENTS_DIR))
+}
+
+/// Core of `expand_includes`, parameterised by the fragments directory so it can
+/// be exercised against fixtures in tests. `stack` is the chain of fragments
+/// currently being expanded on this branch; a name already on it would form a
+/// cycle (direct `a→a` or mutual `a→b→a`) and is refused instead of recursed
+/// into, which is what stops the expansion from looping forever.
+fn expand_includes_from(markdown: &str, dir: &Path) -> String {
+    fn expand(md: &str, dir: &Path, stack: &mut Vec<String>) -> String {
         // A shortcode occupies its own line: optional indentation, then
         // `:::{ name }:::`, then optional trailing whitespace.
         let re = Regex::new(r"(?m)^[ \t]*:::\{\s*([^{}]+?)\s*\}:::[ \t]*$").unwrap();
@@ -608,17 +617,20 @@ fn expand_includes(markdown: &str) -> String {
                 return format!("<!-- unsafe fragment include: {} -->", raw);
             }
 
-            // A fragment that (transitively) includes itself would loop forever.
+            // A fragment already active on this branch would loop forever if
+            // re-entered (self-reference or a mutual `a→b→a` cycle). Diamonds
+            // (the same fragment included twice on *separate* branches) are fine
+            // because each name is popped once its subtree finishes expanding.
             if stack.iter().any(|n| n == &name) {
                 eprintln!("Warning: skipping recursive fragment include: {}", name);
                 return format!("<!-- recursive fragment include: {} -->", name);
             }
 
-            let path = Path::new(FRAGMENTS_DIR).join(&name);
+            let path = dir.join(&name);
             match fs::read_to_string(&path) {
                 Ok(text) => {
                     stack.push(name.clone());
-                    let expanded = expand(&text, stack);
+                    let expanded = expand(&text, dir, stack);
                     stack.pop();
                     // Set the fragment off as its own block(s): blank lines above
                     // and below guarantee the splice can't fuse with adjacent
@@ -645,7 +657,7 @@ fn expand_includes(markdown: &str) -> String {
         return markdown.to_string();
     }
     let mut stack: Vec<String> = Vec::new();
-    expand(markdown, &mut stack)
+    expand(markdown, dir, &mut stack)
 }
 
 fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<String>) -> String {
@@ -2273,6 +2285,80 @@ mod tests {
     fn expand_includes_is_noop_without_shortcode() {
         let md = "Just a normal paragraph with a :: colon but no shortcode.";
         assert_eq!(expand_includes(md), md);
+    }
+
+    /// Build a throwaway fragments directory for an include test, returning its
+    /// path. Uses the process id so parallel test runs don't collide, and is
+    /// cleaned up by the caller.
+    fn write_fixtures(tag: &str, files: &[(&str, &str)]) -> std::path::PathBuf {
+        let dir = std::env::temp_dir().join(format!("ideeep-frag-{}-{}", tag, std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        for (name, body) in files {
+            fs::write(dir.join(name), body).unwrap();
+        }
+        dir
+    }
+
+    /// A fragment that includes itself must be caught, not recursed into
+    /// forever. If the guard were missing this test would hang rather than fail.
+    #[test]
+    fn direct_self_reference_is_broken() {
+        let dir = write_fixtures("self", &[("a.md", "top\n\n:::{a.md}:::\n\nbottom")]);
+        let out = expand_includes_from(":::{a.md}:::", &dir);
+        let _ = fs::remove_dir_all(&dir);
+        assert!(
+            out.contains("recursive fragment include: a.md"),
+            "self-include should be refused with a marker:\n{out}"
+        );
+        // The first level of `a` still expands; only the re-entry is cut.
+        assert!(out.contains("top") && out.contains("bottom"));
+    }
+
+    /// A mutual cycle `a → b → a` must terminate at the re-entry of `a`, leaving
+    /// a marker rather than looping. This is the exact scenario from the report:
+    /// a includes b, b includes a.
+    #[test]
+    fn mutual_cycle_is_broken() {
+        let dir = write_fixtures(
+            "mutual",
+            &[
+                ("a.md", "A-start\n\n:::{b.md}:::\n\nA-end"),
+                ("b.md", "B-start\n\n:::{a.md}:::\n\nB-end"),
+            ],
+        );
+        let out = expand_includes_from("page\n\n:::{a.md}:::", &dir);
+        let _ = fs::remove_dir_all(&dir);
+        // Both fragments expanded one level deep, and the loop back into `a` was
+        // cut with a marker.
+        assert!(out.contains("A-start") && out.contains("A-end"), "a not expanded:\n{out}");
+        assert!(out.contains("B-start") && out.contains("B-end"), "b not expanded:\n{out}");
+        assert!(
+            out.contains("recursive fragment include: a.md"),
+            "the a→b→a cycle should be cut with a marker:\n{out}"
+        );
+    }
+
+    /// A diamond (the same fragment included on two independent branches) is NOT
+    /// a cycle and must expand in both places — the guard must not over-fire.
+    #[test]
+    fn diamond_include_is_allowed_twice() {
+        let dir = write_fixtures(
+            "diamond",
+            &[
+                ("leaf.md", "LEAF"),
+                ("left.md", ":::{leaf.md}:::"),
+                ("right.md", ":::{leaf.md}:::"),
+            ],
+        );
+        let out = expand_includes_from(":::{left.md}:::\n\n:::{right.md}:::", &dir);
+        let _ = fs::remove_dir_all(&dir);
+        assert_eq!(
+            out.matches("LEAF").count(),
+            2,
+            "leaf should expand on both branches, not be treated as a cycle:\n{out}"
+        );
+        assert!(!out.contains("recursive fragment include"), "diamond wrongly flagged:\n{out}");
     }
 
     /// A mapping-style dropdown (custom label -> URL) must resolve relative URLs
