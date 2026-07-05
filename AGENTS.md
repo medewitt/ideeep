@@ -22,6 +22,7 @@ content/            all site content (Markdown); discovered recursively
   programming/      "Programming & Computing" concept pages
   epidemiology/     "Epidemiology" concept pages (intervals, delays)
   diagnostics/      "Diagnostics & Surveillance" method pages
+  _fragments/       reusable Markdown fragments injected via `:::{name.md}:::` (NOT compiled to pages)
   math.md, programming.md, epidemiology.md, diagnostics.md   section hub pages
   scientific-pathways.md, scientific-writing.md              single-page sections
   index.md, programs.md, research.md, people.md, *.md        top-level & syllabus pages
@@ -54,6 +55,36 @@ Hub (and other long) pages can set `toc: true` in front matter to get an
 auto-generated "On this page" table of contents built from their `##` headings;
 it is off by default. Flat link lists (4+ items, all links) are automatically
 flowed into responsive columns.
+
+## Reusable template fragments (`:::{name.md}:::`)
+
+Content that is **identical across many pages** — the shared course policies,
+the university policies, the syllabus change notice — lives once in
+`content/_fragments/` and is pulled into each page with an include shortcode:
+
+```markdown
+:::{course-policies.md}:::
+:::{university-policies.md}:::
+:::{syllabus-change-notice.md}:::
+```
+
+- The shortcode must sit **on its own line**. The `.md` extension is optional
+  (`:::{course-policies}:::` also works).
+- The fragment's Markdown is spliced in **before** parsing, so it renders exactly
+  as if written inline — headings, tables, callouts and math all work. Includes
+  may nest (a fragment can include another).
+- Edit the fragment once and every page that references it updates on the next
+  build. To centralise a new shared block: drop a `content/_fragments/<name>.md`
+  file, then replace the repeated text on each page with `:::{<name>.md}:::`.
+- `content/_fragments/` (any `_`-prefixed directory under `content/`) is **not**
+  compiled to standalone pages — fragments exist only to be injected.
+- A shortcode pointing at a missing file (or trying to escape the fragments
+  directory with `..`) renders a loud `.fragment-error` marker and logs a build
+  warning, so a dropped section is caught rather than silently lost.
+
+Not every syllabus shares the same wording — some courses have course-specific
+attendance or late-work policies, or a longer university-policy block. Those keep
+their text inline; only the byte-identical sections are centralised.
 
 ## Page skeleton (match this)
 

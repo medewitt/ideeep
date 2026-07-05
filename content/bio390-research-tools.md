@@ -109,7 +109,4 @@ Students' evaluation will be based on their attendance, participation in class a
 
 **Class recordings** In case any class recordings are provided they are reserved only for students in this class for educational purposes and are protected under FERPA. The recordings should not be shared outside the class in any form. Violation of this restriction by a student could lead to Student Misconduct proceedings.
 
-# Syllabus change notice
-
-This syllabus and the dates herein are subject to change.
-
+:::{syllabus-change-notice.md}:::
