@@ -51,7 +51,7 @@ description: "The IDEEEP concentration at Wake Forest University unites ecology,
 ## About the program
 
 The **IDEEEP** concentration brings together ecology, evolutionary biology, and epidemiology to study how infectious diseases emerge, spread, and shape living systems.
-Students combine coursework in mathematical biology, disease ecology, and quantitative research methods with hands-on field and laboratory experience to understand pathogens across scales — from molecules to populations to ecosystems — and pair it with the human, social, and policy dimensions of epidemics and the communication, economic, and ethical skills that turn understanding into action.
+Students combine coursework in mathematical biology, disease ecology, and quantitative research methods with hands-on field and laboratory experience to understand pathogens across scales — from molecules to populations to ecosystems. This quantitative and ecological core is complemented by exposure to the social sciences, economics, and medical anthropology, for a quantitatively focused but holistically well-rounded view of infectious disease.
 
 The mission of the program is to provide the next generation of biologists, physicians, vetrinarians, basic scientists, public health practicioners, and other researchers the tools needed to be effective and drive forward. 
 

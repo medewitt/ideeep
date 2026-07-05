@@ -10,9 +10,11 @@ The **Infectious Disease Ecology, Evolution, and Epidemiology Program (IDEEEP)**
 Pathogens do not act in isolation — they move through populations, respond to selection, and are shaped by the environments and hosts they depend on.
 Infectious diseases transcend model systems from bacteriophages infecting bacteria to helminths infecting sheep to fungal infections in plants to viral zoonoses in humans, infectious diseases are key forces across biology.
 Understanding them requires drawing on ecology, evolution, mathematics,
-statistics, and field epidemiology together — and, increasingly, on the social
-sciences, communication, economics, and ethics that connect that science to
-people, animals, and policy.
+statistics, and field epidemiology together.
+That quantitative and ecological work stays at the core of the concentration,
+complemented by exposure to the social sciences, economics, and medical
+anthropology, so students graduate with a quantitatively focused but holistically
+well-rounded view of infectious disease.
 
 Biology is a comprehensive and multifacted field of study: principles build on one another, and insights from one discipline often intersect with others in unexpected ways.
 The courses and experiences below are designed so those connections become the point rather than the exception.
@@ -31,12 +33,12 @@ Students who complete the concentration will be able to:
   results
 - Apply a One Health perspective that connects human, animal, and environmental
   health
-- Integrate the social, behavioral, and policy dimensions of epidemics with
-  quantitative epidemiology, and weigh interventions with economic evaluation
 - Link pathogen genomes to epidemiologic data to detect and reconstruct
   transmission
 - Communicate risk and uncertainty, and translate evidence into recommendations
   for decision-makers
+- Draw on exposure to the social sciences, economics, and medical anthropology to
+  place quantitative findings in their human, economic, and policy context
 - Collaborate ethically across disciplines and sectors, applying systems thinking
   and responsible data governance
 
@@ -64,8 +66,9 @@ ecology, evolution, and epidemiology.
 ### Proposed additional courses
 
 These proposed courses extend the concentration into applied epidemiology and
-analytics, the human and policy dimensions of epidemics, pathogen genomics,
-economic evaluation, and graduate research. Course numbers are illustrative.
+analytics, pathogen genomics, economic evaluation, and graduate research, with
+some exposure to the human and policy dimensions of epidemics. Course numbers are
+illustrative.
 
 | Course | Title | Level |
 |--------|-------|-------|
