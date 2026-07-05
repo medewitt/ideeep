@@ -45,13 +45,21 @@ of Biology and are subject to change.
 These courses provide instruction in topics central to infectious disease
 ecology, evolution, and epidemiology.
 
-| Course | Title | Focus |
-|--------|-------|-------|
-| BIO 301 | [Mathematical Biology](bio301-math-bio.md) | Modeling biological and disease systems |
-| BIO 340 | [Infectious Disease Ecology](bio340-id-ecology.md) | Ecology and evolution of host–pathogen systems |
-| BIO 390 | [Research Tools and Methods](bio390-research-tools.md) | Reproducible, computational research skills |
-| BIO 301/302 | [Field Epidemiology and Tropical Medicine](field-epidemiology.md) | Hands-on field investigation in a tropical setting |
-| TBD | [Antimicrobial Stewardship and Infection Prevention](stewardship-infection-prevention.md) | Combating resistance and preventing transmission |
+| Course | Title | Focus | Status |
+|--------|-------|-------|--------|
+| BIO 301/302 | [Field Epidemiology and Tropical Medicine](field-epidemiology.md) | Hands-on field investigation in a tropical setting | **Offered — Summer 2027** |
+| BIO 301 | [Mathematical Biology](bio301-math-bio.md) | Modeling biological and disease systems | In development |
+| BIO 340 | [Infectious Disease Ecology](bio340-id-ecology.md) | Ecology and evolution of host–pathogen systems | In development |
+| BIO 390 | [Research Tools and Methods](bio390-research-tools.md) | Reproducible, computational research skills | In development |
+| TBD | [Antimicrobial Stewardship and Infection Prevention](stewardship-infection-prevention.md) | Combating resistance and preventing transmission | In development |
+
+> [!TIP]
+> **Field Epidemiology and Tropical Medicine (BIO 301/302) is offered now** —
+> the next section runs in **Summer 2027** with fieldwork in Tumbes and Lima,
+> Peru. It runs as an existing Wake Forest course while the rest of the
+> concentration is being developed, so you can take it without waiting for the
+> full concentration to launch. See the [course page](field-epidemiology.md) or
+> contact Course Director John W. Sanders to learn more.
 
 ### Proposed additional courses
 

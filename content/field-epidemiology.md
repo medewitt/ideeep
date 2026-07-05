@@ -7,6 +7,12 @@ date: 2025-12-23
 
 This is an exciting course which takes place in a variety of locations including Tumbes and Lima, Peru.
 
+> [!TIP]
+> **This course is offered and open to students.** The next section runs in
+> **Summer 2027**. It is an established Wake Forest course (BIO 301/302) and
+> runs independently of the in-development IDEEEP concentration, so you can
+> enroll now. Contact Course Director John W. Sanders to express interest.
+
 The course syllabus is shown below, and a [video about the course is available here](https://youtu.be/9gjW50o6cJk?si=a0Tsy2e180M8SbYm).
 
 ---
