@@ -10,7 +10,9 @@ The **Infectious Disease Ecology, Evolution, and Epidemiology Program (IDEEEP)**
 Pathogens do not act in isolation — they move through populations, respond to selection, and are shaped by the environments and hosts they depend on.
 Infectious diseases transcend model systems from bacteriophages infecting bacteria to helminths infecting sheep to fungal infections in plants to viral zoonoses in humans, infectious diseases are key forces across biology.
 Understanding them requires drawing on ecology, evolution, mathematics,
-statistics, and field epidemiology together.
+statistics, and field epidemiology together — and, increasingly, on the social
+sciences, communication, economics, and ethics that connect that science to
+people, animals, and policy.
 
 Biology is a comprehensive and multifacted field of study: principles build on one another, and insights from one discipline often intersect with others in unexpected ways.
 The courses and experiences below are designed so those connections become the point rather than the exception.
@@ -29,6 +31,14 @@ Students who complete the concentration will be able to:
   results
 - Apply a One Health perspective that connects human, animal, and environmental
   health
+- Integrate the social, behavioral, and policy dimensions of epidemics with
+  quantitative epidemiology, and weigh interventions with economic evaluation
+- Link pathogen genomes to epidemiologic data to detect and reconstruct
+  transmission
+- Communicate risk and uncertainty, and translate evidence into recommendations
+  for decision-makers
+- Collaborate ethically across disciplines and sectors, applying systems thinking
+  and responsible data governance
 
 ## Curriculum
 
@@ -53,8 +63,9 @@ ecology, evolution, and epidemiology.
 
 ### Proposed additional courses
 
-These proposed courses extend the concentration into applied epidemiology,
-analytics, and graduate research. Course numbers are illustrative.
+These proposed courses extend the concentration into applied epidemiology and
+analytics, the human and policy dimensions of epidemics, pathogen genomics,
+economic evaluation, and graduate research. Course numbers are illustrative.
 
 | Course | Title | Level |
 |--------|-------|-------|
@@ -90,6 +101,31 @@ be taken as electives.
 > **Note:** Course numbers, credit hours, and offerings are illustrative and
 > should be confirmed against the official course catalog and the Department of
 > Biology each academic year.
+
+### Cross-cutting threads
+
+Some capabilities are not standalone courses but run *through* the concentration,
+taught where they are used rather than in isolation. They are what let a student
+move from building a result to acting on it responsibly.
+
+- **Research and data ethics and governance** — IRB and consent, FAIR data,
+  privacy and re-identification risk, and equitable data sharing — woven into
+  [Research Tools and Methods](bio390-research-tools.md),
+  [Data Science for Infectious Disease](data-science-id.md),
+  [Field Epidemiology](field-epidemiology.md), and
+  [Applied Genomic and Phylodynamic Epidemiology](genomic-epidemiology.md). See
+  [research and data ethics, governance, and responsible sharing](programming/research-data-ethics-and-governance.md).
+- **Systems thinking, collaboration, and leadership** — the One Health
+  meta-competencies — practiced in the
+  [IDEEE Research Seminar](ideee-seminar.md),
+  [Outbreak Analytics and Modeling](outbreak-analytics.md), and
+  [One Health and Planetary Health](one-health-zoonoses.md). See
+  [systems thinking and systems mapping](epidemiology/systems-thinking-and-systems-mapping.md).
+- **Risk communication and translating evidence for policy** — carried by
+  [People, Plagues, and Policy](people-plagues-policy.md) and the
+  [Risk Communication short course](shortcourse-risk-communication.md), and
+  reinforced wherever results meet decision-makers. See
+  [risk communication and community engagement](epidemiology/risk-communication-and-rcce.md).
 
 ## Graduate certificates
 
