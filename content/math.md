@@ -11,7 +11,7 @@ description: "Bite-sized references on the calculus, linear algebra, probability
 Quantitative methods are essential for those working in mathematical biology, doing epidemiology, and designing experiments (from basic bench experiementals to large field experiments) -- especially as part of the modern practice of these fields.
 The best way to learn these skills is through constant exposure and solving practical problems.
 
-Here we collate a collection of bite-sized references covering the calculus, linear algebra, probability, and statistics that underpin quantitative work in infectious disease ecology, evolution, and epidemiology. 
+Here we collate a collection of bite-sized references covering the calculus, linear algebra, probability, and statistics that underpin quantitative work in infectious disease ecology, evolution, and epidemiology.
 Each page pairs the core idea and notation with a worked example and runnable code in [**R**](https://cran.r-project.org), [**Python**](https://www.python.org), and [**Julia**](https://julialang.org) for simulation and mostly importantly, intuition.
 
 Math is hard.
@@ -76,11 +76,7 @@ It requires practice and repetition.
 - [Probability Basics](math/probability-basics.md)
 - [Random Variables](math/random-variables.md) — pmf, pdf, and the CDF
 - [Common Distributions: An Overview](math/distributions-overview.md)
-  - [Normal](math/normal-distribution.md) ·
-    [Binomial](math/binomial-distribution.md) ·
-    [Poisson](math/poisson-distribution.md) ·
-    [Exponential](math/exponential-distribution.md) ·
-    [t](math/t-distribution.md)
+  - [Normal](math/normal-distribution.md) · [Binomial](math/binomial-distribution.md) · [Poisson](math/poisson-distribution.md) · [Exponential](math/exponential-distribution.md) · [t](math/t-distribution.md)
 - [Expected Value](math/expected-value.md)
 - [Moment Generating Functions](math/moment-generating-functions.md)
 - [Measures of Center](math/measures-of-center.md) — mean, median, quantiles
@@ -182,6 +178,7 @@ It requires practice and repetition.
 
 - [Detecting Selection with dN/dS](math/dn-ds.md)
 - [The Molecular Clock and Phylodynamics](math/molecular-clock.md)
+- [Quasispecies and the Error Threshold](math/quasispecies.md) — the mutant cloud, error catastrophe, and lethal mutagenesis
 
 ## Evolutionary dynamics
 
