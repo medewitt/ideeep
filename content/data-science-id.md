@@ -60,6 +60,8 @@ Upon successful completion of this course, students will be able to:
 - Build clear, honest visualizations of epidemiologic data with uncertainty
 - Reason about performance and numerical stability when analyses scale
 - Move data between formats and reshape it into an analysis-ready structure
+- Handle data ethically and responsibly, applying FAIR principles, consent, and
+  privacy and re-identification safeguards
 
 # Textbook and other resources
 
@@ -87,6 +89,7 @@ material:
 - [Graphing data](math/graphing-data.md)
 - [Manipulating data](math/manipulating-data.md)
 - [HPC clusters and Slurm](programming/hpc-clusters-slurm.md)
+- [Research and data ethics, governance, and responsible sharing](programming/research-data-ethics-and-governance.md)
 - [Research Tools and Methods](bio390-research-tools.md)
 
 New concept pages on data-visualization principles and on tidy and relational

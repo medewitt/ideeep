@@ -88,6 +88,7 @@ This intensive summer course offers a thorough overview of epidemiological princ
 - Understand the principles of infectious disease ecology and zoonoses and their relevance to outbreaks of pathogens of animal and human importance
 - Understand how to design, conduct, and publish field epidemiology investigations
 - Learn the techniques used to identify reservoirs including small mammals and vectors
+- Conduct field investigations ethically, with attention to informed consent, community engagement and benefit-sharing, and responsible handling of field and personal data
 
 # Textbook and other resources
 
@@ -106,6 +107,7 @@ Some additional resources that are useful for a deeper understanding of this cou
 
 - The CDC Field Epidemiology Manual by Rasmussen and Goodman
 - The Outbreak Atlas by Katz and Moore
+- [Research and data ethics, governance, and responsible sharing](programming/research-data-ethics-and-governance.md) — field-data consent, benefit-sharing, and privacy for outbreak investigations
 
 # Course structure and schedule
 
