@@ -5,6 +5,8 @@ description: "Research themes, labs, and student opportunities in infectious dis
 
 # Research
 
+:::{program-status-notice.md}:::
+
 Research is central to the IDEEEP concentration. 
 Infectious disease sits at the intersection of ecology, evolution, and epidemiology, and progress depends on combining field observation, laboratory work, and quantitative analysis.
 Students are encouraged to engage with research early and to develop the computational and analytical skills that modern disease science requires.
@@ -21,6 +23,21 @@ Students are encouraged to engage with research early and to develop the computa
   investigations in real-world and simulated outbreak settings
 - **Evolution of host–pathogen systems** — virulence, resistance, and
   coevolution
+
+<div class="photo-grid">
+  <figure class="photo">
+    <img src="assets/photos/field-surveillance-emerge.jpg" alt="A field team in EMERGE vests conducts house-to-house disease surveillance in a Peruvian neighborhood." loading="lazy">
+    <figcaption>House-to-house surveillance and outbreak response with local partners.</figcaption>
+  </figure>
+  <figure class="photo">
+    <img src="assets/photos/bat-mist-net.jpg" alt="A bat caught in a mist net at night during reservoir sampling." loading="lazy">
+    <figcaption>Reservoir sampling in the field — tracing where pathogens spill over.</figcaption>
+  </figure>
+  <figure class="photo">
+    <img src="assets/photos/parasite-microscopy.jpg" alt="A parasite viewed under the microscope during laboratory diagnostics." loading="lazy">
+    <figcaption>Microscopy and diagnostics — identifying the pathogens behind disease.</figcaption>
+  </figure>
+</div>
 
 ## Opportunities for students
 

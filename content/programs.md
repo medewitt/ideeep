@@ -6,6 +6,8 @@ toc: true
 
 # The IDEEEP Concentration
 
+:::{program-status-notice.md}:::
+
 The **Infectious Disease Ecology, Evolution, and Epidemiology Program (IDEEEP)** is an interdisciplinary concentration for students who want to understand infectious diseases as a biological, ecological, and quantitative phenomenon.
 Pathogens do not act in isolation — they move through populations, respond to selection, and are shaped by the environments and hosts they depend on.
 Infectious diseases transcend model systems from bacteriophages infecting bacteria to helminths infecting sheep to fungal infections in plants to viral zoonoses in humans, infectious diseases are key forces across biology.
@@ -16,8 +18,13 @@ complemented by exposure to the social sciences, economics, and medical
 anthropology, so students graduate with a quantitatively focused but holistically
 well-rounded view of infectious disease.
 
-Biology is a comprehensive and multifacted field of study: principles build on one another, and insights from one discipline often intersect with others in unexpected ways.
+Biology is a comprehensive and multifaceted field of study: principles build on one another, and insights from one discipline often intersect with others in unexpected ways.
 The courses and experiences below are designed so those connections become the point rather than the exception.
+
+<figure class="photo">
+  <img src="assets/photos/modeling-whiteboard.jpg" alt="Two students work through disease-transmission models at a whiteboard covered in equations and epidemic curves." loading="lazy">
+  <figcaption>Students work through transmission models and epidemic curves — the quantitative core of the concentration.</figcaption>
+</figure>
 
 ## Program goals
 
@@ -55,13 +62,21 @@ of Biology and are subject to change.
 These courses provide instruction in topics central to infectious disease
 ecology, evolution, and epidemiology.
 
-| Course | Title | Focus |
-|--------|-------|-------|
-| BIO 301 | [Mathematical Biology](bio301-math-bio.md) | Modeling biological and disease systems |
-| BIO 340 | [Infectious Disease Ecology](bio340-id-ecology.md) | Ecology and evolution of host–pathogen systems |
-| BIO 390 | [Research Tools and Methods](bio390-research-tools.md) | Reproducible, computational research skills |
-| BIO 301/302 | [Field Epidemiology and Tropical Medicine](field-epidemiology.md) | Hands-on field investigation in a tropical setting |
-| TBD | [Antimicrobial Stewardship and Infection Prevention](stewardship-infection-prevention.md) | Combating resistance and preventing transmission |
+| Course | Title | Focus | Status |
+|--------|-------|-------|--------|
+| BIO 301/302 | [Field Epidemiology and Tropical Medicine](field-epidemiology.md) | Hands-on field investigation in a tropical setting | **Offered — Summer 2027** |
+| BIO 301 | [Mathematical Biology](bio301-math-bio.md) | Modeling biological and disease systems | In development |
+| BIO 340 | [Infectious Disease Ecology](bio340-id-ecology.md) | Ecology and evolution of host–pathogen systems | In development |
+| BIO 390 | [Research Tools and Methods](bio390-research-tools.md) | Reproducible, computational research skills | In development |
+| TBD | [Antimicrobial Stewardship and Infection Prevention](stewardship-infection-prevention.md) | Combating resistance and preventing transmission | In development |
+
+> [!TIP]
+> **Field Epidemiology and Tropical Medicine (BIO 301/302) is offered now** —
+> the next section runs in **Summer 2027** with fieldwork in Tumbes and Lima,
+> Peru. It runs as an existing Wake Forest course while the rest of the
+> concentration is being developed, so you can take it without waiting for the
+> full concentration to launch. See the [course page](field-epidemiology.md) or
+> contact Course Director John W. Sanders to learn more.
 
 ### Proposed additional courses
 
@@ -165,4 +180,5 @@ Students interested in the concentration are encouraged to:
 4. Consider the [field epidemiology](field-epidemiology.md) experience for
    immersive, applied training
 
-To learn more or express interest, [contact the program](people.md).
+To learn more or express interest, fill out the [prospective-student interest
+form](prospective-students.md) or [contact the program](people.md).
