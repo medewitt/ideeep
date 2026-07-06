@@ -37,6 +37,10 @@ Reliable quantification is only possible within the curve's dynamic range — sa
 For yes/no serosurveys the readout is dichotomized with a **cutoff**, often set from a panel of known negatives (e.g. mean + 3 SD of the negative controls).
 Every cutoff trades [sensitivity against specificity](../math/diagnostic-testing.md), and because seroprevalence surveys often run at **low true prevalence**, even a small false-positive rate can dominate the positives — which is why raw seroprevalence is usually adjusted for assay performance.
 
+Serology also reaches beyond the lab plate: point-of-care lateral-flow kits apply the same antibody–antigen binding to read **IgM and IgG** from a fingerstick, trading the quantitative OD of a plate assay for a simple visible band.
+
+![A Scanwell at-home SARS-CoV-2 IgM and IgG test kit used during the COVID-19 Community Research Partnership representing a point-of-care serologic (antibody) test.](../assets/photos/serology-antibody-test.jpg)
+
 ## A worked example
 
 We fit a 4PL curve to a seven-point standard series and back-calculate the concentration of an unknown from its OD.

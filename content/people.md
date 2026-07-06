@@ -25,6 +25,10 @@ Email: medewitt@wakehealth.edu · dewime23@wfu.edu
   </div>
 </div>
 
+<div class="person">
+  <img class="headshot" src="assets/photos/john-sanders.jpg" alt="Portrait of John W. Sanders.">
+  <div class="person-body">
+
 **John W. Sanders, MD, MPHT&M**  
 Tropical medicine, global health, and field epidemiology.
 Course Director for [Field Epidemiology and Tropical Medicine](field-epidemiology.md),
@@ -33,6 +37,9 @@ partners in Peru.
 *Students who work with him* gain field outbreak-investigation experience and
 exposure to global health practice in the settings where diseases emerge.  
 Email: jwsander@wakehealth.edu
+
+  </div>
+</div>
 
 ## Collaborators and guest instructors
 
