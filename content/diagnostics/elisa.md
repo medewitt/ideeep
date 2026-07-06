@@ -39,7 +39,7 @@ Every cutoff trades [sensitivity against specificity](../math/diagnostic-testing
 
 Serology also reaches beyond the lab plate: point-of-care lateral-flow kits apply the same antibody–antigen binding to read **IgM and IgG** from a fingerstick, trading the quantitative OD of a plate assay for a simple visible band.
 
-![A Scanwell at-home SARS-CoV-2 IgM and IgG test kit — a point-of-care serologic (antibody) test.](../assets/photos/serology-antibody-test.jpg)
+![A Scanwell at-home SARS-CoV-2 IgM and IgG test kit used during the COVID-19 Community Research Partnership representing a point-of-care serologic (antibody) test.](../assets/photos/serology-antibody-test.jpg)
 
 ## A worked example
 

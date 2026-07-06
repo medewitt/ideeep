@@ -5,6 +5,8 @@ author: Michael DeWitt
 date: 2026-07-05
 ---
 
+<img src="assets/photos/malaria-1913-public-health-reports.png" style="width:100%;display:block;" alt="The masthead of a 1913 issue of Public Health Reports with an article titled 'Malaria in North Carolina' by Henry R. Carter of the U.S. Public Health Service.">
+
 This course develops the human dimensions of infectious disease alongside the
 quantitative ones: who is exposed and why, how behavior and transmission feed
 back on one another, how qualitative and mixed methods answer questions that
@@ -54,11 +56,6 @@ sociology, and policy colleagues, the course is co-taught, and students work in
 mixed teams that mirror the interdisciplinary collaborations the field depends
 on.
 
-<figure class="photo">
-  <img src="assets/photos/malaria-1913-public-health-reports.png" alt="The masthead of a 1913 issue of Public Health Reports with an article titled 'Malaria in North Carolina' by Henry R. Carter of the U.S. Public Health Service." loading="lazy">
-  <figcaption>A 1913 U.S. Public Health Service survey of malaria in North Carolina — a reminder that epidemics have always been local, social, and political as much as biological.</figcaption>
-</figure>
-
 # Learning outcomes
 
 Upon successful completion of this course, students will be able to:
@@ -106,7 +103,7 @@ This course draws on IDEEEP content pages as assigned readings:
 
 <figure class="photo">
   <img src="assets/photos/smallpox-misinformation-cartoon.jpg" alt="An early 20th-century cartoon: figures labeled 'anti-vaccinationist', 'faddist', 'mr. careless', and 'anti-everything' walk arm in arm off a cliff of 'misinformation' toward 'smallpox' below." loading="lazy">
-  <figcaption>An early 20th-century cartoon on smallpox: prejudice, fads, carelessness, and reflexive opposition marching over a cliff of misinformation — the human forces this course sets out to understand.</figcaption>
+  <figcaption>An early 20th-century cartoon on resistance to smallpox vaccination.</figcaption>
 </figure>
 
 # Course structure and schedule
