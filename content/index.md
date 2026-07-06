@@ -23,6 +23,7 @@ description: "The IDEEEP concentration at Wake Forest University unites ecology,
     <div class="hero-actions">
       <a class="btn btn-primary" href="programs.md">Explore the program</a>
       <a class="btn btn-secondary" href="research.md">Research &amp; opportunities</a>
+      <a class="btn btn-secondary" href="prospective-students.md">Express interest</a>
     </div>
   </div>
 </header>

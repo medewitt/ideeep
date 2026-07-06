@@ -26,6 +26,10 @@ Students are encouraged to engage with research early and to develop the computa
 
 <div class="photo-grid">
   <figure class="photo">
+    <img src="assets/photos/field-surveillance-emerge.jpg" alt="A field team in EMERGE vests conducts house-to-house disease surveillance in a Peruvian neighborhood." loading="lazy">
+    <figcaption>House-to-house surveillance and outbreak response with local partners.</figcaption>
+  </figure>
+  <figure class="photo">
     <img src="assets/photos/bat-mist-net.jpg" alt="A bat caught in a mist net at night during reservoir sampling." loading="lazy">
     <figcaption>Reservoir sampling in the field — tracing where pathogens spill over.</figcaption>
   </figure>
