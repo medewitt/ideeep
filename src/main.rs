@@ -1587,7 +1587,11 @@ fn write_sitemap(
             .to_string_lossy()
             .replace('\\', "/");
 
-        if rel_key.eq_ignore_ascii_case("404") {
+        // The 404 page and the form confirmation page are not indexable
+        // destinations, so keep them out of the sitemap.
+        if rel_key.eq_ignore_ascii_case("404")
+            || rel_key.eq_ignore_ascii_case("interest-thank-you")
+        {
             continue;
         }
 
@@ -2106,8 +2110,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             format!("{}/{}", SITE_URL, canonical_path)
         };
 
-        // The 404 page must not be indexed; everything else is indexable.
-        let robots = if rel_key.eq_ignore_ascii_case("404") {
+        // The 404 page and the form confirmation page must not be indexed;
+        // everything else is indexable.
+        let robots = if rel_key.eq_ignore_ascii_case("404")
+            || rel_key.eq_ignore_ascii_case("interest-thank-you")
+        {
             "noindex, follow"
         } else {
             "index, follow, max-image-preview:large"
