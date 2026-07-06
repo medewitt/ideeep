@@ -23,6 +23,7 @@ description: "The IDEEEP concentration at Wake Forest University unites ecology,
     <div class="hero-actions">
       <a class="btn btn-primary" href="programs.md">Explore the program</a>
       <a class="btn btn-secondary" href="research.md">Research &amp; opportunities</a>
+      <a class="btn btn-secondary" href="prospective-students.md">Express interest</a>
     </div>
   </div>
 </header>
@@ -48,16 +49,25 @@ description: "The IDEEEP concentration at Wake Forest University unites ecology,
   </a>
 </section>
 
->[!NOTE]
->This is a conceptual course offering at this time.
+<section class="feature" aria-label="Featured course">
+  <img src="assets/photos/field-team-ppe.jpg" alt="Students in protective suits and respirators during field outbreak-response training in Peru.">
+  <div>
+    <span class="feature-badge">Offered — Summer 2027</span>
+    <h2>Field Epidemiology &amp; Tropical Medicine</h2>
+    <p>Do real outbreak investigation and tropical-medicine fieldwork in Tumbes and Lima, Peru — from reservoir sampling to field diagnostics. It runs now as an established Wake Forest course while the rest of the concentration is being developed, so you can take it without waiting.</p>
+    <p><a class="btn btn-primary" href="field-epidemiology.md">Explore the field course</a></p>
+  </div>
+</section>
 
 ## About the program
+
+:::{program-status-notice.md}:::
 
 The **IDEEEP** concentration brings together ecology, evolutionary biology, and epidemiology to study how infectious diseases emerge, spread, and shape living systems.
 Students combine coursework in mathematical biology, disease ecology, and quantitative research methods with hands-on field and laboratory experience to understand pathogens across scales from molecules to populations and ecosystems.
 This quantitative and ecological core is complemented by exposure to other domains touched by infectious diseases including the social sciences, economics, and medical anthropology, leading to a quantitatively focused but holistically well-rounded view of infectious disease.
 
-The mission of the program is to provide the next generation of biologists, physicians, vetrinarians, basic scientists, public health practicioners, and other researchers the quantative tools and insights needed to be effective and drive forward progress. 
+The mission of the program is to provide the next generation of biologists, physicians, veterinarians, basic scientists, public health practitioners, and other researchers the quantitative tools and insights needed to be effective and drive forward progress. 
 
 > *"Successful organisms attract parasites."* — Dickson Despommier
 

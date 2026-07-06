@@ -1,0 +1,15 @@
+order,section,field_id,label,type,required,options,help_text
+1,About you,full_name,Full name,text,true,,
+2,About you,email,Email address,email,true,,We will use this to follow up about the concentration.
+3,About you,phone,Phone (optional),tel,false,,
+4,About you,role,I am a...,select,true,Prospective undergraduate|Current Wake Forest undergraduate|Transfer or visiting student|Post-baccalaureate or graduate student|Infectious Diseases fellow or clinician|Public health or industry professional|High school student|Other,Choose the option that best describes you.
+5,About you,institution,Current school or organization,text,false,,Leave blank if you are at Wake Forest.
+6,About you,major,Major or field of study,text,false,,
+7,About you,grad_year,Expected graduation year,text,false,,For example 2028.
+8,Your interests,research_interests,Research areas that interest you,multiselect,false,Disease ecology and One Health|Zoonotic spillover and emergence|Mathematical and computational modeling|Field epidemiology and outbreak response|Evolution of host-pathogen systems|Diagnostics and laboratory methods|Data science and scientific programming,Select all that apply.
+9,Your interests,offerings,What would you like to hear about,multiselect,false,Concentration courses|Field Epidemiology and Tropical Medicine|Graduate certificates|Short courses|Research or independent study,Select all that apply.
+10,Your interests,quant_background,Quantitative and programming background,select,false,None yet|Some coursework|Comfortable or advanced,Helps us point you to the right starting resources.
+11,Your interests,message,Anything you would like to share,textarea,false,,"Questions, goals, or research interests."
+12,How you found us,heard_from,How did you hear about the program,select,false,Faculty or advisor|Current student|Wake Forest website|Social media|Conference or event|Other,
+13,Consent,mailing_list,Add me to the interest mailing list,checkbox,false,,Occasional updates about courses and opportunities. Unsubscribe anytime.
+14,Consent,contact_consent,I agree to be contacted about the IDEEEP concentration,consent,true,,Required to submit the form.

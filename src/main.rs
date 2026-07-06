@@ -1032,6 +1032,10 @@ fn generate_html(
     <meta property="og:description" content="{d_attr}">
     <meta property="og:url" content="{canonical}">
     <meta property="og:image" content="{og_image}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Wake Forest University IDEEEP concentration — Infectious Disease Ecology, Evolution and Epidemiology">
     <meta property="og:locale" content="en_US">
 
     <!-- Twitter -->
@@ -1039,6 +1043,7 @@ fn generate_html(
     <meta name="twitter:title" content="{t_attr}">
     <meta name="twitter:description" content="{d_attr}">
     <meta name="twitter:image" content="{og_image}">
+    <meta name="twitter:image:alt" content="Wake Forest University IDEEEP concentration — Infectious Disease Ecology, Evolution and Epidemiology">
 
     <!-- Icons / PWA -->
     <link rel="icon" type="image/png" href="{ap}assets/favicon.png" />
@@ -1582,7 +1587,11 @@ fn write_sitemap(
             .to_string_lossy()
             .replace('\\', "/");
 
-        if rel_key.eq_ignore_ascii_case("404") {
+        // The 404 page and the form confirmation page are not indexable
+        // destinations, so keep them out of the sitemap.
+        if rel_key.eq_ignore_ascii_case("404")
+            || rel_key.eq_ignore_ascii_case("interest-thank-you")
+        {
             continue;
         }
 
@@ -2101,8 +2110,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             format!("{}/{}", SITE_URL, canonical_path)
         };
 
-        // The 404 page must not be indexed; everything else is indexable.
-        let robots = if rel_key.eq_ignore_ascii_case("404") {
+        // The 404 page and the form confirmation page must not be indexed;
+        // everything else is indexable.
+        let robots = if rel_key.eq_ignore_ascii_case("404")
+            || rel_key.eq_ignore_ascii_case("interest-thank-you")
+        {
             "noindex, follow"
         } else {
             "index, follow, max-image-preview:large"

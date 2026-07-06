@@ -9,6 +9,10 @@ This course provides essential training in modern research tools and methods tha
 
 The course syllabus is shown below.
 
+> **Draft syllabus.** This is a scaffold for the concentration, which is still
+> in development. Dates, meeting times, and specific assignments will be
+> finalized before the course is offered.
+
 ---
 
 # Course title and instructors
