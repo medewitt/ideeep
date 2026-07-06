@@ -42,7 +42,7 @@ Power is $1-\beta$.
 
 There is a common cookbook approach to choosing a test statistic.
 These are just general heuristics, and really, many of the test statistics are related through distributional assumptions.
-The common tests based on the support (i.e., what values a given data generating process can take on) determine the test statistic along with the values that are generated. 
+The common tests based on the support (i.e., what values a given data generating process can take on) determine the test statistic along with the values that are generated.
 
 
 | Data | Question | Typical test |
