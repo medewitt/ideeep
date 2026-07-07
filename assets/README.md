@@ -70,6 +70,13 @@ sync.
 | `malaria-1913-public-health-reports.png` | Masthead of a 1913 *Public Health Reports* issue ("Malaria in North Carolina," Henry R. Carter, U.S. Public Health Service) | Public domain (historical) | `people-plagues-policy.md` |
 | `smallpox-misinformation-cartoon.jpg` | An early-20th-century anti-vaccination cartoon (figures walking off a cliff of "misinformation") | Public domain (historical) | `people-plagues-policy.md` |
 
+**Social-card crops.** `parasite-microscopy-card.jpg` and
+`field-surveillance-emerge-card.jpg` are 1200×630 center-crops of the DeWitt
+photos above, used as the Open Graph / Twitter share cards for the diagnostics
+and epidemiology hubs (front-matter `image:`). Same credit as their source
+photo; regenerate from the original if the source changes. The pages still
+display the full-resolution originals as their on-page heroes.
+
 ## Branding, logos, and site icons
 
 | File | What it is | Notes |

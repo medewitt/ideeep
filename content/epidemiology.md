@@ -2,7 +2,7 @@
 title: "Epidemiology"
 toc: true
 description: "How epidemiological time intervals — incubation, latent, and infectious periods, serial and generation intervals — structure transmission, and how to estimate them from surveillance data."
-image: assets/photos/field-surveillance-emerge.jpg
+image: assets/photos/field-surveillance-emerge-card.jpg
 image_alt: "A field team conducts house-to-house disease surveillance in a Peruvian neighborhood."
 ---
 
