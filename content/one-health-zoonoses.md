@@ -91,6 +91,16 @@ This course draws on IDEEEP content pages as assigned readings:
 - [Systems thinking and systems mapping](epidemiology/systems-thinking-and-systems-mapping.md)
 - [One Health surveillance](epidemiology/one-health-surveillance.md)
 - [Infectious Disease Ecology](bio340-id-ecology.md)
+- [Pathways to zoonotic spillover](epidemiology/zoonotic-spillover.md) — the
+  ecological and evolutionary steps from reservoir to human case
+- [The evolutionary emergence of
+  pathogens](epidemiology/evolutionary-emergence.md) — the conditions under
+  which a spillover establishes onward transmission
+- [Metapopulation networks and the invasion
+  threshold](math/metapopulation-networks.md) — spread across coupled host
+  populations and the network invasion condition
+- [Spatial synchrony and the Moran effect](math/spatial-synchrony.md) — how
+  shared environmental forcing synchronizes outbreaks across locations
 - [Field Epidemiology and Tropical Medicine](field-epidemiology.md)
 
 Planned concept pages on zoonotic spillover, source-sink dynamics, and reservoir

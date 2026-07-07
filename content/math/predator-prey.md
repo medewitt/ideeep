@@ -180,4 +180,5 @@ It shows that regular cycles can arise from deterministic interactions alone, an
 - [Jacobians](jacobians.md)
 - [Logistic Growth](logistic-growth.md)
 - [Compartmental Models (SIR)](sir.md)
+- [Functional Responses and the Paradox of Enrichment](functional-responses.md) — how Holling's saturating responses reshape stability and drive enrichment-induced cycles
 - [Quantitative Methods](../math.md)

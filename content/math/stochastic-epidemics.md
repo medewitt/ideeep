@@ -190,4 +190,5 @@ Understanding when to reach for a stochastic model — small numbers, early phas
 - [SEIR and Compartmental Extensions](seir-models.md)
 - [The Next-Generation Matrix and R₀](next-generation-matrix.md)
 - [Spatial Moment Equations](spatial-moment-equations.md)
+- [Critical Community Size and Epidemic Fade-Out](../epidemiology/critical-community-size.md) — how demographic stochasticity drives an endemic infection extinct in small populations
 - [Quantitative Methods](../math.md)

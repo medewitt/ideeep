@@ -88,6 +88,21 @@ This course draws on the following IDEEE reference pages:
 - [Coalescent theory](math/coalescent-theory.md)
 - [The molecular clock](math/molecular-clock.md)
 - [dN/dS](math/dn-ds.md)
+- [Within-host viral dynamics and
+  infectiousness](epidemiology/within-host-dynamics.md) — how the within-host
+  time course shapes transmission
+- [Multi-scale (nested) models](epidemiology/nested-models.md) — linking
+  within-host dynamics to between-host selection
+- [The evolutionary emergence of
+  pathogens](epidemiology/evolutionary-emergence.md) — the conditions for a new
+  pathogen to establish
+- [Life-history theory](math/life-history-theory.md) — trade-offs in
+  reproduction and survival that underlie virulence evolution
+- [Kin selection and inclusive fitness](math/kin-selection.md) — relatedness and
+  the evolution of pathogen cooperation
+- [Functional responses and the paradox of
+  enrichment](math/functional-responses.md) — nonlinear interaction rates and
+  their dynamical consequences
 - [Infectious Disease Ecology](bio340-id-ecology.md)
 
 Planned reference pages on within-host viral dynamics, nested (multi-scale)

@@ -86,6 +86,12 @@ read ahead or review afterward.
 - [Branching processes](math/branching-processes.md)
 - [Proper scoring rules](math/proper-scoring-rules.md)
 - [Delay distributions and censoring](epidemiology/delay-distributions-censoring.md)
+- [The Euler–Lotka equation and the r–R₀
+  relationship](epidemiology/euler-lotka.md) — turning an epidemic growth rate
+  into a reproduction number
+- [The speed and strength of epidemic
+  control](epidemiology/epidemic-control.md) — how fast versus how hard an
+  intervention must act
 
 Three further topics, nowcasting, epidemic forecasting, and the renewal
 equation, are planned as site pages and will be linked here once published.

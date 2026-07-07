@@ -126,4 +126,7 @@ It rests on computing and maximising $R_0$ — the same threshold that, in struc
 - [The Next-Generation Matrix and R₀](next-generation-matrix.md)
 - [Optimization](optimization.md)
 - [Competition and Coexistence](competition-coexistence.md)
+- [Life-History Theory](life-history-theory.md) — the trade-off logic behind optimal virulence generalized to schedules of survival and reproduction
+- [Multi-Scale (Nested) Models](../epidemiology/nested-models.md) — linking within-host replication to the between-host transmission–virulence trade-off
+- [The Evolutionary Emergence of Pathogens](../epidemiology/evolutionary-emergence.md) — how a spillover strain adapts across the $R_0 = 1$ threshold to establish in a new host
 - [Quantitative Methods](../math.md)

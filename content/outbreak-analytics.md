@@ -87,6 +87,18 @@ material:
 - [Delay distributions and censoring](epidemiology/delay-distributions-censoring.md)
 - [Risk communication and community engagement](epidemiology/risk-communication-and-rcce.md)
 - [Systems thinking and systems mapping](epidemiology/systems-thinking-and-systems-mapping.md)
+- [The Euler–Lotka equation and the r–R₀
+  relationship](epidemiology/euler-lotka.md) — turning a growth rate into a
+  reproduction number through the generation interval
+- [The speed and strength of epidemic
+  control](epidemiology/epidemic-control.md) — how fast versus how hard an
+  intervention must act
+- [Critical community size and epidemic
+  fade-out](epidemiology/critical-community-size.md) — when stochastic
+  extinction ends a chain of transmission
+- [Metapopulation networks and the invasion
+  threshold](math/metapopulation-networks.md) — spread across coupled
+  populations and the network invasion condition
 - [Mathematical Biology](bio301-math-bio.md)
 
 A live response is also a coordination problem: analytics feed decisions only

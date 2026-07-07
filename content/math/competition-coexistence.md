@@ -167,4 +167,5 @@ The invasion criterion and the niche-versus-fitness framing guide restoration, i
 - [The Community Matrix and Stability](community-matrix.md)
 - [Equilibria and Stability](equilibria-and-stability.md)
 - [Logistic Growth](logistic-growth.md)
+- [Modern Coexistence Theory and the Storage Effect](coexistence-theory.md) — how fluctuation-dependent mechanisms let competitors coexist beyond the deterministic niche-versus-fitness balance
 - [Quantitative Methods](../math.md)

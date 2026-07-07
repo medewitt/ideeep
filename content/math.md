@@ -184,10 +184,12 @@ It requires practice and repetition.
 
 - [Evolutionary Game Theory](math/evolutionary-game-theory.md) — ESS and replicator dynamics
 - [The Evolution of Cooperation](math/evolution-of-cooperation.md) — the Prisoner's Dilemma and Nowak's five rules
+- [Kin Selection and Inclusive Fitness](math/kin-selection.md) — Hamilton's rule derived from the Price equation
 - [Adaptive Dynamics and the Evolution of Virulence](math/evolution-of-virulence.md)
 - [The Price Equation and Evolutionary Epidemiology](math/price-equation.md) — selection, transmission, and within-host change as an exact identity
 - [Adaptive Dynamics](math/adaptive-dynamics.md) — invasion fitness, singular strategies, and evolutionary branching
 - [The Evolution of Resistance](math/resistance-evolution.md) — selection under drug pressure and the cost of resistance
+- [Life-History Theory](math/life-history-theory.md) — trade-offs, age at maturity, and evolutionary demography
 
 ## Population & community ecology
 
@@ -196,13 +198,18 @@ It requires practice and repetition.
 - [Exponential and Logistic Growth](math/logistic-growth.md)
 - [Discrete-Time Models and the Logistic Map](math/discrete-population-models.md)
 - [Structured Population Models](math/structured-populations.md) — Leslie matrices
+- [Reproductive Value and Demographic Sensitivity](math/reproductive-value.md) — the left eigenvector and where interventions move growth most
 - [Metapopulations and the Levins Model](math/metapopulations.md) -- models considering more than patch or population and their interactions
 - [Asynchrony and the Inflationary Effect](math/metapopulation-asynchrony.md) — how spatiotemporal variation and dispersal inflate abundance, persistence, and can increase infection
+- [Source–Sink Dynamics](math/source-sink-dynamics.md) — BIDE bookkeeping and why abundance misleads
+- [Spatial Synchrony and the Moran Effect](math/spatial-synchrony.md) — dispersal, correlated noise, and traveling waves
 
 *Species interactions & stability:*
 
 - [Lotka–Volterra Predator–Prey Dynamics](math/predator-prey.md) - the basis of many models in ecology and infectious diseases
+- [Functional Responses and the Paradox of Enrichment](math/functional-responses.md) — Holling types and enrichment-driven cycles
 - [Competition and Coexistence](math/competition-coexistence.md)
+- [Modern Coexistence Theory and the Storage Effect](math/coexistence-theory.md) — stabilizing niche vs fitness differences
 - [The Community Matrix and Stability](math/community-matrix.md)
 
 *Biodiversity & community structure:*
@@ -214,12 +221,14 @@ It requires practice and repetition.
 
 - [Equilibria and Linear Stability](math/equilibria-and-stability.md) — nullclines and phase planes
 - [Bifurcations](math/bifurcations.md) — thresholds and tipping points
+- [Critical Transitions and Early-Warning Signals](math/critical-transitions.md) — rising variance and autocorrelation before a tipping point
 - [The Next-Generation Matrix and R₀](math/next-generation-matrix.md)
 
 *Spatial dynamics & pattern formation:*
 
 - [Spatial Diffusion and the Heat Equation](math/spatial-diffusion.md) — random movement and $\sqrt{t}$ spreading
 - [Reaction–Diffusion and Spatial Spread](math/reaction-diffusion.md) — the Fisher–KPP wave
+- [Metapopulation Networks and the Invasion Threshold](math/metapopulation-networks.md) — mobility, degree heterogeneity, and global invasion
 - [Turing Patterns](math/turing-patterns.md) — diffusion-driven pattern formation
 - [Spatial Moment Equations](math/spatial-moment-equations.md) — mean density and spatial covariance from a stochastic individual-based model
 

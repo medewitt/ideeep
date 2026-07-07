@@ -143,4 +143,6 @@ The renewal equation that defines it also powers nowcasts and short-term forecas
 - [Stochastic epidemics](stochastic-epidemics.md)
 - [Bayesian inference](bayesian-inference.md)
 - [Proper Scoring Rules](proper-scoring-rules.md)
+- [The Euler–Lotka Equation and the r–R₀ Relationship](../epidemiology/euler-lotka.md) — the renewal-equation link between the growth rate $r$ and $R$ through the generation interval
+- [The Speed and Strength of Epidemic Control](../epidemiology/epidemic-control.md) — why interventions must act on both $R_t$ and the generation interval to be effective
 - [Quantitative Methods](../math.md)

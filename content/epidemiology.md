@@ -46,6 +46,16 @@ The human side of transmission — and the human response to it — shapes disea
 
 - [Climate and Disease Transmission](epidemiology/climate-and-disease-transmission.md) — temperature, precipitation, range shifts, land-use change, and planetary health
 
+## Transmission dynamics and emergence
+
+- [The Euler–Lotka Equation and the r–R₀ Relationship](epidemiology/euler-lotka.md) — turning an epidemic growth rate into a reproduction number
+- [Within-Host Viral Dynamics and Infectiousness](epidemiology/within-host-dynamics.md) — viral-load trajectories and real-time infectiousness
+- [Multi-Scale (Nested) Models](epidemiology/nested-models.md) — linking within-host replication to between-host transmission
+- [Pathways to Zoonotic Spillover](epidemiology/zoonotic-spillover.md) — the barrier cascade and stuttering chains
+- [The Evolutionary Emergence of Pathogens](epidemiology/evolutionary-emergence.md) — adaptation, evolutionary rescue, and $R_0$ crossing one
+- [The Speed and Strength of Epidemic Control](epidemiology/epidemic-control.md) — controllability, timing, and reactive vs proactive measures
+- [Critical Community Size and Epidemic Fade-Out](epidemiology/critical-community-size.md) — persistence, troughs, and metapopulation rescue
+
 ## Related quantitative methods
 
 These pages in the [Quantitative Methods](math.md) collection develop the machinery the epidemiology pages build on.

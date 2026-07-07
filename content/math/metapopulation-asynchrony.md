@@ -389,4 +389,5 @@ And because the effect reduces to covariances of the local growth rate $r_i(t)$ 
 - [Discrete-Time Models and the Logistic Map](discrete-population-models.md)
 - [Compartmental Models (SIR)](sir.md)
 - [Markov Chains](markov-chains.md)
+- [Spatial Synchrony and the Moran Effect](spatial-synchrony.md) — how shared environmental forcing and dispersal synchronize populations across space, the mechanism whose failure enables rescue
 - [Quantitative Methods](../math.md)

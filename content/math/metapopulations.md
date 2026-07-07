@@ -111,4 +111,7 @@ Its extinction threshold quantifies how much habitat loss a metapopulation can a
 - [Equilibria and Stability](equilibria-and-stability.md)
 - [Spatial Moment Equations](spatial-moment-equations.md)
 - [Compartmental Models (SIR)](sir.md)
+- [Source–Sink Dynamics](source-sink-dynamics.md) — when dispersal from productive patches sustains populations in patches that cannot replace themselves
+- [Metapopulation Networks and the Invasion Threshold](metapopulation-networks.md) — extending the Levins occupancy model to explicit patch networks with heterogeneous connectivity
+- [Critical Community Size and Epidemic Fade-Out](../epidemiology/critical-community-size.md) — the disease analogue of patch extinction, where small communities lose an infection between epidemics
 - [Quantitative Methods](../math.md)

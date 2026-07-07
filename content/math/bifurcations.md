@@ -139,4 +139,5 @@ The same thresholds appear in [discrete-time models](discrete-population-models.
 - [The Next-Generation Matrix and R₀](next-generation-matrix.md)
 - [Compartmental Models (SIR)](sir.md)
 - [Exponential and Logistic Growth](logistic-growth.md)
+- [Critical Transitions and Early-Warning Signals](critical-transitions.md) — detecting an approaching fold from the statistical slowing-down that precedes it
 - [Quantitative Methods](../math.md)

@@ -89,6 +89,11 @@ This course draws on the following IDEEE reference pages:
 - [INLA](math/inla.md)
 - [Spatial diffusion](math/spatial-diffusion.md)
 - [Spatial moment equations](math/spatial-moment-equations.md)
+- [Metapopulation networks and the invasion
+  threshold](math/metapopulation-networks.md) — disease spread across coupled
+  populations and the network invasion condition
+- [Spatial synchrony and the Moran effect](math/spatial-synchrony.md) — how
+  shared environmental forcing synchronizes outbreaks across locations
 
 Planned reference pages on spatial cluster detection (scan statistics) and
 spatiotemporal models will be added and assigned as they come online.

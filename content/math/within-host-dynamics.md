@@ -160,6 +160,7 @@ last(strong.u)[3]   # low viral set point (stiff solver)
 
 Within-host models connect the molecular events of infection to the epidemiology of transmission.
 The viral load they predict is what a diagnostic [qPCR](../diagnostics/qpcr.md) measures, what shapes the [infectiousness profile](../epidemiology/epidemiological-intervals.md) over the course of an infection, and what antiviral therapy tries to suppress.
+The epidemiology-framed companion page, [within-host viral dynamics and infectiousness](../epidemiology/within-host-dynamics.md), follows the same viral-load trajectory forward into when and how much a host transmits.
 They also set up the multi-scale view that links within-host selection to the between-host [evolution of virulence](evolution-of-virulence.md): a virus that replicates fast may reach a high transmissible load but provoke a stronger immune response or kill its host sooner, the same trade-off written one scale down.
 
 ## Related
@@ -168,4 +169,5 @@ They also set up the multi-scale view that links within-host selection to the be
 - [SEIR and Compartmental Extensions](seir-models.md)
 - [Predator-Prey Dynamics](predator-prey.md)
 - [The Evolution of Virulence](evolution-of-virulence.md)
+- [Within-Host Viral Dynamics and Infectiousness](../epidemiology/within-host-dynamics.md) — the epidemiology-framed companion linking viral load to transmission
 - [Quantitative Methods](../math.md)

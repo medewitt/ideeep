@@ -179,4 +179,7 @@ Getting these distributions right — and estimating them correctly from messy, 
 - [SEIR and Compartmental Extensions](../math/seir-models.md)
 - [Vector-Borne Disease Models](../math/vector-borne.md)
 - [Survival Analysis](../math/survival-analysis.md)
+- [The Euler–Lotka Equation and the r–R₀ Relationship](euler-lotka.md) — the renewal equation that turns a growth rate into a reproduction number through the generation interval
+- [Within-Host Viral Dynamics and Infectiousness](within-host-dynamics.md) — how the viral-load trajectory generates the infectiousness profile underlying the generation interval
+- [The Speed and Strength of Epidemic Control](epidemic-control.md) — how the generation interval sets the pace an intervention must beat
 - [Epidemiology](../epidemiology.md)
