@@ -167,6 +167,91 @@ ess = curv(x_star) < 0                           # uninvadable
 println("alpha* = ", round(x_star, digits = 4), "  ESS = ", ess)
 ```
 
+## CSS versus branching in the plot
+
+The virulence example maximizes $R_0$, so its singular strategy is always a CSS and never branches.
+To see branching in a pairwise invasibility plot we need frequency-dependent selection, where invasion fitness depends on the resident and not just on a fixed optimum.
+The standard example is Gaussian resource competition (Geritz et al., 1998): a trait $x$ draws on resources with abundance $K(x) = \exp(-x^2 / 2\sigma_k^2)$, and a mutant $y$ competes with the resident through the kernel $a(x, y) = \exp(-(x - y)^2 / 2\sigma_a^2)$.
+A rare mutant in a resident at carrying capacity has invasion fitness
+
+\[
+s_x(y) = 1 - a(x, y)\,\frac{K(x)}{K(y)},
+\]
+
+with a singular strategy at $x^* = 0$.
+The same second-order test separates the two outcomes: $x^*$ is a CSS when the competition kernel is wider than the resource distribution ($\sigma_a > \sigma_k$) and an evolutionary branching point when it is narrower ($\sigma_a < \sigma_k$).
+
+![Two pairwise invasibility plots from the Gaussian competition model, both with the singular strategy at the origin. Left, a continuously stable strategy: the vertical line through the singular strategy lies outside the shaded invasion region, so no nearby mutant invades. Right, an evolutionary branching point: the vertical line lies inside the invasion region on both sides of the diagonal, so mutants on either side of the singular strategy invade and the population splits.](../assets/figures/adaptive-dynamics-branching.svg)
+
+The two plots differ only in the width ratio.
+Reading up the vertical line through $x^*$ tells the story: for the CSS the strip sits in the exclusion region and the resident holds, while at the branching point the strip sits inside the invasion region, so disruptive selection splits the population into two coexisting strains.
+
+### Python
+
+```python
+import numpy as np
+
+
+def invasion_sign(sigma_a, sigma_k, grid):
+    """1 where a rare mutant y invades resident x, else 0, over the plane."""
+    X, Y = np.meshgrid(grid, grid)          # X: resident, Y: mutant
+    K = lambda z: np.exp(-z**2 / (2 * sigma_k**2))
+    a = np.exp(-(X - Y)**2 / (2 * sigma_a**2))
+    return (1.0 - a * K(X) / K(Y) > 0).astype(float)
+
+
+grid = np.linspace(-2.5, 2.5, 400)
+css = invasion_sign(sigma_a=1.0, sigma_k=0.6, grid=grid)   # sigma_a > sigma_k
+branch = invasion_sign(sigma_a=0.6, sigma_k=1.0, grid=grid)  # sigma_a < sigma_k
+
+# At the singular strategy x* = 0, does a nearby mutant invade?
+j = np.argmin(np.abs(grid))                 # column nearest x* = 0
+near = np.argmin(np.abs(grid - 0.3))        # a mutant just above x*
+print(f"CSS: mutant invades x* = {bool(css[near, j])}")
+print(f"branching: mutant invades x* = {bool(branch[near, j])}")
+
+# Plot with imshow(css/branch, origin='lower', extent=[-2.5, 2.5, -2.5, 2.5]).
+```
+
+<!-- python-output:auto -->
+```text
+CSS: mutant invades x* = False
+branching: mutant invades x* = True
+```
+<!-- /python-output:auto -->
+
+### R
+
+```r
+invasion_sign <- function(sigma_a, sigma_k, grid) {
+  X <- outer(grid, grid, function(x, y) x)   # resident varies down columns
+  Y <- outer(grid, grid, function(x, y) y)   # mutant varies across rows
+  K <- function(z) exp(-z^2 / (2 * sigma_k^2))
+  a <- exp(-(X - Y)^2 / (2 * sigma_a^2))
+  (1 - a * K(X) / K(Y)) > 0                   # TRUE where the mutant invades
+}
+
+grid   <- seq(-2.5, 2.5, length.out = 400)
+css    <- invasion_sign(1.0, 0.6, grid)       # sigma_a > sigma_k -> CSS
+branch <- invasion_sign(0.6, 1.0, grid)       # sigma_a < sigma_k -> branching
+image(grid, grid, t(branch), xlab = "resident x", ylab = "mutant y")
+```
+
+### Julia
+
+```julia
+function invasion_sign(σ_a, σ_k, grid)
+    K(z) = exp(-z^2 / (2σ_k^2))
+    [1 - exp(-(x - y)^2 / (2σ_a^2)) * K(x) / K(y) > 0
+     for y in grid, x in grid]               # rows: mutant y, cols: resident x
+end
+
+grid   = range(-2.5, 2.5, length = 400)
+css    = invasion_sign(1.0, 0.6, grid)        # σ_a > σ_k -> CSS
+branch = invasion_sign(0.6, 1.0, grid)        # σ_a < σ_k -> branching
+# heatmap(grid, grid, branch) with Makie or Plots to draw the PIP.
+```
+
 ## Why it matters
 
 Adaptive dynamics gives infectious-disease evolution a common language for continuous traits: virulence, drug resistance, host range, and antigenic escape are all traits under invasion selection.
