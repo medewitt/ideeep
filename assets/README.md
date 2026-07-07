@@ -46,27 +46,29 @@ methods pages.
 ## Photographs (`assets/photos/`)
 
 Program and field photographs, plus two historical public-domain scans. Alt
-text below is taken from where each image is used in `content/`. Licensing is
-**not** embedded in these files; the field and portrait photos are program
-photos, and the two historical images are old enough to be public domain —
-confirm rights before reusing any of them elsewhere.
+text below is taken from where each image is used in `content/`. **Credit**
+column: photos are by Michael E. DeWitt unless noted; the whiteboard photo is
+courtesy of Epistorm; the two historical images are public domain by age. The
+public-facing version of this is [`content/credits.md`](../content/credits.md)
+(rendered at `/credits.html` and linked from the site footer) — keep the two in
+sync.
 
-| File | What it is | Used on |
-| --- | --- | --- |
-| `field-team-ppe.jpg` | Students in protective suits and respirators during field outbreak-response training in Peru | `index.md`, `field-epidemiology.md` |
-| `field-surveillance-emerge.jpg` | A field team in EMERGE vests conducting house-to-house disease surveillance in Peru | `research.md`, `field-epidemiology.md` |
-| `field-microscopy.jpg` | A digital microscope displaying a specimen during field lab work | `field-epidemiology.md` |
-| `field-rice-sampling.jpg` | Two researchers collecting samples at the edge of a rice field | `field-epidemiology.md` |
-| `bat-mist-net.jpg` | A bat caught in a mist net at night during reservoir sampling | `research.md`, `field-epidemiology.md` |
-| `parasite-microscopy.jpg` | A parasite viewed under the microscope during laboratory diagnostics | `research.md` |
-| `modeling-whiteboard.jpg` | Students working through disease-transmission models at a whiteboard | `programs.md`, `interest-thank-you.md` |
-| `serology-antibody-test.jpg` | A Scanwell at-home SARS-CoV-2 IgM/IgG test kit (COVID-19 Community Research Partnership) | diagnostics prose |
-| `tumbes-coast.jpg` | Sunset over the Pacific coast at Tumbes, Peru | `field-epidemiology.md` |
-| `tumbes-beach.jpg` | A palm-lined Pacific beach at Tumbes, Peru | `field-epidemiology.md` |
-| `michael-dewitt.jpg` | Portrait / headshot of Michael E. DeWitt | `people.md` |
-| `john-sanders.jpg` | Portrait / headshot of John W. Sanders | `people.md` |
-| `malaria-1913-public-health-reports.png` | Masthead of a 1913 *Public Health Reports* issue ("Malaria in North Carolina," Henry R. Carter, U.S. Public Health Service) — historical, public domain | `people-plagues-policy.md` |
-| `smallpox-misinformation-cartoon.jpg` | An early-20th-century anti-vaccination cartoon (figures walking off a cliff of "misinformation") — historical, public domain | `people-plagues-policy.md` |
+| File | What it is | Credit | Used on |
+| --- | --- | --- | --- |
+| `field-team-ppe.jpg` | Students in protective suits and respirators during field outbreak-response training in Peru | M. DeWitt | `index.md`, `field-epidemiology.md` |
+| `field-surveillance-emerge.jpg` | A field team in EMERGE vests conducting house-to-house disease surveillance in Peru | M. DeWitt | `research.md`, `field-epidemiology.md` |
+| `field-microscopy.jpg` | A digital microscope displaying a specimen during field lab work | M. DeWitt | `field-epidemiology.md` |
+| `field-rice-sampling.jpg` | Two researchers collecting samples at the edge of a rice field | M. DeWitt | `field-epidemiology.md` |
+| `bat-mist-net.jpg` | A bat caught in a mist net at night during reservoir sampling | M. DeWitt | `research.md`, `field-epidemiology.md` |
+| `parasite-microscopy.jpg` | A parasite viewed under the microscope during laboratory diagnostics | M. DeWitt | `research.md` |
+| `serology-antibody-test.jpg` | A Scanwell at-home SARS-CoV-2 IgM/IgG test kit (COVID-19 Community Research Partnership) | M. DeWitt | diagnostics prose |
+| `tumbes-coast.jpg` | Sunset over the Pacific coast at Tumbes, Peru | M. DeWitt | `field-epidemiology.md` |
+| `tumbes-beach.jpg` | A palm-lined Pacific beach at Tumbes, Peru | M. DeWitt | `field-epidemiology.md` |
+| `michael-dewitt.jpg` | Portrait / headshot of Michael E. DeWitt | M. DeWitt | `people.md` |
+| `john-sanders.jpg` | Portrait / headshot of John W. Sanders | M. DeWitt | `people.md` |
+| `modeling-whiteboard.jpg` | Students working through disease-transmission models at a whiteboard | Epistorm | `programs.md`, `interest-thank-you.md` |
+| `malaria-1913-public-health-reports.png` | Masthead of a 1913 *Public Health Reports* issue ("Malaria in North Carolina," Henry R. Carter, U.S. Public Health Service) | Public domain (historical) | `people-plagues-policy.md` |
+| `smallpox-misinformation-cartoon.jpg` | An early-20th-century anti-vaccination cartoon (figures walking off a cliff of "misinformation") | Public domain (historical) | `people-plagues-policy.md` |
 
 ## Branding, logos, and site icons
 
@@ -91,8 +93,9 @@ they are build outputs of their LaTeX sources (`ideep_logo.tex`,
 
 - **NIH BioArt illustrations** — Public Domain, courtesy of NIAID
   (bioart.niaid.nih.gov). Free to use; attribution to NIAID is courteous.
-- **Photographs** — no license metadata is embedded. Field/portrait photos are
-  program photos; the two historical scans are public domain by age. Verify
-  rights before reusing outside this site.
+- **Photographs** — no license metadata is embedded. Field, landscape, and
+  portrait photos are by Michael E. DeWitt; the whiteboard photo is courtesy of
+  Epistorm; the two historical scans are public domain by age. Verify rights
+  before reusing outside this site.
 - **Logos / brand assets** — Wake Forest University marks are used under the
   program's affiliation; follow WFU brand guidelines for any new use.
