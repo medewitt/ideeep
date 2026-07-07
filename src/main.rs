@@ -28,6 +28,14 @@ struct FrontMatter {
     /// Optional per-page meta description used for search snippets and social
     /// cards. When absent, the build derives one from the first paragraph.
     description: Option<String>,
+    /// Optional per-page social/share image (Open Graph + Twitter Card), given
+    /// as a site-root-relative asset path (e.g. `assets/photos/foo.jpg`). When
+    /// absent, the shared `assets/og-image.png` card is used. A leading `/` or
+    /// `../` is tolerated and stripped.
+    image: Option<String>,
+    /// Optional alt text for the per-page social image. Falls back to the
+    /// page title when omitted.
+    image_alt: Option<String>,
 }
 
 /// Escape a string for safe use inside a double-quoted HTML attribute.
@@ -913,6 +921,8 @@ fn generate_html(
     content: &str,
     navbar: &str,
     asset_prefix: &str,
+    page_image: Option<&str>,
+    page_image_alt: Option<&str>,
 ) -> Result<String, Box<dyn std::error::Error>> {
     let katex_css = format!(r#"<link rel="stylesheet" href="{}assets/vendor/katex/katex.min.css" type="text/css" />"#, asset_prefix);
 
@@ -973,7 +983,51 @@ fn generate_html(
     };
 
     let og_type = if is_home { "website" } else { "article" };
-    let og_image = format!("{}/assets/og-image.png", SITE_URL);
+
+    // Social share image. A page can override the default site card via front
+    // matter `image:` (a site-root-relative asset path). For the default card we
+    // know the exact type and dimensions; for a custom image we advertise the
+    // MIME type from its extension but omit width/height, which we cannot know.
+    const DEFAULT_OG_ALT: &str = "Wake Forest University IDEEEP concentration — Infectious Disease Ecology, Evolution and Epidemiology";
+    let (og_image, og_image_meta, og_image_alt) = match page_image
+        .map(|p| p.trim())
+        .filter(|p| !p.is_empty())
+    {
+        Some(path) => {
+            let norm = path.trim_start_matches("../").trim_start_matches('/');
+            let url = format!("{}/{}", SITE_URL, norm);
+            let lower = norm.to_ascii_lowercase();
+            let mime = if lower.ends_with(".png") {
+                "image/png"
+            } else if lower.ends_with(".jpg") || lower.ends_with(".jpeg") {
+                "image/jpeg"
+            } else if lower.ends_with(".webp") {
+                "image/webp"
+            } else if lower.ends_with(".svg") {
+                "image/svg+xml"
+            } else {
+                ""
+            };
+            let meta = if mime.is_empty() {
+                String::new()
+            } else {
+                format!(
+                    "\n    <meta property=\"og:image:type\" content=\"{}\">",
+                    mime
+                )
+            };
+            let alt = page_image_alt
+                .map(str::trim)
+                .filter(|a| !a.is_empty())
+                .unwrap_or(&display_title);
+            (url, meta, alt.to_string())
+        }
+        None => {
+            let url = format!("{}/assets/og-image.png", SITE_URL);
+            let meta = "\n    <meta property=\"og:image:type\" content=\"image/png\">\n    <meta property=\"og:image:width\" content=\"1200\">\n    <meta property=\"og:image:height\" content=\"630\">".to_string();
+            (url, meta, DEFAULT_OG_ALT.to_string())
+        }
+    };
 
     let t_attr = escape_attr(&display_title);
     let d_attr = escape_attr(description);
@@ -1031,11 +1085,8 @@ fn generate_html(
     <meta property="og:title" content="{t_attr}">
     <meta property="og:description" content="{d_attr}">
     <meta property="og:url" content="{canonical}">
-    <meta property="og:image" content="{og_image}">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Wake Forest University IDEEEP concentration — Infectious Disease Ecology, Evolution and Epidemiology">
+    <meta property="og:image" content="{og_image}">{og_image_meta}
+    <meta property="og:image:alt" content="{og_image_alt}">
     <meta property="og:locale" content="en_US">
 
     <!-- Twitter -->
@@ -1043,7 +1094,7 @@ fn generate_html(
     <meta name="twitter:title" content="{t_attr}">
     <meta name="twitter:description" content="{d_attr}">
     <meta name="twitter:image" content="{og_image}">
-    <meta name="twitter:image:alt" content="Wake Forest University IDEEEP concentration — Infectious Disease Ecology, Evolution and Epidemiology">
+    <meta name="twitter:image:alt" content="{og_image_alt}">
 
     <!-- Icons / PWA -->
     <link rel="icon" type="image/png" href="{ap}assets/favicon.png" />
@@ -1089,6 +1140,8 @@ fn generate_html(
         site_name = SITE_NAME,
         t_attr = t_attr,
         og_image = escape_attr(&og_image),
+        og_image_meta = og_image_meta,
+        og_image_alt = escape_attr(&og_image_alt),
         json_ld = json_ld,
         breadcrumb_ld = breadcrumb_ld,
         font_preload = font_preload,
@@ -2090,6 +2143,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .to_string_lossy()
             .replace('\\', "/");
 
+        // Optional per-page social/share image (Open Graph + Twitter). Read
+        // before `frontmatter` is consumed for the description below.
+        let page_image = frontmatter
+            .as_ref()
+            .and_then(|fm| fm.image.clone())
+            .map(|s| s.trim().to_string())
+            .filter(|s| !s.is_empty());
+        let page_image_alt = frontmatter
+            .as_ref()
+            .and_then(|fm| fm.image_alt.clone())
+            .map(|s| s.trim().to_string())
+            .filter(|s| !s.is_empty());
+
         // Per-page meta description: front matter wins, else first-paragraph text.
         let description = frontmatter
             .and_then(|fm| fm.description)
@@ -2145,7 +2211,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Generate navbar HTML with current page highlighted
         let navbar = generate_navbar(&navbar_items, true, dropdowns.as_ref(), &markdown_titles, Some(&rel_key), &asset_prefix);
 
-        let html_output = generate_html(title, &description, &canonical_path, robots, &breadcrumbs, &html_content, &navbar, &asset_prefix)?;
+        let html_output = generate_html(title, &description, &canonical_path, robots, &breadcrumbs, &html_content, &navbar, &asset_prefix, page_image.as_deref(), page_image_alt.as_deref())?;
 
         // Preserve directory structure in dist
         let html_path = dist_dir.join(relative_path.with_extension("html"));
@@ -2186,6 +2252,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         &search_page_content(),
         &search_navbar,
         "",
+        None,
+        None,
     )?;
     let search_path = dist_dir.join("search.html");
     fs::write(&search_path, search_html)?;
@@ -2416,6 +2484,41 @@ mod tests {
             nav_root.contains("href=\"programs.html#curriculum\""),
             "root-level mapping URL must be unprefixed:\n{nav_root}"
         );
+    }
+
+    /// With no per-page `image:`, the shared social card is used and its known
+    /// type/dimensions are advertised for both Open Graph and Twitter.
+    #[test]
+    fn og_image_defaults_to_site_card() {
+        let html = generate_html(
+            "Quantitative Methods", "desc", "math.html", "index, follow",
+            &[], "<p>body</p>", "<nav></nav>", "../", None, None,
+        )
+        .unwrap();
+        let card = format!("{}/assets/og-image.png", SITE_URL);
+        assert!(html.contains(&format!("property=\"og:image\" content=\"{card}\"")), "default og:image missing:\n{html}");
+        assert!(html.contains(&format!("name=\"twitter:image\" content=\"{card}\"")), "default twitter:image missing:\n{html}");
+        assert!(html.contains("property=\"og:image:width\" content=\"1200\""), "default card must keep its known width:\n{html}");
+        assert!(html.contains("property=\"og:image:height\" content=\"630\""), "default card must keep its known height:\n{html}");
+    }
+
+    /// A per-page `image:` overrides the share card for Open Graph and Twitter,
+    /// resolves to an absolute URL, advertises the MIME type from its extension,
+    /// and drops the fixed dimensions (unknown for an arbitrary image). A leading
+    /// `../` or `/` in the path is tolerated. The alt falls back to the title.
+    #[test]
+    fn og_image_uses_per_page_override() {
+        let html = generate_html(
+            "Diagnostics", "desc", "diagnostics.html", "index, follow",
+            &[], "<p>body</p>", "<nav></nav>", "", Some("../assets/photos/serology-antibody-test.jpg"), None,
+        )
+        .unwrap();
+        let img = format!("{}/assets/photos/serology-antibody-test.jpg", SITE_URL);
+        assert!(html.contains(&format!("property=\"og:image\" content=\"{img}\"")), "per-page og:image not applied:\n{html}");
+        assert!(html.contains(&format!("name=\"twitter:image\" content=\"{img}\"")), "per-page twitter:image not applied:\n{html}");
+        assert!(html.contains("property=\"og:image:type\" content=\"image/jpeg\""), "jpeg MIME type should be advertised:\n{html}");
+        assert!(!html.contains("og:image:width"), "custom image must not claim the default card's dimensions:\n{html}");
+        assert!(html.contains("property=\"og:image:alt\" content=\"Diagnostics\""), "image alt should fall back to the page title:\n{html}");
     }
 }
 
