@@ -4,6 +4,8 @@ toc: true
 description: "Practical guides to reproducible scientific computing and good programming practice, with runnable examples in R, Python, and Julia."
 ---
 
+<img src="assets/cards/programming.svg" style="width:100%;display:block;" alt="An abstract plaintext-and-grid motif in the site palette representing programming and computing.">
+
 # Programming & Computing
 
 One of the most powerful transitions to rigorous work is the use of a plaintext approach.
