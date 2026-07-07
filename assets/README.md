@@ -56,11 +56,11 @@ sync.
 | File | What it is | Credit | Used on |
 | --- | --- | --- | --- |
 | `field-team-ppe.jpg` | Students in protective suits and respirators during field outbreak-response training in Peru | M. DeWitt | `index.md`, `field-epidemiology.md` |
-| `field-surveillance-emerge.jpg` | A field team in EMERGE vests conducting house-to-house disease surveillance in Peru | M. DeWitt | `research.md`, `field-epidemiology.md` |
+| `field-surveillance-emerge.jpg` | A field team in EMERGE vests conducting house-to-house disease surveillance in Peru | M. DeWitt | `epidemiology.md` (hero), `research.md`, `field-epidemiology.md` |
 | `field-microscopy.jpg` | A digital microscope displaying a specimen during field lab work | M. DeWitt | `field-epidemiology.md` |
 | `field-rice-sampling.jpg` | Two researchers collecting samples at the edge of a rice field | M. DeWitt | `field-epidemiology.md` |
 | `bat-mist-net.jpg` | A bat caught in a mist net at night during reservoir sampling | M. DeWitt | `research.md`, `field-epidemiology.md` |
-| `parasite-microscopy.jpg` | A parasite viewed under the microscope during laboratory diagnostics | M. DeWitt | `research.md` |
+| `parasite-microscopy.jpg` | A parasite viewed under the microscope during laboratory diagnostics | M. DeWitt | `diagnostics.md` (hero), `research.md` |
 | `serology-antibody-test.jpg` | A Scanwell at-home SARS-CoV-2 IgM/IgG test kit (COVID-19 Community Research Partnership) | M. DeWitt | diagnostics prose |
 | `tumbes-coast.jpg` | Sunset over the Pacific coast at Tumbes, Peru | M. DeWitt | `field-epidemiology.md` |
 | `tumbes-beach.jpg` | A palm-lined Pacific beach at Tumbes, Peru | M. DeWitt | `field-epidemiology.md` |
