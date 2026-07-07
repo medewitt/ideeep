@@ -5,6 +5,8 @@ author: Michael DeWitt
 date: 2026-07-05
 ---
 
+<img src="assets/photos/malaria-1913-public-health-reports.png" style="width:100%;display:block;" alt="The masthead of a 1913 issue of Public Health Reports with an article titled 'Malaria in North Carolina' by Henry R. Carter of the U.S. Public Health Service.">
+
 This course develops the human dimensions of infectious disease alongside the
 quantitative ones: who is exposed and why, how behavior and transmission feed
 back on one another, how qualitative and mixed methods answer questions that
@@ -98,6 +100,11 @@ This course draws on IDEEEP content pages as assigned readings:
 - [Networks](math/networks.md)
 - [Outbreak investigation](epidemiology/outbreak-investigation.md)
 - [Infectious Disease Ecology](bio340-id-ecology.md)
+
+<figure class="photo">
+  <img src="assets/photos/smallpox-misinformation-cartoon.jpg" alt="An early 20th-century cartoon: figures labeled 'anti-vaccinationist', 'faddist', 'mr. careless', and 'anti-everything' walk arm in arm off a cliff of 'misinformation' toward 'smallpox' below." loading="lazy">
+  <figcaption>An early 20th-century cartoon on resistance to smallpox vaccination.</figcaption>
+</figure>
 
 # Course structure and schedule
 
