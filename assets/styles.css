@@ -1155,8 +1155,9 @@ figure.photo figcaption {
 }
 .person img.headshot {
 	flex: 0 0 auto;
-	width: 128px;
-	height: 128px;
+	/* Small on desktop, scaling down with the viewport on narrower screens */
+	width: clamp(64px, 12vw, 96px);
+	height: clamp(64px, 12vw, 96px);
 	object-fit: cover;
 	border-radius: 50%;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
@@ -1164,6 +1165,5 @@ figure.photo figcaption {
 .person .person-body { min-width: 0; }
 .person .person-body > :first-child { margin-top: 0; }
 @media (max-width: 520px) {
-	.person { flex-direction: column; }
-	.person img.headshot { width: 104px; height: 104px; }
+	.person { gap: var(--space-3); }
 }
