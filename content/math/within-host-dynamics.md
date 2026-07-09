@@ -119,9 +119,9 @@ x0 = lam / d
 R0 = beta * k * x0 / (a * u)
 y0 = [x0, 0.0, 1e-2, 1e-3, 1e-3]
 strong = solve_ivp(rhs, [0, 200], y0, args=(10.0, 10.0),
-                   method="LSODA", rtol=1e-8, atol=1e-10, max_step=0.5)
+                   method="BDF", rtol=1e-8, atol=1e-10)   # stiff system: BDF stays stable
 weak = solve_ivp(rhs, [0, 200], y0, args=(0.0, 0.0),
-                 method="LSODA", rtol=1e-8, atol=1e-10, max_step=0.5)
+                 method="BDF", rtol=1e-8, atol=1e-10)
 print(f"within-host R0 = {R0:.1f}")
 print(f"strong immunity: set-point v = {strong.y[2][-1]:.3f}")
 print(f"no adaptive immunity: set-point v = {weak.y[2][-1]:.3f}")
@@ -130,7 +130,7 @@ print(f"no adaptive immunity: set-point v = {weak.y[2][-1]:.3f}")
 <!-- python-output:auto -->
 ```text
 within-host R0 = 33.3
-strong immunity: set-point v = 0.029
+strong immunity: set-point v = 0.028
 no adaptive immunity: set-point v = 3.233
 ```
 <!-- /python-output:auto -->
