@@ -9,6 +9,11 @@ build:
 test:
     cargo test --release
 
+# Run the Python dev-tool tests (inject_python_output caching + injection).
+# Stdlib only — no scientific deps needed, so plain python3 (not uv).
+test-scripts:
+    python3 -W error::ResourceWarning scripts/test_inject_python_output.py
+
 # Directories whose Markdown prose follows the one-sentence-per-line convention
 prose_dirs := "content/math content/programming content/epidemiology content/diagnostics content/scientific-pathways.md content/scientific-writing.md"
 

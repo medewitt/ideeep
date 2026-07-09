@@ -225,6 +225,15 @@ or stale entry just falls back to running that page — so deleting it is safe a
 only costs a one-time recompute. Bump `FORMAT_TAG` in the script if you change
 the injection format so every fingerprint invalidates.
 
+The injector has its own regression suite, `scripts/test_inject_python_output.py`
+(stdlib only), run with `just test-scripts`. It follows the same test-driven
+rule as the Rust generator: changes to `inject_python_output.py` — injection,
+`# no-run` / truncation handling, fingerprinting, or caching — should come with a
+test. Keep injected Python **deterministic**: seed every RNG *and* pin any
+library-internal randomness (e.g. `PCA(svd_solver="full")`, which avoids
+scikit-learn's unseeded randomized SVD), so a page's committed output is stable
+and the fingerprint cache stays trustworthy.
+
 ## SEO & PWA
 
 The generator emits search-engine and installable-app metadata automatically — you rarely touch it, but a few authoring habits make it better.

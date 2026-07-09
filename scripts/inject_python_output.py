@@ -212,7 +212,8 @@ def main() -> int:
 
     changed, injected, skipped = [], 0, 0
     for path in iter_md(args.paths):
-        original = open(path, encoding="utf-8").read()
+        with open(path, encoding="utf-8") as f:
+            original = f.read()
         key = os.path.normpath(path)
         fp = page_fingerprint(original)
 
@@ -229,7 +230,8 @@ def main() -> int:
         if new != original:
             changed.append(path)
             if args.write:
-                open(path, "w", encoding="utf-8").write(new)
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write(new)
         if args.write:
             # After writing, the file's output matches its blocks; record the
             # fingerprint (unaffected by injection) so later runs can skip it.
