@@ -97,6 +97,7 @@ Funding is what converts a good question into the time, people, and equipment to
 ## Related
 
 - [Scientific Writing](scientific-writing.md) — hypotheses, Specific Aims, and papers
+- [Scientific & Policy Writing](writing.md) — the full hub, including grants and policy briefs
 - [Experimental Design](math/experimental-design.md) — rigor and reproducibility in proposals
 - [Reproducibility](programming/reproducibility.md) — a scored expectation in modern grants
 - [Causal Inference](math/causal-inference.md)

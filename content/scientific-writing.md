@@ -91,6 +91,8 @@ The discipline of stating a falsifiable hypothesis, structuring aims that a stra
 
 ## Related
 
+- [Scientific & Policy Writing](writing.md) — the full hub of writing references
+- [Writing for Policy](writing/writing-for-policy.md) — turning a result into a policy brief (Whitty)
 - [Scientific Pathways](scientific-pathways.md) — fellowships and grant writing
 - [Hypothesis Testing](math/hypothesis-testing.md)
 - [Experimental Design](math/experimental-design.md)

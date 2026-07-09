@@ -96,6 +96,7 @@ This course draws on IDEEEP content pages as assigned readings:
 - [Qualitative and mixed methods in epidemiology](epidemiology/qualitative-and-mixed-methods.md)
 - [Behavior–disease coupled models](math/behavior-disease-coupled-models.md)
 - [Risk communication and community engagement](epidemiology/risk-communication-and-rcce.md)
+- [Writing for Policy](writing/writing-for-policy.md)
 - [Systems thinking and systems mapping](epidemiology/systems-thinking-and-systems-mapping.md)
 - [Networks](math/networks.md)
 - [Outbreak investigation](epidemiology/outbreak-investigation.md)

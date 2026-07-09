@@ -88,6 +88,7 @@ ahead or review afterward.
 - [Epidemic forecasting](epidemiology/epidemic-forecasting.md)
 - [Nowcasting and reporting delays](epidemiology/nowcasting.md)
 - [Scientific writing](scientific-writing.md)
+- [Writing for policy](writing/writing-for-policy.md)
 
 See [Programs](programs.md) for how this short course fits alongside the degree
 tracks and other offerings.
