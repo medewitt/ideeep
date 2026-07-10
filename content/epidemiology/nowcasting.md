@@ -5,8 +5,9 @@ description: "Why the recent end of an epidemic curve is biased down by reportin
 
 # Nowcasting and Reporting Delays
 
-The last few points of any epidemic curve lie.
-Cases that have already happened have not all been reported yet, so the most recent days always look lower than they truly are, and a curve that seems to be turning over may just be incompletely observed.
+If you base your understanding of an outbreak based on the yesterday's reported values, you will always be wrong.
+Whatever metric reported today is incomplete as the infection/cases/hospitalization that are happening **right now** are not include due to delays.
+If decision-makers make decisions based soley on comparing today's cases to yesterdays, they will make the wrong inferences about the direction of the outbreaks.
 Nowcasting is the correction: using what we know about reporting delays to reconstruct the eventual counts for recent dates before all the reports arrive.
 
 ![An epidemic curve where the observed recent counts fall away from the eventual counts because reporting for those dates is not yet complete.](../assets/figures/nowcasting.svg)

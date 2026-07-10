@@ -7,6 +7,8 @@ title: "The Coalescent"
 The coalescent looks at a population's genealogy backward in time: starting from a sample of sequences today, ancestral lineages merge — coalesce — until they reach a single common ancestor.
 This backward view is the engine of modern pathogen phylodynamics, letting us read effective population sizes, epidemic growth, and divergence times straight off a phylogenetic tree.
 
+![A coalescent genealogy of six sampled lineages, with time running into the past up the vertical axis; the deepest interval with two lineages is the longest, and the recent intervals with many lineages are short.](../assets/figures/coalescent-theory.svg)
+
 ## Coalescence of two lineages
 
 Consider two sampled gene copies in a Wright–Fisher population with effective size $N_e$ (diploid, $2N_e$ gene copies; here we use the haploid convention with $N_e$ copies for cleaner formulas).

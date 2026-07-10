@@ -53,7 +53,7 @@ It is the only supported way to get a command line on DEAC and DEMON login nodes
 ssh your_username@login-hostname
 
 # e.g. connecting to DEAC with your WFU credentials
-ssh jonesab@rhel8.deac.wfu.edu
+ssh jsnow@wfu.edu
 ```
 
 You authenticate with your WFU (or School of Medicine) password, or — better — an **SSH key**.
@@ -61,7 +61,7 @@ A key pair lets you log in without typing a password every time and is more secu
 
 ```bash
 # 1. Create a key pair on YOUR laptop (once). Accept the defaults; set a passphrase.
-ssh-keygen -t ed25519 -C "me@wfu.edu"
+ssh-keygen -t ed25519 -C "jsnow@wfu.edu"
 
 # 2. Copy the PUBLIC key to the cluster so it recognizes you
 ssh-copy-id your_username@login-hostname
@@ -178,7 +178,7 @@ A **job array** launches one job per item with a single `sbatch`, and SLURM runs
 module purge
 module load r/4.4.1
 
-# $SLURM_ARRAY_TASK_ID is 1, 2, 3, ... -- each task gets a different value.
+# SLURM_ARRAY_TASK_ID is 1, 2, 3, ... -- each task gets a different value.
 # Use it as a seed, a row index, or a filename to split the work.
 Rscript bootstrap.R $SLURM_ARRAY_TASK_ID
 ```

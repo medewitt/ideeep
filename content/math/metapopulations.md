@@ -7,6 +7,8 @@ title: "Metapopulations and the Levins Model"
 Real landscapes are patchy: a species survives not as one continuous population but as a scatter of local populations that wink out and are recolonized.
 The Levins model captures this "population of populations" with a single equation, and it turns out to be mathematically identical to a simple epidemic — patches play the role of hosts, and occupancy plays the role of infection.
 
+![Left: a network of habitat patches linked by dispersal, some occupied and some empty, with recolonization spreading from occupied to empty patches. Right: the Levins occupancy fraction converging over time to the equilibrium p* = 1 − e/c from different starting points.](../assets/figures/metapopulations.svg)
+
 ## The metapopulation idea
 
 A **metapopulation** is a set of local populations occupying discrete habitat patches, linked by dispersal.

@@ -7,6 +7,8 @@ title: "Detecting Selection with dN/dS"
 When a pathogen evolves, some mutations rewrite its proteins and some leave them untouched.
 Comparing how fast these two kinds of change accumulate turns a protein-coding gene into a detector for natural selection.
 
+![Genes plotted by synonymous (dS) and non-synonymous (dN) substitution rates; the dN = dS diagonal separates purifying selection below from positive selection above, with most genes falling below the line.](../assets/figures/dn-ds.svg)
+
 ## Synonymous vs. non-synonymous substitutions
 
 The genetic code is redundant: most amino acids are encoded by several codons, so a nucleotide change may or may not alter the protein.

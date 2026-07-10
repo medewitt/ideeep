@@ -86,7 +86,10 @@ It requires practice and repetition.
 - [The Central Limit Theorem](math/central-limit-theorem.md)
 - [Markov Chains](math/markov-chains.md) — transition matrices and stationary distributions
 - [Branching Processes](math/branching-processes.md) — Galton–Watson, extinction, and outbreaks
+- [Superspreading and Transmission Heterogeneity](math/superspreading.md) — the offspring distribution, the dispersion $k$, and the 20/80 rule
+- [Chain-Binomial Models and the Household Secondary Attack Rate](math/chain-binomial-reed-frost.md) — Reed-Frost transmission and household final size
 - [Random Walks and Brownian Motion](math/random-walk-brownian-motion.md) — diffusive scaling and the Wiener process
+- [Fourier and Spectral Analysis](math/fourier-spectral-analysis.md) — decomposing a signal into frequencies and finding periodicity with the periodogram
 - [Copulas](math/copulas.md) — separating dependence from the marginals via Sklar's theorem
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
 - [Moment Matching](math/moment-matching.md) — method of moments and distributional approximation
@@ -104,11 +107,14 @@ It requires practice and repetition.
 - [Logistic Regression](math/logistic-regression.md)
 - [Generalized Linear Models](math/generalized-linear-models.md) — GLMs and Poisson regression
 - [Hierarchical (Multilevel) Models](math/hierarchical-models.md) — partial pooling and shrinkage
+- [Multilevel Regression and Poststratification](math/multilevel-regression-poststratification.md) — small-area estimation from non-representative surveys
 
 ## Bayesian inference
 
 - [Bayesian Inference](math/bayesian-inference.md) — priors, likelihood, and the posterior
 - [Markov Chain Monte Carlo](math/mcmc.md)
+- [State-Space Models and Particle Filtering](math/state-space-particle-filter.md) — partially observed Markov processes and the bootstrap particle filter
+- [Approximate Bayesian Computation](math/approximate-bayesian-computation.md) — likelihood-free inference by simulation, for models you can run but not write down
 - [Prior Predictive Checks](math/prior-predictive-checks.md) — simulate from the prior to sanity-check it before fitting
 - [Posterior Predictive Checks](math/posterior-predictive-checks.md) — compare replicated data to the observed to test the model
 - [Identifiability](math/identifiability.md) — when data cannot separate parameters
@@ -146,6 +152,7 @@ It requires practice and repetition.
 - [Latin Hypercube Sampling](math/latin-hypercube.md) — space-filling designs for computer experiments
 - [Global Sensitivity Analysis](math/sensitivity-analysis.md) — Sobol indices and Morris screening
 - [Survey Sampling](math/survey-sampling.md) — SRS, stratified, cluster, and weighting
+- [Capture-Recapture and Multiplier Methods](math/capture-recapture.md) — estimating a population's true size from overlapping incomplete lists
 
 ## Causal inference
 
@@ -162,6 +169,7 @@ It requires practice and repetition.
 - [Genetic Drift and the Wright–Fisher Model](math/genetic-drift.md)
 - [Selection and Mutation–Selection Balance](math/selection-popgen.md)
 - [Population Structure and F_ST](math/population-structure.md)
+- [Phylogenetic Inference: Substitution Models and Tree Building](math/phylogenetic-inference.md) — from sequences to a tree, with IQ-TREE and BEAST
 - [The Coalescent](math/coalescent-theory.md) — genealogies backward in time
 - [Phylodynamics](math/phylodynamics.md) — reading epidemic dynamics from pathogen phylogenies
 
@@ -220,6 +228,7 @@ It requires practice and repetition.
 *Dynamical-systems & epidemic-dynamics toolkit:*
 
 - [Equilibria and Linear Stability](math/equilibria-and-stability.md) — nullclines and phase planes
+- [Floquet Theory and the Stability of Periodic Systems](math/floquet-theory.md) — the monodromy matrix, Floquet multipliers, and stability of periodic orbits and forced equilibria
 - [Bifurcations](math/bifurcations.md) — thresholds and tipping points
 - [Critical Transitions and Early-Warning Signals](math/critical-transitions.md) — rising variance and autocorrelation before a tipping point
 - [The Next-Generation Matrix and R₀](math/next-generation-matrix.md)
@@ -249,8 +258,10 @@ It requires practice and repetition.
 ## Epidemic modeling
 
 - [Compartmental Models](math/sir.md) — the SIR model and $R_0$
+- [Final Size, Herd Immunity, and Overshoot](math/final-size-and-herd-immunity.md) — the final size relation, the herd immunity threshold, and epidemic overshoot
 - [Density-Dependent and Frequency-Dependent Transmission](math/transmission-modes.md) — how the contact rate scales with host density, and the critical density threshold
 - [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
+- [Social Contact Matrices and Age-Structured Mixing](math/contact-matrices.md) — who-meets-whom by age, from contact surveys to $R_0$
 - [Within-Host Dynamics and the Immune Response](math/within-host-dynamics.md) — virus, infected cells, and B-cell/T-cell immunity
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
 - [Reservoir Ecology](math/reservoir-ecology.md) — maintenance hosts, spillover, and multi-host persistence
@@ -258,6 +269,7 @@ It requires practice and repetition.
 - [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
 - [The Renewal Equation](math/renewal-equation.md) — linking incidence, the generation interval, and $R_t$
 - [Population Dynamics of Resistance](math/resistance-dynamics.md) — two-strain competition and the treatment threshold
+- [Antimicrobial Resistance Across Scales](math/amr-across-scales.md) — the individual-versus-population tension, competitive release, and a nested malaria model joining within- and between-host dynamics
 - [Behavior–Disease Coupled Models](math/behavior-disease-coupled-models.md) — prevalence-dependent behavior and the feedback between action and transmission
 - [Climate Forcing in Transmission Models](math/climate-forcing-in-transmission-models.md) — seasonal forcing, temperature-dependent parameters, and resonance
 - [Fitting Dynamic Models to Data](math/model-calibration.md) — calibration and identifiability

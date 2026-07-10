@@ -180,6 +180,7 @@ The same transmission machinery that gives an epidemic its [basic reproduction n
 
 - [Compartmental Models](sir.md) — the SIS and SIR transmission machinery
 - [The Evolution of Resistance](resistance-evolution.md) — the within-host selection scale
+- [Antimicrobial Resistance Across Scales](amr-across-scales.md) — joins this population model to within-host competitive release and a nested malaria model
 - [Antimicrobial PK/PD](antimicrobial-pkpd.md) — dosing that suppresses resistance in the individual
 - [The Next-Generation Matrix and R₀](next-generation-matrix.md) — reproduction numbers for competing strains
 - [PK/PD Target Attainment](pkpd-target-attainment.md) — the sibling dosing view

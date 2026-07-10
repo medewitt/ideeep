@@ -7,6 +7,8 @@ title: "Branching Processes"
 A branching process models a population in which each individual independently produces a random number of offspring drawn from a fixed offspring distribution.
 The classic version is the Galton–Watson process, and it answers a sharp question: starting from a single ancestor, does the lineage die out or grow without bound?
 
+![Left: forty simulated transmission chains with mean offspring 1.3, most dying out within a few generations while a few grow. Right: the extinction probability as a function of R₀, equal to one at or below R₀ = 1 and falling below one once R₀ exceeds one.](../assets/figures/branching-processes.svg)
+
 ## The Galton–Watson process
 
 Label the generations $0, 1, 2, \dots$, starting with one individual in generation $0$.

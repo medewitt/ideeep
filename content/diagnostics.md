@@ -61,7 +61,7 @@ Two lessons recur across the pages that follow.
 Individual tests aggregate into **surveillance** — the systematic monitoring that tells us where and how fast a pathogen is spreading.
 
 - **Screening vs confirmatory testing** — cheap, fast, sensitive tests screen broadly; specific tests confirm positives, a two-tier strategy that manages the [false-positive burden at low prevalence](math/diagnostic-testing.md).
-- **Pooled testing** — combining specimens multiplies throughput when prevalence is low, at some cost in sensitivity.
+- **Pooled testing** — combining specimens multiplies throughput when prevalence is low, at some cost in sensitivity; estimating prevalence from the pools takes [dedicated methods](epidemiology/pooled-testing.md).
 - **Wastewater surveillance** — [qPCR](diagnostics/qpcr.md) or sequencing of sewage tracks community transmission without testing individuals.
 - **Genomic surveillance** — sequencing positives reveals variants and reconstructs transmission (see [the molecular clock](math/molecular-clock.md) and [phylodynamics](math/molecular-clock.md)).
 
@@ -79,6 +79,7 @@ Individual tests aggregate into **surveillance** — the systematic monitoring t
 
 ## Related
 
+- [Detection Probability: Viral Kinetics and Assay Thresholds](epidemiology/detection-probability.md) — the quantitative link between viral load, the limit of detection, and time-varying sensitivity
 - [Diagnostic Testing and Screening](math/diagnostic-testing.md) — sensitivity, specificity, PPV, and ROC
 - [Data Ingestion & APIs](programming/data-ingestion-and-apis.md) — pulling sequence data from GenBank and GISAID
 - [The Molecular Clock and Phylodynamics](math/molecular-clock.md)
