@@ -106,6 +106,8 @@ It requires practice and repetition.
 - [Linear Regression](math/linear-regression.md)
 - [Logistic Regression](math/logistic-regression.md)
 - [Generalized Linear Models](math/generalized-linear-models.md) — GLMs and Poisson regression
+- [Contrasts and Average Marginal Effects](math/average-marginal-effects.md) — turning link-scale coefficients into risk differences and effects on the outcome scale
+- [Age, Period, and Cohort Effects](math/age-period-cohort.md) — separating birth-cohort effects from age and calendar-time trends in risk models
 - [Hierarchical (Multilevel) Models](math/hierarchical-models.md) — partial pooling and shrinkage
 - [Multilevel Regression and Poststratification](math/multilevel-regression-poststratification.md) — small-area estimation from non-representative surveys
 
