@@ -25,6 +25,7 @@
 *.vrb
 
 # Editor directories and files
+.claude/
 .vscode/
 .idea/
 *.swp
