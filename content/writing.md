@@ -22,12 +22,22 @@ It rewards practice and repetition as much as any statistical or laboratory skil
 - [Scientific Writing](scientific-writing.md) — generating a hypothesis, Specific Aims, IMRaD, and reporting standards
 - [Scientific Pathways](scientific-pathways.md) — the research career, fellowships, and grant writing
 
+## Foundations
+
+- [The Craft of Writing](writing/writing-craft.md) — story structure, the paragraph, sentence energy, and flow
+
 ## The manuscript, section by section
 
+- [Writing an Introduction](writing/writing-an-introduction.md) — the funnel from broad context to your question
 - [The Specific Aims Page](writing/the-specific-aims-page.md) — the single most important page of a grant
 - [Writing Methods](writing/writing-methods.md) — reproducibility as the test of a good Methods section
 - [Writing Results and Discussion](writing/writing-results-and-discussion.md) — reporting what you found, then what it means
 - [Writing an Abstract](writing/writing-an-abstract.md) — the miniature of the paper that almost everyone reads
+
+## Grants and funding
+
+- [Grant Writing](writing/grant-writing.md) — how a proposal is framed for NIH versus NSF
+- [The Specific Aims Page](writing/the-specific-aims-page.md) — the grant's argument on one page
 
 ## Writing for decision-makers
 

@@ -88,6 +88,18 @@ Uncertainty is useful when it is specific and conditional.
 Name what you do not know, say how much it would move the answer, and, if new evidence would resolve it, say what kind, on what timeline, and at what cost.
 Conditional phrasing carries this well: if the priority is speed, the evidence supports option A; if the priority is cost, the evidence is inconclusive.
 
+## The brief is one of several formats
+
+The two-page brief is the default, but it is not the only policy output, and matching the format to the decision matters.
+
+- **Policy brief** — about two pages, for a decision that is imminent and narrow.
+- **Policy paper** — four to eight pages, when the decision needs the reasoning laid out, not just the answer.
+- **Synthesis review** — a policy-facing evidence review that pulls together the relevant studies across disciplines; this is the highest-value contribution Whitty names.
+- **White paper** — a longer document that sets out a position and its supporting evidence for a slower, more strategic decision.
+- **Problem statement** — a single page that frames the decision and names what evidence would resolve it, useful when the science does not yet exist.
+
+Whichever format you choose, the openings share the same discipline: state the decision first, synthesize rather than advocate, and be explicit about what is uncertain and what is out of scope.
+
 ## Worked example: from manuscript to brief
 
 The [scientific writing](../scientific-writing.md) page builds a set of Specific Aims around pre-symptomatic transmission, ending in a comparison of symptom-based versus test-based isolation.
