@@ -4,6 +4,11 @@ This file is the design and build guide for the IDEEEP site.
 It is written for future agents (and humans) so that new content matches the established conventions.
 Read it before adding or editing pages.
 
+> **Just writing a content page?** See [`for-authors.md`](for-authors.md) — the
+> task-oriented authoring guide (page structure, math, figures, equations,
+> callouts, spoilers, runnable code, cross-references). This file (`AGENTS.md`)
+> covers how the generator itself is built.
+
 ## What this project is
 
 This repository is a **custom static-site generator written in Rust** — a single-binary Markdown compiler (`src/main.rs`, crate `md-compiler`).
@@ -12,7 +17,7 @@ It is **not** Quarto, mdBook, Bookdown, Hugo, or Jupyter Book, even though the c
 - Content is **plain Markdown** under `content/`, with YAML front matter: `title:` (required), plus optional `description:` (meta/social) and `toc: true` (adds an "On this page" list).
 - Math is rendered at build time with **KaTeX** (server-side); no MathJax runtime is needed.
 - The build produces static HTML in `dist/` and an SQLite full-text **search index** (`dist/search.db`).
-- Deployment is Netlify (`netlify.toml`). GitHub Actions CI (`.github/workflows/ci.yml`) runs the guardrails on every push/PR: the Rust regression suite (`just test`), the injector unit tests (`just test-scripts`), the prose linter (`just lint-prose`), figure staleness (`just figures-check`), injected-output freshness (`just python-output-check`), and a full build plus internal-link check (`just check-links`). Keep these green locally before pushing.
+- Deployment is Netlify (`netlify.toml`). GitHub Actions CI (`.github/workflows/ci.yml`) runs the guardrails on every push/PR: the Rust regression suite (`just test`), the injector unit tests (`just test-scripts`), the prose linter (`just lint-prose`), figure staleness (`just figures-check`), injected-output freshness (`just python-output-check`), a full build plus internal-link check (`just check-links`), and glossary consistency (`just glossary-check`). Keep these green locally before pushing.
 
 ## Directory layout
 
@@ -174,6 +179,17 @@ Inline math is `$…$`; display math is `\[ … \]` or `$$ … $$`.
 Use conventional notation (`$\theta$`, `\frac`, `\mathbb{E}[\cdot]`, `\propto`).
 KaTeX renders at build time; a malformed expression shows up as a `math-error` span in the HTML.
 
+**Numbered equations (opt-in).** A display equation carrying a `\label{eq:name}`
+is assigned the next per-page number, rendered with a KaTeX `\tag{N}` so "(N)"
+prints at the right margin, and wrapped in `<span id="eq-name">` so it can be
+linked. Reference it anywhere with `[@eq:name]`, which resolves to a numbered
+`(N)` link (either document order); an unresolved reference renders a loud
+marker. Only labelled display equations are numbered — plain derivation steps are
+left unnumbered. See `render_display_math`/`resolve_equation_refs` in
+`src/main.rs`. (Figures are the analogue: block images auto-number and are
+labelled with a `"fig:name"` image title, referenced with `[@fig:name]` — see
+the Figures section.)
+
 ## Callouts
 
 Use GitHub-style admonition blockquotes for asides; the build renders them as
@@ -187,6 +203,73 @@ styled callouts with an icon. Supported types: `[!NOTE]`, `[!TIP]`,
 
 Inline math, code, links, and bold all work inside a callout. A plain `>`
 blockquote (no `[!TYPE]`) still renders as an ordinary quote.
+
+## Spoilers / disclosure blocks (`:::spoiler … :::`)
+
+Hide a worked solution, a long derivation, or an aside behind a click with a
+fenced spoiler block. It compiles to a native `<details>`/`<summary>` widget —
+no JavaScript — and the body is **ordinary Markdown** (lists, math, code, even
+nested spoilers all work):
+
+```markdown
+:::spoiler Show the solution
+Substitute $R_0 = \beta / \gamma$ and simplify.
+
+- step one
+- step two
+:::
+```
+
+- The text after the keyword is the clickable **summary, and it is fully
+  configurable** — `:::spoiler Show the solution`, `:::spoiler Reveal`,
+  `:::spoiler Hint`, anything. A bare `:::spoiler` uses "Show more".
+- `:::details` is an alias for `:::spoiler` (identical behavior).
+- The opener sits on its own line; the block ends at a line that is exactly
+  `:::`. Blocks may **nest**. An opener with no matching `:::` close is left
+  untouched, so stray text is never swallowed.
+- See `expand_spoilers` in `src/main.rs`.
+
+## Section permalinks
+
+Every `##`/`###` heading is emitted with a stable `id` **and** a `#` permalink
+anchor (revealed on hover) so any section can be deep-linked. This is automatic;
+you do nothing. See `add_heading_ids` in `src/main.rs`.
+
+## Code blocks
+
+Every fenced code block is wrapped at build time in a `.code-block` container
+with a language badge and a **Copy** button (`enhance_code_blocks` in
+`src/main.rs`); the button is wired by `assets/nav.js`. Tag the fence with its
+language so the badge and highlight.js coloring are correct.
+
+## Glossary
+
+`content/_glossary.yaml` is a central list of terms (`term`, `short`, optional
+`aliases`/`long`/`see`). The build (1) auto-links the **first** occurrence of
+each term/alias in every page's prose with a definition tooltip — skipping code,
+math, links, and headings — and (2) generates `/glossary.html`, whose entries
+carry a reverse index of the pages that mention each term. Matching is
+whole-word and case-insensitive; a page opts out with `glossary: false` in front
+matter; an empty/absent listing makes the feature inert. The `Glossary` keyword
+is a built-in navbar item (like `Search`) and is added to `config.yaml`'s
+`navbar_order`. See `load_glossary`/`decorate_glossary`/`glossary_page_content`
+in `src/main.rs`. `content/_glossary.yaml` is data, not a page — like
+`_fragments/`, it is never compiled to HTML. `just glossary-check`
+(`scripts/check_glossary.py`, in CI) fails if a term is defined but never
+auto-linked on any page, a `see:` target does not resolve, or two terms collide
+on one slug.
+
+## Backlinks ("Referenced by")
+
+Before rendering, the build reads every page's Markdown and resolves its
+internal links (the same rules as `convert_internal_links`) into a reverse index
+— for each page, the set of pages that link to it. A "Referenced by" list is
+appended at the foot of each page. Hidden pages are excluded as *sources* so a
+draft never advertises itself. See `extract_internal_targets`/
+`resolve_link_target`/`build_backlinks_section` in `src/main.rs`. Links inside
+included fragments are attributed to the fragment author's intent, not the host
+page (extraction runs on the page's own Markdown), which is a deliberate
+simplification.
 
 ## Home page
 
@@ -225,6 +308,30 @@ Figures are **static SVGs** in `assets/figures/`, each generated by a self-conta
 - Palette: `PALETTE = ["#2f6f9f", "#c1531f", "#3f8f5b", "#8a5cb0", "#b0842f"]`; ink `#26323f`. Transparent background, no top/right spines.
 - **matplotlib only** (no plotly, mermaid, or tikz). Use `np.trapezoid` (not the removed `np.trapz`) on current NumPy.
 - Build all figures with `just figures` (runs each script via `uv`). Committed SVGs mean the site build never needs Python.
+
+### Numbering, captions, and cross-references
+
+Any **block image** (a paragraph that is just `![alt](src)`, the standard page
+convention) is automatically wrapped in a numbered `<figure>` at build time, and
+the **alt text becomes the visible caption**:
+
+> Figure 1. *(your alt text)*
+
+Numbering is per page. To **cross-reference** a figure from prose, give the image
+a title that starts with `fig:` and then refer to it with `[@fig:…]` anywhere on
+the page (either order):
+
+```markdown
+![Epidemic curve over time](../assets/figures/curve.svg "fig:curve")
+
+As shown in [@fig:curve], incidence peaks early.
+```
+
+`[@fig:curve]` renders as a link reading "Figure N" pointing at the figure; the
+`fig:` sentinel is stripped from the `<img>`. An **empty alt with no label** is
+left as a plain, un-numbered image (use it for purely decorative art), and an
+**unresolved `[@fig:…]`** renders a loud marker rather than silently vanishing.
+See `process_figures` in `src/main.rs`.
 
 ## Executable Python: output injection
 

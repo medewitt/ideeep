@@ -63,6 +63,13 @@ check-links:
     cargo run --release
     python3 scripts/check_links.py --check dist
 
+# Check the glossary against the built site (CI): every term is actually
+# auto-linked somewhere, every `see:` target resolves, no slug collisions.
+# Builds first, then scans dist/.
+glossary-check:
+    cargo run --release
+    python3 scripts/check_glossary.py --check dist
+
 # Kill any process using the specified port
 kill-port port="8000":
     @lsof -ti:{{port}} | xargs kill -9 2>/dev/null || true

@@ -74,4 +74,48 @@
 			if (toggle) toggle.focus();
 		}
 	});
+
+	/* Copy buttons on code blocks (structure is emitted at build time). */
+	function copyText(text) {
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			return navigator.clipboard.writeText(text);
+		}
+		/* Fallback for older/insecure contexts: a throwaway textarea. */
+		return new Promise(function (resolve, reject) {
+			try {
+				var ta = document.createElement('textarea');
+				ta.value = text;
+				ta.setAttribute('readonly', '');
+				ta.style.position = 'absolute';
+				ta.style.left = '-9999px';
+				document.body.appendChild(ta);
+				ta.select();
+				document.execCommand('copy');
+				document.body.removeChild(ta);
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+	}
+
+	document.addEventListener('click', function (e) {
+		var btn = e.target.closest && e.target.closest('.code-copy');
+		if (!btn) return;
+		var block = btn.closest('.code-block');
+		var code = block && block.querySelector('pre code');
+		if (!code) return;
+		var label = btn.querySelector('.code-copy-text');
+		copyText(code.innerText).then(function () {
+			btn.classList.add('copied');
+			if (label) label.textContent = 'Copied';
+			clearTimeout(btn._resetTimer);
+			btn._resetTimer = setTimeout(function () {
+				btn.classList.remove('copied');
+				if (label) label.textContent = 'Copy';
+			}, 1600);
+		}).catch(function () {
+			if (label) label.textContent = 'Press Ctrl+C';
+		});
+	});
 })();

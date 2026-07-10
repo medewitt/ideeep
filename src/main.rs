@@ -46,6 +46,10 @@ struct FrontMatter {
     /// at its URL and is reachable by direct link; it is simply not advertised.
     /// Off by default. (Navbar placement is separate — driven by `config.yaml`.)
     hidden: Option<bool>,
+    /// When `false`, the build does not auto-link glossary terms on this page.
+    /// Defaults to on. Set `glossary: false` on reference pages where the
+    /// automatic first-occurrence links would be noise.
+    glossary: Option<bool>,
 }
 
 /// Escape a string for safe use inside a double-quoted HTML attribute.
@@ -194,9 +198,93 @@ fn math_placeholder(index: usize) -> String {
     format!("{}{}{}", MATH_PLACEHOLDER_OPEN, index, MATH_PLACEHOLDER_CLOSE)
 }
 
-fn preprocess_math(md: &str) -> (String, Vec<String>) {
+/// Pull a `\label{…}` out of a display-math body, returning the body with the
+/// label removed and the label text (if any). A labelled display equation opts
+/// in to a printed number and a cross-reference target; unlabelled display math
+/// renders exactly as before.
+fn extract_eq_label(tex: &str) -> (String, Option<String>) {
+    let re = Regex::new(r"\\label\{([^}]*)\}").unwrap();
+    if let Some(caps) = re.captures(tex) {
+        let label = caps[1].trim().to_string();
+        let cleaned = re.replace(tex, "").to_string();
+        (cleaned, if label.is_empty() { None } else { Some(label) })
+    } else {
+        (tex.to_string(), None)
+    }
+}
+
+/// Render a display-math block to HTML, numbering it if it carries a
+/// `\label{…}`. A labelled equation is assigned the next per-page number,
+/// rendered with a KaTeX `\tag{(N)}` so the "(N)" prints at the right margin
+/// (LaTeX-style), and wrapped in a `<span id="eq-…">` so `[@eq:…]` references
+/// can link to it. The label→number map is recorded for the reference pass.
+fn render_display_math(
+    tex: &str,
+    eq_counter: &mut usize,
+    eq_labels: &mut std::collections::HashMap<String, usize>,
+) -> String {
+    let (clean, label) = extract_eq_label(tex);
+    let clean = clean.trim();
+    match label {
+        Some(l) => {
+            *eq_counter += 1;
+            let n = *eq_counter;
+            eq_labels.insert(l.clone(), n);
+            // KaTeX's `\tag{X}` already wraps X in parentheses, so pass the bare
+            // number to get the conventional "(N)" at the right margin.
+            let tagged = format!("{} \\tag{{{}}}", clean, n);
+            let html = katex::render_with_opts(&tagged, katex_opts(true))
+                .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, clean));
+            // The label already carries its `eq:` prefix, so the id is just the
+            // label with `:` swapped for `-` (e.g. `eq:sir` -> `eq-sir`).
+            format!(
+                "<span id=\"{}\" class=\"eq-block\">{}</span>",
+                l.replace(':', "-"),
+                html
+            )
+        }
+        None => katex::render_with_opts(clean, katex_opts(true))
+            .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, clean)),
+    }
+}
+
+/// Resolve `[@eq:label]` cross-references to a numbered link `(N)` pointing at
+/// the labelled equation. An unresolved reference renders a loud marker rather
+/// than silently vanishing (mirrors the figure reference behaviour).
+fn resolve_equation_refs(
+    html: &str,
+    eq_labels: &std::collections::HashMap<String, usize>,
+) -> String {
+    if !html.contains("[@eq:") {
+        return html.to_string();
+    }
+    let re = Regex::new(r"\[@(eq:[A-Za-z0-9_:-]+)\]").unwrap();
+    re.replace_all(html, |caps: &regex::Captures| {
+        let key = &caps[1];
+        match eq_labels.get(key) {
+            Some(n) => format!(
+                "<a class=\"eq-ref\" href=\"#{id}\">({n})</a>",
+                id = key.replace(':', "-"),
+                n = n
+            ),
+            None => format!(
+                "<span class=\"eq-ref-error\">[unresolved equation reference: {}]</span>",
+                key
+            ),
+        }
+    })
+    .into_owned()
+}
+
+/// Returns the placeholder-substituted Markdown, the ordered rendered-math
+/// fragments, and the map of equation labels to their assigned numbers.
+fn preprocess_math(
+    md: &str,
+) -> (String, Vec<String>, std::collections::HashMap<String, usize>) {
     let mut result = String::with_capacity(md.len() * 2);
     let mut fragments: Vec<String> = Vec::new();
+    let mut eq_counter: usize = 0;
+    let mut eq_labels: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
     let mut chars = md.chars().peekable();
 
     // Render a math fragment to HTML, store it, and emit its placeholder.
@@ -221,8 +309,7 @@ fn preprocess_math(md: &str) -> (String, Vec<String>) {
                     tex.push(c);
                 }
                 if found_end {
-                    let html = katex::render_with_opts(tex.trim(), katex_opts(true))
-                        .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, tex));
+                    let html = render_display_math(&tex, &mut eq_counter, &mut eq_labels);
                     stash(&mut result, &mut fragments, html);
                 } else {
                     // Not a valid display math, put it back
@@ -295,8 +382,7 @@ fn preprocess_math(md: &str) -> (String, Vec<String>) {
                         tex.push(c);
                     }
                     if found_end {
-                        let html = katex::render_with_opts(tex.trim(), katex_opts(true))
-                            .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, tex));
+                        let html = render_display_math(&tex, &mut eq_counter, &mut eq_labels);
                         stash(&mut result, &mut fragments, html);
                     } else {
                         result.push('\\');
@@ -314,7 +400,7 @@ fn preprocess_math(md: &str) -> (String, Vec<String>) {
         }
     }
 
-    (result, fragments)
+    (result, fragments, eq_labels)
 }
 
 /// Replace the placeholders left by `preprocess_math` with their rendered
@@ -509,7 +595,17 @@ fn add_heading_ids(html: &str) -> (String, Vec<(u8, String, String)>) {
         let slug = if *n == 0 { base.clone() } else { format!("{}-{}", base, n) };
         *n += 1;
         out.push_str(&html[last..m.start()]);
-        out.push_str(&format!("<h{l} id=\"{s}\">{inner}</h{l}>", l = lvl, s = slug, inner = inner));
+        // Emit the heading with a trailing permalink anchor. The `#` is visually
+        // revealed on hover/focus (see `.heading-anchor` in styles.css) and lets a
+        // reader copy a direct link to any section. The anchor is appended *after*
+        // `inner`, and the TOC/heading list below still uses the anchor-free
+        // `inner`, so neither the "On this page" nav nor the search text sees it.
+        out.push_str(&format!(
+            "<h{l} id=\"{s}\">{inner}<a class=\"heading-anchor\" href=\"#{s}\" aria-label=\"Permalink to this section\">#</a></h{l}>",
+            l = lvl,
+            s = slug,
+            inner = inner
+        ));
         last = m.end();
         headings.push((lvl, slug, strip_tags(inner)));
     }
@@ -583,6 +679,627 @@ fn columnize_link_lists(html: &str) -> String {
     }
     out.push_str(rest);
     out
+}
+
+/// Wrap block images in numbered `<figure>`/`<figcaption>` elements and resolve
+/// `[@fig:label]` cross-references to their number.
+///
+/// A paragraph that contains nothing but a single image (the `![alt](src)`
+/// convention this site uses, which the Markdown parser renders as
+/// `<p><img …></p>`) becomes:
+///
+/// ```html
+/// <figure id="fig-…" class="figure">
+///   <img …>
+///   <figcaption><span class="figure-label">Figure N.</span> alt text</figcaption>
+/// </figure>
+/// ```
+///
+/// Figures are numbered sequentially per page, and the alt text doubles as the
+/// visible caption (matching the authoring guide). A figure can be *labelled*
+/// for cross-referencing by giving the Markdown image a title that starts with
+/// `fig:` — `![Epidemic curve](curve.svg "fig:curve")` — which becomes the
+/// element id (`fig-curve`) and is stripped from the rendered `<img>`. Anywhere
+/// in the prose, `[@fig:curve]` then renders as a link reading "Figure N"
+/// pointing at that figure; the reference and the figure may appear in either
+/// order. An image with empty alt text and no `fig:` label is left as a plain
+/// inline image (an escape hatch for decorative art). An unresolved reference
+/// renders a loud marker rather than silently vanishing.
+fn process_figures(html: &str) -> String {
+    let para_img = Regex::new(r"(?s)<p>\s*(<img\b[^>]*?>)\s*</p>").unwrap();
+    let alt_re = Regex::new(r#"alt="([^"]*)""#).unwrap();
+    let title_re = Regex::new(r#"\s*title="([^"]*)""#).unwrap();
+
+    // Map a `fig:label` to the number assigned to that figure, filled during the
+    // wrapping pass and consumed by the reference-resolution pass.
+    let mut labels: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
+    let mut counter = 0usize;
+
+    let wrapped = para_img.replace_all(html, |caps: &regex::Captures| {
+        let img_tag = &caps[1];
+        let alt = alt_re
+            .captures(img_tag)
+            .map(|c| c[1].to_string())
+            .unwrap_or_default();
+        let title = title_re.captures(img_tag).map(|c| c[1].to_string());
+        let label = title.as_deref().filter(|t| t.starts_with("fig:"));
+
+        // Decorative image (no caption, no label): leave the paragraph as-is.
+        if alt.trim().is_empty() && label.is_none() {
+            return caps[0].to_string();
+        }
+
+        counter += 1;
+        let id = match label {
+            Some(l) => {
+                let slug = l.replace(':', "-");
+                labels.insert(l.to_string(), counter);
+                slug
+            }
+            None => format!("figure-{}", counter),
+        };
+
+        // Strip a `fig:` sentinel title from the emitted <img> so it does not
+        // surface as a browser tooltip; a non-sentinel title is left intact.
+        let clean_img = if label.is_some() {
+            title_re.replace(img_tag, "").into_owned()
+        } else {
+            img_tag.to_string()
+        };
+
+        let caption = if alt.trim().is_empty() {
+            format!("<span class=\"figure-label\">Figure {}.</span>", counter)
+        } else {
+            format!(
+                "<span class=\"figure-label\">Figure {}.</span> {}",
+                counter, alt
+            )
+        };
+
+        format!(
+            "<figure id=\"{id}\" class=\"figure\">\n{img}\n<figcaption>{cap}</figcaption>\n</figure>",
+            id = id,
+            img = clean_img,
+            cap = caption,
+        )
+    });
+
+    // Second pass: resolve `[@fig:label]` references now that every figure has a
+    // number. Undefined references become a visible error marker.
+    let ref_re = Regex::new(r"\[@(fig:[A-Za-z0-9_:-]+)\]").unwrap();
+    ref_re
+        .replace_all(&wrapped, |caps: &regex::Captures| {
+            let key = &caps[1];
+            match labels.get(key) {
+                Some(n) => format!(
+                    "<a class=\"fig-ref\" href=\"#{id}\">Figure {n}</a>",
+                    id = key.replace(':', "-"),
+                    n = n
+                ),
+                None => format!(
+                    "<span class=\"fig-ref-error\">[unresolved figure reference: {}]</span>",
+                    key
+                ),
+            }
+        })
+        .into_owned()
+}
+
+/// A human-readable language label for a highlight.js `language-…` class, used
+/// on the code-block header. Unknown languages are Title-cased; plain-text code
+/// gets no label.
+fn code_lang_label(lang: &str) -> String {
+    match lang.to_ascii_lowercase().as_str() {
+        "r" => "R".into(),
+        "py" | "python" => "Python".into(),
+        "jl" | "julia" => "Julia".into(),
+        "sh" | "bash" | "shell" | "zsh" | "console" => "Shell".into(),
+        "sql" => "SQL".into(),
+        "js" | "javascript" => "JavaScript".into(),
+        "ts" | "typescript" => "TypeScript".into(),
+        "yaml" | "yml" => "YAML".into(),
+        "json" => "JSON".into(),
+        "html" | "xml" => "HTML".into(),
+        "css" => "CSS".into(),
+        "toml" => "TOML".into(),
+        "rust" | "rs" => "Rust".into(),
+        "c" => "C".into(),
+        "cpp" | "c++" => "C++".into(),
+        "stan" => "Stan".into(),
+        "text" | "plaintext" | "txt" | "" => String::new(),
+        other => {
+            let mut chars = other.chars();
+            match chars.next() {
+                Some(f) => f.to_ascii_uppercase().to_string() + chars.as_str(),
+                None => String::new(),
+            }
+        }
+    }
+}
+
+/// Wrap each fenced code block in a `.code-block` container with a small header
+/// carrying the language label and a **Copy** button. The button is wired up by
+/// `assets/nav.js` (clipboard write + transient "Copied" feedback); the markup
+/// is emitted at build time so the structure and language badge are present
+/// without JavaScript, and only the copy *action* needs it.
+///
+/// Code bodies are HTML-escaped by the Markdown renderer, so a literal
+/// `</code></pre>` can never appear inside one — the non-greedy match is safe.
+/// `<pre class="math-error">` blocks (from KaTeX failures) are not `<pre><code>`
+/// and are left untouched.
+fn enhance_code_blocks(html: &str) -> String {
+    let re = Regex::new(
+        r#"(?s)<pre><code(?: class="language-([A-Za-z0-9_+#-]+)")?>(.*?)</code></pre>"#,
+    )
+    .unwrap();
+    re.replace_all(html, |caps: &regex::Captures| {
+        let lang = caps.get(1).map(|m| m.as_str()).unwrap_or("");
+        let body = &caps[2];
+        let code_open = if lang.is_empty() {
+            "<code>".to_string()
+        } else {
+            format!("<code class=\"language-{}\">", lang)
+        };
+        let label = code_lang_label(lang);
+        let lang_span = if label.is_empty() {
+            String::new()
+        } else {
+            format!("<span class=\"code-lang\">{}</span>", label)
+        };
+        format!(
+            "<div class=\"code-block\">\n<div class=\"code-block-bar\">{lang_span}\
+<button class=\"code-copy\" type=\"button\" aria-label=\"Copy code to clipboard\">\
+<svg class=\"code-copy-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"/><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"/></svg>\
+<span class=\"code-copy-text\">Copy</span></button></div>\n\
+<pre>{code_open}{body}</code></pre>\n</div>",
+            lang_span = lang_span,
+            code_open = code_open,
+            body = body,
+        )
+    })
+    .into_owned()
+}
+
+// ---------------------------------------------------------------------------
+// Glossary
+//
+// A central listing (`content/_glossary.yaml`) of terms and one-line
+// definitions drives two features:
+//   1. Auto-linking — the build decorates the *first* occurrence of each term
+//      on every page with a link to the glossary and a hover/focus definition
+//      tooltip. Authors write naturally; the only maintenance is the listing.
+//   2. A generated `/glossary.html` whose entries carry a reverse index — the
+//      list of pages that discuss each term — collected during that same scan.
+// ---------------------------------------------------------------------------
+const GLOSSARY_FILE: &str = "content/_glossary.yaml";
+
+/// One YAML entry as authored in `content/_glossary.yaml`.
+#[derive(Debug, serde::Deserialize)]
+struct GlossaryEntry {
+    term: String,
+    #[serde(default)]
+    aliases: Vec<String>,
+    short: String,
+    #[serde(default)]
+    long: Option<String>,
+    #[serde(default)]
+    see: Option<String>,
+}
+
+/// A prepared glossary term: the canonical display form, its anchor slug, the
+/// short/long definitions, an optional canonical page, and the lower-cased
+/// surface forms (term + aliases) that auto-link to it.
+struct GlossaryTerm {
+    term: String,
+    slug: String,
+    short: String,
+    long: Option<String>,
+    see: Option<String>,
+    forms: Vec<String>,
+}
+
+/// A compiled matcher over every surface form, longest-first so multi-word
+/// terms win over their prefixes.
+struct GlossaryMatcher {
+    re: Option<Regex>,
+    form_to_term: std::collections::HashMap<String, usize>,
+}
+
+/// Parse glossary YAML text into prepared terms (empty on parse failure, with a
+/// warning). Split from `load_glossary` so tests can build fixtures inline.
+fn parse_glossary(text: &str) -> Vec<GlossaryTerm> {
+    let entries: Vec<GlossaryEntry> = match serde_yaml::from_str(text) {
+        Ok(e) => e,
+        Err(e) => {
+            eprintln!("Warning: failed to parse {}: {}", GLOSSARY_FILE, e);
+            return Vec::new();
+        }
+    };
+    entries
+        .into_iter()
+        .filter_map(|e| {
+            let term = e.term.trim().to_string();
+            if term.is_empty() {
+                return None;
+            }
+            let mut forms = vec![term.to_lowercase()];
+            for a in &e.aliases {
+                let a = a.trim().to_lowercase();
+                if !a.is_empty() && !forms.contains(&a) {
+                    forms.push(a);
+                }
+            }
+            Some(GlossaryTerm {
+                slug: slugify(&term),
+                term,
+                short: e.short.trim().to_string(),
+                long: e.long.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()),
+                see: e.see.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()),
+                forms,
+            })
+        })
+        .collect()
+}
+
+/// Load `content/_glossary.yaml` (absent file => no glossary).
+fn load_glossary() -> Vec<GlossaryTerm> {
+    match fs::read_to_string(GLOSSARY_FILE) {
+        Ok(text) => parse_glossary(&text),
+        Err(_) => Vec::new(),
+    }
+}
+
+fn build_glossary_matcher(terms: &[GlossaryTerm]) -> GlossaryMatcher {
+    let mut form_to_term: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
+    let mut forms: Vec<String> = Vec::new();
+    for (i, t) in terms.iter().enumerate() {
+        for f in &t.forms {
+            // First definition of a surface form wins; ignore later collisions.
+            if form_to_term.insert(f.clone(), i).is_none() {
+                forms.push(f.clone());
+            }
+        }
+    }
+    if forms.is_empty() {
+        return GlossaryMatcher { re: None, form_to_term };
+    }
+    forms.sort_by(|a, b| b.len().cmp(&a.len()));
+    let alt: Vec<String> = forms.iter().map(|f| regex::escape(f)).collect();
+    let pat = format!(r"(?i)\b(?:{})\b", alt.join("|"));
+    GlossaryMatcher {
+        re: Regex::new(&pat).ok(),
+        form_to_term,
+    }
+}
+
+/// Tag names whose contents are never glossary-decorated (code, links, headings,
+/// captions, scripts). KaTeX `<span class="…katex…">` is handled separately.
+fn is_glossary_protected_tag(name: &str) -> bool {
+    matches!(
+        name,
+        "pre" | "code" | "a" | "script" | "style" | "figcaption"
+            | "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+    )
+}
+
+/// From just after an opening `<name …>` tag, return the byte index just past
+/// its matching `</name>`, honouring nested same-name tags. Tag names in our
+/// generated HTML are lowercase, so matching is case-sensitive.
+fn skip_element(html: &str, content_start: usize, name: &str) -> usize {
+    let open = format!("<{}", name);
+    let close = format!("</{}", name);
+    let is_boundary = |rest: &str, kw: &str| {
+        rest.as_bytes()
+            .get(kw.len())
+            .map(|&b| !(b as char).is_ascii_alphanumeric())
+            .unwrap_or(true)
+    };
+    let n = html.len();
+    let mut i = content_start;
+    let mut depth = 1i32;
+    while i < n && depth > 0 {
+        match html[i..].find('<') {
+            Some(off) => {
+                let p = i + off;
+                let rest = &html[p..];
+                let tag_end = rest.find('>').map(|e| p + e + 1).unwrap_or(n);
+                if rest.starts_with(&close) && is_boundary(rest, &close) {
+                    depth -= 1;
+                } else if rest.starts_with(&open)
+                    && is_boundary(rest, &open)
+                    && !html[p..tag_end].ends_with("/>")
+                {
+                    depth += 1;
+                }
+                i = tag_end;
+            }
+            None => break,
+        }
+    }
+    i
+}
+
+/// Decorate the first occurrence of each glossary term inside one plain-text run
+/// (already outside any protected element). Records every match in `mentions`
+/// (so the reverse index counts a page even for its later, undecorated
+/// occurrences), but only wraps the first per term via `used`.
+#[allow(clippy::too_many_arguments)]
+fn decorate_run(
+    run: &str,
+    matcher: &GlossaryMatcher,
+    terms: &[GlossaryTerm],
+    asset_prefix: &str,
+    current_page: &str,
+    used: &mut std::collections::HashSet<usize>,
+    mentions: &mut std::collections::HashMap<usize, std::collections::BTreeSet<String>>,
+) -> String {
+    let re = match &matcher.re {
+        Some(r) => r,
+        None => return run.to_string(),
+    };
+    let mut out = String::with_capacity(run.len());
+    let mut last = 0;
+    for m in re.find_iter(run) {
+        let key = run[m.start()..m.end()].to_lowercase();
+        let ti = match matcher.form_to_term.get(&key) {
+            Some(&ti) => ti,
+            None => continue,
+        };
+        mentions.entry(ti).or_default().insert(current_page.to_string());
+        if used.insert(ti) {
+            let t = &terms[ti];
+            out.push_str(&run[last..m.start()]);
+            out.push_str(&format!(
+                "<a class=\"gloss-term\" href=\"{}glossary.html#{}\" data-def=\"{}\">{}</a>",
+                asset_prefix,
+                t.slug,
+                escape_attr(&t.short),
+                &run[m.start()..m.end()]
+            ));
+            last = m.end();
+        }
+    }
+    out.push_str(&run[last..]);
+    out
+}
+
+/// Auto-link glossary terms in a page's body HTML, skipping code, math, links,
+/// headings, and captions. Returns the decorated HTML and updates `mentions`
+/// (term index -> set of pages that mention it) for the reverse index.
+fn decorate_glossary(
+    html: &str,
+    terms: &[GlossaryTerm],
+    matcher: &GlossaryMatcher,
+    asset_prefix: &str,
+    current_page: &str,
+    mentions: &mut std::collections::HashMap<usize, std::collections::BTreeSet<String>>,
+) -> String {
+    if matcher.re.is_none() || terms.is_empty() {
+        return html.to_string();
+    }
+    let n = html.len();
+    let mut out = String::with_capacity(n + 256);
+    let mut used: std::collections::HashSet<usize> = std::collections::HashSet::new();
+    let mut i = 0;
+    while i < n {
+        if html.as_bytes()[i] == b'<' {
+            let tag_end = html[i..].find('>').map(|p| i + p + 1).unwrap_or(n);
+            let tag = &html[i..tag_end];
+            let is_close = tag.starts_with("</");
+            let name_start = if is_close { 2 } else { 1 };
+            let name: String = tag[name_start..]
+                .chars()
+                .take_while(|c| c.is_ascii_alphanumeric())
+                .flat_map(|c| c.to_lowercase())
+                .collect();
+            let is_selfclose = tag.ends_with("/>");
+            let is_katex = name == "span" && tag.contains("katex");
+            if !is_close && !is_selfclose && (is_glossary_protected_tag(&name) || is_katex) {
+                let end = skip_element(html, tag_end, &name);
+                out.push_str(&html[i..end]);
+                i = end;
+            } else {
+                out.push_str(tag);
+                i = tag_end;
+            }
+        } else {
+            let run_end = html[i..].find('<').map(|p| i + p).unwrap_or(n);
+            out.push_str(&decorate_run(
+                &html[i..run_end],
+                matcher,
+                terms,
+                asset_prefix,
+                current_page,
+                &mut used,
+                mentions,
+            ));
+            i = run_end;
+        }
+    }
+    out
+}
+
+/// Build the generated glossary page body: every term alphabetically with its
+/// definition, optional canonical link, and the reverse index of pages that
+/// discuss it. `mentions` maps a term index to the pages where it appeared.
+fn glossary_page_content(
+    terms: &[GlossaryTerm],
+    mentions: &std::collections::HashMap<usize, std::collections::BTreeSet<String>>,
+    markdown_titles: &std::collections::HashMap<String, String>,
+    markdown_files: &std::collections::HashSet<String>,
+) -> String {
+    let mut order: Vec<usize> = (0..terms.len()).collect();
+    order.sort_by(|&a, &b| terms[a].term.to_lowercase().cmp(&terms[b].term.to_lowercase()));
+
+    let mut html = String::from(
+        "<h1>Glossary</h1>\n<p class=\"lead\">Key terms used across the site. The first mention of any of these on a page links back here, and each entry lists the pages that discuss it.</p>\n",
+    );
+
+    for &ti in &order {
+        let t = &terms[ti];
+        html.push_str(&format!(
+            "<div class=\"gloss-entry\">\n<h2 id=\"{slug}\">{term}</h2>\n",
+            slug = t.slug,
+            term = escape_attr(&t.term)
+        ));
+        // Prefer the longer markdown definition when present; else the short one.
+        let body = t.long.as_deref().unwrap_or(&t.short);
+        html.push_str(&markdown_to_html(body, markdown_files));
+        if let Some(see) = &t.see {
+            let key = see.trim_end_matches(".md");
+            if markdown_files.contains(key) {
+                let title = markdown_titles.get(key).cloned().unwrap_or_else(|| "Read more".to_string());
+                html.push_str(&format!(
+                    "<p class=\"gloss-see\">See: <a href=\"{}.html\">{}</a></p>\n",
+                    key, title
+                ));
+            } else {
+                eprintln!(
+                    "Warning: glossary term '{}' has see: '{}' which is not a page; skipping the link.",
+                    t.term, see
+                );
+            }
+        }
+        // Reverse index: pages that mention this term.
+        if let Some(pages) = mentions.get(&ti) {
+            let links: Vec<String> = pages
+                .iter()
+                .map(|p| {
+                    let title = markdown_titles.get(p).cloned().unwrap_or_else(|| p.clone());
+                    format!("<a href=\"{}.html\">{}</a>", p, title)
+                })
+                .collect();
+            if !links.is_empty() {
+                html.push_str(&format!(
+                    "<p class=\"gloss-discussed\">Discussed on: {}</p>\n",
+                    links.join(", ")
+                ));
+            }
+        }
+        html.push_str("</div>\n");
+    }
+    html
+}
+
+// ---------------------------------------------------------------------------
+// Backlinks ("Referenced by")
+//
+// The build already rewrites internal `.md` links to `.html`. Collecting those
+// links across every page yields a reverse index — for each page, which other
+// pages link to it — rendered as a "Referenced by" list at the page foot, so the
+// content reads like an interlinked wiki rather than a set of dead ends.
+// ---------------------------------------------------------------------------
+
+/// Join a page's directory with a relative target, resolving `.`/`..` to a
+/// canonical, slash-separated page key (no extension).
+fn normalize_page_key(source_dir: &str, rel: &str) -> String {
+    let mut stack: Vec<&str> = if source_dir.is_empty() {
+        Vec::new()
+    } else {
+        source_dir.split('/').collect()
+    };
+    for part in rel.split('/') {
+        match part {
+            "" | "." => {}
+            ".." => {
+                stack.pop();
+            }
+            p => stack.push(p),
+        }
+    }
+    stack.join("/")
+}
+
+/// Resolve one Markdown link target to the canonical key of an internal page,
+/// or `None` for external links, assets, anchors, or unknown targets. Mirrors
+/// the internal-link rules of `convert_internal_links`: `.md` links resolve
+/// relative to the source page; a bare name (no dot) matches a page by filename.
+fn resolve_link_target(
+    source: &str,
+    raw: &str,
+    files: &std::collections::HashSet<String>,
+) -> Option<String> {
+    let base = raw.split(['#', '?']).next().unwrap_or("");
+    if base.is_empty()
+        || base.starts_with("http://")
+        || base.starts_with("https://")
+        || base.starts_with("mailto:")
+        || base.starts_with("tel:")
+        || base.starts_with("//")
+        || base.starts_with('/')
+        || base.contains("://")
+    {
+        return None;
+    }
+    let source_dir = match source.rsplit_once('/') {
+        Some((dir, _)) => dir,
+        None => "",
+    };
+    let key = if let Some(stripped) = base.strip_suffix(".md") {
+        normalize_page_key(source_dir, stripped)
+    } else if !base.contains('.') {
+        // Bare page name (as in `convert_internal_links`): exact key or filename.
+        files
+            .iter()
+            .find(|p| p.as_str() == base || p.ends_with(&format!("/{}", base)))
+            .cloned()?
+    } else {
+        // A dotted target that is not `.md` is an asset (svg/png/…): not a page.
+        return None;
+    };
+    if key == source || !files.contains(&key) {
+        None
+    } else {
+        Some(key)
+    }
+}
+
+/// Collect the set of internal page keys that a page's Markdown links to.
+fn extract_internal_targets(
+    md: &str,
+    source: &str,
+    files: &std::collections::HashSet<String>,
+) -> std::collections::BTreeSet<String> {
+    // Inline-link targets: `](target)` or `](target "title")`. Image links to
+    // assets resolve to `None` and drop out, so they need no special handling.
+    let re = Regex::new(r"\]\(([^)]+)\)").unwrap();
+    let mut out = std::collections::BTreeSet::new();
+    for cap in re.captures_iter(md) {
+        let target = cap[1].split_whitespace().next().unwrap_or("");
+        if let Some(key) = resolve_link_target(source, target, files) {
+            out.insert(key);
+        }
+    }
+    out
+}
+
+/// Render the "Referenced by" navigation appended to a page's body: the pages
+/// that link to it, ordered by title. Empty input yields an empty string.
+fn build_backlinks_section(
+    sources: &std::collections::BTreeSet<String>,
+    titles: &std::collections::HashMap<String, String>,
+    asset_prefix: &str,
+) -> String {
+    if sources.is_empty() {
+        return String::new();
+    }
+    let mut items: Vec<(String, String)> = sources
+        .iter()
+        .map(|k| (titles.get(k).cloned().unwrap_or_else(|| k.clone()), k.clone()))
+        .collect();
+    items.sort_by(|a, b| a.0.to_lowercase().cmp(&b.0.to_lowercase()));
+
+    let mut s = String::from(
+        "<nav class=\"backlinks\" aria-label=\"Referenced by\">\n<p class=\"backlinks-title\">Referenced by</p>\n<ul>\n",
+    );
+    for (title, key) in items {
+        s.push_str(&format!(
+            "<li><a href=\"{}{}.html\">{}</a></li>\n",
+            asset_prefix, key, title
+        ));
+    }
+    s.push_str("</ul>\n</nav>\n");
+    s
 }
 
 /// Directory (relative to the project root) that holds reusable Markdown
@@ -714,6 +1431,122 @@ fn expand_includes_from(markdown: &str, dir: &Path) -> String {
     }
     let mut stack: Vec<String> = Vec::new();
     expand(markdown, dir, &mut stack)
+}
+
+/// Default summary label for a spoiler block whose opener gives no text of its
+/// own (`:::spoiler` with nothing after it).
+const SPOILER_DEFAULT_SUMMARY: &str = "Show more";
+
+/// Escape a string for use as HTML *text* (element content, not an attribute).
+fn escape_text(s: &str) -> String {
+    s.replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+}
+
+/// If `line` opens a spoiler block, return its summary label (trimmed, possibly
+/// empty). The opener is `:::spoiler` or `:::details` at the start of the line
+/// (after optional indentation); everything after the keyword on that line is
+/// the free-text summary. Returns `None` for any other line.
+///
+/// The summary is deliberately author-configurable — `:::spoiler Show the
+/// solution`, `:::details Reveal the derivation`, `:::spoiler Spoiler` all work,
+/// and a bare `:::spoiler` falls back to `SPOILER_DEFAULT_SUMMARY`.
+fn spoiler_opener_label(line: &str) -> Option<String> {
+    let t = line.trim_start();
+    for kw in ["spoiler", "details"] {
+        if let Some(rest) = t.strip_prefix(":::") {
+            if let Some(after) = rest.strip_prefix(kw) {
+                // The keyword must end the token (end of line or whitespace),
+                // so `:::spoilerfoo` is not mistaken for an opener.
+                if after.is_empty() || after.starts_with(char::is_whitespace) {
+                    return Some(after.trim().to_string());
+                }
+            }
+        }
+    }
+    None
+}
+
+/// Whether a line closes a fenced block: exactly `:::` (with optional
+/// surrounding whitespace) and nothing else.
+fn is_fence_close(line: &str) -> bool {
+    line.trim() == ":::"
+}
+
+/// Expand `:::spoiler … ::: ` (and the `:::details` alias) fenced blocks into
+/// native `<details>`/`<summary>` disclosure widgets, so a page can hide a
+/// worked solution, a long derivation, or an aside behind a click with no
+/// JavaScript.
+///
+/// ```text
+/// :::spoiler Show the solution
+/// The body is **ordinary Markdown** — lists, math, code, even nested spoilers.
+/// :::
+/// ```
+///
+/// The text after the keyword is the clickable summary (configurable per block;
+/// a bare `:::spoiler` uses "Show more"). The body is emitted between blank
+/// lines inside the `<details>` element so the Markdown parser still renders it
+/// normally (a `<details>` HTML block is closed by the blank line, the body is
+/// parsed, then `</details>` reopens an HTML block). Blocks may nest. An opener
+/// with no matching `:::` close is left untouched so stray text is never eaten.
+/// Runs on the raw Markdown before parsing, like `expand_includes`.
+fn expand_spoilers(markdown: &str) -> String {
+    // Fast path: nothing to do unless a spoiler/details opener is present.
+    if !markdown.contains(":::spoiler") && !markdown.contains(":::details") {
+        return markdown.to_string();
+    }
+
+    let lines: Vec<&str> = markdown.lines().collect();
+    let mut out = String::with_capacity(markdown.len() + 64);
+    let mut i = 0;
+    while i < lines.len() {
+        if let Some(label) = spoiler_opener_label(lines[i]) {
+            // Scan forward for the matching close, tracking nested spoiler
+            // openers so an inner `:::` doesn't close the outer block early.
+            let mut depth = 1i32;
+            let mut j = i + 1;
+            let mut body: Vec<&str> = Vec::new();
+            while j < lines.len() {
+                if spoiler_opener_label(lines[j]).is_some() {
+                    depth += 1;
+                    body.push(lines[j]);
+                } else if is_fence_close(lines[j]) {
+                    depth -= 1;
+                    if depth == 0 {
+                        break;
+                    }
+                    body.push(lines[j]);
+                } else {
+                    body.push(lines[j]);
+                }
+                j += 1;
+            }
+
+            if depth == 0 {
+                // Recurse so nested spoilers inside the body are expanded too.
+                let inner = expand_spoilers(&body.join("\n"));
+                let summary = if label.is_empty() {
+                    SPOILER_DEFAULT_SUMMARY.to_string()
+                } else {
+                    escape_text(&label)
+                };
+                out.push_str(&format!(
+                    "<details class=\"spoiler\">\n<summary>{}</summary>\n\n{}\n\n</details>\n",
+                    summary,
+                    inner.trim_matches('\n')
+                ));
+                i = j + 1;
+                continue;
+            }
+            // Unterminated opener: emit the line verbatim and move on.
+        }
+        out.push_str(lines[i]);
+        out.push('\n');
+        i += 1;
+    }
+    out
 }
 
 /// Whether a line is a GFM table delimiter row (`|---|:--:|`): every
@@ -887,11 +1720,15 @@ fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<S
     // Splice in any `:::{fragment.md}:::` template fragments first, so the rest
     // of the pipeline sees one flat Markdown document.
     let markdown = expand_includes(markdown);
+    // Expand `:::spoiler … :::` disclosure blocks into `<details>` wrappers whose
+    // bodies the Markdown parser still renders normally. Done before math/parse.
+    let markdown = expand_spoilers(&markdown);
     let markdown = markdown.as_str();
 
     // Pre-process math expressions: render them server-side with KaTeX, leaving
     // inert placeholders in the Markdown so the parser can't mangle the output.
-    let (processed_markdown, math_fragments) = preprocess_math(markdown);
+    // `eq_labels` maps a `\label{eq:…}` to the number that equation was given.
+    let (processed_markdown, math_fragments, eq_labels) = preprocess_math(markdown);
 
     let options = Options::all();
     let parser = Parser::new_ext(&processed_markdown, options);
@@ -903,7 +1740,13 @@ fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<S
 
     let linked = convert_internal_links(&html_output, markdown_files);
     let with_callouts = render_callouts(&linked);
-    columnize_link_lists(&with_callouts)
+    let with_columns = columnize_link_lists(&with_callouts);
+    // Number block images into <figure>s and resolve [@fig:…] cross-references.
+    let with_figures = process_figures(&with_columns);
+    // Resolve [@eq:…] references to the numbered display equations above.
+    let with_eq_refs = resolve_equation_refs(&with_figures, &eq_labels);
+    // Wrap code blocks with a language badge and a copy button.
+    enhance_code_blocks(&with_eq_refs)
 }
 
 #[derive(Clone)]
@@ -1870,6 +2713,7 @@ fn search_page_content() -> String {
 fn write_sitemap(
     markdown_files: &[(PathBuf, PathBuf, String)],
     hidden_pages: &std::collections::HashSet<String>,
+    has_glossary: bool,
     dist_dir: &Path,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut urls: Vec<String> = Vec::new();
@@ -1895,6 +2739,9 @@ fn write_sitemap(
     }
     // The interactive search page is a real, linkable destination.
     urls.push(format!("{}/search.html", SITE_URL));
+    if has_glossary {
+        urls.push(format!("{}/glossary.html", SITE_URL));
+    }
 
     urls.sort();
     urls.dedup();
@@ -2203,9 +3050,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     
+    // Glossary: the term listing drives per-page auto-linking and the generated
+    // glossary page. `glossary_mentions` accumulates term -> pages across the
+    // page loop for the reverse index. An empty listing makes the feature inert
+    // (no auto-links, no page, no navbar entry). Loaded here so the navbar's
+    // default branch can decide whether to surface a Glossary link.
+    let glossary_terms = load_glossary();
+    let glossary_matcher = build_glossary_matcher(&glossary_terms);
+    let has_glossary = !glossary_terms.is_empty();
+    let mut glossary_mentions: std::collections::HashMap<usize, std::collections::BTreeSet<String>> =
+        std::collections::HashMap::new();
+
     // Build navbar items from navbar_order, page_order, or markdown files
     let mut navbar_items: Vec<NavbarItem> = Vec::new();
-    
+
     if let Some(ref order) = navbar_order {
         // Use navbar_order if specified - allows full control including dropdowns
         for item in order {
@@ -2217,6 +3075,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             "search.html".to_string(),
                             "Search".to_string(),
                             "search".to_string(),
+                        ));
+                        continue;
+                    }
+                    // Built-in glossary page (not backed by a markdown file)
+                    if page_name.eq_ignore_ascii_case("glossary") {
+                        navbar_items.push(NavbarItem::InternalPage(
+                            "glossary.html".to_string(),
+                            "Glossary".to_string(),
+                            "glossary".to_string(),
                         ));
                         continue;
                     }
@@ -2283,6 +3150,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         ));
                         continue;
                     }
+                    // Built-in glossary page (not backed by a markdown file)
+                    if page_name.eq_ignore_ascii_case("glossary") {
+                        navbar_items.push(NavbarItem::InternalPage(
+                            "glossary.html".to_string(),
+                            "Glossary".to_string(),
+                            "glossary".to_string(),
+                        ));
+                        continue;
+                    }
                     // Simple string - find matching markdown file
                     if let Some((_, relative_path, title)) = markdown_files.iter()
                         .find(|(_, rel_path, _)| {
@@ -2339,7 +3215,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 navbar_items.push(NavbarItem::Dropdown(dropdown_name.clone()));
             }
         }
-        // Search page last when no explicit ordering is configured.
+        // Glossary (when a listing exists) then Search, last, when no explicit
+        // ordering is configured.
+        if has_glossary {
+            navbar_items.push(NavbarItem::InternalPage(
+                "glossary.html".to_string(),
+                "Glossary".to_string(),
+                "glossary".to_string(),
+            ));
+        }
         navbar_items.push(NavbarItem::InternalPage(
             "search.html".to_string(),
             "Search".to_string(),
@@ -2356,6 +3240,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         })
         .collect();
 
+    // Backlinks pass: read every page's Markdown once up front and collect the
+    // internal pages it links to, inverting that into `backlinks` (target page
+    // -> the pages that link to it) for the "Referenced by" foot of each page.
+    // Hidden pages are skipped as sources so a draft never advertises itself.
+    let mut backlinks: std::collections::HashMap<String, std::collections::BTreeSet<String>> =
+        std::collections::HashMap::new();
+    for (full_path, relative_path, _) in &markdown_files {
+        let content = fs::read_to_string(full_path)?;
+        let (fm, body) = extract_frontmatter(&content);
+        if fm.as_ref().and_then(|f| f.hidden).unwrap_or(false) {
+            continue;
+        }
+        let source = relative_path
+            .with_extension("")
+            .to_string_lossy()
+            .replace('\\', "/");
+        for target in extract_internal_targets(body, &source, &markdown_file_names) {
+            backlinks.entry(target).or_default().insert(source.clone());
+        }
+    }
+
     // Pages marked `hidden: true` in front matter are unlisted: excluded from
     // the sitemap and the search index (both built after this loop). Collected
     // here so those later passes don't have to re-read every file's front matter.
@@ -2366,6 +3271,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let content = fs::read_to_string(full_path)?;
         let (frontmatter, markdown_content) = extract_frontmatter(&content);
         let page_hidden = frontmatter.as_ref().and_then(|fm| fm.hidden).unwrap_or(false);
+        // A page opts out of glossary auto-linking with `glossary: false`.
+        let page_glossary = frontmatter.as_ref().and_then(|fm| fm.glossary).unwrap_or(true);
         // Schedule pages opt into build-time row sorting so hand-edited times
         // reorder the rendered agenda. `sorted_body` owns the rewritten Markdown
         // only when the flag is set; otherwise the original slice is used.
@@ -2466,6 +3373,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Calculate asset prefix based on depth (e.g., "../" for one level deep)
         let asset_prefix = calculate_asset_prefix(relative_path);
 
+        // Auto-link the first occurrence of each glossary term (skipping code,
+        // math, links and headings) and record which pages mention each term.
+        let html_content = if has_glossary && page_glossary {
+            decorate_glossary(
+                &html_content,
+                &glossary_terms,
+                &glossary_matcher,
+                &asset_prefix,
+                &rel_key,
+                &mut glossary_mentions,
+            )
+        } else {
+            html_content
+        };
+
+        // Append a "Referenced by" list of the pages that link here.
+        let html_content = match backlinks.get(&rel_key) {
+            Some(sources) => {
+                let mut h = html_content;
+                h.push_str(&build_backlinks_section(sources, &markdown_titles, &asset_prefix));
+                h
+            }
+            None => html_content,
+        };
+
         // Generate navbar HTML with current page highlighted
         let navbar = generate_navbar(&navbar_items, true, dropdowns.as_ref(), &markdown_titles, Some(&rel_key), &asset_prefix);
 
@@ -2517,8 +3449,46 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     fs::write(&search_path, search_html)?;
     println!("Generated: {}", search_path.display());
 
+    // Emit the generated glossary page (definitions + reverse "Discussed on"
+    // index) when a listing exists.
+    if has_glossary {
+        let glossary_navbar = generate_navbar(
+            &navbar_items,
+            true,
+            dropdowns.as_ref(),
+            &markdown_titles,
+            Some("glossary"),
+            "",
+        );
+        let glossary_breadcrumbs = vec![
+            ("Home".to_string(), format!("{}/", SITE_URL)),
+            ("Glossary".to_string(), format!("{}/glossary.html", SITE_URL)),
+        ];
+        let glossary_body = glossary_page_content(
+            &glossary_terms,
+            &glossary_mentions,
+            &markdown_titles,
+            &markdown_file_names,
+        );
+        let glossary_html = generate_html(
+            "Glossary",
+            "Definitions of key terms used across IDEEEP, each linking to the pages where it is discussed.",
+            "glossary.html",
+            "index, follow, max-image-preview:large",
+            &glossary_breadcrumbs,
+            &glossary_body,
+            &glossary_navbar,
+            "",
+            None,
+            None,
+        )?;
+        let glossary_path = dist_dir.join("glossary.html");
+        fs::write(&glossary_path, glossary_html)?;
+        println!("Generated: {}", glossary_path.display());
+    }
+
     // Emit SEO/PWA support files: sitemap, robots, manifest, service worker.
-    write_sitemap(&markdown_files, &hidden_pages, dist_dir)?;
+    write_sitemap(&markdown_files, &hidden_pages, has_glossary, dist_dir)?;
     write_robots(dist_dir)?;
     write_manifest(dist_dir)?;
     write_service_worker(dist_dir)?;
@@ -2914,6 +3884,310 @@ mod tests {
             plain.find("Afternoon").unwrap() < plain.find("Morning").unwrap(),
             "without the flag the fragment is spliced as written:\n{plain}"
         );
+    }
+
+    // --- Heading permalink anchors ---------------------------------------
+
+    /// Every h2/h3 keeps its stable id and now carries a trailing permalink
+    /// anchor pointing at that id, so a reader can deep-link any section.
+    #[test]
+    fn headings_get_permalink_anchors() {
+        let (html, headings) = add_heading_ids("<h2>Worked Example</h2><h3>In Code</h3>");
+        assert!(
+            html.contains("<h2 id=\"worked-example\">Worked Example<a class=\"heading-anchor\" href=\"#worked-example\""),
+            "h2 should keep its id and gain a permalink anchor:\n{html}"
+        );
+        assert!(
+            html.contains("<h3 id=\"in-code\">In Code<a class=\"heading-anchor\" href=\"#in-code\""),
+            "h3 should keep its id and gain a permalink anchor:\n{html}"
+        );
+        // The anchor must not leak into the TOC/heading label text.
+        assert_eq!(headings[0].2, "Worked Example");
+        assert!(!headings[0].2.contains('#'), "anchor char must stay out of the TOC label");
+    }
+
+    // --- Spoiler / details disclosure blocks -----------------------------
+
+    /// A `:::spoiler <label>` block becomes a native `<details>` with the given
+    /// summary, and its body is still rendered as Markdown (bold, here).
+    #[test]
+    fn spoiler_block_renders_details_with_custom_summary() {
+        let html = render(":::spoiler Show the solution\nThe answer is **42**.\n:::");
+        assert!(html.contains("<details class=\"spoiler\">"), "expected a details wrapper:\n{html}");
+        assert!(html.contains("<summary>Show the solution</summary>"), "custom summary missing:\n{html}");
+        assert!(html.contains("<strong>42</strong>"), "body should be parsed as Markdown:\n{html}");
+        assert!(html.contains("</details>"), "details must be closed:\n{html}");
+    }
+
+    /// The summary label is fully configurable — any wording works — and the
+    /// `:::details` alias behaves the same as `:::spoiler`.
+    #[test]
+    fn spoiler_summary_is_configurable_and_has_alias() {
+        assert!(render(":::spoiler Reveal the derivation\nx\n:::")
+            .contains("<summary>Reveal the derivation</summary>"));
+        assert!(render(":::details See more\ny\n:::")
+            .contains("<summary>See more</summary>"));
+        // A bare opener falls back to the default label.
+        assert!(render(":::spoiler\nz\n:::").contains("<summary>Show more</summary>"));
+    }
+
+    /// Spoilers may nest: an inner `:::` must not close the outer block early.
+    #[test]
+    fn spoiler_blocks_nest() {
+        let html = render(":::spoiler Outer\nbefore\n:::spoiler Inner\ndeep\n:::\nafter\n:::");
+        assert_eq!(html.matches("<details class=\"spoiler\">").count(), 2, "both levels should expand:\n{html}");
+        assert!(html.contains("<summary>Outer</summary>") && html.contains("<summary>Inner</summary>"), "both summaries present:\n{html}");
+        assert!(html.contains("deep") && html.contains("after"), "inner and trailing content survive:\n{html}");
+    }
+
+    /// An opener with no matching close is left untouched so stray text is not
+    /// swallowed into a runaway details block.
+    #[test]
+    fn unterminated_spoiler_is_left_alone() {
+        let html = render(":::spoiler Oops\nno closing fence here");
+        assert!(!html.contains("<details"), "an unterminated opener must not open a details:\n{html}");
+    }
+
+    // --- Figure numbering, captions, and cross-references ----------------
+
+    /// A lone block image becomes a numbered `<figure>` whose caption is the alt
+    /// text, matching the site's "alt doubles as caption" convention.
+    #[test]
+    fn block_image_becomes_numbered_figure() {
+        let html = render("![Epidemic curve over time](../assets/figures/curve.svg)");
+        assert!(html.contains("<figure id=\"figure-1\" class=\"figure\">"), "expected a numbered figure wrapper:\n{html}");
+        assert!(html.contains("<figcaption><span class=\"figure-label\">Figure 1.</span> Epidemic curve over time</figcaption>"), "caption should carry the number and alt text:\n{html}");
+        assert!(!html.contains("<p><img"), "the image paragraph should be replaced by a figure:\n{html}");
+    }
+
+    /// A `fig:`-titled image is labelled for cross-referencing: it gets a stable
+    /// id, the sentinel title is stripped from the <img>, and `[@fig:…]` resolves
+    /// to a numbered link — regardless of whether the reference precedes or
+    /// follows the figure in the document.
+    #[test]
+    fn figure_label_and_cross_reference_resolve() {
+        let html = render("As shown in [@fig:curve], cases peak early.\n\n![Cases](curve.svg \"fig:curve\")");
+        assert!(html.contains("<figure id=\"fig-curve\" class=\"figure\">"), "labelled figure should use the label as its id:\n{html}");
+        assert!(!html.contains("title=\"fig:curve\""), "the fig: sentinel title must be stripped from the img:\n{html}");
+        assert!(html.contains("<a class=\"fig-ref\" href=\"#fig-curve\">Figure 1</a>"), "reference should resolve to a numbered link even when it precedes the figure:\n{html}");
+    }
+
+    /// A decorative image (empty alt, no label) is left as a plain image, and an
+    /// unresolved `[@fig:…]` reference renders a visible error marker.
+    #[test]
+    fn decorative_image_kept_and_unresolved_ref_is_loud() {
+        let deco = render("![](../assets/spacer.svg)");
+        assert!(!deco.contains("<figure"), "an empty-alt image must not be numbered:\n{deco}");
+
+        let bad = render("See [@fig:missing] please.");
+        assert!(bad.contains("fig-ref-error") && bad.contains("fig:missing"), "an unresolved reference should be a loud marker:\n{bad}");
+    }
+
+    // --- Equation numbering, labels, and cross-references ----------------
+
+    /// A `\label{eq:…}` on a display equation opts it into a printed number and a
+    /// referenceable id; `[@eq:…]` then resolves to a numbered link — in either
+    /// document order — and the raw `\label` never reaches the output.
+    #[test]
+    fn labelled_equation_numbers_and_cross_references() {
+        let html = render(
+            "As in [@eq:sir], incidence falls.\n\n\\[ \\frac{dI}{dt} = \\beta S I - \\gamma I \\label{eq:sir} \\]",
+        );
+        assert!(html.contains("id=\"eq-sir\""), "labelled equation should get a stable id:\n{html}");
+        assert!(
+            html.contains("<a class=\"eq-ref\" href=\"#eq-sir\">(1)</a>"),
+            "reference should resolve to a numbered link even when it precedes the equation:\n{html}"
+        );
+        assert!(!html.contains("\\label"), "the \\label must be stripped from the output:\n{html}");
+        assert!(html.contains("class=\"katex"), "the equation should still render as KaTeX:\n{html}");
+    }
+
+    /// Numbering is opt-in and per page: only labelled display equations are
+    /// counted, so an unlabelled equation between two labelled ones does not
+    /// consume a number (the second labelled equation is still (2)).
+    #[test]
+    fn only_labelled_equations_are_numbered() {
+        let html = render(
+            "\\[ a = b \\label{eq:one} \\]\n\n\\[ c = d \\]\n\n\\[ e = f \\label{eq:two} \\]\n\nSee [@eq:one] and [@eq:two].",
+        );
+        assert!(html.contains(">(1)</a>") && html.contains(">(2)</a>"), "labelled equations number 1 then 2, skipping the unlabelled one:\n{html}");
+        assert!(html.contains("id=\"eq-one\"") && html.contains("id=\"eq-two\""), "both labelled equations get ids:\n{html}");
+    }
+
+    /// An unresolved `[@eq:…]` reference renders a loud marker, and a display
+    /// equation with no label is left unnumbered (no injected tag id).
+    #[test]
+    fn unlabelled_equation_plain_and_bad_eq_ref_is_loud() {
+        let plain = render("\\[ x = y \\]");
+        assert!(!plain.contains("eq-block"), "an unlabelled equation must not be wrapped/numbered:\n{plain}");
+
+        let bad = render("See [@eq:ghost].");
+        assert!(bad.contains("eq-ref-error") && bad.contains("eq:ghost"), "an unresolved equation reference should be loud:\n{bad}");
+    }
+
+    // --- Code blocks: language badge + copy button -----------------------
+
+    /// A fenced code block is wrapped in a `.code-block` container with a
+    /// language label and a copy button, and the original `<pre><code>` (with
+    /// its highlight.js `language-…` class and escaped body) is preserved.
+    #[test]
+    fn code_block_gets_language_badge_and_copy_button() {
+        let html = render("```python\nprint(1 < 2)\n```");
+        assert!(html.contains("<div class=\"code-block\">"), "code block should be wrapped:\n{html}");
+        assert!(html.contains("<span class=\"code-lang\">Python</span>"), "language badge should read 'Python':\n{html}");
+        assert!(html.contains("class=\"code-copy\""), "a copy button should be present:\n{html}");
+        assert!(html.contains("<pre><code class=\"language-python\">"), "the highlight.js class must be preserved:\n{html}");
+        assert!(html.contains("1 &lt; 2"), "the escaped code body must survive intact:\n{html}");
+    }
+
+    /// A fenced block with no language still gets a copy button, but no language
+    /// badge (nothing to name).
+    #[test]
+    fn code_block_without_language_has_copy_but_no_badge() {
+        let html = render("```\nplain text\n```");
+        assert!(html.contains("<div class=\"code-block\">") && html.contains("class=\"code-copy\""), "unlabelled code still gets a container and copy button:\n{html}");
+        assert!(!html.contains("code-lang"), "there should be no language badge for a bare fence:\n{html}");
+        assert!(html.contains("<pre><code>plain text"), "the bare <code> must be preserved:\n{html}");
+    }
+
+    /// A KaTeX-failure `<pre class="math-error">` is not a code block and must
+    /// not be wrapped with a copy button.
+    #[test]
+    fn math_error_pre_is_not_treated_as_code() {
+        // `\notacommand` is invalid; with throw_on_error=false KaTeX still
+        // renders, so force the error path directly through the wrapper.
+        let wrapped = enhance_code_blocks("<pre class=\"math-error\">oops</pre>");
+        assert!(!wrapped.contains("code-block"), "a math-error pre must be left untouched:\n{wrapped}");
+    }
+
+    // --- Glossary: auto-linking, protection, and reverse index -----------
+
+    fn test_glossary() -> (Vec<GlossaryTerm>, GlossaryMatcher) {
+        let terms = parse_glossary(
+            "- term: Serial interval\n  aliases: [serial intervals]\n  short: Onset-to-onset time.\n- term: R0\n  short: Reproduction number.\n",
+        );
+        let matcher = build_glossary_matcher(&terms);
+        (terms, matcher)
+    }
+
+    fn decorate(html: &str, page: &str) -> (String, std::collections::HashMap<usize, std::collections::BTreeSet<String>>) {
+        let (terms, matcher) = test_glossary();
+        let mut mentions = std::collections::HashMap::new();
+        let out = decorate_glossary(html, &terms, &matcher, "", page, &mut mentions);
+        (out, mentions)
+    }
+
+    /// Only the FIRST occurrence of a term on a page is linked; the term links to
+    /// the glossary anchor and carries its definition; the page is recorded in
+    /// the reverse index.
+    #[test]
+    fn glossary_links_first_occurrence_only() {
+        let (out, mentions) = decorate(
+            "<p>The serial interval matters. The serial interval again.</p>",
+            "epidemiology/x",
+        );
+        assert_eq!(out.matches("class=\"gloss-term\"").count(), 1, "only the first mention is linked:\n{out}");
+        assert!(out.contains("href=\"glossary.html#serial-interval\""), "term links to its glossary anchor:\n{out}");
+        assert!(out.contains("data-def=\"Onset-to-onset time.\""), "definition rides along as a tooltip:\n{out}");
+        assert!(mentions.get(&0).unwrap().contains("epidemiology/x"), "the page is recorded in the reverse index:\n{:?}", mentions);
+    }
+
+    /// An alias matches and links to the canonical term's entry, preserving the
+    /// text as written.
+    #[test]
+    fn glossary_matches_aliases() {
+        let (out, _) = decorate("<p>Two serial intervals here.</p>", "p");
+        assert!(out.contains(">serial intervals</a>"), "the alias text is preserved:\n{out}");
+        assert!(out.contains("#serial-interval"), "the alias links to the canonical entry:\n{out}");
+    }
+
+    /// Terms inside code, math, links, and headings are never decorated.
+    #[test]
+    fn glossary_skips_protected_regions() {
+        let (out, mentions) = decorate(
+            "<pre><code>serial interval</code></pre>\
+             <span class=\"katex\">serial interval<span>x</span></span>\
+             <a href=\"y\">serial interval</a>\
+             <h2>serial interval</h2>",
+            "p",
+        );
+        assert!(!out.contains("gloss-term"), "protected regions must not be decorated:\n{out}");
+        assert!(mentions.is_empty(), "protected-only mentions are not counted:\n{:?}", mentions);
+    }
+
+    /// A term in real prose alongside protected copies is still linked once.
+    #[test]
+    fn glossary_decorates_prose_but_not_the_code_beside_it() {
+        let (out, _) = decorate(
+            "<p>Define the serial interval.</p><pre><code>serial interval</code></pre>",
+            "p",
+        );
+        assert_eq!(out.matches("gloss-term").count(), 1, "prose is linked, the code copy is not:\n{out}");
+        assert!(out.contains("<pre><code>serial interval</code></pre>"), "the code block is left verbatim:\n{out}");
+    }
+
+    // --- Backlinks ("Referenced by") -------------------------------------
+
+    fn files_set(keys: &[&str]) -> HashSet<String> {
+        keys.iter().map(|k| k.to_string()).collect()
+    }
+
+    /// Link resolution mirrors the internal-link rules: relative `.md` links
+    /// resolve against the source directory, a bare name matches by filename,
+    /// and external/asset/self/anchor targets resolve to nothing.
+    #[test]
+    fn resolve_link_target_handles_the_link_forms() {
+        let files = files_set(&["math/sir", "math", "epidemiology/study-designs", "index"]);
+        // Relative `.md`, up-and-over to a hub.
+        assert_eq!(resolve_link_target("math/sir", "../math.md", &files).as_deref(), Some("math"));
+        // Sibling `.md` in the same directory.
+        assert_eq!(
+            resolve_link_target("epidemiology/x", "../math/sir.md", &files).as_deref(),
+            Some("math/sir")
+        );
+        // Bare name matched by filename.
+        assert_eq!(resolve_link_target("epidemiology/x", "sir", &files).as_deref(), Some("math/sir"));
+        // A `#anchor` on the same page and self-links resolve to nothing.
+        assert_eq!(resolve_link_target("math/sir", "#section", &files), None);
+        assert_eq!(resolve_link_target("math/sir", "sir.md", &files), None); // resolves to self
+        // External and asset targets are ignored.
+        assert_eq!(resolve_link_target("math/sir", "https://example.com", &files), None);
+        assert_eq!(resolve_link_target("math/sir", "../assets/figures/x.svg", &files), None);
+    }
+
+    /// Extraction pulls every internal link target from a page's Markdown and
+    /// drops images, assets, and external links.
+    #[test]
+    fn extract_internal_targets_collects_page_links() {
+        let files = files_set(&["math/sir", "epidemiology/study-designs", "math"]);
+        let md = "See [SIR](../math/sir.md) and [designs](../epidemiology/study-designs.md).\n\
+                  ![fig](../assets/figures/x.svg) and [ext](https://example.com).";
+        let got = extract_internal_targets(md, "programming/y", &files);
+        let want: std::collections::BTreeSet<String> =
+            ["math/sir".to_string(), "epidemiology/study-designs".to_string()].into_iter().collect();
+        assert_eq!(got, want, "only internal page links are collected");
+    }
+
+    /// The "Referenced by" section lists sources by title and links each with
+    /// the page's asset prefix; empty input yields nothing.
+    #[test]
+    fn backlinks_section_renders_sorted_links() {
+        let mut titles: std::collections::HashMap<String, String> = std::collections::HashMap::new();
+        titles.insert("math/sir".into(), "Compartmental Models".into());
+        titles.insert("epidemiology/study-designs".into(), "Study Designs".into());
+        let sources: std::collections::BTreeSet<String> =
+            ["math/sir".to_string(), "epidemiology/study-designs".to_string()].into_iter().collect();
+
+        let html = build_backlinks_section(&sources, &titles, "../");
+        assert!(html.contains("Referenced by"), "section has a heading:\n{html}");
+        // Sorted by title: "Compartmental Models" before "Study Designs".
+        assert!(
+            html.find("Compartmental Models").unwrap() < html.find("Study Designs").unwrap(),
+            "backlinks are ordered by title:\n{html}"
+        );
+        assert!(html.contains("href=\"../math/sir.html\""), "links carry the asset prefix:\n{html}");
+
+        assert!(build_backlinks_section(&std::collections::BTreeSet::new(), &titles, "").is_empty());
     }
 }
 
