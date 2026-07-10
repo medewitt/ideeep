@@ -56,6 +56,25 @@ auto-generated "On this page" table of contents built from their `##` headings;
 it is off by default. Flat link lists (4+ items, all links) are automatically
 flowed into responsive columns.
 
+Any page can set `hidden: true` in front matter to be **unlisted**: it renders
+at its URL and is reachable by direct link, but is served with a `noindex`
+`robots` tag and kept out of `sitemap.xml` and the on-site search index. Navbar
+placement is separate (driven by `config.yaml`), so a hidden page is simply left
+out of `navbar_order`/`dropdowns`. This is the general mechanism for drafts and
+share-by-link pages; it is off by default. (Note: unlisted is not private —
+anyone with the URL can view it. Real access control needs Netlify-level auth.)
+The built-in `404` and `interest-thank-you` pages are always handled specially
+regardless of this flag. See `is_indexable`/`is_search_indexable` in `src/main.rs`.
+
+Schedule pages can set `sort_schedule: true` in front matter. At build time the
+generator sorts every Markdown table on the page that has a `Day` and/or `Time`
+column by weekday then start time, so a hand-edited agenda re-orders itself
+instead of leaving rows where they were typed. Time parsing is meridiem-aware
+for this program's day (9–11 AM, 12 noon, 1–3 PM), so `1-1:50` sorts after
+`11-11:50`; a `p`/`a` suffix (`12-1p`) forces the meridiem. Tables without a
+`Day` or `Time` header, and all surrounding prose, are left untouched. It is off
+by default. See `sort_schedule_tables` in `src/main.rs`.
+
 ## Reusable template fragments (`:::{name.md}:::`)
 
 Content that is **identical across many pages** — the shared course policies,
@@ -70,6 +89,13 @@ the university policies, the syllabus change notice — lives once in
 
 - The shortcode must sit **on its own line**. The `.md` extension is optional
   (`:::{course-policies}:::` also works).
+- **Options** may follow the name after a `;`: `:::{fellow-schedule-2026; schedule=true}:::`.
+  The only option today is `schedule` (bare or truthy), which sorts the
+  fragment's schedule tables by day then start time as it is spliced in — so a
+  reusable agenda fragment can be embedded on any page and stay ordered after
+  hand-edits. Unknown options are ignored, so the syntax can grow safely.
+  (The same sort is available page-wide via the `sort_schedule: true` front-matter
+  flag for tables written directly in a page.)
 - The fragment's Markdown is spliced in **before** parsing, so it renders exactly
   as if written inline — headings, tables, callouts and math all work. Includes
   may nest (a fragment can include another).
