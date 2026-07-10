@@ -2,8 +2,8 @@ Two-week ID research training. **Mornings** are didactic lectures; **afternoons*
 Session types: **L** = Lecture · **JC** = Journal Club · **WS** = Workshop · **IDST** = ID Science Talk.
 Cohorts: Brian Ross July 20–26 · Kit Sommers & Rasheda Hayath August 3–9.
 
-| Day | Time | Session | Instructor | Related concepts |
-|-----|------|---------|------------|------------------|
+| Day    | Time | Session | Instructor | Related concepts |
+|-------|-----|---------|------------|------------------|
 | Mon (Jul 20 / Aug 3) | 9-9:50 | Welcome / Intro + overview of section research areas (DeWitt/ Bellotti) Research topics pitch | DeWitt / Bellotti; PIs | [Research areas](research.md) |
 | Mon (Jul 20 / Aug 3) | 10-10:50 | **Lecture** — Study design / sources of bias | Bellotti | [Study designs](epidemiology/study-designs.md) · [Causal inference](math/causal-inference.md) |
 | Mon (Jul 20 / Aug 3) | 11-11:50 | **Lecture** — Vaccine trials? Wierzba? | _TBD_ | [Study designs (RCTs)](epidemiology/study-designs.md) |
