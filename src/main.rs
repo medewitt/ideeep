@@ -276,6 +276,85 @@ fn resolve_equation_refs(
     .into_owned()
 }
 
+/// Copy a fenced code block verbatim, from just after its opening marker run
+/// through its closing fence (or end of input). The opening run of `open_run`
+/// copies of `fence` has already been emitted by the caller. Nothing inside is
+/// scanned for math, so `$`, `\(`, etc. in code are left untouched.
+fn copy_fenced_block(
+    chars: &mut std::iter::Peekable<std::str::Chars>,
+    out: &mut String,
+    fence: char,
+    open_run: usize,
+) {
+    // Copy the remainder of the opening line (the info string) and its newline.
+    while let Some(c) = chars.next() {
+        out.push(c);
+        if c == '\n' {
+            break;
+        }
+    }
+    // Scan line by line for a closing fence: a line whose first non-space
+    // content is a run of at least `open_run` copies of the same fence char.
+    loop {
+        if chars.peek().is_none() {
+            return; // unterminated block at end of input
+        }
+        let mut leading = String::new();
+        while matches!(chars.peek(), Some(' ') | Some('\t')) {
+            leading.push(chars.next().unwrap());
+        }
+        let mut run = 0;
+        while chars.peek() == Some(&fence) {
+            chars.next();
+            run += 1;
+        }
+        out.push_str(&leading);
+        for _ in 0..run {
+            out.push(fence);
+        }
+        // Copy the rest of the line either way.
+        while let Some(c) = chars.next() {
+            out.push(c);
+            if c == '\n' {
+                break;
+            }
+        }
+        if run >= open_run {
+            return; // closing fence consumed
+        }
+    }
+}
+
+/// Copy an inline code span verbatim. The opening run of `open_run` backticks
+/// has already been emitted; copy until a matching run of exactly `open_run`
+/// backticks (the CommonMark closer). Stops at a line break if unterminated,
+/// leaving the newline for the caller so normal processing resumes.
+fn copy_inline_code(
+    chars: &mut std::iter::Peekable<std::str::Chars>,
+    out: &mut String,
+    open_run: usize,
+) {
+    loop {
+        match chars.peek() {
+            None | Some('\n') => return,
+            Some('`') => {
+                let mut run = 0;
+                while chars.peek() == Some(&'`') {
+                    chars.next();
+                    run += 1;
+                }
+                for _ in 0..run {
+                    out.push('`');
+                }
+                if run == open_run {
+                    return;
+                }
+            }
+            Some(_) => out.push(chars.next().unwrap()),
+        }
+    }
+}
+
 /// Returns the placeholder-substituted Markdown, the ordered rendered-math
 /// fragments, and the map of equation labels to their assigned numbers.
 fn preprocess_math(
@@ -293,7 +372,61 @@ fn preprocess_math(
         fragments.push(html);
     };
 
+    // Track whether we are at the start of a line so fenced code blocks (which
+    // must begin a line) can be recognized and copied verbatim. Leading
+    // indentation keeps us "at line start" so indented fences still count.
+    let mut at_line_start = true;
+
     while let Some(ch) = chars.next() {
+        if ch == '\n' {
+            result.push(ch);
+            at_line_start = true;
+            continue;
+        }
+        if at_line_start && (ch == ' ' || ch == '\t') {
+            result.push(ch);
+            continue; // still at line start
+        }
+        // Fenced code block opener: 3+ backticks or tildes at line start.
+        if at_line_start && (ch == '`' || ch == '~') {
+            let fence = ch;
+            let mut run = 1;
+            while chars.peek() == Some(&fence) {
+                chars.next();
+                run += 1;
+            }
+            for _ in 0..run {
+                result.push(fence);
+            }
+            if run >= 3 {
+                copy_fenced_block(&mut chars, &mut result, fence, run);
+                at_line_start = true;
+                continue;
+            }
+            // 1-2 backticks: an inline code span, not a fence. (1-2 tildes are
+            // GFM strikethrough and pass through as ordinary text.)
+            if fence == '`' {
+                copy_inline_code(&mut chars, &mut result, run);
+            }
+            at_line_start = false;
+            continue;
+        }
+        at_line_start = false;
+
+        // Inline code span mid-line: copy verbatim so `$` inside it is not math.
+        if ch == '`' {
+            let mut run = 1;
+            while chars.peek() == Some(&'`') {
+                chars.next();
+                run += 1;
+            }
+            for _ in 0..run {
+                result.push('`');
+            }
+            copy_inline_code(&mut chars, &mut result, run);
+            continue;
+        }
+
         if ch == '$' {
             // Check for display math: $$
             if chars.peek() == Some(&'$') {
@@ -321,17 +454,20 @@ fn preprocess_math(
                 // Inline math: $...$
                 let mut tex = String::new();
                 let mut found_end = false;
+                let mut hit_newline = false;
                 while let Some(c) = chars.next() {
                     if c == '$' {
                         found_end = true;
                         break;
                     }
                     if c == '\n' {
-                        // Inline math can't span lines, put it back
+                        // Inline math can't span lines: emit the literal '$' and
+                        // the consumed text verbatim, then stop scanning here.
+                        hit_newline = true;
                         result.push('$');
                         result.push_str(&tex);
                         result.push(c);
-                        tex.clear();
+                        at_line_start = true;
                         break;
                     }
                     tex.push(c);
@@ -340,7 +476,8 @@ fn preprocess_math(
                     let html = katex::render_with_opts(tex.trim(), katex_opts(false))
                         .unwrap_or_else(|_| format!(r#"<code class="math-error">{}</code>"#, tex));
                     stash(&mut result, &mut fragments, html);
-                } else {
+                } else if !hit_newline {
+                    // Unterminated at end of input: restore the literal text.
                     result.push('$');
                     result.push_str(&tex);
                 }
@@ -3553,6 +3690,70 @@ mod tests {
             "math placeholder token leaked into output:\n{html}"
         );
         assert!(html.contains("class=\"katex"), "expected rendered KaTeX:\n{html}");
+    }
+
+    /// A `$` inside a fenced code block (idiomatic R like `ea$lambda1`) must be
+    /// left literal, not treated as an inline-math delimiter. The old scanner
+    /// paired the dollars across lines and injected a stray `$` at the start of
+    /// each following line, including the closing fence.
+    #[test]
+    fn dollars_in_code_fence_are_not_math() {
+        let md = "```r\n\
+                  ea$lambda1\n\
+                  ea$stable.stage\n\
+                  ea$repro.value\n\
+                  ```\n";
+        let html = render(md);
+        assert!(
+            !html.contains("class=\"katex"),
+            "code-block $ must not render as KaTeX:\n{html}"
+        );
+        assert!(
+            html.contains("ea$stable.stage"),
+            "code content should survive verbatim:\n{html}"
+        );
+        assert!(
+            !html.contains("$ea$"),
+            "no stray '$' should be prepended to code lines:\n{html}"
+        );
+    }
+
+    /// Two `$` on the same code line (e.g. `df$x <- df$y`) previously became an
+    /// inline-math span. Code must stay literal.
+    #[test]
+    fn same_line_dollars_in_code_are_not_math() {
+        let html = render("```r\ndf$x <- df$y\n```\n");
+        assert!(
+            !html.contains("class=\"katex"),
+            "same-line code $ must not render as KaTeX:\n{html}"
+        );
+        assert!(html.contains("df$x"), "code should survive verbatim:\n{html}");
+    }
+
+    /// Inline code spans in prose also shield `$` from the math scanner.
+    #[test]
+    fn dollars_in_inline_code_are_not_math() {
+        let html = render("Access columns with `df$x` and `df$y`.");
+        assert!(
+            !html.contains("class=\"katex"),
+            "inline-code $ must not render as KaTeX:\n{html}"
+        );
+        assert!(html.contains("df$x"), "inline code should survive verbatim:\n{html}");
+    }
+
+    /// Genuine inline math still renders, and a lone prose `$` that is followed
+    /// by a line break before the next `$` must not spawn a stray `$` on the
+    /// next line (the newline "put-back" used to emit the delimiter twice).
+    #[test]
+    fn inline_math_renders_and_lone_dollar_across_newline_is_literal() {
+        let html = render("The value $x^2$ is positive.");
+        assert!(html.contains("class=\"katex"), "inline math should still render:\n{html}");
+
+        let html2 = render("Costs $5 today\nand more tomorrow.\n");
+        assert!(
+            !html2.contains("$and"),
+            "a lone '$' before a newline must not leak onto the next line:\n{html2}"
+        );
     }
 
     /// Guard the fix from over-correcting: genuine Markdown strikethrough in
