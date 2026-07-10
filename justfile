@@ -48,6 +48,20 @@ figures:
         echo "rendering $f"
         uv run --quiet --script "$f"
     done
+    # Record the source manifest so `figures-check` can detect drift later.
+    python3 scripts/check_figures.py --write
+
+# Check that committed figure SVGs are up to date with figures/*.py (CI).
+# Source-hash only (no re-render), so it needs no scientific deps; non-zero
+# if any figure script changed since `just figures` last ran.
+figures-check:
+    python3 scripts/check_figures.py --check
+
+# Check that internal links, asset references, and #anchors in the built
+# site all resolve (CI). Builds first, then scans dist/.
+check-links:
+    cargo run --release
+    python3 scripts/check_links.py --check dist
 
 # Kill any process using the specified port
 kill-port port="8000":

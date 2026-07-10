@@ -19,9 +19,13 @@ just build         # cargo run --release -> writes dist/
 just preview       # build, then serve dist/ at http://localhost:8000
 just serve         # serve an already-built dist/ (default port 8000)
 just test          # run the md-compiler regression suite
+just check-links   # build, then check internal links / assets / #anchors resolve
+just figures-check # check committed figure SVGs are up to date with figures/*.py
 ```
 
 `just` with no recipe runs `build`.
+
+These checks (plus `just lint-prose`, `just test-scripts`, and `just python-output-check`) run in GitHub Actions on every push and pull request; see `.github/workflows/ci.yml`.
 
 ## Add a new post
 

@@ -1,0 +1,69 @@
+name: CI
+
+# Runs the guardrails that already exist as `just` recipes so a PR can't merge
+# with a broken build, a failing test, stale generated output, unformatted
+# prose, or a dead internal link. The site build itself runs no Python and no
+# network; the Python job only exercises the dev-time tooling.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A newer push to the same branch/PR cancels the older, still-running CI.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    # Builds the site (md-compiler), runs the Rust regression suite, and checks
+    # that every internal link / asset reference / #anchor in dist/ resolves.
+    name: build, test & links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install just
+        uses: extractions/setup-just@v2
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo build
+        uses: Swatinem/rust-cache@v2
+
+      - name: Rust tests (md-compiler regression suite)
+        run: just test
+
+      - name: Build site and check internal links
+        run: just check-links
+
+  python-tooling:
+    # Exercises the dev-time Python tooling: injector unit tests, prose lint,
+    # figure-staleness, and that committed Python output is up to date.
+    name: prose, figures & python output
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install just
+        uses: extractions/setup-just@v2
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Injector unit tests
+        run: just test-scripts
+
+      - name: Prose is one sentence per line
+        run: just lint-prose
+
+      - name: Committed figures are up to date
+        run: just figures-check
+
+      - name: Injected Python output is up to date
+        run: just python-output-check
