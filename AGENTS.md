@@ -12,7 +12,7 @@ It is **not** Quarto, mdBook, Bookdown, Hugo, or Jupyter Book, even though the c
 - Content is **plain Markdown** under `content/`, with YAML front matter: `title:` (required), plus optional `description:` (meta/social) and `toc: true` (adds an "On this page" list).
 - Math is rendered at build time with **KaTeX** (server-side); no MathJax runtime is needed.
 - The build produces static HTML in `dist/` and an SQLite full-text **search index** (`dist/search.db`).
-- Deployment is Netlify (`netlify.toml`); there is no GitHub Actions CI.
+- Deployment is Netlify (`netlify.toml`). GitHub Actions CI (`.github/workflows/ci.yml`) runs the guardrails on every push/PR: the Rust regression suite (`just test`), the injector unit tests (`just test-scripts`), the prose linter (`just lint-prose`), figure staleness (`just figures-check`), injected-output freshness (`just python-output-check`), and a full build plus internal-link check (`just check-links`). Keep these green locally before pushing.
 
 ## Directory layout
 
