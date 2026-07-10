@@ -312,6 +312,11 @@ include shortcode on its own line:
   permalink (revealed on hover). Link to a section with `[jump](#the-slug)`,
   where the slug is the lower-cased, hyphenated heading text.
 - **Cite a figure or equation** with `[@fig:name]` / `[@eq:name]` (see above).
+- **"Referenced by" is automatic.** Every page shows, at its foot, the list of
+  other pages that link to it — a reverse index built from your `.md` links. You
+  do nothing; just link pages together (especially the `## Related` list and the
+  hub) and the backlinks appear. This is what makes the site read like an
+  interlinked wiki, so link generously.
 - There is **no bibliography system** — cite papers as inline Markdown links.
 
 ---
@@ -343,6 +348,8 @@ a `/glossary.html` page whose entries list every page that discusses the term
 - A page can **opt out** of auto-linking with `glossary: false` in its front
   matter.
 - Adding a term makes it live everywhere on the next build — no per-page edits.
+- Run `just glossary-check` to catch a term you defined but never used, or a
+  `see:` that points nowhere.
 
 ---
 

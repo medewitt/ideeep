@@ -1181,6 +1181,127 @@ fn glossary_page_content(
     html
 }
 
+// ---------------------------------------------------------------------------
+// Backlinks ("Referenced by")
+//
+// The build already rewrites internal `.md` links to `.html`. Collecting those
+// links across every page yields a reverse index — for each page, which other
+// pages link to it — rendered as a "Referenced by" list at the page foot, so the
+// content reads like an interlinked wiki rather than a set of dead ends.
+// ---------------------------------------------------------------------------
+
+/// Join a page's directory with a relative target, resolving `.`/`..` to a
+/// canonical, slash-separated page key (no extension).
+fn normalize_page_key(source_dir: &str, rel: &str) -> String {
+    let mut stack: Vec<&str> = if source_dir.is_empty() {
+        Vec::new()
+    } else {
+        source_dir.split('/').collect()
+    };
+    for part in rel.split('/') {
+        match part {
+            "" | "." => {}
+            ".." => {
+                stack.pop();
+            }
+            p => stack.push(p),
+        }
+    }
+    stack.join("/")
+}
+
+/// Resolve one Markdown link target to the canonical key of an internal page,
+/// or `None` for external links, assets, anchors, or unknown targets. Mirrors
+/// the internal-link rules of `convert_internal_links`: `.md` links resolve
+/// relative to the source page; a bare name (no dot) matches a page by filename.
+fn resolve_link_target(
+    source: &str,
+    raw: &str,
+    files: &std::collections::HashSet<String>,
+) -> Option<String> {
+    let base = raw.split(['#', '?']).next().unwrap_or("");
+    if base.is_empty()
+        || base.starts_with("http://")
+        || base.starts_with("https://")
+        || base.starts_with("mailto:")
+        || base.starts_with("tel:")
+        || base.starts_with("//")
+        || base.starts_with('/')
+        || base.contains("://")
+    {
+        return None;
+    }
+    let source_dir = match source.rsplit_once('/') {
+        Some((dir, _)) => dir,
+        None => "",
+    };
+    let key = if let Some(stripped) = base.strip_suffix(".md") {
+        normalize_page_key(source_dir, stripped)
+    } else if !base.contains('.') {
+        // Bare page name (as in `convert_internal_links`): exact key or filename.
+        files
+            .iter()
+            .find(|p| p.as_str() == base || p.ends_with(&format!("/{}", base)))
+            .cloned()?
+    } else {
+        // A dotted target that is not `.md` is an asset (svg/png/…): not a page.
+        return None;
+    };
+    if key == source || !files.contains(&key) {
+        None
+    } else {
+        Some(key)
+    }
+}
+
+/// Collect the set of internal page keys that a page's Markdown links to.
+fn extract_internal_targets(
+    md: &str,
+    source: &str,
+    files: &std::collections::HashSet<String>,
+) -> std::collections::BTreeSet<String> {
+    // Inline-link targets: `](target)` or `](target "title")`. Image links to
+    // assets resolve to `None` and drop out, so they need no special handling.
+    let re = Regex::new(r"\]\(([^)]+)\)").unwrap();
+    let mut out = std::collections::BTreeSet::new();
+    for cap in re.captures_iter(md) {
+        let target = cap[1].split_whitespace().next().unwrap_or("");
+        if let Some(key) = resolve_link_target(source, target, files) {
+            out.insert(key);
+        }
+    }
+    out
+}
+
+/// Render the "Referenced by" navigation appended to a page's body: the pages
+/// that link to it, ordered by title. Empty input yields an empty string.
+fn build_backlinks_section(
+    sources: &std::collections::BTreeSet<String>,
+    titles: &std::collections::HashMap<String, String>,
+    asset_prefix: &str,
+) -> String {
+    if sources.is_empty() {
+        return String::new();
+    }
+    let mut items: Vec<(String, String)> = sources
+        .iter()
+        .map(|k| (titles.get(k).cloned().unwrap_or_else(|| k.clone()), k.clone()))
+        .collect();
+    items.sort_by(|a, b| a.0.to_lowercase().cmp(&b.0.to_lowercase()));
+
+    let mut s = String::from(
+        "<nav class=\"backlinks\" aria-label=\"Referenced by\">\n<p class=\"backlinks-title\">Referenced by</p>\n<ul>\n",
+    );
+    for (title, key) in items {
+        s.push_str(&format!(
+            "<li><a href=\"{}{}.html\">{}</a></li>\n",
+            asset_prefix, key, title
+        ));
+    }
+    s.push_str("</ul>\n</nav>\n");
+    s
+}
+
 /// Directory (relative to the project root) that holds reusable Markdown
 /// fragments. A page injects one with a `:::{fragment-name.md}:::` shortcode on
 /// its own line (the `.md` extension is optional). Fragments live under a
@@ -3119,6 +3240,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         })
         .collect();
 
+    // Backlinks pass: read every page's Markdown once up front and collect the
+    // internal pages it links to, inverting that into `backlinks` (target page
+    // -> the pages that link to it) for the "Referenced by" foot of each page.
+    // Hidden pages are skipped as sources so a draft never advertises itself.
+    let mut backlinks: std::collections::HashMap<String, std::collections::BTreeSet<String>> =
+        std::collections::HashMap::new();
+    for (full_path, relative_path, _) in &markdown_files {
+        let content = fs::read_to_string(full_path)?;
+        let (fm, body) = extract_frontmatter(&content);
+        if fm.as_ref().and_then(|f| f.hidden).unwrap_or(false) {
+            continue;
+        }
+        let source = relative_path
+            .with_extension("")
+            .to_string_lossy()
+            .replace('\\', "/");
+        for target in extract_internal_targets(body, &source, &markdown_file_names) {
+            backlinks.entry(target).or_default().insert(source.clone());
+        }
+    }
+
     // Pages marked `hidden: true` in front matter are unlisted: excluded from
     // the sitemap and the search index (both built after this loop). Collected
     // here so those later passes don't have to re-read every file's front matter.
@@ -3244,6 +3386,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             )
         } else {
             html_content
+        };
+
+        // Append a "Referenced by" list of the pages that link here.
+        let html_content = match backlinks.get(&rel_key) {
+            Some(sources) => {
+                let mut h = html_content;
+                h.push_str(&build_backlinks_section(sources, &markdown_titles, &asset_prefix));
+                h
+            }
+            None => html_content,
         };
 
         // Generate navbar HTML with current page highlighted
@@ -3972,6 +4124,70 @@ mod tests {
         );
         assert_eq!(out.matches("gloss-term").count(), 1, "prose is linked, the code copy is not:\n{out}");
         assert!(out.contains("<pre><code>serial interval</code></pre>"), "the code block is left verbatim:\n{out}");
+    }
+
+    // --- Backlinks ("Referenced by") -------------------------------------
+
+    fn files_set(keys: &[&str]) -> HashSet<String> {
+        keys.iter().map(|k| k.to_string()).collect()
+    }
+
+    /// Link resolution mirrors the internal-link rules: relative `.md` links
+    /// resolve against the source directory, a bare name matches by filename,
+    /// and external/asset/self/anchor targets resolve to nothing.
+    #[test]
+    fn resolve_link_target_handles_the_link_forms() {
+        let files = files_set(&["math/sir", "math", "epidemiology/study-designs", "index"]);
+        // Relative `.md`, up-and-over to a hub.
+        assert_eq!(resolve_link_target("math/sir", "../math.md", &files).as_deref(), Some("math"));
+        // Sibling `.md` in the same directory.
+        assert_eq!(
+            resolve_link_target("epidemiology/x", "../math/sir.md", &files).as_deref(),
+            Some("math/sir")
+        );
+        // Bare name matched by filename.
+        assert_eq!(resolve_link_target("epidemiology/x", "sir", &files).as_deref(), Some("math/sir"));
+        // A `#anchor` on the same page and self-links resolve to nothing.
+        assert_eq!(resolve_link_target("math/sir", "#section", &files), None);
+        assert_eq!(resolve_link_target("math/sir", "sir.md", &files), None); // resolves to self
+        // External and asset targets are ignored.
+        assert_eq!(resolve_link_target("math/sir", "https://example.com", &files), None);
+        assert_eq!(resolve_link_target("math/sir", "../assets/figures/x.svg", &files), None);
+    }
+
+    /// Extraction pulls every internal link target from a page's Markdown and
+    /// drops images, assets, and external links.
+    #[test]
+    fn extract_internal_targets_collects_page_links() {
+        let files = files_set(&["math/sir", "epidemiology/study-designs", "math"]);
+        let md = "See [SIR](../math/sir.md) and [designs](../epidemiology/study-designs.md).\n\
+                  ![fig](../assets/figures/x.svg) and [ext](https://example.com).";
+        let got = extract_internal_targets(md, "programming/y", &files);
+        let want: std::collections::BTreeSet<String> =
+            ["math/sir".to_string(), "epidemiology/study-designs".to_string()].into_iter().collect();
+        assert_eq!(got, want, "only internal page links are collected");
+    }
+
+    /// The "Referenced by" section lists sources by title and links each with
+    /// the page's asset prefix; empty input yields nothing.
+    #[test]
+    fn backlinks_section_renders_sorted_links() {
+        let mut titles: std::collections::HashMap<String, String> = std::collections::HashMap::new();
+        titles.insert("math/sir".into(), "Compartmental Models".into());
+        titles.insert("epidemiology/study-designs".into(), "Study Designs".into());
+        let sources: std::collections::BTreeSet<String> =
+            ["math/sir".to_string(), "epidemiology/study-designs".to_string()].into_iter().collect();
+
+        let html = build_backlinks_section(&sources, &titles, "../");
+        assert!(html.contains("Referenced by"), "section has a heading:\n{html}");
+        // Sorted by title: "Compartmental Models" before "Study Designs".
+        assert!(
+            html.find("Compartmental Models").unwrap() < html.find("Study Designs").unwrap(),
+            "backlinks are ordered by title:\n{html}"
+        );
+        assert!(html.contains("href=\"../math/sir.html\""), "links carry the asset prefix:\n{html}");
+
+        assert!(build_backlinks_section(&std::collections::BTreeSet::new(), &titles, "").is_empty());
     }
 }
 

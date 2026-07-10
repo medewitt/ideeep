@@ -700,6 +700,31 @@ figure.figure figcaption {
 }
 .gloss-discussed { margin-bottom: 0; }
 
+/* "Referenced by" backlinks at the foot of a page. */
+.backlinks {
+	margin-top: var(--space-7);
+	padding-top: var(--space-4);
+	border-top: 1px solid var(--color-border);
+}
+.backlinks-title {
+	margin: 0 0 var(--space-2);
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--color-muted);
+}
+.backlinks ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2) var(--space-4);
+}
+.backlinks li { margin: 0; }
+.backlinks a { font-size: 0.92rem; }
+
 /* Blockquotes / callouts */
 blockquote {
 	margin: var(--space-5) 0;

@@ -42,6 +42,9 @@ jobs:
       - name: Build site and check internal links
         run: just check-links
 
+      - name: Glossary is consistent (terms used, see: targets resolve)
+        run: just glossary-check
+
   python-tooling:
     # Exercises the dev-time Python tooling: injector unit tests, prose lint,
     # figure-staleness, and that committed Python output is up to date.

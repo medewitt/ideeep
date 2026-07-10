@@ -17,7 +17,7 @@ It is **not** Quarto, mdBook, Bookdown, Hugo, or Jupyter Book, even though the c
 - Content is **plain Markdown** under `content/`, with YAML front matter: `title:` (required), plus optional `description:` (meta/social) and `toc: true` (adds an "On this page" list).
 - Math is rendered at build time with **KaTeX** (server-side); no MathJax runtime is needed.
 - The build produces static HTML in `dist/` and an SQLite full-text **search index** (`dist/search.db`).
-- Deployment is Netlify (`netlify.toml`). GitHub Actions CI (`.github/workflows/ci.yml`) runs the guardrails on every push/PR: the Rust regression suite (`just test`), the injector unit tests (`just test-scripts`), the prose linter (`just lint-prose`), figure staleness (`just figures-check`), injected-output freshness (`just python-output-check`), and a full build plus internal-link check (`just check-links`). Keep these green locally before pushing.
+- Deployment is Netlify (`netlify.toml`). GitHub Actions CI (`.github/workflows/ci.yml`) runs the guardrails on every push/PR: the Rust regression suite (`just test`), the injector unit tests (`just test-scripts`), the prose linter (`just lint-prose`), figure staleness (`just figures-check`), injected-output freshness (`just python-output-check`), a full build plus internal-link check (`just check-links`), and glossary consistency (`just glossary-check`). Keep these green locally before pushing.
 
 ## Directory layout
 
@@ -254,7 +254,22 @@ matter; an empty/absent listing makes the feature inert. The `Glossary` keyword
 is a built-in navbar item (like `Search`) and is added to `config.yaml`'s
 `navbar_order`. See `load_glossary`/`decorate_glossary`/`glossary_page_content`
 in `src/main.rs`. `content/_glossary.yaml` is data, not a page — like
-`_fragments/`, it is never compiled to HTML.
+`_fragments/`, it is never compiled to HTML. `just glossary-check`
+(`scripts/check_glossary.py`, in CI) fails if a term is defined but never
+auto-linked on any page, a `see:` target does not resolve, or two terms collide
+on one slug.
+
+## Backlinks ("Referenced by")
+
+Before rendering, the build reads every page's Markdown and resolves its
+internal links (the same rules as `convert_internal_links`) into a reverse index
+— for each page, the set of pages that link to it. A "Referenced by" list is
+appended at the foot of each page. Hidden pages are excluded as *sources* so a
+draft never advertises itself. See `extract_internal_targets`/
+`resolve_link_target`/`build_backlinks_section` in `src/main.rs`. Links inside
+included fragments are attributed to the fragment author's intent, not the host
+page (extraction runs on the page's own Markdown), which is a deliberate
+simplification.
 
 ## Home page
 
