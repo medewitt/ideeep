@@ -445,3 +445,38 @@ and run with `just test` (`cargo test --release`).
 
 There is no CI, so these tests only run when you run them — treat `just test` as a
 required local gate for generator changes.
+
+## Design rule: a new content feature must survive the whole pipeline
+
+A page's Markdown is read and rewritten by **several independent tools**, not just
+the Rust renderer. Before a `.md` file becomes HTML it passes through, among
+others:
+
+- `expand_includes` / `expand_spoilers` and the rest of `src/main.rs` (the renderer);
+- `scripts/sentence_lint.py` — reflows prose to one sentence per line (`just fmt-prose`);
+- `scripts/inject_python_output.py` — executes ` ```python ` blocks and splices stdout in;
+- the glossary auto-linker, fragment includes, backlink extractor, figure/equation numbering, and the internal-link checker.
+
+**When you add a new authoring construct** (a fenced block like `:::spoiler`, a new
+shortcode, an inline sentinel like `[@fig:…]`, a new front-matter flag), it is not
+done when it round-trips through *its own* parser. You must verify it **survives
+every other stage that scans or rewrites Markdown**, and add a **cross-stage
+regression test** — not just a renderer test — for each interaction. Concretely:
+
+- **Reflow safety.** Run `just fmt-prose` on a page using the feature and confirm
+  the construct is byte-stable (idempotent) and still renders. Teach the linter to
+  treat any new fence/marker line as passthrough, and lock it in with a test in
+  `scripts/test_sentence_lint.py`.
+- **Injector / other-tool safety.** If the construct can wrap or sit near a
+  ` ```python ` block, an include, a table, or a glossary term, check that tool
+  too, and add a test to the relevant suite (`scripts/test_*.py`, `just test-scripts`).
+- **Renderer robustness.** Make the parser fail *loudly or gracefully*, never
+  silently — an unterminated or mangled construct should degrade visibly, not
+  corrupt the page (see `expand_spoilers`' unterminated-opener and glued-closer
+  handling and their tests).
+
+This rule exists because the `:::spoiler` feature shipped with only a renderer
+implementation: the sentence linter, unaware of the fence, merged the summary into
+the body and detached the closing `:::`, silently corrupting every spoiler on the
+next `fmt-prose`. The hardening and the `test_sentence_lint.py` / `expand_spoilers`
+integration tests should have landed **with** the feature. Do that for the next one.
