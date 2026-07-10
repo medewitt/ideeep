@@ -3,21 +3,21 @@ Session types: **L** = Lecture · **JC** = Journal Club · **WS** = Workshop · 
 Cohorts: Brian Ross July 20–26 · Kit Sommers & Rasheda Hayath August 3–9.
 
 | Day    | Time | Session | Instructor | Related concepts |
-|-------|-----|---------|------------|------------------|
+|-------|------------|--------|------------|------------------|
 | Mon (Jul 20 / Aug 3) | 9-9:50 | Welcome / Intro + overview of section research areas (DeWitt/ Bellotti) Research topics pitch | DeWitt / Bellotti; PIs | [Research areas](research.md) |
 | Mon (Jul 20 / Aug 3) | 10-10:50 | **Lecture** — Study design / sources of bias | Bellotti | [Study designs](epidemiology/study-designs.md) · [Causal inference](math/causal-inference.md) |
 | Mon (Jul 20 / Aug 3) | 11-11:50 | **Lecture** — Vaccine trials? Wierzba? | _TBD_ | [Study designs (RCTs)](epidemiology/study-designs.md) |
 | Mon (Jul 20 / Aug 3) | 1-1:50 | **Journal Club** — topic - study designs | ? | [Study designs](epidemiology/study-designs.md) |
 | Mon (Jul 20 / Aug 3) | 2-2:50 | **Workshop** — Developing an EHR cohort, protocol components | Wenner / DeWitt | [Study designs](epidemiology/study-designs.md) · [Data ingestion & APIs](programming/data-ingestion-and-apis.md) |
-| Mon (Jul 20 / Aug 3) | 3-3:50 | **ID Science Talk** — How we successfully leveraged atrium EHR data | Williamson? IDEAS? | [Tidy & relational data](programming/tidy-and-relational-data.md) · [Data ingestion & APIs](programming/data-ingestion-and-apis.md) |
+| Mon (Jul 20 / Aug 3) | 3-3:50 | **ID Science Talk** — How we successfully leveraged atrium EHR data | _TBD_ | [Tidy & relational data](programming/tidy-and-relational-data.md) · [Data ingestion & APIs](programming/data-ingestion-and-apis.md) |
 | Tue (Jul 21 / Aug 4) | 9-9:50 | **Lecture** — Critical appraisal of literature + how to run a journal club | DeWitt | [Study designs](epidemiology/study-designs.md) · [IDEEE seminar / journal club](ideee-seminar.md) |
 | Tue (Jul 21 / Aug 4) | 10-10:50 | **Lecture** — Measures of frequency, correlation vs causation, outcome modifiers, diagnostic testing | Bellotti | [Measures of association & impact](epidemiology/measures-of-association-and-impact.md) · [Causal inference](math/causal-inference.md) · [Diagnostic testing](math/diagnostic-testing.md) |
 | Tue (Jul 21 / Aug 4) | 11-11:50 | **Lecture** — Cohort design and tools (slicer/dicer, I2B2, feasibility analysis) biostats intro | Wenner | [Study designs](epidemiology/study-designs.md) · [Statistical inference](math/statistical-inference.md) · [Tidy & relational data](programming/tidy-and-relational-data.md) |
 | Tue (Jul 21 / Aug 4) | 1-1:50 | **Journal Club** — Interpretting OR, RR, HR | Dave Kline? | [Measures of association & impact](epidemiology/measures-of-association-and-impact.md) · [Logistic regression (OR)](math/logistic-regression.md) · [Cox regression (HR)](math/cox-regression.md) |
 | Tue (Jul 21 / Aug 4) | 2-2:50 | **Workshop** — Developing research question/ hypothesis / aims | Bellotti / DeWitt | [Scientific writing](scientific-writing.md) · [Hypothesis testing](math/hypothesis-testing.md) |
-| Tue (Jul 21 / Aug 4) | 3-3:50 | **ID Science Talk** — We found X association with Y disease | Dave Kline? IDEAS? | [Measures of association & impact](epidemiology/measures-of-association-and-impact.md) · [Causal inference](math/causal-inference.md) |
+| Tue (Jul 21 / Aug 4) | 3-3:50 | **ID Science Talk** — We found X association with Y disease | _TBD_ | [Measures of association & impact](epidemiology/measures-of-association-and-impact.md) · [Causal inference](math/causal-inference.md) |
 | Wed (Jul 22 / Aug 5) | 9-9:50 | **Lecture** — Testing novel therapeutics, lab animal studies, RCTs, why validated models / power analyses are important | Sanders | [Experimental design](math/experimental-design.md) · [Study designs](epidemiology/study-designs.md) · [Statistical power](math/hypothesis-testing.md) |
-| Wed (Jul 22 / Aug 5) | 10-10:50 | **Lecture** — Scientific writing: grants (and the role of collaborators) /abstracts/ posters | MAM? Dan Sprockett? Daunais? | [Scientific writing](scientific-writing.md) |
+| Wed (Jul 22 / Aug 5) | 10-10:50 | **Lecture** — Scientific writing: grants (and the role of collaborators) /abstracts/ posters | _TBD_ | [Scientific writing](scientific-writing.md) |
 | Wed (Jul 22 / Aug 5) | 11-11:50 | **Lecture** — AI use in medical research | DeWitt | [Data science for ID](data-science-id.md) |
 | Wed (Jul 22 / Aug 5) | 1-1:50 | **Journal Club** — Quality of evidence for clinical practice decisions (?) foundational vaccine trials | ? | [Study designs](epidemiology/study-designs.md) · [p-values](math/p-values.md) |
 | Wed (Jul 22 / Aug 5) | 2-2:50 | **Workshop** — Spec aims development and review | _TBD_ | [Scientific writing](scientific-writing.md) |
