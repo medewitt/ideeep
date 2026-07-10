@@ -509,7 +509,17 @@ fn add_heading_ids(html: &str) -> (String, Vec<(u8, String, String)>) {
         let slug = if *n == 0 { base.clone() } else { format!("{}-{}", base, n) };
         *n += 1;
         out.push_str(&html[last..m.start()]);
-        out.push_str(&format!("<h{l} id=\"{s}\">{inner}</h{l}>", l = lvl, s = slug, inner = inner));
+        // Emit the heading with a trailing permalink anchor. The `#` is visually
+        // revealed on hover/focus (see `.heading-anchor` in styles.css) and lets a
+        // reader copy a direct link to any section. The anchor is appended *after*
+        // `inner`, and the TOC/heading list below still uses the anchor-free
+        // `inner`, so neither the "On this page" nav nor the search text sees it.
+        out.push_str(&format!(
+            "<h{l} id=\"{s}\">{inner}<a class=\"heading-anchor\" href=\"#{s}\" aria-label=\"Permalink to this section\">#</a></h{l}>",
+            l = lvl,
+            s = slug,
+            inner = inner
+        ));
         last = m.end();
         headings.push((lvl, slug, strip_tags(inner)));
     }
@@ -583,6 +593,110 @@ fn columnize_link_lists(html: &str) -> String {
     }
     out.push_str(rest);
     out
+}
+
+/// Wrap block images in numbered `<figure>`/`<figcaption>` elements and resolve
+/// `[@fig:label]` cross-references to their number.
+///
+/// A paragraph that contains nothing but a single image (the `![alt](src)`
+/// convention this site uses, which the Markdown parser renders as
+/// `<p><img …></p>`) becomes:
+///
+/// ```html
+/// <figure id="fig-…" class="figure">
+///   <img …>
+///   <figcaption><span class="figure-label">Figure N.</span> alt text</figcaption>
+/// </figure>
+/// ```
+///
+/// Figures are numbered sequentially per page, and the alt text doubles as the
+/// visible caption (matching the authoring guide). A figure can be *labelled*
+/// for cross-referencing by giving the Markdown image a title that starts with
+/// `fig:` — `![Epidemic curve](curve.svg "fig:curve")` — which becomes the
+/// element id (`fig-curve`) and is stripped from the rendered `<img>`. Anywhere
+/// in the prose, `[@fig:curve]` then renders as a link reading "Figure N"
+/// pointing at that figure; the reference and the figure may appear in either
+/// order. An image with empty alt text and no `fig:` label is left as a plain
+/// inline image (an escape hatch for decorative art). An unresolved reference
+/// renders a loud marker rather than silently vanishing.
+fn process_figures(html: &str) -> String {
+    let para_img = Regex::new(r"(?s)<p>\s*(<img\b[^>]*?>)\s*</p>").unwrap();
+    let alt_re = Regex::new(r#"alt="([^"]*)""#).unwrap();
+    let title_re = Regex::new(r#"\s*title="([^"]*)""#).unwrap();
+
+    // Map a `fig:label` to the number assigned to that figure, filled during the
+    // wrapping pass and consumed by the reference-resolution pass.
+    let mut labels: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
+    let mut counter = 0usize;
+
+    let wrapped = para_img.replace_all(html, |caps: &regex::Captures| {
+        let img_tag = &caps[1];
+        let alt = alt_re
+            .captures(img_tag)
+            .map(|c| c[1].to_string())
+            .unwrap_or_default();
+        let title = title_re.captures(img_tag).map(|c| c[1].to_string());
+        let label = title.as_deref().filter(|t| t.starts_with("fig:"));
+
+        // Decorative image (no caption, no label): leave the paragraph as-is.
+        if alt.trim().is_empty() && label.is_none() {
+            return caps[0].to_string();
+        }
+
+        counter += 1;
+        let id = match label {
+            Some(l) => {
+                let slug = l.replace(':', "-");
+                labels.insert(l.to_string(), counter);
+                slug
+            }
+            None => format!("figure-{}", counter),
+        };
+
+        // Strip a `fig:` sentinel title from the emitted <img> so it does not
+        // surface as a browser tooltip; a non-sentinel title is left intact.
+        let clean_img = if label.is_some() {
+            title_re.replace(img_tag, "").into_owned()
+        } else {
+            img_tag.to_string()
+        };
+
+        let caption = if alt.trim().is_empty() {
+            format!("<span class=\"figure-label\">Figure {}.</span>", counter)
+        } else {
+            format!(
+                "<span class=\"figure-label\">Figure {}.</span> {}",
+                counter, alt
+            )
+        };
+
+        format!(
+            "<figure id=\"{id}\" class=\"figure\">\n{img}\n<figcaption>{cap}</figcaption>\n</figure>",
+            id = id,
+            img = clean_img,
+            cap = caption,
+        )
+    });
+
+    // Second pass: resolve `[@fig:label]` references now that every figure has a
+    // number. Undefined references become a visible error marker.
+    let ref_re = Regex::new(r"\[@(fig:[A-Za-z0-9_:-]+)\]").unwrap();
+    ref_re
+        .replace_all(&wrapped, |caps: &regex::Captures| {
+            let key = &caps[1];
+            match labels.get(key) {
+                Some(n) => format!(
+                    "<a class=\"fig-ref\" href=\"#{id}\">Figure {n}</a>",
+                    id = key.replace(':', "-"),
+                    n = n
+                ),
+                None => format!(
+                    "<span class=\"fig-ref-error\">[unresolved figure reference: {}]</span>",
+                    key
+                ),
+            }
+        })
+        .into_owned()
 }
 
 /// Directory (relative to the project root) that holds reusable Markdown
@@ -714,6 +828,122 @@ fn expand_includes_from(markdown: &str, dir: &Path) -> String {
     }
     let mut stack: Vec<String> = Vec::new();
     expand(markdown, dir, &mut stack)
+}
+
+/// Default summary label for a spoiler block whose opener gives no text of its
+/// own (`:::spoiler` with nothing after it).
+const SPOILER_DEFAULT_SUMMARY: &str = "Show more";
+
+/// Escape a string for use as HTML *text* (element content, not an attribute).
+fn escape_text(s: &str) -> String {
+    s.replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+}
+
+/// If `line` opens a spoiler block, return its summary label (trimmed, possibly
+/// empty). The opener is `:::spoiler` or `:::details` at the start of the line
+/// (after optional indentation); everything after the keyword on that line is
+/// the free-text summary. Returns `None` for any other line.
+///
+/// The summary is deliberately author-configurable — `:::spoiler Show the
+/// solution`, `:::details Reveal the derivation`, `:::spoiler Spoiler` all work,
+/// and a bare `:::spoiler` falls back to `SPOILER_DEFAULT_SUMMARY`.
+fn spoiler_opener_label(line: &str) -> Option<String> {
+    let t = line.trim_start();
+    for kw in ["spoiler", "details"] {
+        if let Some(rest) = t.strip_prefix(":::") {
+            if let Some(after) = rest.strip_prefix(kw) {
+                // The keyword must end the token (end of line or whitespace),
+                // so `:::spoilerfoo` is not mistaken for an opener.
+                if after.is_empty() || after.starts_with(char::is_whitespace) {
+                    return Some(after.trim().to_string());
+                }
+            }
+        }
+    }
+    None
+}
+
+/// Whether a line closes a fenced block: exactly `:::` (with optional
+/// surrounding whitespace) and nothing else.
+fn is_fence_close(line: &str) -> bool {
+    line.trim() == ":::"
+}
+
+/// Expand `:::spoiler … ::: ` (and the `:::details` alias) fenced blocks into
+/// native `<details>`/`<summary>` disclosure widgets, so a page can hide a
+/// worked solution, a long derivation, or an aside behind a click with no
+/// JavaScript.
+///
+/// ```text
+/// :::spoiler Show the solution
+/// The body is **ordinary Markdown** — lists, math, code, even nested spoilers.
+/// :::
+/// ```
+///
+/// The text after the keyword is the clickable summary (configurable per block;
+/// a bare `:::spoiler` uses "Show more"). The body is emitted between blank
+/// lines inside the `<details>` element so the Markdown parser still renders it
+/// normally (a `<details>` HTML block is closed by the blank line, the body is
+/// parsed, then `</details>` reopens an HTML block). Blocks may nest. An opener
+/// with no matching `:::` close is left untouched so stray text is never eaten.
+/// Runs on the raw Markdown before parsing, like `expand_includes`.
+fn expand_spoilers(markdown: &str) -> String {
+    // Fast path: nothing to do unless a spoiler/details opener is present.
+    if !markdown.contains(":::spoiler") && !markdown.contains(":::details") {
+        return markdown.to_string();
+    }
+
+    let lines: Vec<&str> = markdown.lines().collect();
+    let mut out = String::with_capacity(markdown.len() + 64);
+    let mut i = 0;
+    while i < lines.len() {
+        if let Some(label) = spoiler_opener_label(lines[i]) {
+            // Scan forward for the matching close, tracking nested spoiler
+            // openers so an inner `:::` doesn't close the outer block early.
+            let mut depth = 1i32;
+            let mut j = i + 1;
+            let mut body: Vec<&str> = Vec::new();
+            while j < lines.len() {
+                if spoiler_opener_label(lines[j]).is_some() {
+                    depth += 1;
+                    body.push(lines[j]);
+                } else if is_fence_close(lines[j]) {
+                    depth -= 1;
+                    if depth == 0 {
+                        break;
+                    }
+                    body.push(lines[j]);
+                } else {
+                    body.push(lines[j]);
+                }
+                j += 1;
+            }
+
+            if depth == 0 {
+                // Recurse so nested spoilers inside the body are expanded too.
+                let inner = expand_spoilers(&body.join("\n"));
+                let summary = if label.is_empty() {
+                    SPOILER_DEFAULT_SUMMARY.to_string()
+                } else {
+                    escape_text(&label)
+                };
+                out.push_str(&format!(
+                    "<details class=\"spoiler\">\n<summary>{}</summary>\n\n{}\n\n</details>\n",
+                    summary,
+                    inner.trim_matches('\n')
+                ));
+                i = j + 1;
+                continue;
+            }
+            // Unterminated opener: emit the line verbatim and move on.
+        }
+        out.push_str(lines[i]);
+        out.push('\n');
+        i += 1;
+    }
+    out
 }
 
 /// Whether a line is a GFM table delimiter row (`|---|:--:|`): every
@@ -887,6 +1117,9 @@ fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<S
     // Splice in any `:::{fragment.md}:::` template fragments first, so the rest
     // of the pipeline sees one flat Markdown document.
     let markdown = expand_includes(markdown);
+    // Expand `:::spoiler … :::` disclosure blocks into `<details>` wrappers whose
+    // bodies the Markdown parser still renders normally. Done before math/parse.
+    let markdown = expand_spoilers(&markdown);
     let markdown = markdown.as_str();
 
     // Pre-process math expressions: render them server-side with KaTeX, leaving
@@ -903,7 +1136,9 @@ fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<S
 
     let linked = convert_internal_links(&html_output, markdown_files);
     let with_callouts = render_callouts(&linked);
-    columnize_link_lists(&with_callouts)
+    let with_columns = columnize_link_lists(&with_callouts);
+    // Number block images into <figure>s and resolve [@fig:…] cross-references.
+    process_figures(&with_columns)
 }
 
 #[derive(Clone)]
@@ -2914,6 +3149,103 @@ mod tests {
             plain.find("Afternoon").unwrap() < plain.find("Morning").unwrap(),
             "without the flag the fragment is spliced as written:\n{plain}"
         );
+    }
+
+    // --- Heading permalink anchors ---------------------------------------
+
+    /// Every h2/h3 keeps its stable id and now carries a trailing permalink
+    /// anchor pointing at that id, so a reader can deep-link any section.
+    #[test]
+    fn headings_get_permalink_anchors() {
+        let (html, headings) = add_heading_ids("<h2>Worked Example</h2><h3>In Code</h3>");
+        assert!(
+            html.contains("<h2 id=\"worked-example\">Worked Example<a class=\"heading-anchor\" href=\"#worked-example\""),
+            "h2 should keep its id and gain a permalink anchor:\n{html}"
+        );
+        assert!(
+            html.contains("<h3 id=\"in-code\">In Code<a class=\"heading-anchor\" href=\"#in-code\""),
+            "h3 should keep its id and gain a permalink anchor:\n{html}"
+        );
+        // The anchor must not leak into the TOC/heading label text.
+        assert_eq!(headings[0].2, "Worked Example");
+        assert!(!headings[0].2.contains('#'), "anchor char must stay out of the TOC label");
+    }
+
+    // --- Spoiler / details disclosure blocks -----------------------------
+
+    /// A `:::spoiler <label>` block becomes a native `<details>` with the given
+    /// summary, and its body is still rendered as Markdown (bold, here).
+    #[test]
+    fn spoiler_block_renders_details_with_custom_summary() {
+        let html = render(":::spoiler Show the solution\nThe answer is **42**.\n:::");
+        assert!(html.contains("<details class=\"spoiler\">"), "expected a details wrapper:\n{html}");
+        assert!(html.contains("<summary>Show the solution</summary>"), "custom summary missing:\n{html}");
+        assert!(html.contains("<strong>42</strong>"), "body should be parsed as Markdown:\n{html}");
+        assert!(html.contains("</details>"), "details must be closed:\n{html}");
+    }
+
+    /// The summary label is fully configurable — any wording works — and the
+    /// `:::details` alias behaves the same as `:::spoiler`.
+    #[test]
+    fn spoiler_summary_is_configurable_and_has_alias() {
+        assert!(render(":::spoiler Reveal the derivation\nx\n:::")
+            .contains("<summary>Reveal the derivation</summary>"));
+        assert!(render(":::details See more\ny\n:::")
+            .contains("<summary>See more</summary>"));
+        // A bare opener falls back to the default label.
+        assert!(render(":::spoiler\nz\n:::").contains("<summary>Show more</summary>"));
+    }
+
+    /// Spoilers may nest: an inner `:::` must not close the outer block early.
+    #[test]
+    fn spoiler_blocks_nest() {
+        let html = render(":::spoiler Outer\nbefore\n:::spoiler Inner\ndeep\n:::\nafter\n:::");
+        assert_eq!(html.matches("<details class=\"spoiler\">").count(), 2, "both levels should expand:\n{html}");
+        assert!(html.contains("<summary>Outer</summary>") && html.contains("<summary>Inner</summary>"), "both summaries present:\n{html}");
+        assert!(html.contains("deep") && html.contains("after"), "inner and trailing content survive:\n{html}");
+    }
+
+    /// An opener with no matching close is left untouched so stray text is not
+    /// swallowed into a runaway details block.
+    #[test]
+    fn unterminated_spoiler_is_left_alone() {
+        let html = render(":::spoiler Oops\nno closing fence here");
+        assert!(!html.contains("<details"), "an unterminated opener must not open a details:\n{html}");
+    }
+
+    // --- Figure numbering, captions, and cross-references ----------------
+
+    /// A lone block image becomes a numbered `<figure>` whose caption is the alt
+    /// text, matching the site's "alt doubles as caption" convention.
+    #[test]
+    fn block_image_becomes_numbered_figure() {
+        let html = render("![Epidemic curve over time](../assets/figures/curve.svg)");
+        assert!(html.contains("<figure id=\"figure-1\" class=\"figure\">"), "expected a numbered figure wrapper:\n{html}");
+        assert!(html.contains("<figcaption><span class=\"figure-label\">Figure 1.</span> Epidemic curve over time</figcaption>"), "caption should carry the number and alt text:\n{html}");
+        assert!(!html.contains("<p><img"), "the image paragraph should be replaced by a figure:\n{html}");
+    }
+
+    /// A `fig:`-titled image is labelled for cross-referencing: it gets a stable
+    /// id, the sentinel title is stripped from the <img>, and `[@fig:…]` resolves
+    /// to a numbered link — regardless of whether the reference precedes or
+    /// follows the figure in the document.
+    #[test]
+    fn figure_label_and_cross_reference_resolve() {
+        let html = render("As shown in [@fig:curve], cases peak early.\n\n![Cases](curve.svg \"fig:curve\")");
+        assert!(html.contains("<figure id=\"fig-curve\" class=\"figure\">"), "labelled figure should use the label as its id:\n{html}");
+        assert!(!html.contains("title=\"fig:curve\""), "the fig: sentinel title must be stripped from the img:\n{html}");
+        assert!(html.contains("<a class=\"fig-ref\" href=\"#fig-curve\">Figure 1</a>"), "reference should resolve to a numbered link even when it precedes the figure:\n{html}");
+    }
+
+    /// A decorative image (empty alt, no label) is left as a plain image, and an
+    /// unresolved `[@fig:…]` reference renders a visible error marker.
+    #[test]
+    fn decorative_image_kept_and_unresolved_ref_is_loud() {
+        let deco = render("![](../assets/spacer.svg)");
+        assert!(!deco.contains("<figure"), "an empty-alt image must not be numbered:\n{deco}");
+
+        let bad = render("See [@fig:missing] please.");
+        assert!(bad.contains("fig-ref-error") && bad.contains("fig:missing"), "an unresolved reference should be a loud marker:\n{bad}");
     }
 }
 

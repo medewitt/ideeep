@@ -552,6 +552,40 @@ tbody tr:nth-child(even) {
 	border-radius: var(--radius);
 }
 
+/* Numbered figures (block images wrapped by the build) and their captions. */
+figure.figure {
+	margin: var(--space-5) 0;
+	text-align: center;
+}
+figure.figure img {
+	margin: 0 auto;
+}
+figure.figure figcaption {
+	margin-top: var(--space-2);
+	font-size: 0.9rem;
+	line-height: 1.5;
+	color: var(--color-muted);
+	text-align: center;
+}
+.figure-label {
+	font-weight: 700;
+	color: var(--color-ink);
+}
+
+/* Cross-reference links ([@fig:…]) and the loud marker for an unresolved one. */
+.fig-ref { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fig-ref-error {
+	color: #b02020;
+	font-weight: 600;
+	background: rgba(221, 51, 51, 0.08);
+	padding: 0 0.25em;
+	border-radius: 4px;
+}
+:root[data-theme="dark"] .fig-ref-error { color: #f3a3a3; }
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .fig-ref-error { color: #f3a3a3; }
+}
+
 /* Blockquotes / callouts */
 blockquote {
 	margin: var(--space-5) 0;
@@ -626,10 +660,70 @@ blockquote p + p {
 	:root:not([data-theme="light"]) .fragment-error { color: #f3a3a3; }
 }
 
+/* Spoiler / disclosure blocks (`:::spoiler … :::`) — native <details>. */
+details.spoiler {
+	margin: var(--space-5) 0;
+	padding: 0 var(--space-5);
+	border: 1px solid var(--color-border);
+	border-left: 4px solid var(--color-accent);
+	border-radius: var(--radius);
+	background: var(--color-surface);
+}
+details.spoiler > summary {
+	cursor: pointer;
+	padding: var(--space-3) 0;
+	margin: 0 calc(-1 * var(--space-5)); /* let the summary span the full width */
+	padding-left: var(--space-5);
+	padding-right: var(--space-5);
+	font-weight: 700;
+	color: var(--color-accent-strong);
+	list-style: none;
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+}
+details.spoiler > summary::-webkit-details-marker { display: none; }
+/* Rotating disclosure triangle drawn with a CSS caret so it needs no asset. */
+details.spoiler > summary::before {
+	content: "";
+	width: 0;
+	height: 0;
+	border-left: 6px solid currentColor;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	transition: transform 0.15s ease;
+	flex: none;
+}
+details.spoiler[open] > summary::before { transform: rotate(90deg); }
+details.spoiler[open] > summary { margin-bottom: var(--space-2); }
+details.spoiler > summary:hover { color: var(--color-accent); }
+details.spoiler > :last-child { margin-bottom: var(--space-4); }
+:root[data-theme="dark"] details.spoiler { background: var(--color-surface-2); }
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) details.spoiler { background: var(--color-surface-2); }
+}
+
 /* "On this page" table of contents (long/hub pages) */
 h2[id], h3[id] {
 	scroll-margin-top: 84px;
 }
+
+/* Permalink anchor appended to every h2/h3: hidden until the heading is
+   hovered or the anchor is focused, so it stays unobtrusive but reachable. */
+.heading-anchor {
+	margin-left: 0.4em;
+	color: var(--color-muted);
+	text-decoration: none;
+	opacity: 0;
+	transition: opacity 0.12s ease;
+	font-weight: 400;
+}
+h2:hover > .heading-anchor,
+h3:hover > .heading-anchor,
+.heading-anchor:focus {
+	opacity: 1;
+}
+.heading-anchor:hover { color: var(--color-link); }
 
 .page-toc {
 	margin: var(--space-6) 0;
