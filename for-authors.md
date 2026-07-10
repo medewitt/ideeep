@@ -240,6 +240,9 @@ Set the derivative to zero and solve for $I^\*$:
 - `:::details` is an alias for `:::spoiler` — identical behavior, pick whichever
   reads better.
 - The opener sits on its own line; the block ends at a line that is just `:::`.
+  Keep both markers on their own line. The prose linter (`just fmt-prose`) knows
+  about spoiler fences and will not merge them into your text, so you can run it
+  freely; a blank line around the markers is optional.
 - Blocks may **nest**.
 
 ---
