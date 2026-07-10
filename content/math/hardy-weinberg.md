@@ -12,6 +12,27 @@ Deviations from it are how we detect inbreeding, natural selection, hidden popul
 Consider a single biallelic locus with alleles $A$ and $a$.
 Let $p$ be the frequency of allele $A$ and $q = 1 - p$ the frequency of allele $a$.
 Under random mating, an individual's two alleles are like two independent draws from the allele pool, so the genotype frequencies are the terms of $(p+q)^2$: \[ f(AA) = p^2, \qquad f(Aa) = 2pq, \qquad f(aa) = q^2. \] These are the Hardy–Weinberg proportions, and they are reached after a single generation of random mating regardless of the starting genotype frequencies.
+
+:::spoiler Show that one generation of random mating reaches equilibrium
+
+Start from *arbitrary* genotype frequencies $f_{AA}, f_{Aa}, f_{aa}$ — not necessarily in Hardy–Weinberg proportions.
+The allele frequency in the gamete pool is
+
+\[
+p = f_{AA} + \tfrac12 f_{Aa}, \qquad q = f_{aa} + \tfrac12 f_{Aa} = 1 - p .
+\]
+
+Random mating is the random union of two gametes, so an offspring's two alleles are independent draws from this pool:
+
+\[
+f'_{AA} = p^2, \qquad f'_{Aa} = 2pq, \qquad f'_{aa} = q^2 .
+\]
+
+These are the Hardy–Weinberg proportions, reached in a single generation.
+They are also a fixed point: the new allele frequency is $p' = f'_{AA} + \tfrac12 f'_{Aa} = p^2 + pq = p(p+q) = p$, so the frequencies stay put every generation thereafter.
+
+:::
+
 Once reached, both the allele frequencies and the genotype frequencies stay constant generation after generation — hence "equilibrium".
 
 ### Assumptions

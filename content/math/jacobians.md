@@ -26,6 +26,26 @@ J =
 
 This Jacobian can be evaluated at a particular point (for example, the disease-free equilibrium $(S^*, I^*, R^*) = (N, 0, 0)$ to analyze [local stability](eigenvalues-and-eigenvectors.md) of the dynamical system.
 
+:::spoiler Show the stability of the disease-free equilibrium
+
+Evaluate the Jacobian at the disease-free equilibrium $(S, I, R) = (N, 0, 0)$.
+With the infection term $\beta S I / N$, the partial derivatives at $I = 0$, $S = N$ give
+
+\[
+J_{\text{DFE}} = \begin{bmatrix} 0 & -\beta & 0 \\ 0 & \beta - \gamma & 0 \\ 0 & \gamma & 0 \end{bmatrix} .
+\]
+
+The characteristic polynomial factors as $\lambda^2(\beta - \gamma - \lambda) = 0$, so the eigenvalues are $\lambda_1 = 0$, $\lambda_2 = 0$, and $\lambda_3 = \beta - \gamma$.
+The disease-free equilibrium is unstable — an outbreak can grow — exactly when the nonzero eigenvalue is positive:
+
+\[
+\beta - \gamma > 0 \iff R_0 = \frac{\beta}{\gamma} > 1 .
+\]
+
+So the eigenvalue that governs invasion recovers the familiar threshold $R_0 = 1$.
+
+:::
+
 ## In Julia
 
 Using the `Symbolics.jl` package, we can compute the Jacobian symbolically:

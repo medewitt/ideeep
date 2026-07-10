@@ -20,6 +20,30 @@ Its [probability density function](random-variables.md) is $$f(x)=\lambda e^{-\l
 - **Mean:** $\mathbb{E}[X]=\dfrac{1}{\lambda}$.
 - **Variance:** $\mathrm{Var}(X)=\dfrac{1}{\lambda^2}$.
 
+:::spoiler Show the mean, variance, and memoryless property
+
+**Mean and variance.** Integrate by parts with the density $f(x) = \lambda e^{-\lambda x}$ on $[0,\infty)$:
+
+\[
+\mathbb{E}[X] = \int_0^{\infty} x\,\lambda e^{-\lambda x}\,dx = \Big[-x e^{-\lambda x}\Big]_0^{\infty} + \int_0^{\infty} e^{-\lambda x}\,dx = 0 + \frac{1}{\lambda} = \frac{1}{\lambda} .
+\]
+
+A second integration by parts gives $\mathbb{E}[X^2] = \int_0^\infty x^2 \lambda e^{-\lambda x}\,dx = 2/\lambda^2$, so
+
+\[
+\operatorname{Var}(X) = \mathbb{E}[X^2] - \big(\mathbb{E}[X]\big)^2 = \frac{2}{\lambda^2} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2} .
+\]
+
+**Memorylessness.** The survival function is $P(X > t) = \int_t^\infty \lambda e^{-\lambda x}\,dx = e^{-\lambda t}$, so
+
+\[
+P(X > s + t \mid X > s) = \frac{P(X > s+t)}{P(X > s)} = \frac{e^{-\lambda(s+t)}}{e^{-\lambda s}} = e^{-\lambda t} = P(X > t) .
+\]
+
+Having already waited a time $s$ tells you nothing about the remaining wait — the defining property of the exponential.
+
+:::
+
 ## The memoryless property
 
 The exponential is the only continuous distribution that is **memoryless**: $$P(X>s+t\mid X>s)=P(X>t).$$ Having already waited $s$ units tells you nothing about how much longer you must wait — the process "forgets" the past.

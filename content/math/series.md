@@ -28,6 +28,30 @@ With ratio $r$, the terms are $a, ar, ar^2, \dots$. When $|r| < 1$ the infinite 
 \sum_{n=1}^{\infty} a\,r^{\,n-1} = \frac{a}{1 - r}.
 \]
 
+:::spoiler Show why the sum is $a/(1-r)$
+
+Write the partial sum of the first $N$ terms and multiply the whole thing by $r$:
+
+\[
+S_N = a + ar + ar^2 + \cdots + ar^{N-1}, \qquad rS_N = ar + ar^2 + \cdots + ar^{N}.
+\]
+
+Subtracting cancels every interior term (a telescoping trick):
+
+\[
+S_N - rS_N = a - ar^{N} \;\Longrightarrow\; S_N = \frac{a\,(1 - r^{N})}{1 - r}.
+\]
+
+When $|r| < 1$ the term $r^{N} \to 0$ as $N \to \infty$, so the partial sums converge:
+
+\[
+\sum_{n=1}^{\infty} a\,r^{\,n-1} = \frac{a}{1 - r}.
+\]
+
+If $|r| \ge 1$ the term $r^{N}$ does not vanish and the series diverges.
+
+:::
+
 ## Power series
 
 A power series $\sum_{n=0}^{\infty} c_n x^n$ defines a function on its interval of convergence.

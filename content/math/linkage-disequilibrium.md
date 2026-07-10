@@ -25,6 +25,26 @@ The most widely used measure is the squared correlation coefficient between the 
 
 Recombination breaks up haplotypes and erodes LD over the generations.
 If $c$ is the recombination fraction between the two loci (the [probability](probability-basics.md) of a crossover between them per meiosis), then the disequilibrium decays geometrically: \[ D_t = D_0 (1 - c)^t . \] Tightly linked loci (small $c$) retain LD for many generations, while unlinked loci ($c = 0.5$) lose half of any remaining $D$ each generation.
+
+:::spoiler Show why $D$ decays by a factor $(1-c)$ each generation
+
+Track the frequency of the $AB$ haplotype across one generation.
+A gamete is a non-recombinant with probability $1 - c$, in which case it carries a parental haplotype, or a recombinant with probability $c$, in which case its two alleles are drawn independently and combine as $AB$ with probability $p_A p_B$:
+
+\[
+p_{AB}' = (1 - c)\,p_{AB} + c\,p_A p_B .
+\]
+
+Recombination does not change the single-locus allele frequencies, so subtract $p_A p_B$ from both sides; with $D = p_{AB} - p_A p_B$,
+
+\[
+D' = p_{AB}' - p_A p_B = (1 - c)\,(p_{AB} - p_A p_B) = (1 - c)\,D .
+\]
+
+Iterating this recursion gives the geometric decay $D_t = D_0\,(1 - c)^t$; at $c = \tfrac12$ (unlinked loci) half of the remaining $D$ is lost each generation.
+
+:::
+
 This decay is why LD blocks are local: over long times only nearby variants stay correlated.
 
 ## Worked example

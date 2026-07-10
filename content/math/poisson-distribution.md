@@ -20,6 +20,33 @@ Its probability mass function is $$P(X=k)=\frac{\lambda^{k}e^{-\lambda}}{k!}.$$
 - **Variance:** $\mathrm{Var}(X)=\lambda$.
 
 A striking feature is that the **[mean](measures-of-center.md) and [variance](measures-of-variability.md) are equal**, both $\lambda$.
+
+:::spoiler Show that the mean and variance both equal $\lambda$
+
+Start from the definition $\mathbb{E}[X] = \sum_{k=0}^{\infty} k\,\frac{\lambda^k e^{-\lambda}}{k!}$.
+The $k = 0$ term vanishes, and for $k \ge 1$ we can write $k/k! = 1/(k-1)!$:
+
+\[
+\mathbb{E}[X] = \lambda e^{-\lambda}\sum_{k=1}^{\infty}\frac{\lambda^{k-1}}{(k-1)!} = \lambda e^{-\lambda}\,e^{\lambda} = \lambda ,
+\]
+
+since the shifted sum is just the Taylor series for $e^{\lambda}$.
+For the variance, the same reindexing on $\mathbb{E}[X(X-1)]$ gives
+
+\[
+\mathbb{E}[X(X-1)] = \sum_{k=2}^{\infty} k(k-1)\frac{\lambda^k e^{-\lambda}}{k!} = \lambda^2 e^{-\lambda}\sum_{k=2}^{\infty}\frac{\lambda^{k-2}}{(k-2)!} = \lambda^2 .
+\]
+
+Then $\mathbb{E}[X^2] = \mathbb{E}[X(X-1)] + \mathbb{E}[X] = \lambda^2 + \lambda$, so
+
+\[
+\operatorname{Var}(X) = \mathbb{E}[X^2] - \big(\mathbb{E}[X]\big)^2 = (\lambda^2 + \lambda) - \lambda^2 = \lambda .
+\]
+
+Mean and variance coincide — the signature of the Poisson.
+
+:::
+
 Real count data with variance much larger than the mean are called *overdispersed* and signal that a plain Poisson model is too simple.
 
 ## Limit of the binomial

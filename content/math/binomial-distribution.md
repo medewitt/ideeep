@@ -26,6 +26,25 @@ The binomial coefficient $\binom{n}{k}=\frac{n!}{k!\,(n-k)!}$ counts the number 
 A single trial with outcome $1$ (success, probability $p$) or $0$ (failure) is a **Bernoulli** [random variable](random-variables.md) with [mean](measures-of-center.md) $p$ and [variance](measures-of-variability.md) $p(1-p)$.
 A binomial variable is just the sum of $n$ independent Bernoulli trials: $$X=\sum_{i=1}^{n}B_i,\qquad B_i\sim\mathrm{Bernoulli}(p).$$ Because expectation and (for independent terms) variance add, this immediately gives $\mathbb{E}[X]=np$ and $\mathrm{Var}(X)=np(1-p)$.
 
+:::spoiler Show how $np$ and $np(1-p)$ follow from a single trial
+
+Write $X = B_1 + B_2 + \cdots + B_n$ as a sum of independent Bernoulli$(p)$ indicators.
+For one trial $\mathbb{E}[B] = p$, and because $B$ takes only the values $0$ and $1$ we have $B^2 = B$, so $\mathbb{E}[B^2] = p$ and
+
+\[
+\operatorname{Var}(B) = \mathbb{E}[B^2] - \big(\mathbb{E}[B]\big)^2 = p - p^2 = p(1-p) .
+\]
+
+Expectation adds over any sum, and variance adds over an *independent* sum, so
+
+\[
+\mathbb{E}[X] = \sum_{i=1}^{n}\mathbb{E}[B_i] = np, \qquad \operatorname{Var}(X) = \sum_{i=1}^{n}\operatorname{Var}(B_i) = np(1-p) .
+\]
+
+The identity $B^2 = B$ is the whole trick: it makes the single-trial variance $p(1-p)$, which the $n$ independent trials simply accumulate.
+
+:::
+
 ## When it arises
 
 The binomial arises whenever you count successes among a **fixed number of independent, identical trials**: proportion testing (fraction cured, fraction defective), survey responses (yes/no), and quality control.
