@@ -190,6 +190,7 @@ It is the mechanistic backbone under the population-scale story of pathogen evol
 - [Within-Host Dynamics and the Immune Response](../math/within-host-dynamics.md)
 - [Adaptive Dynamics and the Evolution of Virulence](../math/evolution-of-virulence.md)
 - [The Price Equation and Evolutionary Epidemiology](../math/price-equation.md)
+- [Antimicrobial Resistance Across Scales](../math/amr-across-scales.md) — the same nesting applied to drug resistance in malaria
 - [The Next-Generation Matrix and R₀](../math/next-generation-matrix.md)
 - [Compartmental Models (SIR)](../math/sir.md)
 - [Epidemiology](../epidemiology.md)

@@ -228,6 +228,7 @@ It requires practice and repetition.
 *Dynamical-systems & epidemic-dynamics toolkit:*
 
 - [Equilibria and Linear Stability](math/equilibria-and-stability.md) — nullclines and phase planes
+- [Floquet Theory and the Stability of Periodic Systems](math/floquet-theory.md) — the monodromy matrix, Floquet multipliers, and stability of periodic orbits and forced equilibria
 - [Bifurcations](math/bifurcations.md) — thresholds and tipping points
 - [Critical Transitions and Early-Warning Signals](math/critical-transitions.md) — rising variance and autocorrelation before a tipping point
 - [The Next-Generation Matrix and R₀](math/next-generation-matrix.md)
@@ -268,6 +269,7 @@ It requires practice and repetition.
 - [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
 - [The Renewal Equation](math/renewal-equation.md) — linking incidence, the generation interval, and $R_t$
 - [Population Dynamics of Resistance](math/resistance-dynamics.md) — two-strain competition and the treatment threshold
+- [Antimicrobial Resistance Across Scales](math/amr-across-scales.md) — the individual-versus-population tension, competitive release, and a nested malaria model joining within- and between-host dynamics
 - [Behavior–Disease Coupled Models](math/behavior-disease-coupled-models.md) — prevalence-dependent behavior and the feedback between action and transmission
 - [Climate Forcing in Transmission Models](math/climate-forcing-in-transmission-models.md) — seasonal forcing, temperature-dependent parameters, and resonance
 - [Fitting Dynamic Models to Data](math/model-calibration.md) — calibration and identifiability

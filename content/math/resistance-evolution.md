@@ -143,6 +143,7 @@ The same selection-versus-cost balance governs resistance to antibiotics, antivi
 ## Related
 
 - [Selection in Population Genetics](selection-popgen.md)
+- [Antimicrobial Resistance Across Scales](amr-across-scales.md) — competitive release and the individual-versus-population tension
 - [The Evolution of Virulence](evolution-of-virulence.md)
 - [Genetic Drift and the Wright–Fisher Model](genetic-drift.md)
 - [Antimicrobial PK/PD](antimicrobial-pkpd.md)

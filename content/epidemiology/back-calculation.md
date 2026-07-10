@@ -6,9 +6,16 @@ description: "Recovering the unobserved curve of infections from observed cases 
 # Back-Calculation and Deconvolution of Infection Curves
 
 We almost never observe infections directly.
-What surveillance records is a downstream event — symptom onset, a positive test, a hospital admission, a death — that happens some random delay after infection.
-**Back-calculation** is the inverse problem of reconstructing the infection curve from the observed curve, given the distribution of that delay.
-It was developed to estimate the hidden HIV epidemic from AIDS diagnoses years after infection, and the same machinery now reconstructs infection incidence for any pathogen where a delay separates infection from observation.
+Intuitively, it hard to know when an infection began even in a person.
+Was it the moment that they shared a room with another infected person?
+Or was it a few hours later into the contact when they rubbed their eyes?
+If and when they go and seek care, was it only when they started to show symptoms?
+Did they seek care during the prodrome or during a period with much more pronounced symptoms?
+Add on to this the delays from testing to result, test result to reported result, and the subsequent potential downstream events (hospitilization, death) and you see that we are dealing with a series of delays that can influence our understanding of how long each of these events takes.
+
+Often official reports are generated from things that are easily (and often unambiguously) countable such as number of new onset hospitalizations per day or number of deaths recorder per day, but what we really want is the true infectious incidence without all the delays that are cooked into these later reports.
+**Back-calculation** is the inverse problem of reconstructing the infection curve from the observed reports, given the distribution of that delay.
+Initially, this aproach was developed to estimate the hidden HIV epidemic from AIDS diagnoses years after infection, and the same machinery now reconstructs infection incidence for any pathogen where a delay separates infection from observation.
 
 ![Left: a delay distribution from infection to observation, shaped like an incubation period over about three weeks. Right: a latent infection curve and the observed case curve it produces after convolution with the delay, which is later in time and smoother than the infections that generated it.](../assets/figures/back-calculation.svg)
 
@@ -25,7 +32,7 @@ The right panel of the figure shows the effect — the case curve is shifted lat
 ## Why inverting it is hard
 
 Back-calculation runs this backward: given $C(t)$ and $f(d)$, solve for $I(s)$.
-This is **deconvolution**, and it is ill-posed.
+This is **deconvolution**, and it is ill-posed (i.e., there are virtually infinitely many possibilities to generate the time series, without making some stronger assumptions about things).
 The convolution smooths away fine detail, so many different infection curves are consistent with the same observed cases, and a naive inversion amplifies noise into wild oscillations.
 Every practical method therefore adds **regularization** — a smoothness penalty, a parametric shape for $I(s)$, or a prior — to select a plausible infection curve among the many that fit ([Goldstein et al. 2009, doi:10.1073/pnas.0902958106](https://doi.org/10.1073/pnas.0902958106)).
 The reconstruction is most uncertain at the recent end, where the infections that will produce future cases have not yet been observed, exactly the right-truncation problem that [nowcasting](nowcasting.md) addresses.
@@ -34,9 +41,13 @@ The reconstruction is most uncertain at the recent end, where the infections tha
 
 These three tasks are the same convolution read three ways.
 **Back-calculation** recovers past infections from past cases, deblurring the delay.
-**Nowcasting** fills in the not-yet-reported recent cases, correcting right truncation before the curve is complete.
+[**Nowcasting** ](../epidemiology/nowcasting.md) fills in the not-yet-reported recent cases, correcting right truncation before the curve is complete.
 Estimating the [reproduction number](../math/reproduction-number-rt.md) then works on the reconstructed infection or onset curve, because inferring transmission from the raw, delayed case curve puts the turning points in the wrong place.
 Getting the infection timing right is what keeps a estimated $R_t$ from lagging the epidemic it is meant to track, which is precisely when decisions are made.
+
+>[!NOTE]
+> This is among the comparatively simple was of understanding the problem of delays.
+> Additional methods have been developed to take into account [interval censoring](../epidemiology/delay-distributions-censoring.md) and [truncation](../math/survival-analysis.md).
 
 ## A worked example
 
@@ -112,7 +123,7 @@ cases = [sum(infections[max(1, t - length(delay) + 1):t] .*
 
 Acting on the case curve when you mean to act on the infection curve builds in a delay-length lag, so back-calculation is what lets analysis reflect when transmission actually happened rather than when it surfaced.
 Its central lesson is that deconvolution is ill-posed: the observed data pin down the infection curve only loosely, and any reconstruction leans on a smoothness assumption that should be stated and stress-tested.
-Alongside nowcasting and reproduction-number estimation, it forms the standard toolkit for reading a delayed surveillance signal back to its source.
+Understanding back calculation as a tool to recover the actual infection rate is important when desiging control measures and understanding the rate of new cases.
 
 ## Related
 
