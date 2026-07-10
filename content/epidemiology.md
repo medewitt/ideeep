@@ -35,6 +35,7 @@ Each page pairs the biology and notation with worked examples and runnable code 
 - [Back-Calculation and Deconvolution](epidemiology/back-calculation.md) — recovering the infection curve from delayed observed cases
 - [Severity: Estimating the CFR and IFR During an Outbreak](epidemiology/severity-cfr-ifr.md) — censoring, truncation, and the delay-corrected fatality ratio
 - [Excess Mortality](epidemiology/excess-mortality.md) — observed minus expected all-cause deaths as a crisis's true toll
+- [Pooled Testing and Prevalence Estimation](epidemiology/pooled-testing.md) — MIR, the maximum-likelihood pooled prevalence, and a Bayesian alternative for vector surveillance
 - [Detection Probability: Viral Kinetics and Assay Thresholds](epidemiology/detection-probability.md) — time-varying test sensitivity and the diagnostic window
 - [Epidemic Forecasting](epidemiology/epidemic-forecasting.md) — short-term projection with uncertainty and forecast scoring
 - [One Health Surveillance](epidemiology/one-health-surveillance.md) — integrating human, animal, and environmental signals
