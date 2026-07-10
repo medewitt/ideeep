@@ -23,15 +23,19 @@ Each page pairs the biology and notation with worked examples and runnable code 
 
 - [Epidemiologic Study Designs](epidemiology/study-designs.md) — cohort, case-control, cross-sectional, ecological, and intervention designs
 - [Measures of Association and Impact](epidemiology/measures-of-association-and-impact.md) — risk and rate ratios, the odds ratio, and attributable fractions
+- [Vaccine Effectiveness and the Test-Negative Design](epidemiology/vaccine-effectiveness.md) — efficacy vs effectiveness, the test-negative design, and safety with the self-controlled case series
 
 ## Surveillance and outbreak response
 
 - [Surveillance Systems](epidemiology/surveillance-systems.md) — passive, active, sentinel, and syndromic surveillance and the reporting pyramid
 - [Outbreak Investigation](epidemiology/outbreak-investigation.md) — case definitions, the epidemic curve, and testing hypotheses in the field
+- [Prospective Outbreak Detection](epidemiology/aberration-detection.md) — Shewhart, CUSUM, EARS, and Farrington aberration algorithms for count time series
 - [Nowcasting and Reporting Delays](epidemiology/nowcasting.md) — correcting the recent past for right truncation
+- [Back-Calculation and Deconvolution](epidemiology/back-calculation.md) — recovering the infection curve from delayed observed cases
 - [Epidemic Forecasting](epidemiology/epidemic-forecasting.md) — short-term projection with uncertainty and forecast scoring
 - [One Health Surveillance](epidemiology/one-health-surveillance.md) — integrating human, animal, and environmental signals
 - [Genomic Surveillance](epidemiology/genomic-surveillance.md) — linking pathogen genomes to metadata to detect and reconstruct transmission
+- [Healthcare-Associated Infection Surveillance and the SIR](epidemiology/healthcare-associated-infections.md) — device-associated definitions, risk adjustment, and the standardized infection ratio
 
 ## Social, behavioral, and communication science
 

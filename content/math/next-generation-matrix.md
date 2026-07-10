@@ -7,6 +7,8 @@ title: "The Next-Generation Matrix and R₀"
 The basic reproduction number $R_0$ decides whether a pathogen invades, but for anything more structured than a textbook SIR model — multiple host types, stages, or transmission routes — the naive "$\beta$ over $\gamma$" recipe breaks down.
 The next-generation matrix gives a rigorous, general way to compute $R_0$ as the dominant eigenvalue of a matrix built from the infection dynamics.
 
+![Left: a three-by-three next-generation matrix K for children, adults, and elderly, where each entry is the new infections in one group caused by an infectious individual of another; R₀ is its dominant eigenvalue. Right: a schematic of who-infects-whom with arrow widths scaled to the matrix entries.](../assets/figures/next-generation-matrix.svg)
+
 ## The idea
 
 $R_0$ is the expected number of secondary cases produced by one typical infected individual in a fully susceptible population.

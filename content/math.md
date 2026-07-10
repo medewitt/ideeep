@@ -86,6 +86,7 @@ It requires practice and repetition.
 - [The Central Limit Theorem](math/central-limit-theorem.md)
 - [Markov Chains](math/markov-chains.md) — transition matrices and stationary distributions
 - [Branching Processes](math/branching-processes.md) — Galton–Watson, extinction, and outbreaks
+- [Superspreading and Transmission Heterogeneity](math/superspreading.md) — the offspring distribution, the dispersion $k$, and the 20/80 rule
 - [Random Walks and Brownian Motion](math/random-walk-brownian-motion.md) — diffusive scaling and the Wiener process
 - [Copulas](math/copulas.md) — separating dependence from the marginals via Sklar's theorem
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
@@ -104,6 +105,7 @@ It requires practice and repetition.
 - [Logistic Regression](math/logistic-regression.md)
 - [Generalized Linear Models](math/generalized-linear-models.md) — GLMs and Poisson regression
 - [Hierarchical (Multilevel) Models](math/hierarchical-models.md) — partial pooling and shrinkage
+- [Multilevel Regression and Poststratification](math/multilevel-regression-poststratification.md) — small-area estimation from non-representative surveys
 
 ## Bayesian inference
 
@@ -251,6 +253,7 @@ It requires practice and repetition.
 - [Compartmental Models](math/sir.md) — the SIR model and $R_0$
 - [Density-Dependent and Frequency-Dependent Transmission](math/transmission-modes.md) — how the contact rate scales with host density, and the critical density threshold
 - [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
+- [Social Contact Matrices and Age-Structured Mixing](math/contact-matrices.md) — who-meets-whom by age, from contact surveys to $R_0$
 - [Within-Host Dynamics and the Immune Response](math/within-host-dynamics.md) — virus, infected cells, and B-cell/T-cell immunity
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
 - [Reservoir Ecology](math/reservoir-ecology.md) — maintenance hosts, spillover, and multi-host persistence
