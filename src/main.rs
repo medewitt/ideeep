@@ -36,6 +36,16 @@ struct FrontMatter {
     /// Optional alt text for the per-page social image. Falls back to the
     /// page title when omitted.
     image_alt: Option<String>,
+    /// When true, the build sorts every table on the page that has a `Day`
+    /// and/or `Time` column by weekday then start time (see
+    /// `sort_schedule_tables`). Lets a schedule stay in order after the
+    /// Markdown is hand-edited. Off by default.
+    sort_schedule: Option<bool>,
+    /// When true, the page is unlisted: served with a `noindex` robots tag and
+    /// kept out of `sitemap.xml` and the on-site search index. It still renders
+    /// at its URL and is reachable by direct link; it is simply not advertised.
+    /// Off by default. (Navbar placement is separate — driven by `config.yaml`.)
+    hidden: Option<bool>,
 }
 
 /// Escape a string for safe use inside a double-quoted HTML attribute.
@@ -593,6 +603,40 @@ const FRAGMENTS_DIR: &str = "content/_fragments";
 /// against cycles, and shortcodes that reference a missing file or try to escape
 /// the fragments directory are left as a visible, logged marker rather than
 /// silently dropping content — a lost policy section should never pass unnoticed.
+/// Parse a fragment shortcode's inner text into `(filename, sort_schedule)`.
+///
+/// The text is the fragment name, optionally followed by `;`-separated options:
+/// `:::{fellow-schedule-2026; schedule=true}:::`. The only option today is
+/// `schedule` — bare or truthy (`true`/`1`/`yes`/`on`, case-insensitive) — which
+/// requests build-time schedule-sorting of the fragment's tables. The `.md`
+/// extension on the name stays optional. Unknown options are ignored so the
+/// syntax can grow without breaking existing includes.
+fn parse_include_spec(raw: &str) -> (String, bool) {
+    let mut parts = raw.split(';');
+    let name_part = parts.next().unwrap_or("").trim();
+    let name = if name_part.ends_with(".md") {
+        name_part.to_string()
+    } else {
+        format!("{}.md", name_part)
+    };
+
+    let mut sort_schedule = false;
+    for opt in parts {
+        let opt = opt.trim();
+        if opt.is_empty() {
+            continue;
+        }
+        let (key, val) = match opt.split_once('=') {
+            Some((k, v)) => (k.trim().to_lowercase(), v.trim().to_lowercase()),
+            None => (opt.to_lowercase(), String::new()),
+        };
+        if key == "schedule" {
+            sort_schedule = val.is_empty() || matches!(val.as_str(), "true" | "1" | "yes" | "on");
+        }
+    }
+    (name, sort_schedule)
+}
+
 fn expand_includes(markdown: &str) -> String {
     expand_includes_from(markdown, Path::new(FRAGMENTS_DIR))
 }
@@ -609,11 +653,7 @@ fn expand_includes_from(markdown: &str, dir: &Path) -> String {
         let re = Regex::new(r"(?m)^[ \t]*:::\{\s*([^{}]+?)\s*\}:::[ \t]*$").unwrap();
         re.replace_all(md, |caps: &regex::Captures| {
             let raw = caps[1].trim();
-            let name = if raw.ends_with(".md") {
-                raw.to_string()
-            } else {
-                format!("{}.md", raw)
-            };
+            let (name, sort_sched) = parse_include_spec(raw);
 
             // Refuse anything that could reach outside the fragments directory.
             if name.contains("..")
@@ -640,6 +680,14 @@ fn expand_includes_from(markdown: &str, dir: &Path) -> String {
                     stack.push(name.clone());
                     let expanded = expand(&text, dir, stack);
                     stack.pop();
+                    // `schedule=true` on the include sorts the fragment's own
+                    // schedule tables (by Day then Time) as it is spliced in, so
+                    // a reusable agenda fragment stays ordered after hand-edits.
+                    let expanded = if sort_sched {
+                        sort_schedule_tables(&expanded)
+                    } else {
+                        expanded
+                    };
                     // Set the fragment off as its own block(s): blank lines above
                     // and below guarantee the splice can't fuse with adjacent
                     // prose (e.g. a heading running into a preceding paragraph).
@@ -666,6 +714,173 @@ fn expand_includes_from(markdown: &str, dir: &Path) -> String {
     }
     let mut stack: Vec<String> = Vec::new();
     expand(markdown, dir, &mut stack)
+}
+
+/// Whether a line is a GFM table delimiter row (`|---|:--:|`): every
+/// pipe-separated cell is dashes with optional alignment colons.
+fn is_table_delimiter(line: &str) -> bool {
+    let cells: Vec<&str> = line.trim().trim_matches('|').split('|').collect();
+    !cells.is_empty()
+        && cells.iter().all(|c| {
+            let c = c.trim();
+            !c.is_empty() && c.contains('-') && c.chars().all(|ch| ch == '-' || ch == ':')
+        })
+}
+
+/// Split a Markdown table row into trimmed cell strings, dropping the outer pipes.
+fn table_cells(line: &str) -> Vec<String> {
+    line.trim()
+        .trim_matches('|')
+        .split('|')
+        .map(|c| c.trim().to_string())
+        .collect()
+}
+
+/// Locate the `Day` and `Time` columns in a table header row (case-insensitive,
+/// ignoring `*` emphasis), returning their cell indices when present.
+fn schedule_columns(header: &str) -> (Option<usize>, Option<usize>) {
+    let (mut day, mut time) = (None, None);
+    for (idx, cell) in table_cells(header).iter().enumerate() {
+        match cell.replace('*', "").trim().to_lowercase().as_str() {
+            "day" => day = Some(idx),
+            "time" => time = Some(idx),
+            _ => {}
+        }
+    }
+    (day, time)
+}
+
+/// Rank a weekday from the start of a cell like `Mon (Jul 20 / Aug 3)`.
+/// Unknown days sort last.
+fn weekday_rank(cell: &str) -> u32 {
+    let c = cell.trim().to_lowercase();
+    for (i, d) in ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].iter().enumerate() {
+        if c.starts_with(d) {
+            return i as u32;
+        }
+    }
+    u32::MAX
+}
+
+/// Parse the start of a slot like `9-9:50`, `12-1p`, or `1-1:50` into minutes
+/// since midnight, so morning and afternoon slots order correctly.
+///
+/// The start hour is read from the text before the `-`. A `p`/`pm` or `a`/`am`
+/// in the cell sets the meridiem; without one, hours 1–6 are read as afternoon
+/// and 7–12 as morning/noon — the convention this program's day follows
+/// (9–11 AM lectures, 12 noon, 1–3 PM sessions).
+fn start_minutes(cell: &str) -> u32 {
+    let lower = cell.to_lowercase();
+    let start = lower.split('-').next().unwrap_or("");
+
+    // First contiguous digit run = hour.
+    let mut hour_str = String::new();
+    let mut seen = false;
+    for ch in start.chars() {
+        if ch.is_ascii_digit() {
+            hour_str.push(ch);
+            seen = true;
+        } else if seen {
+            break;
+        }
+    }
+    let hour: u32 = hour_str.parse().unwrap_or(0);
+
+    // Digits after a `:` = minutes.
+    let min: u32 = start
+        .split_once(':')
+        .map(|(_, rest)| {
+            rest.chars()
+                .take_while(|c| c.is_ascii_digit())
+                .collect::<String>()
+                .parse()
+                .unwrap_or(0)
+        })
+        .unwrap_or(0);
+
+    let hour24 = if lower.contains('p') {
+        if hour == 12 { 12 } else { hour + 12 }
+    } else if lower.contains('a') {
+        if hour == 12 { 0 } else { hour }
+    } else {
+        match hour {
+            1..=6 => hour + 12,
+            _ => hour,
+        }
+    };
+    hour24 * 60 + min
+}
+
+/// Reorder the body rows of GFM tables on schedule pages, enabled per page with
+/// `sort_schedule: true` in front matter.
+///
+/// Every Markdown table that has a `Day` and/or `Time` header column is sorted
+/// by weekday then start time, so editing a cell in the Markdown reorders the
+/// rendered agenda on the next build instead of leaving rows where they were
+/// typed. The sort is stable (equal rows keep their written order), tables
+/// without either column are left untouched, and all surrounding prose is
+/// preserved. Runs on the raw Markdown before parsing, like `expand_includes`.
+fn sort_schedule_tables(markdown: &str) -> String {
+    let lines: Vec<&str> = markdown.lines().collect();
+    let mut out: Vec<String> = Vec::with_capacity(lines.len());
+    let mut i = 0;
+    while i < lines.len() {
+        let is_table_head = i + 1 < lines.len()
+            && lines[i].contains('|')
+            && is_table_delimiter(lines[i + 1]);
+        if !is_table_head {
+            out.push(lines[i].to_string());
+            i += 1;
+            continue;
+        }
+
+        let header = lines[i];
+        let delim = lines[i + 1];
+        let mut j = i + 2;
+        let mut body: Vec<&str> = Vec::new();
+        while j < lines.len() && lines[j].contains('|') && !lines[j].trim().is_empty() {
+            body.push(lines[j]);
+            j += 1;
+        }
+
+        out.push(header.to_string());
+        out.push(delim.to_string());
+
+        let (day_col, time_col) = schedule_columns(header);
+        if day_col.is_some() || time_col.is_some() {
+            // Stable sort by (weekday, start time), keeping written order on ties.
+            let mut indexed: Vec<(usize, &str)> = body.iter().copied().enumerate().collect();
+            indexed.sort_by(|a, b| {
+                let key = |row: &str| {
+                    let cells = table_cells(row);
+                    let d = day_col
+                        .and_then(|c| cells.get(c))
+                        .map(|s| weekday_rank(s))
+                        .unwrap_or(0);
+                    let t = time_col
+                        .and_then(|c| cells.get(c))
+                        .map(|s| start_minutes(s))
+                        .unwrap_or(0);
+                    (d, t)
+                };
+                key(a.1).cmp(&key(b.1)).then(a.0.cmp(&b.0))
+            });
+            for (_, row) in indexed {
+                out.push(row.to_string());
+            }
+        } else {
+            for row in body {
+                out.push(row.to_string());
+            }
+        }
+        i = j;
+    }
+
+    let mut result = out.join("\n");
+    if markdown.ends_with('\n') {
+        result.push('\n');
+    }
+    result
 }
 
 fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<String>) -> String {
@@ -1320,11 +1535,34 @@ fn extract_search_text(markdown: &str) -> String {
 }
 
 
+/// Whether a page (identified by its extensionless relative key, e.g.
+/// `epidemiology/study-designs`) may be indexed by search engines: listed in
+/// `sitemap.xml` and served with an indexable `robots` meta tag.
+///
+/// A page opts out generally with `hidden: true` in its front matter (the
+/// `hidden` argument). The 404 page and the interest-form confirmation page are
+/// always excluded — neither is a real indexable destination — regardless of
+/// front matter.
+fn is_indexable(rel_key: &str, hidden: bool) -> bool {
+    !hidden
+        && !rel_key.eq_ignore_ascii_case("404")
+        && !rel_key.eq_ignore_ascii_case("interest-thank-you")
+}
+
+/// Whether a page belongs in the on-site full-text search index. A page opts
+/// out with `hidden: true` in front matter (the `hidden` argument); the 404
+/// page is never a useful hit. The interest-form confirmation page is
+/// de-indexed (see `is_indexable`) but stays searchable.
+fn is_search_indexable(rel_key: &str, hidden: bool) -> bool {
+    !hidden && !rel_key.eq_ignore_ascii_case("404")
+}
+
 /// Build a client-loadable FTS4 SQLite index (`dist/search.db`) over every page.
 /// One row per page: title, extracted content, relative URL, category, date.
 /// The browser queries this with SQL.js (see `generate_search_page`).
 fn build_search_index(
     markdown_files: &[(PathBuf, PathBuf, String)],
+    hidden_pages: &std::collections::HashSet<String>,
     dist_dir: &Path,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let db_path = dist_dir.join("search.db");
@@ -1354,8 +1592,9 @@ fn build_search_index(
             .to_string_lossy()
             .replace('\\', "/");
 
-        // The 404 page is not useful as a search hit.
-        if rel_key.eq_ignore_ascii_case("404") {
+        // Skip pages that should not surface as search hits (see
+        // `is_search_indexable`): the 404 page and any `hidden: true` page.
+        if !is_search_indexable(&rel_key, hidden_pages.contains(&rel_key)) {
             continue;
         }
 
@@ -1630,6 +1869,7 @@ fn search_page_content() -> String {
 /// use the `.html` paths Netlify serves; the home page canonicalises to "/".
 fn write_sitemap(
     markdown_files: &[(PathBuf, PathBuf, String)],
+    hidden_pages: &std::collections::HashSet<String>,
     dist_dir: &Path,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut urls: Vec<String> = Vec::new();
@@ -1640,11 +1880,9 @@ fn write_sitemap(
             .to_string_lossy()
             .replace('\\', "/");
 
-        // The 404 page and the form confirmation page are not indexable
-        // destinations, so keep them out of the sitemap.
-        if rel_key.eq_ignore_ascii_case("404")
-            || rel_key.eq_ignore_ascii_case("interest-thank-you")
-        {
+        // Keep non-indexable pages (404, form confirmation, any `hidden: true`
+        // page) out of the sitemap. See `is_indexable`.
+        if !is_indexable(&rel_key, hidden_pages.contains(&rel_key)) {
             continue;
         }
 
@@ -2118,11 +2356,28 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         })
         .collect();
 
+    // Pages marked `hidden: true` in front matter are unlisted: excluded from
+    // the sitemap and the search index (both built after this loop). Collected
+    // here so those later passes don't have to re-read every file's front matter.
+    let mut hidden_pages: std::collections::HashSet<String> = std::collections::HashSet::new();
+
     // Process each markdown file
     for (full_path, relative_path, title) in &markdown_files {
         let content = fs::read_to_string(full_path)?;
         let (frontmatter, markdown_content) = extract_frontmatter(&content);
-        let html_content = markdown_to_html(markdown_content, &markdown_file_names);
+        let page_hidden = frontmatter.as_ref().and_then(|fm| fm.hidden).unwrap_or(false);
+        // Schedule pages opt into build-time row sorting so hand-edited times
+        // reorder the rendered agenda. `sorted_body` owns the rewritten Markdown
+        // only when the flag is set; otherwise the original slice is used.
+        let sorted_body;
+        let body: &str = match frontmatter.as_ref().and_then(|fm| fm.sort_schedule) {
+            Some(true) => {
+                sorted_body = sort_schedule_tables(markdown_content);
+                &sorted_body
+            }
+            _ => markdown_content,
+        };
+        let html_content = markdown_to_html(body, &markdown_file_names);
 
         // Give headings ids, then add an "On this page" TOC where a page opts in
         // with `toc: true` in its front matter (used on the section hub pages).
@@ -2176,14 +2431,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             format!("{}/{}", SITE_URL, canonical_path)
         };
 
-        // The 404 page and the form confirmation page must not be indexed;
-        // everything else is indexable.
-        let robots = if rel_key.eq_ignore_ascii_case("404")
-            || rel_key.eq_ignore_ascii_case("interest-thank-you")
-        {
-            "noindex, follow"
-        } else {
+        // Record hidden pages so the sitemap and search passes can skip them.
+        if page_hidden {
+            hidden_pages.insert(rel_key.clone());
+        }
+
+        // Non-indexable pages (404, form confirmation, any `hidden: true` page)
+        // get `noindex`; everything else is indexable. See `is_indexable`.
+        let robots = if is_indexable(&rel_key, page_hidden) {
             "index, follow, max-image-preview:large"
+        } else {
+            "noindex, follow"
         };
 
         // Breadcrumb trail: Home › [Section hub] › Page. Skipped for the home
@@ -2226,7 +2484,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // Build the full-text search index (dist/search.db) over every page.
-    build_search_index(&markdown_files, dist_dir)?;
+    build_search_index(&markdown_files, &hidden_pages, dist_dir)?;
 
     // Emit the interactive search page at the dist root (asset_prefix = "").
     let search_navbar = generate_navbar(
@@ -2260,7 +2518,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Generated: {}", search_path.display());
 
     // Emit SEO/PWA support files: sitemap, robots, manifest, service worker.
-    write_sitemap(&markdown_files, dist_dir)?;
+    write_sitemap(&markdown_files, &hidden_pages, dist_dir)?;
     write_robots(dist_dir)?;
     write_manifest(dist_dir)?;
     write_service_worker(dist_dir)?;
@@ -2519,6 +2777,143 @@ mod tests {
         assert!(html.contains("property=\"og:image:type\" content=\"image/jpeg\""), "jpeg MIME type should be advertised:\n{html}");
         assert!(!html.contains("og:image:width"), "custom image must not claim the default card's dimensions:\n{html}");
         assert!(html.contains("property=\"og:image:alt\" content=\"Diagnostics\""), "image alt should fall back to the page title:\n{html}");
+    }
+
+    /// Any page can opt out of indexing and search with `hidden: true` in front
+    /// matter (the `hidden` argument): it is then excluded from the sitemap,
+    /// `robots`, and search, while an ordinary page (`hidden = false`) stays
+    /// both indexable and searchable. This is the general mechanism the schedule
+    /// draft uses instead of a hardcoded page name.
+    #[test]
+    fn hidden_flag_excludes_a_page_from_indexing_and_search() {
+        assert!(!is_indexable("schedule", true), "hidden page out of sitemap/robots");
+        assert!(!is_search_indexable("schedule", true), "hidden page out of search");
+
+        // A regular page (not hidden) stays indexable and searchable.
+        assert!(is_indexable("epidemiology/study-designs", false));
+        assert!(is_search_indexable("epidemiology/study-designs", false));
+    }
+
+    /// The two visibility predicates keep their established, deliberately
+    /// different behaviour for the built-in special pages, independent of the
+    /// `hidden` flag: the 404 page is out of everything; the interest-form
+    /// confirmation is de-indexed but still searchable.
+    #[test]
+    fn indexing_and_search_exclusion_sets_are_preserved() {
+        assert!(!is_indexable("404", false));
+        assert!(!is_search_indexable("404", false));
+
+        assert!(!is_indexable("interest-thank-you", false), "confirmation page is not indexed");
+        assert!(is_search_indexable("interest-thank-you", false), "confirmation page stays searchable");
+    }
+
+    /// A slot's start time parses meridiem-aware, so a program day orders
+    /// morning → noon → afternoon rather than lexically (which would sort the
+    /// "1" of 1 PM before the "9" of 9 AM).
+    #[test]
+    fn start_minutes_orders_morning_before_afternoon() {
+        assert_eq!(start_minutes("9-9:50"), 9 * 60);
+        assert!(start_minutes("9-9:50") < start_minutes("11-11:50"));
+        assert!(start_minutes("11-11:50") < start_minutes("12-1p")); // 11 AM < noon
+        assert!(start_minutes("12-1p") < start_minutes("1-1:50")); // noon < 1 PM
+        assert!(start_minutes("1-1:50") < start_minutes("3-3:50")); // 1 PM < 3 PM
+    }
+
+    /// `sort_schedule: true` reorders a table's rows by weekday then start time,
+    /// so an out-of-order (or hand-edited) Markdown schedule renders in order.
+    /// The 11 AM row must precede the 1 PM row, which lexical sorting gets wrong.
+    #[test]
+    fn schedule_table_sorts_by_day_then_time() {
+        let md = "\
+| Day | Time | Session |
+|-----|------|---------|
+| Tue | 9-9:50 | Bee |
+| Mon | 1-1:50 | Cee |
+| Mon | 9-9:50 | Ayy |
+| Mon | 11-11:50 | Dee |
+";
+        let out = sort_schedule_tables(md);
+        let sessions: Vec<String> = out
+            .lines()
+            .skip(2)
+            .filter(|l| l.contains('|'))
+            .map(|l| l.split('|').nth(3).unwrap().trim().to_string())
+            .collect();
+        assert_eq!(
+            sessions,
+            vec!["Ayy", "Dee", "Cee", "Bee"],
+            "rows should sort by weekday then start time (11 AM before 1 PM):\n{out}"
+        );
+    }
+
+    /// Tables without a `Day` or `Time` column are left exactly as written, and
+    /// prose around a schedule table is preserved.
+    #[test]
+    fn sort_schedule_only_touches_schedule_tables() {
+        let plain = "\
+| Name | Score |
+|------|-------|
+| Zoe | 2 |
+| Amy | 1 |
+";
+        assert_eq!(sort_schedule_tables(plain), plain, "no Day/Time column: leave untouched");
+
+        let doc = "Intro line.\n\n| Day | Time |\n|-----|------|\n| Mon | 10-10:50 |\n| Mon | 9-9:50 |\n\nAfter.\n";
+        let out = sort_schedule_tables(doc);
+        assert!(out.starts_with("Intro line.\n\n"), "leading prose preserved:\n{out}");
+        assert!(out.trim_end().ends_with("After."), "trailing prose preserved:\n{out}");
+        assert!(
+            out.find("9-9:50").unwrap() < out.find("10-10:50").unwrap(),
+            "9 AM should sort before 10 AM:\n{out}"
+        );
+    }
+
+    /// The include shortcode parses an optional `; schedule=…` flag after the
+    /// fragment name, tolerating an omitted `.md`, casing, and truthy spellings,
+    /// while leaving a plain name un-sorted.
+    #[test]
+    fn parse_include_spec_reads_schedule_option() {
+        assert_eq!(parse_include_spec("foo"), ("foo.md".to_string(), false));
+        assert_eq!(parse_include_spec("foo.md"), ("foo.md".to_string(), false));
+        assert_eq!(
+            parse_include_spec("fellow-schedule-2026; schedule=true"),
+            ("fellow-schedule-2026.md".to_string(), true)
+        );
+        assert_eq!(
+            parse_include_spec("fellow-schedule-2026; schedule=TRUE"),
+            ("fellow-schedule-2026.md".to_string(), true)
+        );
+        assert_eq!(parse_include_spec("foo; schedule").1, true, "bare flag means on");
+        assert_eq!(parse_include_spec("foo; schedule=false").1, false);
+        assert_eq!(parse_include_spec("foo; other=1").1, false, "unknown option ignored");
+    }
+
+    /// A fragment embedded with `:::{name; schedule=true}:::` has its schedule
+    /// table sorted as it is spliced in, so a reusable, out-of-order agenda
+    /// fragment renders in day/time order; without the flag it is spliced as
+    /// written.
+    #[test]
+    fn fragment_include_sorts_when_schedule_flag_set() {
+        let fragment = "\
+| Day | Time | Session |
+|-----|------|---------|
+| Mon | 1-1:50 | Afternoon |
+| Mon | 9-9:50 | Morning |
+";
+        let dir = write_fixtures("sched-opt", &[("sched.md", fragment)]);
+
+        let sorted = expand_includes_from(":::{sched; schedule=true}:::", &dir);
+        let plain = expand_includes_from(":::{sched}:::", &dir);
+        let _ = fs::remove_dir_all(&dir);
+
+        assert!(
+            sorted.find("Morning").unwrap() < sorted.find("Afternoon").unwrap(),
+            "schedule=true must sort the fragment (9 AM before 1 PM):\n{sorted}"
+        );
+        assert!(
+            plain.find("Afternoon").unwrap() < plain.find("Morning").unwrap(),
+            "without the flag the fragment is spliced as written:\n{plain}"
+        );
     }
 }
 
