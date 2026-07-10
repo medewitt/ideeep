@@ -194,9 +194,93 @@ fn math_placeholder(index: usize) -> String {
     format!("{}{}{}", MATH_PLACEHOLDER_OPEN, index, MATH_PLACEHOLDER_CLOSE)
 }
 
-fn preprocess_math(md: &str) -> (String, Vec<String>) {
+/// Pull a `\label{…}` out of a display-math body, returning the body with the
+/// label removed and the label text (if any). A labelled display equation opts
+/// in to a printed number and a cross-reference target; unlabelled display math
+/// renders exactly as before.
+fn extract_eq_label(tex: &str) -> (String, Option<String>) {
+    let re = Regex::new(r"\\label\{([^}]*)\}").unwrap();
+    if let Some(caps) = re.captures(tex) {
+        let label = caps[1].trim().to_string();
+        let cleaned = re.replace(tex, "").to_string();
+        (cleaned, if label.is_empty() { None } else { Some(label) })
+    } else {
+        (tex.to_string(), None)
+    }
+}
+
+/// Render a display-math block to HTML, numbering it if it carries a
+/// `\label{…}`. A labelled equation is assigned the next per-page number,
+/// rendered with a KaTeX `\tag{(N)}` so the "(N)" prints at the right margin
+/// (LaTeX-style), and wrapped in a `<span id="eq-…">` so `[@eq:…]` references
+/// can link to it. The label→number map is recorded for the reference pass.
+fn render_display_math(
+    tex: &str,
+    eq_counter: &mut usize,
+    eq_labels: &mut std::collections::HashMap<String, usize>,
+) -> String {
+    let (clean, label) = extract_eq_label(tex);
+    let clean = clean.trim();
+    match label {
+        Some(l) => {
+            *eq_counter += 1;
+            let n = *eq_counter;
+            eq_labels.insert(l.clone(), n);
+            // KaTeX's `\tag{X}` already wraps X in parentheses, so pass the bare
+            // number to get the conventional "(N)" at the right margin.
+            let tagged = format!("{} \\tag{{{}}}", clean, n);
+            let html = katex::render_with_opts(&tagged, katex_opts(true))
+                .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, clean));
+            // The label already carries its `eq:` prefix, so the id is just the
+            // label with `:` swapped for `-` (e.g. `eq:sir` -> `eq-sir`).
+            format!(
+                "<span id=\"{}\" class=\"eq-block\">{}</span>",
+                l.replace(':', "-"),
+                html
+            )
+        }
+        None => katex::render_with_opts(clean, katex_opts(true))
+            .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, clean)),
+    }
+}
+
+/// Resolve `[@eq:label]` cross-references to a numbered link `(N)` pointing at
+/// the labelled equation. An unresolved reference renders a loud marker rather
+/// than silently vanishing (mirrors the figure reference behaviour).
+fn resolve_equation_refs(
+    html: &str,
+    eq_labels: &std::collections::HashMap<String, usize>,
+) -> String {
+    if !html.contains("[@eq:") {
+        return html.to_string();
+    }
+    let re = Regex::new(r"\[@(eq:[A-Za-z0-9_:-]+)\]").unwrap();
+    re.replace_all(html, |caps: &regex::Captures| {
+        let key = &caps[1];
+        match eq_labels.get(key) {
+            Some(n) => format!(
+                "<a class=\"eq-ref\" href=\"#{id}\">({n})</a>",
+                id = key.replace(':', "-"),
+                n = n
+            ),
+            None => format!(
+                "<span class=\"eq-ref-error\">[unresolved equation reference: {}]</span>",
+                key
+            ),
+        }
+    })
+    .into_owned()
+}
+
+/// Returns the placeholder-substituted Markdown, the ordered rendered-math
+/// fragments, and the map of equation labels to their assigned numbers.
+fn preprocess_math(
+    md: &str,
+) -> (String, Vec<String>, std::collections::HashMap<String, usize>) {
     let mut result = String::with_capacity(md.len() * 2);
     let mut fragments: Vec<String> = Vec::new();
+    let mut eq_counter: usize = 0;
+    let mut eq_labels: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
     let mut chars = md.chars().peekable();
 
     // Render a math fragment to HTML, store it, and emit its placeholder.
@@ -221,8 +305,7 @@ fn preprocess_math(md: &str) -> (String, Vec<String>) {
                     tex.push(c);
                 }
                 if found_end {
-                    let html = katex::render_with_opts(tex.trim(), katex_opts(true))
-                        .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, tex));
+                    let html = render_display_math(&tex, &mut eq_counter, &mut eq_labels);
                     stash(&mut result, &mut fragments, html);
                 } else {
                     // Not a valid display math, put it back
@@ -295,8 +378,7 @@ fn preprocess_math(md: &str) -> (String, Vec<String>) {
                         tex.push(c);
                     }
                     if found_end {
-                        let html = katex::render_with_opts(tex.trim(), katex_opts(true))
-                            .unwrap_or_else(|_| format!(r#"<pre class="math-error">{}</pre>"#, tex));
+                        let html = render_display_math(&tex, &mut eq_counter, &mut eq_labels);
                         stash(&mut result, &mut fragments, html);
                     } else {
                         result.push('\\');
@@ -314,7 +396,7 @@ fn preprocess_math(md: &str) -> (String, Vec<String>) {
         }
     }
 
-    (result, fragments)
+    (result, fragments, eq_labels)
 }
 
 /// Replace the placeholders left by `preprocess_math` with their rendered
@@ -1124,7 +1206,8 @@ fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<S
 
     // Pre-process math expressions: render them server-side with KaTeX, leaving
     // inert placeholders in the Markdown so the parser can't mangle the output.
-    let (processed_markdown, math_fragments) = preprocess_math(markdown);
+    // `eq_labels` maps a `\label{eq:…}` to the number that equation was given.
+    let (processed_markdown, math_fragments, eq_labels) = preprocess_math(markdown);
 
     let options = Options::all();
     let parser = Parser::new_ext(&processed_markdown, options);
@@ -1138,7 +1221,9 @@ fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<S
     let with_callouts = render_callouts(&linked);
     let with_columns = columnize_link_lists(&with_callouts);
     // Number block images into <figure>s and resolve [@fig:…] cross-references.
-    process_figures(&with_columns)
+    let with_figures = process_figures(&with_columns);
+    // Resolve [@eq:…] references to the numbered display equations above.
+    resolve_equation_refs(&with_figures, &eq_labels)
 }
 
 #[derive(Clone)]
@@ -3246,6 +3331,48 @@ mod tests {
 
         let bad = render("See [@fig:missing] please.");
         assert!(bad.contains("fig-ref-error") && bad.contains("fig:missing"), "an unresolved reference should be a loud marker:\n{bad}");
+    }
+
+    // --- Equation numbering, labels, and cross-references ----------------
+
+    /// A `\label{eq:…}` on a display equation opts it into a printed number and a
+    /// referenceable id; `[@eq:…]` then resolves to a numbered link — in either
+    /// document order — and the raw `\label` never reaches the output.
+    #[test]
+    fn labelled_equation_numbers_and_cross_references() {
+        let html = render(
+            "As in [@eq:sir], incidence falls.\n\n\\[ \\frac{dI}{dt} = \\beta S I - \\gamma I \\label{eq:sir} \\]",
+        );
+        assert!(html.contains("id=\"eq-sir\""), "labelled equation should get a stable id:\n{html}");
+        assert!(
+            html.contains("<a class=\"eq-ref\" href=\"#eq-sir\">(1)</a>"),
+            "reference should resolve to a numbered link even when it precedes the equation:\n{html}"
+        );
+        assert!(!html.contains("\\label"), "the \\label must be stripped from the output:\n{html}");
+        assert!(html.contains("class=\"katex"), "the equation should still render as KaTeX:\n{html}");
+    }
+
+    /// Numbering is opt-in and per page: only labelled display equations are
+    /// counted, so an unlabelled equation between two labelled ones does not
+    /// consume a number (the second labelled equation is still (2)).
+    #[test]
+    fn only_labelled_equations_are_numbered() {
+        let html = render(
+            "\\[ a = b \\label{eq:one} \\]\n\n\\[ c = d \\]\n\n\\[ e = f \\label{eq:two} \\]\n\nSee [@eq:one] and [@eq:two].",
+        );
+        assert!(html.contains(">(1)</a>") && html.contains(">(2)</a>"), "labelled equations number 1 then 2, skipping the unlabelled one:\n{html}");
+        assert!(html.contains("id=\"eq-one\"") && html.contains("id=\"eq-two\""), "both labelled equations get ids:\n{html}");
+    }
+
+    /// An unresolved `[@eq:…]` reference renders a loud marker, and a display
+    /// equation with no label is left unnumbered (no injected tag id).
+    #[test]
+    fn unlabelled_equation_plain_and_bad_eq_ref_is_loud() {
+        let plain = render("\\[ x = y \\]");
+        assert!(!plain.contains("eq-block"), "an unlabelled equation must not be wrapped/numbered:\n{plain}");
+
+        let bad = render("See [@eq:ghost].");
+        assert!(bad.contains("eq-ref-error") && bad.contains("eq:ghost"), "an unresolved equation reference should be loud:\n{bad}");
     }
 }
 

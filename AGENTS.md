@@ -4,6 +4,11 @@ This file is the design and build guide for the IDEEEP site.
 It is written for future agents (and humans) so that new content matches the established conventions.
 Read it before adding or editing pages.
 
+> **Just writing a content page?** See [`for-authors.md`](for-authors.md) — the
+> task-oriented authoring guide (page structure, math, figures, equations,
+> callouts, spoilers, runnable code, cross-references). This file (`AGENTS.md`)
+> covers how the generator itself is built.
+
 ## What this project is
 
 This repository is a **custom static-site generator written in Rust** — a single-binary Markdown compiler (`src/main.rs`, crate `md-compiler`).
@@ -173,6 +178,17 @@ This never changes the rendered HTML (Markdown collapses single newlines to spac
 Inline math is `$…$`; display math is `\[ … \]` or `$$ … $$`.
 Use conventional notation (`$\theta$`, `\frac`, `\mathbb{E}[\cdot]`, `\propto`).
 KaTeX renders at build time; a malformed expression shows up as a `math-error` span in the HTML.
+
+**Numbered equations (opt-in).** A display equation carrying a `\label{eq:name}`
+is assigned the next per-page number, rendered with a KaTeX `\tag{N}` so "(N)"
+prints at the right margin, and wrapped in `<span id="eq-name">` so it can be
+linked. Reference it anywhere with `[@eq:name]`, which resolves to a numbered
+`(N)` link (either document order); an unresolved reference renders a loud
+marker. Only labelled display equations are numbered — plain derivation steps are
+left unnumbered. See `render_display_math`/`resolve_equation_refs` in
+`src/main.rs`. (Figures are the analogue: block images auto-number and are
+labelled with a `"fig:name"` image title, referenced with `[@fig:name]` — see
+the Figures section.)
 
 ## Callouts
 

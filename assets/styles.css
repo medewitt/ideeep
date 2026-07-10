@@ -572,19 +572,25 @@ figure.figure figcaption {
 	color: var(--color-ink);
 }
 
-/* Cross-reference links ([@fig:…]) and the loud marker for an unresolved one. */
-.fig-ref { font-variant-numeric: tabular-nums; white-space: nowrap; }
-.fig-ref-error {
+/* Cross-reference links ([@fig:…], [@eq:…]) and the loud marker for an
+   unresolved one. */
+.fig-ref, .eq-ref { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fig-ref-error, .eq-ref-error {
 	color: #b02020;
 	font-weight: 600;
 	background: rgba(221, 51, 51, 0.08);
 	padding: 0 0.25em;
 	border-radius: 4px;
 }
-:root[data-theme="dark"] .fig-ref-error { color: #f3a3a3; }
+:root[data-theme="dark"] .fig-ref-error,
+:root[data-theme="dark"] .eq-ref-error { color: #f3a3a3; }
 @media (prefers-color-scheme: dark) {
-	:root:not([data-theme="light"]) .fig-ref-error { color: #f3a3a3; }
+	:root:not([data-theme="light"]) .fig-ref-error,
+	:root:not([data-theme="light"]) .eq-ref-error { color: #f3a3a3; }
 }
+
+/* A numbered display equation (`\label{eq:…}`) as an anchor target. */
+.eq-block { scroll-margin-top: 84px; }
 
 /* Blockquotes / callouts */
 blockquote {
