@@ -39,6 +39,45 @@ Under **frequency dependence**, the $N$ cancels: $$R_0 = \frac{\beta\kappa}{\gam
 There is **no density threshold**.
 A sexually transmitted infection can persist in a small, sparse population just as well as a large one, because partners are acquired at a rate set by behavior, not by crowding.
 
+:::spoiler Show how β and R₀ change with population size
+
+Both models are the *same* equation with a different transmission coefficient.
+Write new infections in the standard-incidence form $\beta(N)\,S\,I/N$ and let a single coefficient $\beta(N)=\beta\,C(N)$ absorb the contact rule.
+The two assumptions are then just two shapes for that coefficient:
+
+\[
+\beta(N) = \beta\kappa N \quad\text{(density-dependent)}, \qquad \beta(N) = \beta\kappa \quad\text{(frequency-dependent)}.
+\]
+
+Under density dependence the coefficient grows linearly with crowding; under frequency dependence it is flat.
+The power-law compromise $C(N)=\kappa N^{q}$ interpolates the two as $\beta(N)=\beta\kappa N^{q}$.
+
+Seed one infection into a fully susceptible population, $S\approx N$.
+The infected class then obeys
+
+\[
+\frac{dI}{dt} = \left[\beta(N)\,\frac{S}{N} - \gamma\right]I = \big[\beta(N) - \gamma\big]I,
+\]
+
+so the [basic reproduction number](next-generation-matrix.md) is $R_0 = \beta(N)/\gamma$, giving
+
+\[
+R_0^{\mathrm{DD}} = \frac{\beta\kappa N}{\gamma}, \qquad R_0^{\mathrm{FD}} = \frac{\beta\kappa}{\gamma}.
+\]
+
+The density-dependent $R_0$ carries a factor of $N$; the frequency-dependent one does not.
+The invasion (per-capita) growth rate is $r(N)=\beta(N)-\gamma=\gamma\,(R_0-1)$, so it shares the sign of $R_0-1$:
+
+\[
+r_{\mathrm{DD}}(N) = \beta\kappa N - \gamma, \qquad r_{\mathrm{FD}}(N) = \beta\kappa - \gamma.
+\]
+
+The density-dependent rate is a rising line that crosses zero exactly at the critical density $N_T=\gamma/(\beta\kappa)$ — below it the pathogen shrinks, above it it grows — while the frequency-dependent rate is a horizontal line whose sign never depends on $N$.
+
+![Per-capita growth rate of an invading infection against host density. The density-dependent rate rises linearly and crosses zero at the critical density N_T = 50; below it the pathogen fades out. The frequency-dependent rate is flat, so invasion succeeds or fails at every density alike.](../assets/figures/transmission-modes-growth.svg)
+
+:::
+
 ## Which assumption fits which disease
 
 The right choice is an empirical question about how contact scales, not a mathematical preference.
