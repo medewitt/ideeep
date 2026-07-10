@@ -24,6 +24,7 @@ Each page pairs the biology and notation with worked examples and runnable code 
 - [Epidemiologic Study Designs](epidemiology/study-designs.md) — cohort, case-control, cross-sectional, ecological, and intervention designs
 - [Measures of Association and Impact](epidemiology/measures-of-association-and-impact.md) — risk and rate ratios, the odds ratio, and attributable fractions
 - [Vaccine Effectiveness and the Test-Negative Design](epidemiology/vaccine-effectiveness.md) — efficacy vs effectiveness, the test-negative design, and safety with the self-controlled case series
+- [Direct, Indirect, Total, and Overall Vaccine Effects](epidemiology/vaccine-effects-direct-indirect.md) — dependent happenings and the Halloran-Struchiner decomposition
 
 ## Surveillance and outbreak response
 
@@ -33,6 +34,7 @@ Each page pairs the biology and notation with worked examples and runnable code 
 - [Nowcasting and Reporting Delays](epidemiology/nowcasting.md) — correcting the recent past for right truncation
 - [Back-Calculation and Deconvolution](epidemiology/back-calculation.md) — recovering the infection curve from delayed observed cases
 - [Severity: Estimating the CFR and IFR During an Outbreak](epidemiology/severity-cfr-ifr.md) — censoring, truncation, and the delay-corrected fatality ratio
+- [Excess Mortality](epidemiology/excess-mortality.md) — observed minus expected all-cause deaths as a crisis's true toll
 - [Detection Probability: Viral Kinetics and Assay Thresholds](epidemiology/detection-probability.md) — time-varying test sensitivity and the diagnostic window
 - [Epidemic Forecasting](epidemiology/epidemic-forecasting.md) — short-term projection with uncertainty and forecast scoring
 - [One Health Surveillance](epidemiology/one-health-surveillance.md) — integrating human, animal, and environmental signals

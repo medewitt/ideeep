@@ -113,6 +113,7 @@ It requires practice and repetition.
 - [Bayesian Inference](math/bayesian-inference.md) — priors, likelihood, and the posterior
 - [Markov Chain Monte Carlo](math/mcmc.md)
 - [State-Space Models and Particle Filtering](math/state-space-particle-filter.md) — partially observed Markov processes and the bootstrap particle filter
+- [Approximate Bayesian Computation](math/approximate-bayesian-computation.md) — likelihood-free inference by simulation, for models you can run but not write down
 - [Prior Predictive Checks](math/prior-predictive-checks.md) — simulate from the prior to sanity-check it before fitting
 - [Posterior Predictive Checks](math/posterior-predictive-checks.md) — compare replicated data to the observed to test the model
 - [Identifiability](math/identifiability.md) — when data cannot separate parameters
@@ -150,6 +151,7 @@ It requires practice and repetition.
 - [Latin Hypercube Sampling](math/latin-hypercube.md) — space-filling designs for computer experiments
 - [Global Sensitivity Analysis](math/sensitivity-analysis.md) — Sobol indices and Morris screening
 - [Survey Sampling](math/survey-sampling.md) — SRS, stratified, cluster, and weighting
+- [Capture-Recapture and Multiplier Methods](math/capture-recapture.md) — estimating a population's true size from overlapping incomplete lists
 
 ## Causal inference
 
