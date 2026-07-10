@@ -781,6 +781,81 @@ fn process_figures(html: &str) -> String {
         .into_owned()
 }
 
+/// A human-readable language label for a highlight.js `language-…` class, used
+/// on the code-block header. Unknown languages are Title-cased; plain-text code
+/// gets no label.
+fn code_lang_label(lang: &str) -> String {
+    match lang.to_ascii_lowercase().as_str() {
+        "r" => "R".into(),
+        "py" | "python" => "Python".into(),
+        "jl" | "julia" => "Julia".into(),
+        "sh" | "bash" | "shell" | "zsh" | "console" => "Shell".into(),
+        "sql" => "SQL".into(),
+        "js" | "javascript" => "JavaScript".into(),
+        "ts" | "typescript" => "TypeScript".into(),
+        "yaml" | "yml" => "YAML".into(),
+        "json" => "JSON".into(),
+        "html" | "xml" => "HTML".into(),
+        "css" => "CSS".into(),
+        "toml" => "TOML".into(),
+        "rust" | "rs" => "Rust".into(),
+        "c" => "C".into(),
+        "cpp" | "c++" => "C++".into(),
+        "stan" => "Stan".into(),
+        "text" | "plaintext" | "txt" | "" => String::new(),
+        other => {
+            let mut chars = other.chars();
+            match chars.next() {
+                Some(f) => f.to_ascii_uppercase().to_string() + chars.as_str(),
+                None => String::new(),
+            }
+        }
+    }
+}
+
+/// Wrap each fenced code block in a `.code-block` container with a small header
+/// carrying the language label and a **Copy** button. The button is wired up by
+/// `assets/nav.js` (clipboard write + transient "Copied" feedback); the markup
+/// is emitted at build time so the structure and language badge are present
+/// without JavaScript, and only the copy *action* needs it.
+///
+/// Code bodies are HTML-escaped by the Markdown renderer, so a literal
+/// `</code></pre>` can never appear inside one — the non-greedy match is safe.
+/// `<pre class="math-error">` blocks (from KaTeX failures) are not `<pre><code>`
+/// and are left untouched.
+fn enhance_code_blocks(html: &str) -> String {
+    let re = Regex::new(
+        r#"(?s)<pre><code(?: class="language-([A-Za-z0-9_+#-]+)")?>(.*?)</code></pre>"#,
+    )
+    .unwrap();
+    re.replace_all(html, |caps: &regex::Captures| {
+        let lang = caps.get(1).map(|m| m.as_str()).unwrap_or("");
+        let body = &caps[2];
+        let code_open = if lang.is_empty() {
+            "<code>".to_string()
+        } else {
+            format!("<code class=\"language-{}\">", lang)
+        };
+        let label = code_lang_label(lang);
+        let lang_span = if label.is_empty() {
+            String::new()
+        } else {
+            format!("<span class=\"code-lang\">{}</span>", label)
+        };
+        format!(
+            "<div class=\"code-block\">\n<div class=\"code-block-bar\">{lang_span}\
+<button class=\"code-copy\" type=\"button\" aria-label=\"Copy code to clipboard\">\
+<svg class=\"code-copy-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"2\"/><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"/></svg>\
+<span class=\"code-copy-text\">Copy</span></button></div>\n\
+<pre>{code_open}{body}</code></pre>\n</div>",
+            lang_span = lang_span,
+            code_open = code_open,
+            body = body,
+        )
+    })
+    .into_owned()
+}
+
 /// Directory (relative to the project root) that holds reusable Markdown
 /// fragments. A page injects one with a `:::{fragment-name.md}:::` shortcode on
 /// its own line (the `.md` extension is optional). Fragments live under a
@@ -1223,7 +1298,9 @@ fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<S
     // Number block images into <figure>s and resolve [@fig:…] cross-references.
     let with_figures = process_figures(&with_columns);
     // Resolve [@eq:…] references to the numbered display equations above.
-    resolve_equation_refs(&with_figures, &eq_labels)
+    let with_eq_refs = resolve_equation_refs(&with_figures, &eq_labels);
+    // Wrap code blocks with a language badge and a copy button.
+    enhance_code_blocks(&with_eq_refs)
 }
 
 #[derive(Clone)]
@@ -3373,6 +3450,41 @@ mod tests {
 
         let bad = render("See [@eq:ghost].");
         assert!(bad.contains("eq-ref-error") && bad.contains("eq:ghost"), "an unresolved equation reference should be loud:\n{bad}");
+    }
+
+    // --- Code blocks: language badge + copy button -----------------------
+
+    /// A fenced code block is wrapped in a `.code-block` container with a
+    /// language label and a copy button, and the original `<pre><code>` (with
+    /// its highlight.js `language-…` class and escaped body) is preserved.
+    #[test]
+    fn code_block_gets_language_badge_and_copy_button() {
+        let html = render("```python\nprint(1 < 2)\n```");
+        assert!(html.contains("<div class=\"code-block\">"), "code block should be wrapped:\n{html}");
+        assert!(html.contains("<span class=\"code-lang\">Python</span>"), "language badge should read 'Python':\n{html}");
+        assert!(html.contains("class=\"code-copy\""), "a copy button should be present:\n{html}");
+        assert!(html.contains("<pre><code class=\"language-python\">"), "the highlight.js class must be preserved:\n{html}");
+        assert!(html.contains("1 &lt; 2"), "the escaped code body must survive intact:\n{html}");
+    }
+
+    /// A fenced block with no language still gets a copy button, but no language
+    /// badge (nothing to name).
+    #[test]
+    fn code_block_without_language_has_copy_but_no_badge() {
+        let html = render("```\nplain text\n```");
+        assert!(html.contains("<div class=\"code-block\">") && html.contains("class=\"code-copy\""), "unlabelled code still gets a container and copy button:\n{html}");
+        assert!(!html.contains("code-lang"), "there should be no language badge for a bare fence:\n{html}");
+        assert!(html.contains("<pre><code>plain text"), "the bare <code> must be preserved:\n{html}");
+    }
+
+    /// A KaTeX-failure `<pre class="math-error">` is not a code block and must
+    /// not be wrapped with a copy button.
+    #[test]
+    fn math_error_pre_is_not_treated_as_code() {
+        // `\notacommand` is invalid; with throw_on_error=false KaTeX still
+        // renders, so force the error path directly through the wrapper.
+        let wrapped = enhance_code_blocks("<pre class=\"math-error\">oops</pre>");
+        assert!(!wrapped.contains("code-block"), "a math-error pre must be left untouched:\n{wrapped}");
     }
 }
 

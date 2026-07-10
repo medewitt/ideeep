@@ -248,6 +248,9 @@ Set the derivative to zero and solve for $I^\*$:
 
 Fenced code blocks are syntax-highlighted (light/dark aware). The page skeleton
 shows the same idea in three languages under `### R`, `### Python`, `### Julia`.
+Every fenced block automatically gets a **language badge and a Copy button** — no
+authoring change needed; just tag the fence with its language (` ```r `,
+` ```python `, ` ```julia `) so the badge and highlighting are right.
 
 ### Python that executes itself
 

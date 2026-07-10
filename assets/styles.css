@@ -503,6 +503,61 @@ pre code {
 	border: none;
 }
 
+/* Code blocks: build-time container with a language badge + copy button.
+   The container carries the frame; the inner <pre> is flattened into it. */
+.code-block {
+	margin: var(--space-5) 0;
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius);
+	overflow: hidden;
+	background: var(--color-surface);
+}
+.code-block pre {
+	margin: 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+}
+.code-block-bar {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	padding: 0.3rem 0.5rem 0.3rem var(--space-4);
+	background: var(--color-surface-2);
+	border-bottom: 1px solid var(--color-border);
+}
+.code-lang {
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--color-muted);
+}
+.code-copy {
+	margin-left: auto; /* keep the button right-aligned, with or without a badge */
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	padding: 0.2em 0.6em;
+	font: inherit;
+	font-size: 0.78rem;
+	line-height: 1.4;
+	color: var(--color-muted);
+	background: var(--color-bg);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	cursor: pointer;
+	transition: color 0.12s ease, border-color 0.12s ease;
+}
+.code-copy:hover { color: var(--color-ink); border-color: var(--color-muted); }
+.code-copy:focus-visible { outline: 2px solid var(--color-link); outline-offset: 1px; }
+.code-copy-icon { width: 14px; height: 14px; flex: none; }
+.code-copy.copied { color: #3f8f5b; border-color: #3f8f5b; }
+:root[data-theme="dark"] .code-copy.copied { color: #6ac08a; border-color: #6ac08a; }
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) .code-copy.copied { color: #6ac08a; border-color: #6ac08a; }
+}
+
 /* Tables */
 table {
 	width: 100%;
