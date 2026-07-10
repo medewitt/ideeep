@@ -37,6 +37,29 @@ which has a positive solution whenever $R_0 > 1$.
 It depends only on $R_0$, not on the specific rates, which is what makes it so useful: measure the growth rate, infer $R_0$, and you have the eventual attack rate before the epidemic is over.
 For $R_0 = 2.5$ the solution is $Z \approx 0.89$, so about 89% of the population is infected in an uncontrolled epidemic.
 
+:::spoiler Show where the final-size equation comes from
+
+Work with fractions $s = S/N$ and $r = R/N$, and divide the susceptible equation by the recovered equation to eliminate time:
+
+\[
+\frac{ds}{dr} = \frac{-\beta s\,i}{\gamma\,i} = -\frac{\beta}{\gamma}\,s = -R_0\, s .
+\]
+
+This separable equation integrates to $s(t) = s(0)\,e^{-R_0[\,r(t) - r(0)\,]}$.
+Take the epidemic from its start ($s(0) \approx 1$, $r(0) \approx 0$) to its end, where all infectious individuals have recovered ($i(\infty) = 0$, $r(\infty) = Z$):
+
+\[
+s(\infty) = e^{-R_0 Z} .
+\]
+
+Since $s(\infty) = 1 - Z$ (everyone is either still susceptible or has been infected), substituting gives the transcendental **final-size equation**
+
+\[
+Z = 1 - e^{-R_0 Z} .
+\]
+
+:::
+
 ## Overshoot
 
 Now compare the two numbers.

@@ -106,6 +106,13 @@ def _is_para_line(line: str) -> bool:
         return False
     if s[0] in "#>|<":
         return False
+    # Fenced directive lines (`:::spoiler`/`:::details` openers, the bare `:::`
+    # closer, and `:::{include}:::` shortcodes) must sit on their own line, so
+    # never reflow or merge them into an adjacent paragraph — doing so would
+    # glue the summary onto the first body sentence or detach the closing `:::`,
+    # corrupting the block for the site's `expand_spoilers` parser.
+    if s.startswith(":::"):
+        return False
     if _LIST_RE.match(line):
         return False
     if "|" in s:  # table row
@@ -161,6 +168,7 @@ def reflow(text: str) -> str:
             while i < n and lines[i].strip() and not _LIST_RE.match(lines[i]) \
                     and not _HEADING_RE.match(lines[i]) and not _FENCE_RE.match(lines[i]) \
                     and lines[i].strip()[0] not in "#>|<" and "|" not in lines[i] \
+                    and not lines[i].strip().startswith(":::") \
                     and lines[i].startswith((" ", "\t")):
                 block.append(lines[i].strip()); i += 1
             joined = re.sub(r"\s+", " ", " ".join(block)).strip()

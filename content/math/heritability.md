@@ -53,6 +53,26 @@ Comparing the trait correlation within MZ pairs, $r_{MZ}$, to that within DZ pai
 h^2 \approx 2\,(r_{MZ} - r_{DZ}).
 \]
 
+:::spoiler Show why the factor of two appears
+
+Model each twin-pair correlation as the sum of the variance components the twins share.
+Identical (MZ) twins share all of their additive genetic variance and their common environment, while fraternal (DZ) twins share on average half the additive variance and the same common environment:
+
+\[
+r_{MZ} = h^2 + c^2, \qquad r_{DZ} = \tfrac12 h^2 + c^2 .
+\]
+
+Subtracting eliminates the shared-environment term $c^2$:
+
+\[
+r_{MZ} - r_{DZ} = \tfrac12 h^2 \;\Longrightarrow\; h^2 = 2\,(r_{MZ} - r_{DZ}) .
+\]
+
+The same two equations recover the rest of the ACE decomposition, $c^2 = 2r_{DZ} - r_{MZ}$ and $e^2 = 1 - r_{MZ}$.
+The "$\times 2$" is just the reciprocal of the $\tfrac12$ difference in additive sharing between the two twin types.
+
+:::
+
 The factor of two reflects that DZ twins share half the additive variance, so doubling the gap in correlations recovers the additive fraction.
 Broad-sense $H^2$ can be approximated as $2(r_{MZ}-r_{DZ})$ as well under simple assumptions, and $c^2 = 2 r_{DZ} - r_{MZ}$ estimates the shared-environment share.
 

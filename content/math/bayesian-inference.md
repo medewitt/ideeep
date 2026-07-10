@@ -40,6 +40,25 @@ Such priors are called **conjugate**.
 - **Gamma–Poisson.** With a $\text{Gamma}(a,b)$ prior on a rate and Poisson counts, observing total $s=\sum_i y_i$ over $n$ observations gives a $\text{Gamma}(a+s,\,b+n)$ posterior.
 - **Normal–Normal.** With a [Normal](normal-distribution.md) prior on a mean and Normal data of known variance, the posterior is again Normal, its mean a precision-weighted average of prior mean and sample mean.
 
+:::spoiler Show the precision-weighted Normal–Normal posterior
+
+Put a Normal prior $\mu \sim \mathcal{N}(\mu_0,\, 1/\tau_0)$ on the mean, with prior precision $\tau_0$, and observe $n$ data points of known variance $\sigma^2$ (precision $\tau = 1/\sigma^2$) with sample mean $\bar y$.
+Both prior and likelihood are exponentials of a quadratic in $\mu$, so multiply them and collect the $\mu^2$ and $\mu$ terms:
+
+\[
+-\tfrac12\Big[\tau_0(\mu-\mu_0)^2 + n\tau(\mu-\bar y)^2\Big] = -\tfrac12\Big[(\tau_0 + n\tau)\mu^2 - 2(\tau_0\mu_0 + n\tau\bar y)\mu\Big] + \text{const} .
+\]
+
+Completing the square in $\mu$ shows the posterior is again Normal, with precision and mean
+
+\[
+\tau_{\text{post}} = \tau_0 + n\tau, \qquad \mu_{\text{post}} = \frac{\tau_0\mu_0 + n\tau\,\bar y}{\tau_0 + n\tau} .
+\]
+
+The posterior mean is a **precision-weighted average** of the prior mean and the data mean, and the precisions simply add — more data (larger $n\tau$) pulls the posterior toward $\bar y$.
+
+:::
+
 Conjugacy is convenient but not required; when it fails we sample from the posterior with [Markov chain Monte Carlo](mcmc.md).
 The [distributions overview](distributions-overview.md) collects the families used above.
 

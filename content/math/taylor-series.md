@@ -28,6 +28,26 @@ e^{x} &= \sum_{n=0}^{\infty} \frac{x^{n}}{n!} = 1 + x + \frac{x^2}{2} + \frac{x^
 \end{aligned}
 \]
 
+:::spoiler Show where these coefficients come from
+
+Every Maclaurin coefficient is a derivative at $0$ divided by a factorial, $f(x) = \sum_{n\ge 0} \frac{f^{(n)}(0)}{n!}x^n$.
+For $f(x) = e^x$ every derivative is again $e^x$, so $f^{(n)}(0) = e^0 = 1$ for all $n$:
+
+\[
+e^x = \sum_{n=0}^{\infty} \frac{1}{n!}x^n = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots .
+\]
+
+For $f(x) = \sin x$ the derivatives cycle $\cos x, -\sin x, -\cos x, \sin x, \dots$, so at $x = 0$ the values $f^{(n)}(0)$ cycle $0, 1, 0, -1$.
+Only the odd powers survive, with alternating sign:
+
+\[
+\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots = \sum_{k=0}^{\infty} \frac{(-1)^k}{(2k+1)!}x^{2k+1} .
+\]
+
+The same bookkeeping on $\cos x$ keeps only the even powers.
+
+:::
+
 ## Worked example: successive polynomials for $\sin x$
 
 Watching the approximation improve term by term is the best way to build intuition.

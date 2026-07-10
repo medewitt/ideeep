@@ -31,6 +31,29 @@ When $N$ is small the bracket is near $1$ and growth is nearly exponential; as $
 
 The solution is the **sigmoid** (S-shaped) curve $$N(t)=\frac{K}{1+\left(\dfrac{K-N_0}{N_0}\right)e^{-rt}}.$$ It rises slowly at first, accelerates, then levels off at $K$.
 
+:::spoiler Show how the sigmoid solution is obtained
+
+Separate variables in $\frac{dN}{dt} = rN\!\left(1 - \frac{N}{K}\right)$:
+
+\[
+\frac{dN}{N\left(1 - N/K\right)} = r\,dt .
+\]
+
+Split the left side with partial fractions, $\dfrac{1}{N(1 - N/K)} = \dfrac{1}{N} + \dfrac{1/K}{1 - N/K}$, and integrate both sides:
+
+\[
+\ln N - \ln\!\left(1 - \frac{N}{K}\right) = rt + C \;\Longrightarrow\; \frac{N}{K - N} = A e^{rt},
+\]
+
+where $A = e^{C}$.
+Fixing $A$ from the initial value $N(0) = N_0$ gives $A = \dfrac{N_0}{K - N_0}$, and solving for $N$ yields the sigmoid
+
+\[
+N(t) = \frac{K}{1 + \dfrac{K - N_0}{N_0}\,e^{-rt}} .
+\]
+
+:::
+
 ### Where growth is fastest
 
 The absolute growth rate $dN/dt$ is a downward parabola in $N$, maximized where its derivative with respect to $N$ vanishes: $r(1-2N/K)=0$, i.e. at $$N=\frac{K}{2}.$$ At the inflection point $N=K/2$ the population is adding individuals fastest, at rate $rK/4$.

@@ -32,6 +32,21 @@ Run the process long enough and three robust facts emerge.
 \[
 \mathbb{E}[H_{t+1}] = \left(1 - \frac{1}{2N}\right)\mathbb{E}[H_t] .
 \]
+
+:::spoiler Show the $1/(2N)$ loss of heterozygosity
+
+Follow two gene copies sampled from generation $t+1$ back to their parents in a population of $2N$ copies.
+With probability $1/(2N)$ they descend from the *same* parental copy and are therefore identical (contributing no heterozygosity); with probability $1 - 1/(2N)$ they come from distinct copies and retain the parental chance of differing:
+
+\[
+H_{t+1} = \left(1 - \frac{1}{2N}\right) H_t .
+\]
+
+So heterozygosity decays geometrically at rate $1/(2N)$ per generation, $H_t = H_0\left(1 - \tfrac{1}{2N}\right)^t$ — drift erodes variation fastest in small populations.
+The fixation probability follows from a different conservation law: because $\mathbb{E}[p_{t+1}] = p_t$, allele frequency is a martingale, and equating its constant expectation to the eventual absorbed value ($1$ with probability of fixation, $0$ otherwise) gives $\Pr(\text{fixation}) = p$.
+
+:::
+
 So genetic variation erodes at a rate set entirely by population size.
 
 ### Effective population size

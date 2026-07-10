@@ -13,6 +13,26 @@ The **population variance** is the mean squared deviation from the mean $\mu$: \
 
 From a sample $x_1,\dots,x_n$ the **sample variance** uses divisor $n-1$: \[ s^2 = \frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2. \] The $n-1$ (Bessel's correction) makes $s^2$ an unbiased estimator of $\sigma^2$; dividing by $n$ underestimates spread because deviations are taken from the estimated mean $\bar{x}$, not the true $\mu$.
 
+:::spoiler Show why the denominator is $n-1$
+
+The sample variance is unbiased for $\sigma^2$ precisely when we divide by $n-1$.
+Decompose each deviation about the sample mean $\bar x$ using the algebraic identity
+
+\[
+\sum_{i=1}^{n} (x_i - \bar x)^2 = \sum_{i=1}^{n} (x_i - \mu)^2 - n(\bar x - \mu)^2 .
+\]
+
+Now take expectations: each $\mathbb{E}[(x_i-\mu)^2] = \sigma^2$, and $\mathbb{E}[(\bar x - \mu)^2] = \operatorname{Var}(\bar x) = \sigma^2/n$, so
+
+\[
+\mathbb{E}\!\left[\sum_{i=1}^{n}(x_i - \bar x)^2\right] = n\sigma^2 - n\cdot\frac{\sigma^2}{n} = (n-1)\sigma^2 .
+\]
+
+Dividing by $n-1$ rather than $n$ is therefore exactly what makes $\mathbb{E}[s^2] = \sigma^2$.
+Estimating the center with $\bar x$ instead of the unknown $\mu$ "uses up" one degree of freedom, which is the intuition behind the correction.
+
+:::
+
 ## Covariance and correlation
 
 For two variables, **covariance** measures how they move together: \[ \operatorname{Cov}(X,Y) = \mathbb{E}\big[(X-\mu_X)(Y-\mu_Y)\big]. \] **Correlation** rescales it to $[-1,1]$: \[ \rho = \frac{\operatorname{Cov}(X,Y)}{\sigma_X\,\sigma_Y}. \] Note $\operatorname{Cov}(X,X) = \operatorname{Var}(X)$.

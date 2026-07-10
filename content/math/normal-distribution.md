@@ -25,6 +25,20 @@ The curve is symmetric about $\mu$, with inflection points at $\mu\pm\sigma$.
 Setting $\mu=0$ and $\sigma=1$ gives the **standard normal** $Z\sim\mathcal{N}(0,1)$ with density $$\phi(z)=\frac{1}{\sqrt{2\pi}}\,e^{-z^2/2}.$$ Any normal variable can be standardized by the $z$-score $Z=\dfrac{X-\mu}{\sigma}$, which is why a single table (or the `pnorm` function) suffices for all normal probabilities.
 Its cdf is written $\Phi(z)=P(Z\le z)$.
 
+:::spoiler Show that the parameters are the mean and variance
+
+Standardize with $Z = (X-\mu)/\sigma$, so $X = \mu + \sigma Z$ and $Z$ has the standard normal density $\phi(z) = \frac{1}{\sqrt{2\pi}}e^{-z^2/2}$.
+Because $\phi$ is symmetric about $0$, the odd integrand $z\phi(z)$ integrates to zero, so $\mathbb{E}[Z] = 0$ and hence $\mathbb{E}[X] = \mu + \sigma\,\mathbb{E}[Z] = \mu$.
+For the variance, integrate $\mathbb{E}[Z^2] = \int_{-\infty}^{\infty} z^2 \phi(z)\,dz$ by parts with $u = z$ and $dv = z\phi(z)\,dz$, using $\phi'(z) = -z\phi(z)$ so that $v = -\phi(z)$:
+
+\[
+\mathbb{E}[Z^2] = \Big[-z\phi(z)\Big]_{-\infty}^{\infty} + \int_{-\infty}^{\infty}\phi(z)\,dz = 0 + 1 = 1 .
+\]
+
+Therefore $\operatorname{Var}(X) = \sigma^2\,\mathbb{E}[Z^2] = \sigma^2$, confirming that $\mu$ and $\sigma^2$ are exactly the mean and variance.
+
+:::
+
 ## The 68–95–99.7 rule
 
 For any normal distribution, the probability mass within a few standard deviations of the mean is fixed:

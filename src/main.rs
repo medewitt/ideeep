@@ -1605,10 +1605,22 @@ fn spoiler_opener_label(line: &str) -> Option<String> {
     None
 }
 
-/// Whether a line closes a fenced block: exactly `:::` (with optional
-/// surrounding whitespace) and nothing else.
-fn is_fence_close(line: &str) -> bool {
-    line.trim() == ":::"
+/// Recognize a closing fence, tolerating a closer the prose linter (or a hand
+/// edit) may have glued onto the end of the preceding sentence — `foo. :::`.
+/// Returns the body text preceding the marker (empty for a bare `:::`), or
+/// `None` when the line does not close a block. Requiring whitespace before the
+/// trailing `:::` avoids mistaking ordinary text ending in colons for a closer.
+fn fence_close_body(line: &str) -> Option<&str> {
+    let t = line.trim_end();
+    if t.trim() == ":::" {
+        return Some("");
+    }
+    if let Some(head) = t.strip_suffix(":::") {
+        if head.ends_with(char::is_whitespace) {
+            return Some(head.trim_end());
+        }
+    }
+    None
 }
 
 /// Expand `:::spoiler … ::: ` (and the `:::details` alias) fenced blocks into
@@ -1649,9 +1661,14 @@ fn expand_spoilers(markdown: &str) -> String {
                 if spoiler_opener_label(lines[j]).is_some() {
                     depth += 1;
                     body.push(lines[j]);
-                } else if is_fence_close(lines[j]) {
+                } else if let Some(pre) = fence_close_body(lines[j]) {
                     depth -= 1;
                     if depth == 0 {
+                        // Keep any prose glued in front of a mangled closer so
+                        // the last sentence is not lost with the marker.
+                        if !pre.is_empty() {
+                            body.push(pre);
+                        }
                         break;
                     }
                     body.push(lines[j]);
@@ -4147,6 +4164,19 @@ mod tests {
     fn unterminated_spoiler_is_left_alone() {
         let html = render(":::spoiler Oops\nno closing fence here");
         assert!(!html.contains("<details"), "an unterminated opener must not open a details:\n{html}");
+    }
+
+    /// Defensive recovery: if the closing `:::` gets glued onto the previous
+    /// sentence (e.g. a non-spoiler-aware reflow of the prose), the block must
+    /// still close and keep that sentence, not leak the whole block as raw text.
+    #[test]
+    fn spoiler_recovers_from_glued_closer() {
+        let html = render(":::spoiler Show it\nThe body sentence stays. :::");
+        assert!(html.contains("<details class=\"spoiler\">"), "a glued closer must still open a details:\n{html}");
+        assert!(html.contains("<summary>Show it</summary>"), "summary should be intact:\n{html}");
+        assert!(html.contains("The body sentence stays."), "the glued sentence must survive:\n{html}");
+        assert!(html.contains("</details>"), "the block must close:\n{html}");
+        assert!(!html.contains(":::"), "no literal fence marker should leak:\n{html}");
     }
 
     // --- Figure numbering, captions, and cross-references ----------------

@@ -17,7 +17,7 @@ It is **not** Quarto, mdBook, Bookdown, Hugo, or Jupyter Book, even though the c
 - Content is **plain Markdown** under `content/`, with YAML front matter: `title:` (required), plus optional `description:` (meta/social) and `toc: true` (adds an "On this page" list).
 - Math is rendered at build time with **KaTeX** (server-side); no MathJax runtime is needed.
 - The build produces static HTML in `dist/` and an SQLite full-text **search index** (`dist/search.db`).
-- Deployment is Netlify (`netlify.toml`). GitHub Actions CI (`.github/workflows/ci.yml`) runs the guardrails on every push/PR: the Rust regression suite (`just test`), the injector unit tests (`just test-scripts`), the prose linter (`just lint-prose`), figure staleness (`just figures-check`), injected-output freshness (`just python-output-check`), a full build plus internal-link check (`just check-links`), and glossary consistency (`just glossary-check`). Keep these green locally before pushing.
+- Deployment is Netlify (`netlify.toml`). GitHub Actions CI (`.github/workflows/ci.yml`) runs the guardrails on every push/PR: the Rust regression suite (`just test`), the dev-tool unit tests (`just test-scripts`: the Python-output injector and the spoiler-aware sentence linter), the prose linter (`just lint-prose`), figure staleness (`just figures-check`), injected-output freshness (`just python-output-check`), a full build plus internal-link check (`just check-links`), and glossary consistency (`just glossary-check`). Keep these green locally before pushing.
 
 ## Directory layout
 
@@ -172,6 +172,9 @@ This never changes the rendered HTML (Markdown collapses single newlines to spac
 
 - Check: `just lint-prose`   ·   Auto-fix: `just fmt-prose`
 - **When you add a new content directory, add it to `prose_dirs` in the `justfile`** so it is linted and gets Python output injected.
+- The linter is **spoiler-aware**: `:::spoiler`/`:::details`/`:::` fence lines and
+  `:::{include}:::` shortcodes are passed through untouched, so auto-fixing never
+  corrupts a disclosure block (regression-tested in `scripts/test_sentence_lint.py`).
 
 ## Math
 
@@ -227,7 +230,15 @@ Substitute $R_0 = \beta / \gamma$ and simplify.
 - The opener sits on its own line; the block ends at a line that is exactly
   `:::`. Blocks may **nest**. An opener with no matching `:::` close is left
   untouched, so stray text is never swallowed.
-- See `expand_spoilers` in `src/main.rs`.
+- **Keep the `:::spoiler`/`:::details` opener and the closing `:::` each on their
+  own line** (a blank line around them is fine but not required). The prose
+  linter is spoiler-aware and never reflows these fence lines, so
+  `just fmt-prose` will not glue the summary onto the first sentence or detach
+  the closer — but hand-editing them onto a prose line still breaks the block.
+  As a backstop the parser also recovers from a closer accidentally glued to the
+  previous sentence (`… last sentence. :::`); see `fence_close_body`.
+- See `expand_spoilers` in `src/main.rs` (and its tests, e.g.
+  `spoiler_recovers_from_glued_closer`).
 
 ## Section permalinks
 
@@ -359,7 +370,10 @@ only costs a one-time recompute. Bump `FORMAT_TAG` in the script if you change
 the injection format so every fingerprint invalidates.
 
 The injector has its own regression suite, `scripts/test_inject_python_output.py`
-(stdlib only), run with `just test-scripts`. It follows the same test-driven
+(stdlib only), run with `just test-scripts` — which also runs
+`scripts/test_sentence_lint.py`, the sentence-linter suite that locks in the
+one-sentence-per-line reflow and its spoiler-awareness (fence lines are never
+merged into prose). It follows the same test-driven
 rule as the Rust generator: changes to `inject_python_output.py` — injection,
 `# no-run` / truncation handling, fingerprinting, or caching — should come with a
 test. Keep injected Python **deterministic**: seed every RNG *and* pin any
@@ -431,3 +445,38 @@ and run with `just test` (`cargo test --release`).
 
 There is no CI, so these tests only run when you run them — treat `just test` as a
 required local gate for generator changes.
+
+## Design rule: a new content feature must survive the whole pipeline
+
+A page's Markdown is read and rewritten by **several independent tools**, not just
+the Rust renderer. Before a `.md` file becomes HTML it passes through, among
+others:
+
+- `expand_includes` / `expand_spoilers` and the rest of `src/main.rs` (the renderer);
+- `scripts/sentence_lint.py` — reflows prose to one sentence per line (`just fmt-prose`);
+- `scripts/inject_python_output.py` — executes ` ```python ` blocks and splices stdout in;
+- the glossary auto-linker, fragment includes, backlink extractor, figure/equation numbering, and the internal-link checker.
+
+**When you add a new authoring construct** (a fenced block like `:::spoiler`, a new
+shortcode, an inline sentinel like `[@fig:…]`, a new front-matter flag), it is not
+done when it round-trips through *its own* parser. You must verify it **survives
+every other stage that scans or rewrites Markdown**, and add a **cross-stage
+regression test** — not just a renderer test — for each interaction. Concretely:
+
+- **Reflow safety.** Run `just fmt-prose` on a page using the feature and confirm
+  the construct is byte-stable (idempotent) and still renders. Teach the linter to
+  treat any new fence/marker line as passthrough, and lock it in with a test in
+  `scripts/test_sentence_lint.py`.
+- **Injector / other-tool safety.** If the construct can wrap or sit near a
+  ` ```python ` block, an include, a table, or a glossary term, check that tool
+  too, and add a test to the relevant suite (`scripts/test_*.py`, `just test-scripts`).
+- **Renderer robustness.** Make the parser fail *loudly or gracefully*, never
+  silently — an unterminated or mangled construct should degrade visibly, not
+  corrupt the page (see `expand_spoilers`' unterminated-opener and glued-closer
+  handling and their tests).
+
+This rule exists because the `:::spoiler` feature shipped with only a renderer
+implementation: the sentence linter, unaware of the fence, merged the summary into
+the body and detached the closing `:::`, silently corrupting every spoiler on the
+next `fmt-prose`. The hardening and the `test_sentence_lint.py` / `expand_spoilers`
+integration tests should have landed **with** the feature. Do that for the next one.

@@ -49,6 +49,26 @@ Enriching the prey (raising $r$) does not raise equilibrium prey — it raises p
 ## Neutral cycles and structural instability
 
 Linearizing about $(N^*, P^*)$ gives a [Jacobian](jacobians.md) whose [eigenvalues](eigenvalues-and-eigenvectors.md) are purely imaginary, $\lambda = \pm i\sqrt{rm}$.
+
+:::spoiler Show that the eigenvalues are purely imaginary
+
+Linearize the system about the coexistence equilibrium $(N^*, P^*) = \left(\dfrac{m}{ba},\, \dfrac{r}{a}\right)$.
+The Jacobian of $\big(rN - aNP,\; baNP - mP\big)$ has entries $\partial_N \dot N = r - aP$, $\partial_P \dot N = -aN$, $\partial_N \dot P = baP$, $\partial_P \dot P = baN - m$; substituting the equilibrium values makes the diagonal entries vanish:
+
+\[
+J^* = \begin{bmatrix} 0 & -\,m/b \\ br & 0 \end{bmatrix} .
+\]
+
+Its trace is $0$ and its determinant is $\det J^* = (m/b)(br) = rm$, so the characteristic equation is $\lambda^2 + rm = 0$, giving
+
+\[
+\lambda = \pm i\sqrt{rm} .
+\]
+
+Purely imaginary eigenvalues mark a **center**: trajectories are closed neutral cycles, circling the equilibrium with period $T = 2\pi/\sqrt{rm}$ rather than spiraling in or out.
+
+:::
+
 Purely imaginary eigenvalues mean the equilibrium is a **center**: trajectories neither spiral in nor out but trace closed loops.
 The system conserves the quantity $V = b\,aN - m\ln N + aP - r\ln P$, so each initial condition sits on its own fixed orbit.
 

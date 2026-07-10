@@ -32,8 +32,10 @@ This factorization is the engine behind one standard proof of the [central limit
 | Normal $\mathcal{N}(\mu,\sigma^2)$ | $e^{\mu t + \sigma^2 t^2/2}$ | all $t$ |
 | Poisson $(\lambda)$ | $e^{\lambda(e^{t}-1)}$ | all $t$ |
 | Exponential $(\lambda)$ | $\dfrac{\lambda}{\lambda - t}$ | $t<\lambda$ |
+| Gamma (shape $\alpha$, rate $\lambda$) | $\left(\dfrac{\lambda}{\lambda - t}\right)^{\alpha}$ | $t<\lambda$ |
 
 See the [normal](normal-distribution.md) and [Poisson](poisson-distribution.md) distributions for the parent densities.
+The exponential is the gamma with shape $\alpha = 1$, and a gamma is a sum of $\alpha$ independent exponentials — which is exactly why its MGF is the exponential's raised to the $\alpha$ (sums become products).
 
 ## The cumulant generating function
 
@@ -50,6 +52,53 @@ For nonnegative integer counts, the parallel tool is the probability generating 
 Let $X\sim\mathrm{Poisson}(\lambda)$ with $M(t)=e^{\lambda(e^{t}-1)}$.
 Differentiate using the chain rule: $$M'(t) = \lambda e^{t}\, e^{\lambda(e^{t}-1)}.$$ At $t=0$, $e^{0}=1$ and the exponential factor is $e^{0}=1$, so $$M'(0) = \lambda = \mathbb{E}[X].$$ Differentiate again: $$M''(t) = \lambda e^{t}\,e^{\lambda(e^{t}-1)} + \big(\lambda e^{t}\big)^2 e^{\lambda(e^{t}-1)},$$ so $M''(0) = \lambda + \lambda^2 = \mathbb{E}[X^2]$.
 Therefore $$\operatorname{Var}(X) = M''(0) - \big(M'(0)\big)^2 = (\lambda + \lambda^2) - \lambda^2 = \lambda,$$ recovering the familiar fact that a Poisson variable has equal mean and variance.
+
+## Worked example: the gamma second moment
+
+The gamma MGF is a clean case where the second moment $\mathbb{E}[X^2] = M''(0)$ falls out with two applications of the chain rule.
+Let $X \sim \mathrm{Gamma}(\alpha, \lambda)$ (shape $\alpha$, rate $\lambda$) with $M(t) = \left(1 - t/\lambda\right)^{-\alpha}$ for $t < \lambda$.
+
+:::spoiler Show the derivation of $\mathbb{E}[X^2]$
+
+Write the MGF as a power so the chain rule is mechanical:
+
+\[
+M(t) = \left(1 - \frac{t}{\lambda}\right)^{-\alpha}, \qquad t < \lambda .
+\]
+
+**First derivative.** Differentiate the outer power and multiply by the inner derivative $\frac{d}{dt}\!\left(1 - t/\lambda\right) = -1/\lambda$:
+
+\[
+M'(t) = -\alpha\left(1 - \frac{t}{\lambda}\right)^{-\alpha - 1}\!\left(-\frac{1}{\lambda}\right) = \frac{\alpha}{\lambda}\left(1 - \frac{t}{\lambda}\right)^{-\alpha - 1} .
+\]
+
+Setting $t = 0$ (where $1 - t/\lambda = 1$) gives the mean:
+
+\[
+M'(0) = \frac{\alpha}{\lambda} = \mathbb{E}[X] .
+\]
+
+**Second derivative.** Differentiate $M'(t)$ the same way — the exponent drops by one again and another factor of $-1/\lambda$ appears:
+
+\[
+M''(t) = \frac{\alpha}{\lambda}\cdot(-\alpha - 1)\left(1 - \frac{t}{\lambda}\right)^{-\alpha - 2}\!\left(-\frac{1}{\lambda}\right) = \frac{\alpha(\alpha + 1)}{\lambda^{2}}\left(1 - \frac{t}{\lambda}\right)^{-\alpha - 2} .
+\]
+
+Evaluating at $t = 0$ reads off the **second moment**:
+
+\[
+\mathbb{E}[X^2] = M''(0) = \frac{\alpha(\alpha + 1)}{\lambda^{2}} .
+\]
+
+**Sanity check via the variance.** Subtracting the squared mean recovers the known gamma variance:
+
+\[
+\operatorname{Var}(X) = M''(0) - \big(M'(0)\big)^2 = \frac{\alpha(\alpha + 1)}{\lambda^{2}} - \frac{\alpha^{2}}{\lambda^{2}} = \frac{\alpha}{\lambda^{2}} .
+\]
+
+Setting $\alpha = 1$ collapses everything to the exponential: $\mathbb{E}[X^2] = 2/\lambda^2$ and $\operatorname{Var}(X) = 1/\lambda^2$.
+
+:::
 
 ## In code
 
