@@ -169,6 +169,7 @@ It requires practice and repetition.
 - [Genetic Drift and the Wright–Fisher Model](math/genetic-drift.md)
 - [Selection and Mutation–Selection Balance](math/selection-popgen.md)
 - [Population Structure and F_ST](math/population-structure.md)
+- [Phylogenetic Inference: Substitution Models and Tree Building](math/phylogenetic-inference.md) — from sequences to a tree, with IQ-TREE and BEAST
 - [The Coalescent](math/coalescent-theory.md) — genealogies backward in time
 - [Phylodynamics](math/phylodynamics.md) — reading epidemic dynamics from pathogen phylogenies
 

@@ -40,6 +40,7 @@ Each page pairs the biology and notation with worked examples and runnable code 
 - [Epidemic Forecasting](epidemiology/epidemic-forecasting.md) — short-term projection with uncertainty and forecast scoring
 - [One Health Surveillance](epidemiology/one-health-surveillance.md) — integrating human, animal, and environmental signals
 - [Genomic Surveillance](epidemiology/genomic-surveillance.md) — linking pathogen genomes to metadata to detect and reconstruct transmission
+- [Transmission Tree Reconstruction](epidemiology/transmission-tree-reconstruction.md) — who infected whom, from case timing and pathogen genomes
 - [Healthcare-Associated Infection Surveillance and the SIR](epidemiology/healthcare-associated-infections.md) — device-associated definitions, risk adjustment, and the standardized infection ratio
 
 ## Social, behavioral, and communication science
