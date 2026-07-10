@@ -235,6 +235,27 @@ Every `##`/`###` heading is emitted with a stable `id` **and** a `#` permalink
 anchor (revealed on hover) so any section can be deep-linked. This is automatic;
 you do nothing. See `add_heading_ids` in `src/main.rs`.
 
+## Code blocks
+
+Every fenced code block is wrapped at build time in a `.code-block` container
+with a language badge and a **Copy** button (`enhance_code_blocks` in
+`src/main.rs`); the button is wired by `assets/nav.js`. Tag the fence with its
+language so the badge and highlight.js coloring are correct.
+
+## Glossary
+
+`content/_glossary.yaml` is a central list of terms (`term`, `short`, optional
+`aliases`/`long`/`see`). The build (1) auto-links the **first** occurrence of
+each term/alias in every page's prose with a definition tooltip — skipping code,
+math, links, and headings — and (2) generates `/glossary.html`, whose entries
+carry a reverse index of the pages that mention each term. Matching is
+whole-word and case-insensitive; a page opts out with `glossary: false` in front
+matter; an empty/absent listing makes the feature inert. The `Glossary` keyword
+is a built-in navbar item (like `Search`) and is added to `config.yaml`'s
+`navbar_order`. See `load_glossary`/`decorate_glossary`/`glossary_page_content`
+in `src/main.rs`. `content/_glossary.yaml` is data, not a page — like
+`_fragments/`, it is never compiled to HTML.
+
 ## Home page
 
 `content/index.md` uses a raw-HTML hero and a grid of image-backed section

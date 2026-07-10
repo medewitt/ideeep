@@ -46,6 +46,10 @@ struct FrontMatter {
     /// at its URL and is reachable by direct link; it is simply not advertised.
     /// Off by default. (Navbar placement is separate — driven by `config.yaml`.)
     hidden: Option<bool>,
+    /// When `false`, the build does not auto-link glossary terms on this page.
+    /// Defaults to on. Set `glossary: false` on reference pages where the
+    /// automatic first-occurrence links would be noise.
+    glossary: Option<bool>,
 }
 
 /// Escape a string for safe use inside a double-quoted HTML attribute.
@@ -854,6 +858,327 @@ fn enhance_code_blocks(html: &str) -> String {
         )
     })
     .into_owned()
+}
+
+// ---------------------------------------------------------------------------
+// Glossary
+//
+// A central listing (`content/_glossary.yaml`) of terms and one-line
+// definitions drives two features:
+//   1. Auto-linking — the build decorates the *first* occurrence of each term
+//      on every page with a link to the glossary and a hover/focus definition
+//      tooltip. Authors write naturally; the only maintenance is the listing.
+//   2. A generated `/glossary.html` whose entries carry a reverse index — the
+//      list of pages that discuss each term — collected during that same scan.
+// ---------------------------------------------------------------------------
+const GLOSSARY_FILE: &str = "content/_glossary.yaml";
+
+/// One YAML entry as authored in `content/_glossary.yaml`.
+#[derive(Debug, serde::Deserialize)]
+struct GlossaryEntry {
+    term: String,
+    #[serde(default)]
+    aliases: Vec<String>,
+    short: String,
+    #[serde(default)]
+    long: Option<String>,
+    #[serde(default)]
+    see: Option<String>,
+}
+
+/// A prepared glossary term: the canonical display form, its anchor slug, the
+/// short/long definitions, an optional canonical page, and the lower-cased
+/// surface forms (term + aliases) that auto-link to it.
+struct GlossaryTerm {
+    term: String,
+    slug: String,
+    short: String,
+    long: Option<String>,
+    see: Option<String>,
+    forms: Vec<String>,
+}
+
+/// A compiled matcher over every surface form, longest-first so multi-word
+/// terms win over their prefixes.
+struct GlossaryMatcher {
+    re: Option<Regex>,
+    form_to_term: std::collections::HashMap<String, usize>,
+}
+
+/// Parse glossary YAML text into prepared terms (empty on parse failure, with a
+/// warning). Split from `load_glossary` so tests can build fixtures inline.
+fn parse_glossary(text: &str) -> Vec<GlossaryTerm> {
+    let entries: Vec<GlossaryEntry> = match serde_yaml::from_str(text) {
+        Ok(e) => e,
+        Err(e) => {
+            eprintln!("Warning: failed to parse {}: {}", GLOSSARY_FILE, e);
+            return Vec::new();
+        }
+    };
+    entries
+        .into_iter()
+        .filter_map(|e| {
+            let term = e.term.trim().to_string();
+            if term.is_empty() {
+                return None;
+            }
+            let mut forms = vec![term.to_lowercase()];
+            for a in &e.aliases {
+                let a = a.trim().to_lowercase();
+                if !a.is_empty() && !forms.contains(&a) {
+                    forms.push(a);
+                }
+            }
+            Some(GlossaryTerm {
+                slug: slugify(&term),
+                term,
+                short: e.short.trim().to_string(),
+                long: e.long.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()),
+                see: e.see.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()),
+                forms,
+            })
+        })
+        .collect()
+}
+
+/// Load `content/_glossary.yaml` (absent file => no glossary).
+fn load_glossary() -> Vec<GlossaryTerm> {
+    match fs::read_to_string(GLOSSARY_FILE) {
+        Ok(text) => parse_glossary(&text),
+        Err(_) => Vec::new(),
+    }
+}
+
+fn build_glossary_matcher(terms: &[GlossaryTerm]) -> GlossaryMatcher {
+    let mut form_to_term: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
+    let mut forms: Vec<String> = Vec::new();
+    for (i, t) in terms.iter().enumerate() {
+        for f in &t.forms {
+            // First definition of a surface form wins; ignore later collisions.
+            if form_to_term.insert(f.clone(), i).is_none() {
+                forms.push(f.clone());
+            }
+        }
+    }
+    if forms.is_empty() {
+        return GlossaryMatcher { re: None, form_to_term };
+    }
+    forms.sort_by(|a, b| b.len().cmp(&a.len()));
+    let alt: Vec<String> = forms.iter().map(|f| regex::escape(f)).collect();
+    let pat = format!(r"(?i)\b(?:{})\b", alt.join("|"));
+    GlossaryMatcher {
+        re: Regex::new(&pat).ok(),
+        form_to_term,
+    }
+}
+
+/// Tag names whose contents are never glossary-decorated (code, links, headings,
+/// captions, scripts). KaTeX `<span class="…katex…">` is handled separately.
+fn is_glossary_protected_tag(name: &str) -> bool {
+    matches!(
+        name,
+        "pre" | "code" | "a" | "script" | "style" | "figcaption"
+            | "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+    )
+}
+
+/// From just after an opening `<name …>` tag, return the byte index just past
+/// its matching `</name>`, honouring nested same-name tags. Tag names in our
+/// generated HTML are lowercase, so matching is case-sensitive.
+fn skip_element(html: &str, content_start: usize, name: &str) -> usize {
+    let open = format!("<{}", name);
+    let close = format!("</{}", name);
+    let is_boundary = |rest: &str, kw: &str| {
+        rest.as_bytes()
+            .get(kw.len())
+            .map(|&b| !(b as char).is_ascii_alphanumeric())
+            .unwrap_or(true)
+    };
+    let n = html.len();
+    let mut i = content_start;
+    let mut depth = 1i32;
+    while i < n && depth > 0 {
+        match html[i..].find('<') {
+            Some(off) => {
+                let p = i + off;
+                let rest = &html[p..];
+                let tag_end = rest.find('>').map(|e| p + e + 1).unwrap_or(n);
+                if rest.starts_with(&close) && is_boundary(rest, &close) {
+                    depth -= 1;
+                } else if rest.starts_with(&open)
+                    && is_boundary(rest, &open)
+                    && !html[p..tag_end].ends_with("/>")
+                {
+                    depth += 1;
+                }
+                i = tag_end;
+            }
+            None => break,
+        }
+    }
+    i
+}
+
+/// Decorate the first occurrence of each glossary term inside one plain-text run
+/// (already outside any protected element). Records every match in `mentions`
+/// (so the reverse index counts a page even for its later, undecorated
+/// occurrences), but only wraps the first per term via `used`.
+#[allow(clippy::too_many_arguments)]
+fn decorate_run(
+    run: &str,
+    matcher: &GlossaryMatcher,
+    terms: &[GlossaryTerm],
+    asset_prefix: &str,
+    current_page: &str,
+    used: &mut std::collections::HashSet<usize>,
+    mentions: &mut std::collections::HashMap<usize, std::collections::BTreeSet<String>>,
+) -> String {
+    let re = match &matcher.re {
+        Some(r) => r,
+        None => return run.to_string(),
+    };
+    let mut out = String::with_capacity(run.len());
+    let mut last = 0;
+    for m in re.find_iter(run) {
+        let key = run[m.start()..m.end()].to_lowercase();
+        let ti = match matcher.form_to_term.get(&key) {
+            Some(&ti) => ti,
+            None => continue,
+        };
+        mentions.entry(ti).or_default().insert(current_page.to_string());
+        if used.insert(ti) {
+            let t = &terms[ti];
+            out.push_str(&run[last..m.start()]);
+            out.push_str(&format!(
+                "<a class=\"gloss-term\" href=\"{}glossary.html#{}\" data-def=\"{}\">{}</a>",
+                asset_prefix,
+                t.slug,
+                escape_attr(&t.short),
+                &run[m.start()..m.end()]
+            ));
+            last = m.end();
+        }
+    }
+    out.push_str(&run[last..]);
+    out
+}
+
+/// Auto-link glossary terms in a page's body HTML, skipping code, math, links,
+/// headings, and captions. Returns the decorated HTML and updates `mentions`
+/// (term index -> set of pages that mention it) for the reverse index.
+fn decorate_glossary(
+    html: &str,
+    terms: &[GlossaryTerm],
+    matcher: &GlossaryMatcher,
+    asset_prefix: &str,
+    current_page: &str,
+    mentions: &mut std::collections::HashMap<usize, std::collections::BTreeSet<String>>,
+) -> String {
+    if matcher.re.is_none() || terms.is_empty() {
+        return html.to_string();
+    }
+    let n = html.len();
+    let mut out = String::with_capacity(n + 256);
+    let mut used: std::collections::HashSet<usize> = std::collections::HashSet::new();
+    let mut i = 0;
+    while i < n {
+        if html.as_bytes()[i] == b'<' {
+            let tag_end = html[i..].find('>').map(|p| i + p + 1).unwrap_or(n);
+            let tag = &html[i..tag_end];
+            let is_close = tag.starts_with("</");
+            let name_start = if is_close { 2 } else { 1 };
+            let name: String = tag[name_start..]
+                .chars()
+                .take_while(|c| c.is_ascii_alphanumeric())
+                .flat_map(|c| c.to_lowercase())
+                .collect();
+            let is_selfclose = tag.ends_with("/>");
+            let is_katex = name == "span" && tag.contains("katex");
+            if !is_close && !is_selfclose && (is_glossary_protected_tag(&name) || is_katex) {
+                let end = skip_element(html, tag_end, &name);
+                out.push_str(&html[i..end]);
+                i = end;
+            } else {
+                out.push_str(tag);
+                i = tag_end;
+            }
+        } else {
+            let run_end = html[i..].find('<').map(|p| i + p).unwrap_or(n);
+            out.push_str(&decorate_run(
+                &html[i..run_end],
+                matcher,
+                terms,
+                asset_prefix,
+                current_page,
+                &mut used,
+                mentions,
+            ));
+            i = run_end;
+        }
+    }
+    out
+}
+
+/// Build the generated glossary page body: every term alphabetically with its
+/// definition, optional canonical link, and the reverse index of pages that
+/// discuss it. `mentions` maps a term index to the pages where it appeared.
+fn glossary_page_content(
+    terms: &[GlossaryTerm],
+    mentions: &std::collections::HashMap<usize, std::collections::BTreeSet<String>>,
+    markdown_titles: &std::collections::HashMap<String, String>,
+    markdown_files: &std::collections::HashSet<String>,
+) -> String {
+    let mut order: Vec<usize> = (0..terms.len()).collect();
+    order.sort_by(|&a, &b| terms[a].term.to_lowercase().cmp(&terms[b].term.to_lowercase()));
+
+    let mut html = String::from(
+        "<h1>Glossary</h1>\n<p class=\"lead\">Key terms used across the site. The first mention of any of these on a page links back here, and each entry lists the pages that discuss it.</p>\n",
+    );
+
+    for &ti in &order {
+        let t = &terms[ti];
+        html.push_str(&format!(
+            "<div class=\"gloss-entry\">\n<h2 id=\"{slug}\">{term}</h2>\n",
+            slug = t.slug,
+            term = escape_attr(&t.term)
+        ));
+        // Prefer the longer markdown definition when present; else the short one.
+        let body = t.long.as_deref().unwrap_or(&t.short);
+        html.push_str(&markdown_to_html(body, markdown_files));
+        if let Some(see) = &t.see {
+            let key = see.trim_end_matches(".md");
+            if markdown_files.contains(key) {
+                let title = markdown_titles.get(key).cloned().unwrap_or_else(|| "Read more".to_string());
+                html.push_str(&format!(
+                    "<p class=\"gloss-see\">See: <a href=\"{}.html\">{}</a></p>\n",
+                    key, title
+                ));
+            } else {
+                eprintln!(
+                    "Warning: glossary term '{}' has see: '{}' which is not a page; skipping the link.",
+                    t.term, see
+                );
+            }
+        }
+        // Reverse index: pages that mention this term.
+        if let Some(pages) = mentions.get(&ti) {
+            let links: Vec<String> = pages
+                .iter()
+                .map(|p| {
+                    let title = markdown_titles.get(p).cloned().unwrap_or_else(|| p.clone());
+                    format!("<a href=\"{}.html\">{}</a>", p, title)
+                })
+                .collect();
+            if !links.is_empty() {
+                html.push_str(&format!(
+                    "<p class=\"gloss-discussed\">Discussed on: {}</p>\n",
+                    links.join(", ")
+                ));
+            }
+        }
+        html.push_str("</div>\n");
+    }
+    html
 }
 
 /// Directory (relative to the project root) that holds reusable Markdown
@@ -2267,6 +2592,7 @@ fn search_page_content() -> String {
 fn write_sitemap(
     markdown_files: &[(PathBuf, PathBuf, String)],
     hidden_pages: &std::collections::HashSet<String>,
+    has_glossary: bool,
     dist_dir: &Path,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut urls: Vec<String> = Vec::new();
@@ -2292,6 +2618,9 @@ fn write_sitemap(
     }
     // The interactive search page is a real, linkable destination.
     urls.push(format!("{}/search.html", SITE_URL));
+    if has_glossary {
+        urls.push(format!("{}/glossary.html", SITE_URL));
+    }
 
     urls.sort();
     urls.dedup();
@@ -2600,9 +2929,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     
+    // Glossary: the term listing drives per-page auto-linking and the generated
+    // glossary page. `glossary_mentions` accumulates term -> pages across the
+    // page loop for the reverse index. An empty listing makes the feature inert
+    // (no auto-links, no page, no navbar entry). Loaded here so the navbar's
+    // default branch can decide whether to surface a Glossary link.
+    let glossary_terms = load_glossary();
+    let glossary_matcher = build_glossary_matcher(&glossary_terms);
+    let has_glossary = !glossary_terms.is_empty();
+    let mut glossary_mentions: std::collections::HashMap<usize, std::collections::BTreeSet<String>> =
+        std::collections::HashMap::new();
+
     // Build navbar items from navbar_order, page_order, or markdown files
     let mut navbar_items: Vec<NavbarItem> = Vec::new();
-    
+
     if let Some(ref order) = navbar_order {
         // Use navbar_order if specified - allows full control including dropdowns
         for item in order {
@@ -2614,6 +2954,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             "search.html".to_string(),
                             "Search".to_string(),
                             "search".to_string(),
+                        ));
+                        continue;
+                    }
+                    // Built-in glossary page (not backed by a markdown file)
+                    if page_name.eq_ignore_ascii_case("glossary") {
+                        navbar_items.push(NavbarItem::InternalPage(
+                            "glossary.html".to_string(),
+                            "Glossary".to_string(),
+                            "glossary".to_string(),
                         ));
                         continue;
                     }
@@ -2680,6 +3029,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         ));
                         continue;
                     }
+                    // Built-in glossary page (not backed by a markdown file)
+                    if page_name.eq_ignore_ascii_case("glossary") {
+                        navbar_items.push(NavbarItem::InternalPage(
+                            "glossary.html".to_string(),
+                            "Glossary".to_string(),
+                            "glossary".to_string(),
+                        ));
+                        continue;
+                    }
                     // Simple string - find matching markdown file
                     if let Some((_, relative_path, title)) = markdown_files.iter()
                         .find(|(_, rel_path, _)| {
@@ -2736,7 +3094,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 navbar_items.push(NavbarItem::Dropdown(dropdown_name.clone()));
             }
         }
-        // Search page last when no explicit ordering is configured.
+        // Glossary (when a listing exists) then Search, last, when no explicit
+        // ordering is configured.
+        if has_glossary {
+            navbar_items.push(NavbarItem::InternalPage(
+                "glossary.html".to_string(),
+                "Glossary".to_string(),
+                "glossary".to_string(),
+            ));
+        }
         navbar_items.push(NavbarItem::InternalPage(
             "search.html".to_string(),
             "Search".to_string(),
@@ -2763,6 +3129,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let content = fs::read_to_string(full_path)?;
         let (frontmatter, markdown_content) = extract_frontmatter(&content);
         let page_hidden = frontmatter.as_ref().and_then(|fm| fm.hidden).unwrap_or(false);
+        // A page opts out of glossary auto-linking with `glossary: false`.
+        let page_glossary = frontmatter.as_ref().and_then(|fm| fm.glossary).unwrap_or(true);
         // Schedule pages opt into build-time row sorting so hand-edited times
         // reorder the rendered agenda. `sorted_body` owns the rewritten Markdown
         // only when the flag is set; otherwise the original slice is used.
@@ -2863,6 +3231,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Calculate asset prefix based on depth (e.g., "../" for one level deep)
         let asset_prefix = calculate_asset_prefix(relative_path);
 
+        // Auto-link the first occurrence of each glossary term (skipping code,
+        // math, links and headings) and record which pages mention each term.
+        let html_content = if has_glossary && page_glossary {
+            decorate_glossary(
+                &html_content,
+                &glossary_terms,
+                &glossary_matcher,
+                &asset_prefix,
+                &rel_key,
+                &mut glossary_mentions,
+            )
+        } else {
+            html_content
+        };
+
         // Generate navbar HTML with current page highlighted
         let navbar = generate_navbar(&navbar_items, true, dropdowns.as_ref(), &markdown_titles, Some(&rel_key), &asset_prefix);
 
@@ -2914,8 +3297,46 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     fs::write(&search_path, search_html)?;
     println!("Generated: {}", search_path.display());
 
+    // Emit the generated glossary page (definitions + reverse "Discussed on"
+    // index) when a listing exists.
+    if has_glossary {
+        let glossary_navbar = generate_navbar(
+            &navbar_items,
+            true,
+            dropdowns.as_ref(),
+            &markdown_titles,
+            Some("glossary"),
+            "",
+        );
+        let glossary_breadcrumbs = vec![
+            ("Home".to_string(), format!("{}/", SITE_URL)),
+            ("Glossary".to_string(), format!("{}/glossary.html", SITE_URL)),
+        ];
+        let glossary_body = glossary_page_content(
+            &glossary_terms,
+            &glossary_mentions,
+            &markdown_titles,
+            &markdown_file_names,
+        );
+        let glossary_html = generate_html(
+            "Glossary",
+            "Definitions of key terms used across IDEEEP, each linking to the pages where it is discussed.",
+            "glossary.html",
+            "index, follow, max-image-preview:large",
+            &glossary_breadcrumbs,
+            &glossary_body,
+            &glossary_navbar,
+            "",
+            None,
+            None,
+        )?;
+        let glossary_path = dist_dir.join("glossary.html");
+        fs::write(&glossary_path, glossary_html)?;
+        println!("Generated: {}", glossary_path.display());
+    }
+
     // Emit SEO/PWA support files: sitemap, robots, manifest, service worker.
-    write_sitemap(&markdown_files, &hidden_pages, dist_dir)?;
+    write_sitemap(&markdown_files, &hidden_pages, has_glossary, dist_dir)?;
     write_robots(dist_dir)?;
     write_manifest(dist_dir)?;
     write_service_worker(dist_dir)?;
@@ -3485,6 +3906,72 @@ mod tests {
         // renders, so force the error path directly through the wrapper.
         let wrapped = enhance_code_blocks("<pre class=\"math-error\">oops</pre>");
         assert!(!wrapped.contains("code-block"), "a math-error pre must be left untouched:\n{wrapped}");
+    }
+
+    // --- Glossary: auto-linking, protection, and reverse index -----------
+
+    fn test_glossary() -> (Vec<GlossaryTerm>, GlossaryMatcher) {
+        let terms = parse_glossary(
+            "- term: Serial interval\n  aliases: [serial intervals]\n  short: Onset-to-onset time.\n- term: R0\n  short: Reproduction number.\n",
+        );
+        let matcher = build_glossary_matcher(&terms);
+        (terms, matcher)
+    }
+
+    fn decorate(html: &str, page: &str) -> (String, std::collections::HashMap<usize, std::collections::BTreeSet<String>>) {
+        let (terms, matcher) = test_glossary();
+        let mut mentions = std::collections::HashMap::new();
+        let out = decorate_glossary(html, &terms, &matcher, "", page, &mut mentions);
+        (out, mentions)
+    }
+
+    /// Only the FIRST occurrence of a term on a page is linked; the term links to
+    /// the glossary anchor and carries its definition; the page is recorded in
+    /// the reverse index.
+    #[test]
+    fn glossary_links_first_occurrence_only() {
+        let (out, mentions) = decorate(
+            "<p>The serial interval matters. The serial interval again.</p>",
+            "epidemiology/x",
+        );
+        assert_eq!(out.matches("class=\"gloss-term\"").count(), 1, "only the first mention is linked:\n{out}");
+        assert!(out.contains("href=\"glossary.html#serial-interval\""), "term links to its glossary anchor:\n{out}");
+        assert!(out.contains("data-def=\"Onset-to-onset time.\""), "definition rides along as a tooltip:\n{out}");
+        assert!(mentions.get(&0).unwrap().contains("epidemiology/x"), "the page is recorded in the reverse index:\n{:?}", mentions);
+    }
+
+    /// An alias matches and links to the canonical term's entry, preserving the
+    /// text as written.
+    #[test]
+    fn glossary_matches_aliases() {
+        let (out, _) = decorate("<p>Two serial intervals here.</p>", "p");
+        assert!(out.contains(">serial intervals</a>"), "the alias text is preserved:\n{out}");
+        assert!(out.contains("#serial-interval"), "the alias links to the canonical entry:\n{out}");
+    }
+
+    /// Terms inside code, math, links, and headings are never decorated.
+    #[test]
+    fn glossary_skips_protected_regions() {
+        let (out, mentions) = decorate(
+            "<pre><code>serial interval</code></pre>\
+             <span class=\"katex\">serial interval<span>x</span></span>\
+             <a href=\"y\">serial interval</a>\
+             <h2>serial interval</h2>",
+            "p",
+        );
+        assert!(!out.contains("gloss-term"), "protected regions must not be decorated:\n{out}");
+        assert!(mentions.is_empty(), "protected-only mentions are not counted:\n{:?}", mentions);
+    }
+
+    /// A term in real prose alongside protected copies is still linked once.
+    #[test]
+    fn glossary_decorates_prose_but_not_the_code_beside_it() {
+        let (out, _) = decorate(
+            "<p>Define the serial interval.</p><pre><code>serial interval</code></pre>",
+            "p",
+        );
+        assert_eq!(out.matches("gloss-term").count(), 1, "prose is linked, the code copy is not:\n{out}");
+        assert!(out.contains("<pre><code>serial interval</code></pre>"), "the code block is left verbatim:\n{out}");
     }
 }
 

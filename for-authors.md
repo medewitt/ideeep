@@ -316,7 +316,37 @@ include shortcode on its own line:
 
 ---
 
-## 10. Tables and lists
+## 10. The glossary
+
+The site keeps a central list of key terms in **`content/_glossary.yaml`**. You
+don't mark terms up in your prose — **the build auto-links the first mention of
+each term on every page**, with a hover/focus definition tooltip, and generates
+a `/glossary.html` page whose entries list every page that discusses the term
+(a reverse index).
+
+**To add a term, edit that one file:**
+
+```yaml
+- term: Serial interval
+  aliases: [serial intervals]        # other forms that should also link
+  short: The time from symptom onset in a case to onset in the people they infect.
+  see: epidemiology/epidemiological-intervals.md   # optional canonical page
+```
+
+- `term` + `short` are required; `aliases`, `long` (a fuller Markdown
+  definition for the glossary page), and `see` are optional.
+- Matching is **case-insensitive and whole-word**, and only the **first**
+  occurrence on a page is linked (so a page isn't peppered with links).
+- Terms inside **code, math, links, and headings are never linked** — only real
+  prose.
+- Keep aliases **specific**: a very common word would link on nearly every page.
+- A page can **opt out** of auto-linking with `glossary: false` in its front
+  matter.
+- Adding a term makes it live everywhere on the next build — no per-page edits.
+
+---
+
+## 11. Tables and lists
 
 - Standard GFM tables work. A table with `Day`/`Time` columns can be
   auto-sorted (`sort_schedule: true` in front matter, or `; schedule=true` on a
@@ -326,7 +356,7 @@ include shortcode on its own line:
 
 ---
 
-## 11. Build & preview
+## 12. Build & preview
 
 ```
 just preview          # build + serve on http://localhost:8000  (use this while writing)
@@ -361,4 +391,5 @@ up under the right navbar section.
 | Link to another page | `[text](../section/page.md)` |
 | Link to a section | `[text](#heading-slug)` |
 | Run Python and show output | a ` ```python ` block (seed your RNG) |
+| Define a glossary term | add it to `content/_glossary.yaml` (auto-links everywhere) |
 | Hide a draft page | `hidden: true` in front matter |

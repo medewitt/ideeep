@@ -1,0 +1,54 @@
+# Glossary of terms used across the site.
+#
+# Each entry auto-links the FIRST time its term (or an alias) appears in the
+# prose of any page, with a hover/focus definition tooltip, and gets an entry on
+# the generated /glossary.html page listing every page that discusses it.
+#
+# Fields:
+#   term     (required) canonical display form; also the tooltip/heading label
+#   aliases  (optional) other surface forms that should link to this entry
+#   short    (required) one-sentence definition (tooltip + glossary page)
+#   long     (optional) fuller Markdown definition, shown on the glossary page
+#   see      (optional) canonical page for the concept (path under content/)
+#
+# Matching is case-insensitive and whole-word. Keep aliases specific — a very
+# common word will link somewhere on almost every page. A page can opt out of
+# auto-linking with `glossary: false` in its front matter.
+
+- term: Basic reproduction number
+  aliases: [R0, basic reproductive number]
+  short: The average number of secondary infections caused by one infectious individual in a fully susceptible population.
+  see: math/reproduction-number-rt.md
+
+- term: Effective reproduction number
+  aliases: [Rt, effective reproductive number]
+  short: The average number of secondary infections per case at a given time, as susceptibility and interventions change.
+  see: math/reproduction-number-rt.md
+
+- term: Serial interval
+  aliases: [serial intervals]
+  short: The time between symptom onset in an infector and symptom onset in the people they infect.
+  see: epidemiology/epidemiological-intervals.md
+
+- term: Generation interval
+  aliases: [generation intervals, generation time]
+  short: The time between the infection of an infector and the infections they in turn cause.
+  see: epidemiology/epidemiological-intervals.md
+
+- term: Incubation period
+  aliases: [incubation periods]
+  short: The time between infection and the onset of symptoms in an individual.
+  see: epidemiology/epidemiological-intervals.md
+
+- term: Latent period
+  short: The time between infection and the onset of infectiousness (which may differ from the incubation period).
+  see: epidemiology/epidemiological-intervals.md
+
+- term: Compartmental model
+  aliases: [compartmental models]
+  short: A model that divides a population into states — such as susceptible, infectious, and recovered — and tracks the flows between them.
+  see: math/sir.md
+
+- term: Next-generation matrix
+  short: A matrix whose dominant eigenvalue gives the basic reproduction number in a structured or multi-type transmission model.
+  see: math/next-generation-matrix.md
