@@ -87,6 +87,7 @@ It requires practice and repetition.
 - [Markov Chains](math/markov-chains.md) — transition matrices and stationary distributions
 - [Branching Processes](math/branching-processes.md) — Galton–Watson, extinction, and outbreaks
 - [Superspreading and Transmission Heterogeneity](math/superspreading.md) — the offspring distribution, the dispersion $k$, and the 20/80 rule
+- [Chain-Binomial Models and the Household Secondary Attack Rate](math/chain-binomial-reed-frost.md) — Reed-Frost transmission and household final size
 - [Random Walks and Brownian Motion](math/random-walk-brownian-motion.md) — diffusive scaling and the Wiener process
 - [Copulas](math/copulas.md) — separating dependence from the marginals via Sklar's theorem
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
@@ -111,6 +112,7 @@ It requires practice and repetition.
 
 - [Bayesian Inference](math/bayesian-inference.md) — priors, likelihood, and the posterior
 - [Markov Chain Monte Carlo](math/mcmc.md)
+- [State-Space Models and Particle Filtering](math/state-space-particle-filter.md) — partially observed Markov processes and the bootstrap particle filter
 - [Prior Predictive Checks](math/prior-predictive-checks.md) — simulate from the prior to sanity-check it before fitting
 - [Posterior Predictive Checks](math/posterior-predictive-checks.md) — compare replicated data to the observed to test the model
 - [Identifiability](math/identifiability.md) — when data cannot separate parameters
@@ -251,6 +253,7 @@ It requires practice and repetition.
 ## Epidemic modeling
 
 - [Compartmental Models](math/sir.md) — the SIR model and $R_0$
+- [Final Size, Herd Immunity, and Overshoot](math/final-size-and-herd-immunity.md) — the final size relation, the herd immunity threshold, and epidemic overshoot
 - [Density-Dependent and Frequency-Dependent Transmission](math/transmission-modes.md) — how the contact rate scales with host density, and the critical density threshold
 - [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
 - [Social Contact Matrices and Age-Structured Mixing](math/contact-matrices.md) — who-meets-whom by age, from contact surveys to $R_0$

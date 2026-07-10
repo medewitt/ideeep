@@ -32,6 +32,8 @@ Each page pairs the biology and notation with worked examples and runnable code 
 - [Prospective Outbreak Detection](epidemiology/aberration-detection.md) — Shewhart, CUSUM, EARS, and Farrington aberration algorithms for count time series
 - [Nowcasting and Reporting Delays](epidemiology/nowcasting.md) — correcting the recent past for right truncation
 - [Back-Calculation and Deconvolution](epidemiology/back-calculation.md) — recovering the infection curve from delayed observed cases
+- [Severity: Estimating the CFR and IFR During an Outbreak](epidemiology/severity-cfr-ifr.md) — censoring, truncation, and the delay-corrected fatality ratio
+- [Detection Probability: Viral Kinetics and Assay Thresholds](epidemiology/detection-probability.md) — time-varying test sensitivity and the diagnostic window
 - [Epidemic Forecasting](epidemiology/epidemic-forecasting.md) — short-term projection with uncertainty and forecast scoring
 - [One Health Surveillance](epidemiology/one-health-surveillance.md) — integrating human, animal, and environmental signals
 - [Genomic Surveillance](epidemiology/genomic-surveillance.md) — linking pathogen genomes to metadata to detect and reconstruct transmission
@@ -53,6 +55,7 @@ The human side of transmission — and the human response to it — shapes disea
 ## Transmission dynamics and emergence
 
 - [The Euler–Lotka Equation and the r–R₀ Relationship](epidemiology/euler-lotka.md) — turning an epidemic growth rate into a reproduction number
+- [Force of Infection and Serocatalytic Models](epidemiology/force-of-infection.md) — estimating the infection hazard from age-stratified seroprevalence
 - [Within-Host Viral Dynamics and Infectiousness](epidemiology/within-host-dynamics.md) — viral-load trajectories and real-time infectiousness
 - [Multi-Scale (Nested) Models](epidemiology/nested-models.md) — linking within-host replication to between-host transmission
 - [Pathways to Zoonotic Spillover](epidemiology/zoonotic-spillover.md) — the barrier cascade and stuttering chains

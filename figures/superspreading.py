@@ -78,10 +78,10 @@ for k, col in zip(ks, PALETTE):
 axR.plot([0, 1], [0, 1], ls="--", color=MUTED, lw=1.0,
          label="homogeneous (k → ∞)")
 
-# top 20% cause ~80% of transmission for k = 0.1
+# top 20% cause ~97% of transmission for k = 0.1
 axR.axvline(0.2, color="#d8dee4", lw=0.8, zorder=0)
-axR.annotate("k = 0.1: top 20% of cases\ncause ~80% of transmission",
-             xy=(0.2, 0.8), xytext=(0.30, 0.42),
+axR.annotate("k = 0.1: top 20% of cases\ncause ~97% of transmission",
+             xy=(0.2, 0.965), xytext=(0.32, 0.55),
              fontsize=8.5, color=INK, ha="left",
              arrowprops=dict(arrowstyle="->", color=MUTED, lw=0.9))
 

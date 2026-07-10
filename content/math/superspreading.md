@@ -10,7 +10,7 @@ Two pathogens can share the same $R_0$ yet behave completely differently: one wh
 That second pattern is **superspreading**, and it is the rule rather than the exception for respiratory and directly transmitted pathogens.
 Capturing it means describing not just the mean of transmission but its whole distribution.
 
-![Left: the offspring distribution for a mean of two secondary cases, comparing a Poisson with a negative binomial of dispersion k = 0.3, which piles probability on zero and stretches a long right tail. Right: the cumulative share of transmission against the cumulative share of cases ranked from most to least infectious, showing that for k = 0.1 the top 20% of cases cause about 80% of onward transmission.](../assets/figures/superspreading.svg)
+![Left: the offspring distribution for a mean of two secondary cases, comparing a Poisson with a negative binomial of dispersion k = 0.3, which piles probability on zero and stretches a long right tail. Right: the cumulative share of transmission against the cumulative share of cases ranked from most to least infectious, showing that for k = 0.1 the top 20% of cases cause about 97% of onward transmission.](../assets/figures/superspreading.svg)
 
 ## The individual reproduction number
 
@@ -43,7 +43,8 @@ Three in four cases are dead ends, and the epidemic is carried by the minority w
 ## The 20/80 rule
 
 Because a few cases do most of the work, the cumulative share of transmission rises steeply against the ranked share of cases.
-The rough summary is the **20/80 rule**: roughly 20% of cases account for around 80% of onward transmission, and the smaller $k$ is, the more extreme the concentration.
+The classic heuristic is the **20/80 rule**, that about 20% of cases account for roughly 80% of onward transmission, but it is only a rough label and the true split depends on $k$: the smaller $k$, the more skewed the concentration.
+For the strongly overdispersed case worked below ($k = 0.1$), the top 20% of cases drive closer to 97% of transmission, well past the nominal 80%.
 This is the right panel of the figure, a Lorenz-style curve of transmission inequality; the diagonal is the homogeneous limit where every case contributes equally.
 
 ## Why it changes dynamics and control
