@@ -113,7 +113,7 @@ fit$par[1] / fit$par[2] # estimated R0 ~ 3
 
 The optimizer above returns a single best-fit point.
 A Bayesian fit instead returns the whole **posterior** over $\beta$, $\gamma$, and $R_0$, so the uncertainty and any parameter trade-offs are explicit (see [MCMC](mcmc.md) and [Bayesian inference](bayesian-inference.md)).
-[NumPyro](https://num.pyro.ai) expresses the model in JAX and samples it with the NUTS Hamiltonian Monte Carlo sampler; here the epidemic is a discrete-time SIR stepped with `lax.scan` so the whole model is differentiable.
+[NumPyro](https://num.pyro.ai) expresses the model in JAX and samples it with the NUTS Hamiltonian Monte Carlo sampler; here the epidemic is integrated with a small fixed Euler step inside `lax.scan`, so the whole model is differentiable *and* reproduces the same daily incidence as the ODE that made the data.
 
 ```python
 import jax, jax.numpy as jnp
@@ -123,29 +123,44 @@ from numpyro.infer import MCMC, NUTS
 
 N = 10000.0
 n_days = obs.shape[0]                       # `obs` = the noisy incidence from above
+sub = 20                                    # Euler sub-steps per day -> matches the ODE
+dt = 1.0 / sub
 
 def sir_model(obs=None):
     beta = numpyro.sample("beta", dist.LogNormal(jnp.log(0.5), 0.5))   # priors
     gamma = numpyro.sample("gamma", dist.LogNormal(jnp.log(0.5), 0.5))
 
-    def step(state, _):
+    def day(state, _):                      # advance one day in `sub` small steps
         S, I, R = state
-        inf = beta * S * I / N              # new infections that day
-        rec = gamma * I
-        return (S - inf, I + inf - rec, R + rec), inf
+        new = 0.0
+        for _ in range(sub):
+            inf = beta * S * I / N * dt      # new infections this sub-step
+            rec = gamma * I * dt
+            S, I, R = S - inf, I + inf - rec, R + rec
+            new = new + inf
+        return (S, I, R), new
 
-    _, incidence = jax.lax.scan(step, (N - 5.0, 5.0, 0.0), None, length=n_days)
+    _, incidence = jax.lax.scan(day, (N - 5.0, 5.0, 0.0), None, length=n_days)
+    incidence = jnp.concatenate([jnp.zeros(1), incidence[:-1]])        # align with obs day 0
     numpyro.deterministic("R0", beta / gamma)
     numpyro.sample("obs", dist.Poisson(jnp.clip(incidence, 1e-6, None)), obs=obs)
 
 mcmc = MCMC(NUTS(sir_model), num_warmup=500, num_samples=1000, progress_bar=False)
 mcmc.run(random.PRNGKey(0), obs=jnp.asarray(obs, float))
-mcmc.print_summary()
-#              mean     std   5.0%  95.0%
-#   beta       0.90    0.01   0.88   0.92
-#   gamma      0.30    0.01   0.29   0.31
-#   R0         3.01    0.05   2.93   3.09     <- posterior for R0, with a credible interval
+mcmc.print_summary(exclude_deterministic=False)   # posterior mean, 90% CI, and R-hat
 ```
+
+<!-- python-output:auto -->
+```text
+
+                mean       std    median      5.0%     95.0%     n_eff     r_hat
+        R0      2.95      0.10      2.95      2.80      3.12    176.42      1.00
+      beta      0.91      0.01      0.91      0.89      0.93    167.80      1.00
+     gamma      0.31      0.01      0.31      0.28      0.33    167.41      1.00
+
+Number of divergences: 0
+```
+<!-- /python-output:auto -->
 
 Instead of a single $\hat R_0 \approx 3$, you get a posterior distribution for it — the honest, uncertainty-aware version of the same calibration.
 

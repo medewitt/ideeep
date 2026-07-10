@@ -79,7 +79,7 @@ y = (pop == 0).astype(float) + rng.normal(size=n)   # trait differs by pop
 
 Zs = (G - G.mean(0)) / G.std(0)
 print(sm.OLS(y, sm.add_constant(snp)).fit().pvalues[1])            # tiny: spurious
-pcs = PCA(n_components=2).fit_transform(Zs)
+pcs = PCA(n_components=2, svd_solver="full").fit_transform(Zs)     # full SVD: deterministic
 X = sm.add_constant(np.column_stack([snp, pcs]))
 print(sm.OLS(y, X).fit().pvalues[1])                              # non-significant
 ```
@@ -87,7 +87,7 @@ print(sm.OLS(y, X).fit().pvalues[1])                              # non-signific
 <!-- python-output:auto -->
 ```text
 4.130440298128386e-11
-0.8336821049074644
+0.8618289724984564
 ```
 <!-- /python-output:auto -->
 
