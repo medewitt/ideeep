@@ -263,12 +263,18 @@ It requires practice and repetition.
 - [Recurrent Networks and LSTMs](math/recurrent-networks-lstm.md) — hidden state, why plain RNNs forget, gated memory, and case-count forecasting
 - [Convolutional Networks and Image Identification](math/convolutional-networks-image.md) — learned filters, feature maps, transfer learning, and skin-lesion classification
 - [Graph Neural Networks](math/graph-neural-networks.md) — message passing on contact and mobility graphs, and the GCN layer
+- [Transformers and Attention](math/transformers-attention.md) — self-attention, multi-head attention, and the architecture behind foundation models
 
 *Generative models & Bayesian deep learning:*
 
 - [Variational Autoencoders](math/variational-autoencoders.md) — encoder/decoder, the ELBO, the reparameterization trick, and surveillance anomaly detection
 - [Encoding Spatial Priors with VAEs (PriorVAE)](math/prior-encoding-vae.md) — amortizing a slow spatial prior into a decoder for fast Bayesian disease mapping
 - [Deep Learning, Foundation Models, and Agentic AI](math/deep-learning-agentic-models.md) — the architecture family, attention and transformers, and language-model agents in outbreak analytics
+
+*Trust, uncertainty & interpretability:*
+
+- [Model Interpretability and SHAP](math/interpretability-shap.md) — explaining predictions with Shapley values, permutation importance, and partial dependence
+- [Uncertainty, Calibration, and Conformal Prediction](math/uncertainty-calibration-conformal.md) — aleatoric vs epistemic uncertainty, reliability diagrams, and distribution-free prediction sets
 
 *Applications:*
 

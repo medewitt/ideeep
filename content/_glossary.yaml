@@ -200,3 +200,27 @@
 - term: Message passing
   short: The core operation of a graph neural network, in which each node updates its state by aggregating transformed messages from its neighbours.
   see: math/graph-neural-networks.md
+
+- term: Self-attention
+  aliases: [self attention]
+  short: The transformer operation in which every element of a sequence attends to every other, weighting them by learned query–key similarity.
+  see: math/transformers-attention.md
+
+- term: SHAP
+  aliases: [Shapley values, SHAP values]
+  short: A method that attributes a model's prediction to its features using Shapley values from game theory, so contributions sum exactly to the output.
+  see: math/interpretability-shap.md
+
+- term: Calibration
+  aliases: [calibrated, well-calibrated]
+  short: A probabilistic prediction is calibrated when, among cases assigned probability p, a fraction close to p actually occur.
+  see: math/uncertainty-calibration-conformal.md
+
+- term: Conformal prediction
+  short: A distribution-free method that turns any model into prediction sets guaranteed to contain the truth with a chosen probability under exchangeability.
+  see: math/uncertainty-calibration-conformal.md
+
+- term: Epistemic uncertainty
+  aliases: [aleatoric uncertainty]
+  short: Uncertainty from a model's ignorance, which shrinks with more data — as opposed to aleatoric uncertainty, the irreducible noise in the world.
+  see: math/uncertainty-calibration-conformal.md
