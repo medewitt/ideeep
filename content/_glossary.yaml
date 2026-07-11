@@ -146,3 +146,33 @@
   aliases: [KL divergence, relative entropy]
   short: An asymmetric measure of how one probability distribution differs from another — the expected log-ratio of the two — central to maximum likelihood, variational inference, and information theory.
   see: math/kl-divergence.md
+
+- term: Overfitting
+  aliases: [overfit, overfitting]
+  short: When a model fits the noise in its training data rather than the underlying signal, generalizing poorly to new data.
+  see: math/overfitting-regularization.md
+
+- term: Regularization
+  aliases: [regularisation]
+  short: Penalizing model complexity (e.g. an L1 or L2 term on the parameters) to reduce overfitting and variance.
+  see: math/overfitting-regularization.md
+
+- term: Cross-validation
+  aliases: [k-fold cross-validation, cross validation]
+  short: Estimating out-of-sample performance by repeatedly training on part of the data and validating on the held-out remainder.
+  see: math/overfitting-regularization.md
+
+- term: Bias–variance tradeoff
+  aliases: [bias-variance tradeoff, bias–variance decomposition]
+  short: The tension between a model too simple to capture the pattern (bias) and one so flexible it fits noise (variance); the best model balances the two.
+  see: math/overfitting-regularization.md
+
+- term: Neural ordinary differential equation
+  aliases: [neural ODE, neural ODEs]
+  short: A model whose dynamics — the right-hand side of an ODE — are a neural network, trained by differentiating through the ODE solver.
+  see: math/scientific-machine-learning.md
+
+- term: Physics-informed neural network
+  aliases: [PINN, physics-informed neural networks]
+  short: A neural network trained to satisfy a known differential equation by adding the equation's residual to its loss, alongside a data-misfit term.
+  see: math/scientific-machine-learning.md

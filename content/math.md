@@ -256,6 +256,7 @@ It requires practice and repetition.
 
 *Neural network foundations:*
 
+- [Overfitting, Regularization, and Cross-Validation](math/overfitting-regularization.md) — the bias–variance tradeoff, validation, k-fold CV, and L1/L2 penalties
 - [Neural Networks and the Multilayer Perceptron](math/neural-networks.md) — neurons, activations, backpropagation, and the curved boundaries depth buys
 - [Recurrent Networks and LSTMs](math/recurrent-networks-lstm.md) — hidden state, why plain RNNs forget, gated memory, and case-count forecasting
 - [Convolutional Networks and Image Identification](math/convolutional-networks-image.md) — learned filters, feature maps, transfer learning, and skin-lesion classification
@@ -268,6 +269,7 @@ It requires practice and repetition.
 
 *Applications:*
 
+- [Scientific Machine Learning: Neural ODEs and Physics-Informed Networks](math/scientific-machine-learning.md) — differentiable simulation, learning unknown dynamics, and embedding known ODEs as constraints
 - [Remote Sensing, Object Counting, and Outbreak Detection](math/remote-sensing-outbreak-detection.md) — counting cars in a hospital parking deck as a proxy signal, and the assumptions that make or break it
 
 ## Pharmacokinetics & pharmacodynamics
