@@ -92,6 +92,7 @@ It requires practice and repetition.
 - [Fourier and Spectral Analysis](math/fourier-spectral-analysis.md) — decomposing a signal into frequencies and finding periodicity with the periodogram
 - [Copulas](math/copulas.md) — separating dependence from the marginals via Sklar's theorem
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
+- [Kullback–Leibler Divergence](math/kl-divergence.md) — relative entropy, cross-entropy, and forward vs reverse KL
 - [Moment Matching](math/moment-matching.md) — method of moments and distributional approximation
 - [Monotonic Transformations](math/monotonic-transformations.md)
 - [Hypothesis Testing](math/hypothesis-testing.md)
@@ -250,6 +251,40 @@ It requires practice and repetition.
 - [Centrality and Node Importance](math/centrality.md) — degree, betweenness, eigenvector centrality
 - [Random-Graph Models](math/network-models.md) — Erdős–Rényi, scale-free, small-world
 - [Networks in Ecology and Epidemiology](math/ecological-networks.md) — food webs and transmission networks
+- [Graph Neural Networks](math/graph-neural-networks.md) — learning on contact and mobility graphs by message passing
+
+## Machine learning & AI
+
+*Foundations & core architectures:*
+
+- [Overfitting, Regularization, and Cross-Validation](math/overfitting-regularization.md) — the bias–variance tradeoff, validation, k-fold CV, and L1/L2 penalties
+- [Tree Ensembles: Random Forests and Gradient Boosting](math/tree-ensembles.md) — the workhorse models for tabular prediction, and feature importance
+- [Neural Networks and the Multilayer Perceptron](math/neural-networks.md) — neurons, activations, backpropagation, and the curved boundaries depth buys
+- [Recurrent Networks and LSTMs](math/recurrent-networks-lstm.md) — hidden state, why plain RNNs forget, gated memory, and case-count forecasting
+- [Convolutional Networks and Image Identification](math/convolutional-networks-image.md) — learned filters, feature maps, transfer learning, and skin-lesion classification
+- [Graph Neural Networks](math/graph-neural-networks.md) — message passing on contact and mobility graphs, and the GCN layer
+- [Transformers and Attention](math/transformers-attention.md) — self-attention, multi-head attention, and the architecture behind foundation models
+
+*Unsupervised learning:*
+
+- [Dimensionality Reduction and Embeddings](math/dimensionality-reduction.md) — PCA, t-SNE, and UMAP for visualizing and compressing high-dimensional data
+- [Clustering and Unsupervised Learning](math/clustering.md) — k-means, Gaussian mixtures, hierarchical, and density-based clustering
+
+*Generative models & Bayesian deep learning:*
+
+- [Variational Autoencoders](math/variational-autoencoders.md) — encoder/decoder, the ELBO, the reparameterization trick, and surveillance anomaly detection
+- [Encoding Spatial Priors with VAEs (PriorVAE)](math/prior-encoding-vae.md) — amortizing a slow spatial prior into a decoder for fast Bayesian disease mapping
+- [Deep Learning, Foundation Models, and Agentic AI](math/deep-learning-agentic-models.md) — the architecture family, attention and transformers, and language-model agents in outbreak analytics
+
+*Trust, uncertainty & interpretability:*
+
+- [Model Interpretability and SHAP](math/interpretability-shap.md) — explaining predictions with Shapley values, permutation importance, and partial dependence
+- [Uncertainty, Calibration, and Conformal Prediction](math/uncertainty-calibration-conformal.md) — aleatoric vs epistemic uncertainty, reliability diagrams, and distribution-free prediction sets
+
+*Applications:*
+
+- [Scientific Machine Learning: Neural ODEs and Physics-Informed Networks](math/scientific-machine-learning.md) — differentiable simulation, learning unknown dynamics, and embedding known ODEs as constraints
+- [Remote Sensing, Object Counting, and Outbreak Detection](math/remote-sensing-outbreak-detection.md) — counting cars in a hospital parking deck as a proxy signal, and the assumptions that make or break it
 
 ## Pharmacokinetics & pharmacodynamics
 
