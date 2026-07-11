@@ -176,3 +176,27 @@
   aliases: [PINN, physics-informed neural networks]
   short: A neural network trained to satisfy a known differential equation by adding the equation's residual to its loss, alongside a data-misfit term.
   see: math/scientific-machine-learning.md
+
+- term: Decision tree
+  aliases: [decision trees]
+  short: A model that predicts by a sequence of yes/no feature splits, partitioning the data into regions with their own predictions.
+  see: math/tree-ensembles.md
+
+- term: Random forest
+  aliases: [random forests]
+  short: An ensemble that averages many decorrelated decision trees, each grown on a bootstrap sample with random feature subsets, to cut variance.
+  see: math/tree-ensembles.md
+
+- term: Gradient boosting
+  aliases: [gradient-boosted trees, boosting]
+  short: An ensemble that builds decision trees sequentially, each fitting the errors of the current model — the workhorse for tabular prediction (XGBoost, LightGBM).
+  see: math/tree-ensembles.md
+
+- term: Graph neural network
+  aliases: [graph neural networks, GNN, GNNs]
+  short: A neural network that learns on graph-structured data by message passing — each node aggregating information from its neighbours.
+  see: math/graph-neural-networks.md
+
+- term: Message passing
+  short: The core operation of a graph neural network, in which each node updates its state by aggregating transformed messages from its neighbours.
+  see: math/graph-neural-networks.md

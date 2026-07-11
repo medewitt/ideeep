@@ -251,15 +251,18 @@ It requires practice and repetition.
 - [Centrality and Node Importance](math/centrality.md) — degree, betweenness, eigenvector centrality
 - [Random-Graph Models](math/network-models.md) — Erdős–Rényi, scale-free, small-world
 - [Networks in Ecology and Epidemiology](math/ecological-networks.md) — food webs and transmission networks
+- [Graph Neural Networks](math/graph-neural-networks.md) — learning on contact and mobility graphs by message passing
 
 ## Machine learning & AI
 
-*Neural network foundations:*
+*Foundations & core architectures:*
 
 - [Overfitting, Regularization, and Cross-Validation](math/overfitting-regularization.md) — the bias–variance tradeoff, validation, k-fold CV, and L1/L2 penalties
+- [Tree Ensembles: Random Forests and Gradient Boosting](math/tree-ensembles.md) — the workhorse models for tabular prediction, and feature importance
 - [Neural Networks and the Multilayer Perceptron](math/neural-networks.md) — neurons, activations, backpropagation, and the curved boundaries depth buys
 - [Recurrent Networks and LSTMs](math/recurrent-networks-lstm.md) — hidden state, why plain RNNs forget, gated memory, and case-count forecasting
 - [Convolutional Networks and Image Identification](math/convolutional-networks-image.md) — learned filters, feature maps, transfer learning, and skin-lesion classification
+- [Graph Neural Networks](math/graph-neural-networks.md) — message passing on contact and mobility graphs, and the GCN layer
 
 *Generative models & Bayesian deep learning:*
 
