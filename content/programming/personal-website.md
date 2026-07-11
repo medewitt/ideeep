@@ -7,6 +7,8 @@ title: "Building a Personal Website"
 A personal website is the single best place to collect your projects, papers, code, and CV in one link you control.
 For students, it is a low-cost portfolio that makes you findable and signals that you take your work seriously.
 
+![Left: the build-and-deploy pipeline — write Markdown / R Markdown source, build it to static HTML, push the repo to GitHub, and a host (GitHub Pages or Netlify) serves it at a live URL, rebuilding automatically on each push. Right: a custom domain points at that host through DNS — the registrar's CNAME (for `www`) and A/ALIAS (for the apex) records resolve your domain to the host, which returns the site.](../assets/figures/personal-website.svg "fig:website")
+
 ## Why Bother?
 
 - **Portfolio:** show real analyses, notebooks, and visualizations, not just a list of skills.
@@ -22,7 +24,7 @@ These tools turn Markdown/R Markdown into a polished static site:
 - **`blogdown`** an R package that builds Hugo-powered blogs from R Markdown.
 - **`distill`** an R package aimed at scientific and technical writing.
 
-All of them produce **static HTML** (plain files, no server logic) that you can host for free.
+All of them produce **static HTML** (plain files, no server logic) that you can host for free ([@fig:website]).
 
 ### Where to Host
 

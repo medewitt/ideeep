@@ -7,6 +7,8 @@ title: "Fractional Factorial Designs"
 When a full $2^k$ [factorial](factorial-designs.md) has too many runs — 7 factors already means $128$ runs — a **fractional factorial** design runs only a carefully chosen subset.
 Under **effect sparsity** (a few factors dominate), a fraction lets you screen many factors cheaply, at the cost of some effects being tangled together.
 
+![Left: the $2^{3-1}$ half fraction is a geometric half of the full $2^3$ cube — the four runs selected by the generator $C=AB$ are alternating vertices, no two sharing an edge. Right: resolution measures how badly effects are aliased — III aliases main effects with two-factor interactions, IV keeps main effects clear but aliases two-factor interactions with each other, and V keeps both clear; higher resolution tangles fewer important effects at the cost of more runs.](../assets/figures/fractional-factorial-designs.svg "fig:fracfac")
+
 ## The $2^{k-p}$ fraction
 
 A $2^{k-p}$ design uses a $1/2^{p}$ fraction of the full $2^k$ factorial.
@@ -45,7 +47,7 @@ It summarizes how badly effects are confounded:
 - **Resolution IV** — main effects clear of two-factor interactions, but two-factor interactions aliased with each other (shortest word has length 4).
 - **Resolution V** — main effects and two-factor interactions all clear of each other; two-factor interactions only aliased with three-factor interactions (shortest word length 5).
 
-Higher resolution costs more runs but tangles fewer important effects.
+Higher resolution costs more runs but tangles fewer important effects ([@fig:fracfac]).
 
 ## Worked example: a $2^{3-1}$ half fraction
 

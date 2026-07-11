@@ -7,6 +7,8 @@ title: "Experimental Design"
 How data are collected determines what conclusions they can support.
 Good experimental design is what lets epidemiologists move from "associated with" toward "causes," and recognizing sources of bias is essential when a true experiment is impossible.
 
+![Left: randomization balances confounders. In an observational study an unmeasured confounder $U$ feeds both the exposure $X$ and the outcome $Y$, biasing the $X\to Y$ estimate; randomly assigning $X$ severs the $U\to X$ arrow, so the remaining $X\to Y$ path is the causal effect. Right: blocking groups similar units (by age or site) and randomizes treatment within each block, removing that nuisance variation from the comparison.](../assets/figures/experimental-design.svg "fig:design")
+
 ## Experimental vs. observational studies
 
 - In an **experiment**, the investigator actively assigns the exposure or treatment (ideally at random).
@@ -16,7 +18,7 @@ Good experimental design is what lets epidemiologists move from "associated with
 
 ## Principles of good experiments
 
-- **Randomization** — random assignment balances known *and unknown* confounders across groups in expectation, so differences in outcome can be attributed to the treatment.
+- **Randomization** — random assignment balances known *and unknown* confounders across groups in expectation, so differences in outcome can be attributed to the treatment ([@fig:design]).
 - **Control** — a comparison group (placebo or standard care) isolates the treatment effect from background trends.
 - **Replication** — multiple independent units per condition let us estimate [variability](measures-of-variability.md) and gain power.
 - **Blocking** — grouping similar units (e.g., by age band or site) and randomizing within blocks removes nuisance variation and sharpens comparisons.
