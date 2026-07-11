@@ -69,6 +69,7 @@ sync.
 | `modeling-whiteboard.jpg` | Students working through disease-transmission models at a whiteboard | Epistorm | `programs.md`, `interest-thank-you.md` |
 | `malaria-1913-public-health-reports.png` | Masthead of a 1913 *Public Health Reports* issue ("Malaria in North Carolina," Henry R. Carter, U.S. Public Health Service) | Public domain (historical) | `people-plagues-policy.md` |
 | `smallpox-misinformation-cartoon.jpg` | An early-20th-century anti-vaccination cartoon (figures walking off a cliff of "misinformation") | Public domain (historical) | `people-plagues-policy.md` |
+| `eden-terrace-deck-full.jpg`, `eden-terrace-deck-partial.jpg`, `eden-terrace-deck-empty.jpg` | Overhead crops of the Eden Terrace hospital parking deck at three archived dates (nearly full / partial / nearly empty), used to demonstrate car counting | Esri World Imagery (Wayback); Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community. Static screen capture used for non-commercial educational illustration, per the ArcGIS Online terms of use (attribution required, non-commercial). | `math/remote-sensing-outbreak-detection.md` (via `figures/eden-terrace-occupancy.py`) |
 
 **Social-card crops.** `parasite-microscopy-card.jpg` and
 `field-surveillance-emerge-card.jpg` are 1200×630 center-crops of the DeWitt
@@ -104,5 +105,11 @@ they are build outputs of their LaTeX sources (`ideep_logo.tex`,
   portrait photos are by Michael E. DeWitt; the whiteboard photo is courtesy of
   Epistorm; the two historical scans are public domain by age. Verify rights
   before reusing outside this site.
+- **Esri aerial imagery** (`eden-terrace-deck-*.jpg`) — Esri World Imagery
+  (Wayback); Source: Esri, Maxar, Earthstar Geographics, and the GIS User
+  Community. Included as static screen captures for non-commercial educational
+  illustration under the ArcGIS Online terms of use, which permit screen
+  captures with attribution for non-commercial use. Do not reuse commercially or
+  redistribute the tiles.
 - **Logos / brand assets** — Wake Forest University marks are used under the
   program's affiliation; follow WFU brand guidelines for any new use.
