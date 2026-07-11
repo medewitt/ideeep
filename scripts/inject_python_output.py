@@ -5,6 +5,9 @@
 #     "networkx", "matplotlib", "scikit-learn", "numpyro", "jax", "torch",
 #     "mapie", "xgboost", "shap", "umap-learn", "hdbscan", "torchdiffeq",
 #     "flax", "optax", "torch-geometric",
+#     # numba floor: shap/umap pull numba->llvmlite; without this uv can
+#     # backtrack to an ancient llvmlite that fails to build on Python 3.12.
+#     "numba>=0.60",
 # ]
 # ///
 """Execute the embedded ```python code blocks in the content pages and inject
