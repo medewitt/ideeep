@@ -7,6 +7,8 @@ title: "Population Stratification and PCA Control"
 The most notorious confounder in association studies is ancestry: if the groups being compared differ in genetic background, the genome lights up with associations that have nothing to do with the trait.
 Detecting and correcting this "population stratification" is what makes a [GWAS](gwas.md) trustworthy.
 
+![Left: the two simulated subpopulations separate along the leading principal component of the genome-wide genotypes, so PC1 is the axis of ancestry. Right: a candidate SNP with no true effect looks strongly (spuriously) associated when tested alone ($p\approx4\times10^{-11}$), but adding the top PCs as covariates collapses the association back toward null ($p\approx0.86$).](../assets/figures/population-stratification.svg "fig:popstrat")
+
 ## The confounding mechanism
 
 Population stratification arises when three things line up: the sample contains subpopulations, those subpopulations differ in allele frequency, and they also differ in the trait for reasons unrelated to that allele.
@@ -44,7 +46,7 @@ This is why stratification correction is, at heart, an eigenvalue/eigenvector co
 
 Simulate two subpopulations of 300 people each.
 A causal-looking SNP has effect-allele frequency $0.7$ in population A and $0.2$ in population B, and the trait mean is higher in A for reasons unrelated to genotype.
-Regressing the trait on this SNP alone yields a strongly "significant" but entirely spurious association; adding the first principal component of the genome-wide genotypes as a covariate collapses it back toward null.
+Regressing the trait on this SNP alone yields a strongly "significant" but entirely spurious association; adding the first principal component of the genome-wide genotypes as a covariate collapses it back toward null ([@fig:popstrat]).
 
 ### R
 

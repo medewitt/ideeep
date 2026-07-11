@@ -7,6 +7,8 @@ title: "Computer Basics for Scientists"
 Before you can write reproducible analysis code, you need a clear mental model of how a computer stores and finds your files.
 A little fluency with directories and the command line will save you hours of frustration and make your work far easier to [reproduce](reproducibility.md).
 
+![Storage is a tree of nested folders, and every file has a path. An absolute path starts at the root and works from anywhere; a relative path is interpreted from the current working directory. Here the same target, cases.csv, is reached two ways — by the absolute path from the root, and by the short relative path data/cases.csv from the highlighted working directory.](../assets/figures/computer-basics.svg "fig:paths")
+
 ## How Files Are Stored
 
 Think of your computer's storage as a tree of nested **folders** (also called **directories**).
@@ -39,7 +41,7 @@ Don't hard-code absolute paths like `/home/alice/...` into scripts you plan to s
 ### The Working Directory
 
 The **working directory** is the folder a program treats as "here."
-When a script says `read.csv("data/cases.csv")`, it looks relative to the working directory.
+When a script says `read.csv("data/cases.csv")`, it looks relative to the working directory ([@fig:paths]).
 Always know where you are before running code.
 
 ```bash

@@ -7,6 +7,8 @@ title: "Species-Abundance Distributions and Neutral Theory"
 Almost every community — trees in a plot, bacteria in a gut, insects in a light trap — has a few very common species and a long tail of rare ones.
 The species-abundance distribution (SAD) captures that lopsided shape, and neutral theory offers a startlingly simple null model for how it arises without invoking any differences between species.
 
+![Left: a rank-abundance curve from a neutral community ($J=500$, immigration $m=0.1$ from a 50-species metacommunity) is steep even though every species is ecologically identical — a few dominate and a long tail sits near one individual. Right: the two classic SAD forms binned by $\log_2$ abundance — Fisher's log-series (singletons the richest class, a monotone decline) versus Preston's log-normal (an interior bell-shaped mode).](../assets/figures/species-abundance.svg "fig:sad")
+
 ## The species-abundance distribution
 
 A SAD describes how the individuals in a community are partitioned among its species: how many species have one individual, how many have two, and so on.
@@ -54,7 +56,7 @@ Neutral and niche processes are complementary lenses, not rivals.
 A neutral local community of $J$ individuals is easy to simulate with a Moran-style update: at each step one random individual dies and is replaced, with probability $m$ by an immigrant drawn from the metacommunity and otherwise by the offspring of a random local individual.
 Suppose we track $J = 500$ individuals with immigration $m = 0.1$ drawn from a $50$-species metacommunity.
 Because deaths and births are unbiased across species, abundances drift; common species tend to stay common by sheer sampling inertia while rare species blink in and out.
-After many steps the rank-abundance curve is steep — a handful of species dominate and a long tail sits near one individual — the log-series-like shape neutral theory predicts, even though every species was ecologically identical.
+After many steps the rank-abundance curve is steep — a handful of species dominate and a long tail sits near one individual — the log-series-like shape neutral theory predicts, even though every species was ecologically identical ([@fig:sad]).
 
 ## Simulation
 
