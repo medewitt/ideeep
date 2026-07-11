@@ -15,6 +15,10 @@ The correlated field is then generated from a handful of *independent* standard-
 ## The problem PriorVAE solves
 
 A spatial model puts a correlated prior on a latent field $\mathbf{f} = (f_1,\dots,f_n)$ at $n$ locations or areal units, for example the Gaussian process $\mathbf{f}\sim\mathcal{N}(\mathbf{0}, K)$ with covariance $K$, and links it to observed counts through a likelihood such as $y_i \sim \text{Poisson}(e_i\,e^{f_i})$.
+
+![Three draws from a Gaussian-process prior over a 2D grid — smooth, spatially correlated random fields, the kind of surface a disease-mapping model places over space before seeing data. Right: the correlation between two locations decays with the distance between them, and the lengthscale $\ell$ sets how quickly, controlling how smooth the fields are.](../assets/figures/prior-encoding-vae-spatial.svg "fig:pv-spatial")
+
+The **spatial correlation** in [@fig:pv-spatial] is the whole point of the prior — it says nearby places should have similar rates — but it is also what makes inference expensive.
 Two costs make this painful inside a sampler.
 Evaluating the prior density needs the inverse and determinant of the $n\times n$ matrix $K$ — an $\mathcal{O}(n^3)$ [Cholesky](gaussian-processes.md) at worst — repeated at every step.
 Worse, the strong correlations warp the posterior into a shape (a "funnel", a thin ridge) that Hamiltonian samplers traverse slowly, so you need many steps *and* each step is expensive.
@@ -51,6 +55,10 @@ PriorVAE's advance is to let $g_\theta$ be **nonlinear**, so the same recipe wor
 ## A worked example
 
 Suppose the spatial prior is a Gaussian process on $n = 25$ points with a smooth kernel, and its Karhunen–Loève expansion shows that the first $d = 6$ components already capture almost all of the prior variance.
+
+![Left: the eigenvalue (Karhunen–Loève) spectrum of the prior's covariance falls off fast, so the cumulative variance crosses about 98% by mode six. Right: those leading modes are smooth spatial basis functions — the columns of $B$ — and a draw from the prior is a weighted sum of them, so six independent coefficients encode the whole 25-dimensional correlated field.](../assets/figures/prior-encoding-vae-encoding.svg "fig:pv-encoding")
+
+The spectrum in [@fig:pv-encoding] is why this works: the correlated field lives, to good approximation, in a six-dimensional subspace spanned by the leading spatial modes.
 Encoding the prior means keeping those six basis vectors $B\in\mathbb{R}^{25\times 6}$; a standard-normal $\mathbf{z}\in\mathbb{R}^6$ then decodes to a full 25-dimensional field $\mathbf{f} = B\mathbf{z}$ whose covariance reproduces the GP.
 Inference that would have sampled a correlated 25-dimensional field now samples six independent unit normals, so the posterior geometry is a plain sphere and the sampler mixes fast — the payoff PriorVAE brings to the far larger fields (hundreds to thousands of areal units) of real disease maps.
 
@@ -94,6 +102,10 @@ sampled 6 independent latents in place of a correlated 25-dim field
 posterior field RMSE vs truth: 0.063
 ```
 <!-- /python-output:auto -->
+
+![The output of that inference: from noisy observations, the model recovers the smooth latent field. The posterior mean tracks the true field, and the 95% credible band widens between observations and pinches where data pin it down — all from sampling six independent latents rather than a correlated 25-dimensional field.](../assets/figures/prior-encoding-vae-inference.svg "fig:pv-inference")
+
+The recovery in [@fig:pv-inference] is the payoff: the posterior mean follows the truth to an RMSE of $0.063$, with honest uncertainty everywhere, at a fraction of the sampling cost of the full correlated prior.
 
 The full PriorVAE replaces the linear basis with a *nonlinear* decoder, trained offline (step 2) to reproduce draws from the spatial prior; here a small `flax` VAE learns the GP's structure from 4000 draws, and its frozen decoder would then slot into the same inference model as $B$ did above:
 
