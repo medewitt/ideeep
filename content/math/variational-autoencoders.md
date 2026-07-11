@@ -105,29 +105,50 @@ KL penalty 1.443 nats;  z sample 2.437
 ```
 <!-- /python-output:auto -->
 
-The full nonlinear VAE, with encoder and decoder networks and the ELBO as the loss (illustrative — shown, not run):
+The full nonlinear VAE trains in **PyTorch** on the same syndromic data, and its reconstruction error separates normal from aberrant weeks just as the linear stand-in did — but with a nonlinear encoder and decoder and the true ELBO as the loss:
 
 ```python
-# no-run
 import torch, torch.nn as nn
+torch.manual_seed(0)
+Xt = torch.tensor(X, dtype=torch.float32)          # the 20-dim weeks from above
 
 class VAE(nn.Module):
-    def __init__(self, d_in, d_lat):
+    def __init__(self, d_in=20, d_lat=3):
         super().__init__()
-        self.enc = nn.Linear(d_in, 2 * d_lat)   # outputs mu and log-sigma^2
-        self.dec = nn.Sequential(nn.Linear(d_lat, 64), nn.ReLU(), nn.Linear(64, d_in))
-        self.d_lat = d_lat
+        self.enc = nn.Linear(d_in, 2 * d_lat)      # outputs mu and log-variance
+        self.dec = nn.Sequential(nn.Linear(d_lat, 32), nn.ReLU(), nn.Linear(32, d_in))
 
     def forward(self, x):
         mu, logvar = self.enc(x).chunk(2, dim=-1)
         z = mu + torch.exp(0.5 * logvar) * torch.randn_like(mu)   # reparameterize
         return self.dec(z), mu, logvar
 
-def elbo(x, xhat, mu, logvar):
-    recon = nn.functional.mse_loss(xhat, x, reduction="sum")
+vae = VAE()
+opt = torch.optim.Adam(vae.parameters(), lr=0.01)
+for epoch in range(400):
+    opt.zero_grad()
+    xhat, mu, logvar = vae(Xt)
+    recon = nn.functional.mse_loss(xhat, Xt, reduction="sum")
     kl = -0.5 * torch.sum(1 + logvar - mu ** 2 - logvar.exp())
-    return recon + kl                            # minimize negative ELBO
+    (recon + kl).backward()                        # minimize the negative ELBO
+    opt.step()
+
+with torch.no_grad():                              # score by decoding the latent mean
+    def recon_err(x):
+        mu, _ = vae.enc(x).chunk(2, dim=-1)
+        return (vae.dec(mu) - x).pow(2).sum(1).sqrt()
+    en = recon_err(Xt).mean().item()
+    ea = recon_err(torch.tensor(aberrant, dtype=torch.float32)).mean().item()
+print(f"mean reconstruction error  normal {en:.1f}  aberrant {ea:.1f}")
+print(f"aberrant weeks flagged (error > 3x normal): {ea > 3 * en}")
 ```
+
+<!-- python-output:auto -->
+```text
+mean reconstruction error  normal 1.3  aberrant 15.9
+aberrant weeks flagged (error > 3x normal): True
+```
+<!-- /python-output:auto -->
 
 ### R
 

@@ -97,7 +97,28 @@ row sums: [1. 1. 1.]
 ```
 <!-- /python-output:auto -->
 
-An agent loop is, in essence, a `while` loop around a model call and a tool call (illustrative — shown, not run):
+In practice you use the framework primitive; **PyTorch**'s `nn.MultiheadAttention` is the same operation, batteries included:
+
+```python
+import torch, torch.nn as nn
+torch.manual_seed(0)
+
+mha = nn.MultiheadAttention(embed_dim=4, num_heads=1, batch_first=True)
+x = torch.randn(1, 3, 4)                       # one sequence: 3 tokens, dim 4
+out, weights = mha(x, x, x)                     # self-attention: query = key = value
+print("weights rows sum to 1:",
+      bool(torch.allclose(weights.sum(-1), torch.ones(1, 3), atol=1e-5)))
+print("output shape:", tuple(out.shape))
+```
+
+<!-- python-output:auto -->
+```text
+weights rows sum to 1: True
+output shape: (1, 3, 4)
+```
+<!-- /python-output:auto -->
+
+An agent loop is, in essence, a `while` loop around a model call and a tool call (illustrative — the Anthropic API call reaches the network, so it is shown, not run):
 
 ```python
 # no-run

@@ -105,11 +105,11 @@ train accuracy 0.988
 <!-- /python-output:auto -->
 
 In real work you would not hand-roll this; a framework builds the same network, computes the gradients automatically, and runs on a GPU.
-The idiomatic version (illustrative — this site's build only executes the allowed scientific-Python libraries, so PyTorch is shown but not run):
+The idiomatic version builds the same network in **PyTorch**, which computes the gradients automatically and runs on a GPU when one is present — the same 2→16→1 model, trained on the moons data from above:
 
 ```python
-# no-run
 import torch, torch.nn as nn
+torch.manual_seed(0)
 
 model = nn.Sequential(nn.Linear(2, 16), nn.ReLU(), nn.Linear(16, 1))
 opt = torch.optim.Adam(model.parameters(), lr=1e-2)
@@ -120,7 +120,17 @@ for epoch in range(2000):
     loss = nn.functional.binary_cross_entropy_with_logits(model(Xt), yt)
     loss.backward()        # autograd does the backprop for you
     opt.step()
+acc = ((model(Xt) > 0).float() == yt).float().mean().item()
+print(f"parameters: {sum(p.numel() for p in model.parameters())}")
+print(f"train accuracy: {acc:.2f}")
 ```
+
+<!-- python-output:auto -->
+```text
+parameters: 65
+train accuracy: 1.00
+```
+<!-- /python-output:auto -->
 
 For a quick, dependable classifier without writing any network code, scikit-learn's `MLPClassifier` fits the same architecture with one call:
 

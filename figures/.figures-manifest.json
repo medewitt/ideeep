@@ -148,6 +148,7 @@
   "reaction-diffusion.py": "aa5936d2a60845cbef0586928fbe25a4620afa435b81816a697fe6dbe473290f",
   "recurrent-networks-lstm.py": "ba0557dad153d532a6c5bbab7bb4c7066cbf335c1c930fce50cf8e5176c131b6",
   "relational-join.py": "952a7ebf0204b58c1bedbca2f5c9b3699c6145bd7b8aa0b8f9c5f7821b7a894c",
+  "remote-sensing-outbreak-detection.py": "3518935a9456e678e0bc7fc282640c5dd0a1ce1627e05d4b0e7078ec8eb49228",
   "renewal-equation.py": "ec5f6ffcc06829c49f4f8a7ad087b289a6914b03b4c562613b28adb35769352b",
   "reporting-triangle.py": "85273103f4712569ab093ea9630e200e437e85c8e1a90e78bdd707f5e2c135b6",
   "reproductive-value.py": "64981c024e4179b85f59dddd1fb792c2c07a03998e5e8a90d1cc54e192772857",

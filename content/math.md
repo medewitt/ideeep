@@ -265,6 +265,10 @@ It requires practice and repetition.
 - [Encoding Spatial Priors with VAEs (PriorVAE)](math/prior-encoding-vae.md) — amortizing a slow spatial prior into a decoder for fast Bayesian disease mapping
 - [Deep Learning, Foundation Models, and Agentic AI](math/deep-learning-agentic-models.md) — the architecture family, attention and transformers, and language-model agents in outbreak analytics
 
+*Applications:*
+
+- [Remote Sensing, Object Counting, and Outbreak Detection](math/remote-sensing-outbreak-detection.md) — counting cars in a hospital parking deck as a proxy signal, and the assumptions that make or break it
+
 ## Pharmacokinetics & pharmacodynamics
 
 - [Pharmacokinetics: Compartment Models](math/pharmacokinetics.md) — ADME, clearance, half-life, AUC

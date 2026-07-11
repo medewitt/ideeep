@@ -133,3 +133,11 @@
   aliases: [agentic model, agentic models]
   short: A language model placed in a loop with tools, which reasons about a goal, calls tools, observes results, and repeats until a task is done.
   see: math/deep-learning-agentic-models.md
+
+- term: Object detection
+  short: A computer-vision task that locates and classifies every instance of a class in an image, drawing a box around each — the basis of counting objects such as cars or cells.
+  see: math/remote-sensing-outbreak-detection.md
+
+- term: Remote sensing
+  short: Measurement of the physical world at a distance — from satellites, aircraft, drones, or fixed cameras — used in epidemiology for climate, population, and activity proxies.
+  see: math/remote-sensing-outbreak-detection.md

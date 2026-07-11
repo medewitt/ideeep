@@ -92,23 +92,49 @@ image classification test accuracy: 0.969
 ```
 <!-- /python-output:auto -->
 
-A real dermatology classifier needs a convolutional network and transfer learning; the idiomatic pipeline in Keras (illustrative — shown, not run):
+An *actual* convolutional network — convolution, pooling, then a dense head — trains in **PyTorch** on those same 8×8 digit images (reshaped to one-channel pictures), showing the real architecture at work:
+
+```python
+import torch, torch.nn as nn
+torch.manual_seed(0)
+
+def as_images(a):                                    # (N, 64) -> (N, 1, 8, 8), scaled
+    return torch.tensor(a.reshape(-1, 1, 8, 8) / 16.0, dtype=torch.float32)
+Xtr_t, Xte_t = as_images(Xtr), as_images(Xte)
+ytr_t = torch.tensor(ytr, dtype=torch.long)
+
+cnn = nn.Sequential(
+    nn.Conv2d(1, 8, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),    # 8x8 -> 4x4
+    nn.Conv2d(8, 16, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),   # 4x4 -> 2x2
+    nn.Flatten(), nn.Linear(16 * 2 * 2, 10))
+opt = torch.optim.Adam(cnn.parameters(), lr=0.01)
+for epoch in range(150):
+    opt.zero_grad()
+    loss = nn.functional.cross_entropy(cnn(Xtr_t), ytr_t)
+    loss.backward(); opt.step()
+acc = (cnn(Xte_t).argmax(1).numpy() == yte).mean()
+print(f"CNN test accuracy: {acc:.2f}  (> 0.95: {bool(acc > 0.95)})")
+```
+
+<!-- python-output:auto -->
+```text
+CNN test accuracy: 0.98  (> 0.95: True)
+```
+<!-- /python-output:auto -->
+
+A real dermatology classifier does not train from scratch — it fine-tunes a pretrained backbone via [transfer learning](#transfer-learning); the idiomatic pipeline in PyTorch/torchvision (illustrative — it fetches ImageNet weights over the network, so it is shown, not run here):
 
 ```python
 # no-run
-import tensorflow as tf
-from tensorflow.keras import layers, Model
+import torch, torch.nn as nn
+from torchvision import models
 
-base = tf.keras.applications.EfficientNetB0(include_top=False, weights="imagenet",
-                                            input_shape=(224, 224, 3))
-base.trainable = False                                   # start from transferred features
-x = layers.GlobalAveragePooling2D()(base.output)
-x = layers.Dropout(0.3)(x)
-out = layers.Dense(2, activation="softmax")(x)           # benign vs malignant
-model = Model(base.input, out)
-model.compile(optimizer="adam", loss="sparse_categorical_crossentropy",
-              metrics=["accuracy", tf.keras.metrics.AUC(name="auc")])
-# model.fit(train_ds, validation_data=val_ds, epochs=20)  # HAM10000 / ISIC images
+net = models.efficientnet_b0(weights="IMAGENET1K_V1")    # transferred features
+for p in net.parameters():
+    p.requires_grad = False                              # freeze the backbone
+net.classifier[1] = nn.Linear(net.classifier[1].in_features, 2)  # benign vs malignant
+opt = torch.optim.Adam(net.classifier.parameters(), lr=1e-3)
+# ... fine-tune net on HAM10000 / ISIC images, tracking validation AUC ...
 ```
 
 ### R

@@ -83,22 +83,50 @@ t=4  x=2.0  |c|=0.750  |h|=0.454
 <!-- /python-output:auto -->
 
 For real forecasting you stack an LSTM layer under a linear read-out and train it by backpropagation through time; frameworks provide the cell and its gradients.
-An illustrative one-step-ahead case-count forecaster in Keras (shown, not run here):
+A one-step-ahead case-count forecaster in **PyTorch** trains a real LSTM: window the past weeks, read the last hidden state, and predict the next week — here on a synthetic seasonal series, compared against a naive "next week equals this week" baseline.
 
 ```python
-# no-run
-import tensorflow as tf
-from tensorflow.keras import layers, Sequential
+import torch, torch.nn as nn
+torch.manual_seed(0)
 
-# X: (samples, lookback, features) windows of past weeks; y: next week's cases
-model = Sequential([
-    layers.LSTM(32, input_shape=(lookback, n_features)),
-    layers.Dense(1),                     # predict next week's incidence
-])
-model.compile(optimizer="adam", loss="mse")
-model.fit(X, y, epochs=50, validation_split=0.2)
-forecast = model.predict(X_future)
+wk = np.arange(160)                                  # standardized seasonal series
+series = np.sin(2 * np.pi * wk / 52) + 0.3 * np.sin(2 * np.pi * wk / 13)
+series = (series - series.mean()) / series.std()
+look = 12                                            # 12 weeks -> next week
+Xw = np.stack([series[i:i + look] for i in range(len(series) - look)])
+yw = series[look:]
+Xt = torch.tensor(Xw[:, :, None], dtype=torch.float32)   # (samples, steps, features)
+yt = torch.tensor(yw[:, None], dtype=torch.float32)
+
+class Forecaster(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.lstm = nn.LSTM(1, 16, batch_first=True)
+        self.head = nn.Linear(16, 1)
+    def forward(self, x):
+        out, _ = self.lstm(x)
+        return self.head(out[:, -1])                 # read the last time step
+
+net = Forecaster()
+opt = torch.optim.Adam(net.parameters(), lr=0.01)
+for epoch in range(300):
+    opt.zero_grad()
+    loss = nn.functional.mse_loss(net(Xt), yt)
+    loss.backward(); opt.step()
+naive = float(np.sqrt(np.mean((yw - Xw[:, -1]) ** 2)))   # persistence baseline
+rmse = float(loss.item()) ** 0.5
+print(f"LSTM train RMSE {rmse:.2f}  vs naive-persistence RMSE {naive:.2f}")
+print(f"LSTM beats persistence: {rmse < naive}")
 ```
+
+<!-- python-output:auto -->
+```text
+LSTM train RMSE 0.01  vs naive-persistence RMSE 0.19
+LSTM beats persistence: True
+```
+<!-- /python-output:auto -->
+
+For production forecasting you would split train/validation in time, tune the lookback and width, and — crucially — report calibrated prediction intervals, not just a point forecast.
 
 ### R
 
