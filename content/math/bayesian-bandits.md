@@ -277,6 +277,139 @@ P(site D is best) = 0.010
 ```
 <!-- /python-output:auto -->
 
+## A week-by-week playbook: 100 tests over 8 weeks
+
+The abstract loop above updates after every test; in the field you usually update on a fixed cadence.
+Here is the concrete operating procedure for a program with **100 tests every week for an 8-week season** across the same four sites, and it is exactly what a field team would follow with a spreadsheet.
+
+- **Week 1 — even warm start.** With no data yet, split the budget evenly: **25 tests to each site**.
+  You cannot adapt to evidence you do not have, so week 1 just seeds every posterior.
+- **Weeks 2–8 — adapt.** Before each week, (1) guarantee every site a **floor of 5 tests** so you never stop watching a site, then (2) hand out the remaining **80 tests by Thompson sampling** — draw a posterior sample for each of the 80 and send each test to the site with the highest draw.
+  A site the posteriors currently favor collects most of those 80; a site that has looked quiet collects only its floor of 5.
+- **End of each week — update.** Fold the week's positives and negatives into each site's Beta posterior (add positives to $\alpha$, negatives to $\beta$), and repeat.
+
+![Left: the weekly allocation of 100 tests, stacked by site. Week 1 is an even 25/25/25/25 split; a lucky week-1 result makes site B look best, so week 2 chases B — but as evidence accumulates the budget self-corrects toward the truly-best site C by week 5, while the floor keeps every site monitored. Right: each site's posterior-mean positivity converging toward its true value (dotted), with site C's 90% credible band shrinking as it accrues tests.](../assets/figures/bayesian-bandits-weekly.svg "fig:weekly")
+
+Running this with true positivities $\theta = (0.05, 0.15, 0.22, 0.08)$ for sites A–D — a deliberately harder season where sites B and C are close — produces the allocation below.
+
+```python
+import numpy as np
+
+rng = np.random.default_rng(1)
+theta = np.array([0.05, 0.15, 0.22, 0.08])   # sites A, B, C, D — unknown
+K, weeks, weekly, floor = 4, 8, 100, 5
+flex = weekly - floor * K                     # 80 tests steered by Thompson
+a, b = np.ones(K), np.ones(K)
+
+print("week   A   B   C   D   positives")
+total_pos = 0
+for w in range(weeks):
+    if w == 0:
+        alloc = np.full(K, weekly // K)       # even warm start: 25 each
+    else:
+        alloc = np.full(K, floor)             # floor: keep watching every site
+        picks = rng.beta(a[None, :], b[None, :], size=(flex, K)).argmax(axis=1)
+        for k in range(K):
+            alloc[k] += int((picks == k).sum())   # Thompson-allocate the 80
+    pos = np.array([rng.binomial(int(alloc[k]), theta[k]) for k in range(K)])
+    a += pos                                   # conjugate update: + positives
+    b += alloc - pos                           #                   + negatives
+    total_pos += int(pos.sum())
+    row = " ".join(f"{int(alloc[k]):>3d}" for k in range(K))
+    print(f"  {w + 1:>2}  {row}   {int(pos.sum()):>4d}")
+
+print(f"adaptive: {total_pos} positives found in {weeks * weekly} tests")
+print(f"even 25/site/week would expect ~{int(weeks * weekly / K * theta.sum())}")
+```
+
+<!-- python-output:auto -->
+```text
+week   A   B   C   D   positives
+   1   25  25  25  25     15
+   2    5  68  12  15     19
+   3    5  30  51  14     20
+   4    6  31  46  17     19
+   5    7  11  77   5     16
+   6    5  21  69   5     21
+   7    5  23  67   5     16
+   8    5  21  69   5     26
+adaptive: 152 positives found in 800 tests
+even 25/site/week would expect ~100
+```
+<!-- /python-output:auto -->
+
+Read the table top to bottom and you can watch the algorithm *think*:
+
+- **Week 1** is the even 25/25/25/25 split — pure warm start.
+- **Week 2** pours 68 tests into **site B**, not C: by luck B returned the most positives in week 1, so its posterior temporarily led.
+  This is the bandit chasing the early front-runner — and it is *supposed to*, given what it knew.
+- **Weeks 3–4** are the correction: as site C's own positives accumulate, its posterior climbs and it takes 51 then 46 tests while B cools to the low 30s.
+  The two contenders are still genuinely competing.
+- **Week 5** is the turning point — C pulls away to 77 tests and B collapses to 11, because the evidence has finally separated $\theta_C \approx 0.22$ from $\theta_B \approx 0.15$.
+- **Weeks 6–8** settle: C holds a steady ~65–70 tests a week, B keeps ~20 (it is the second-best site, not a dead one, so it still earns real allocation), and A and D sit at their floor of 5.
+
+The key lesson is that a single noisy week did **not** lock in the wrong answer: the floor kept C alive when it looked mediocre in week 2, and continued updating steered the budget back to the truth.
+Over the full season the adaptive design finds **152 positives against the even split's expected ~100** — roughly a 50% larger yield from the very same 800 tests — because it spent most of its budget on the two genuinely higher-positivity sites instead of burning a quarter of every week on the two quiet ones.
+
+### The same weekly loop in R
+
+```r
+set.seed(1)
+theta <- c(A = 0.05, B = 0.15, C = 0.22, D = 0.08)   # unknown to the sampler
+K <- 4; weeks <- 8; weekly <- 100; floor <- 5
+flex <- weekly - floor * K                            # 80 steered by Thompson
+a <- rep(1, K); b <- rep(1, K)
+
+alloc_tbl <- matrix(0L, weeks, K, dimnames = list(paste0("wk", 1:weeks), names(theta)))
+for (w in seq_len(weeks)) {
+  if (w == 1) {
+    alloc <- rep(weekly %/% K, K)                     # even warm start: 25 each
+  } else {
+    alloc <- rep(floor, K)                            # floor for every site
+    draws <- matrix(rbeta(flex * K, a, b), nrow = flex, byrow = TRUE)
+    picks <- max.col(draws)                           # Thompson for the 80
+    for (k in seq_len(K)) alloc[k] <- alloc[k] + sum(picks == k)
+  }
+  pos <- rbinom(K, alloc, theta)                      # positives per site
+  a <- a + pos; b <- b + alloc - pos                  # conjugate update
+  alloc_tbl[w, ] <- alloc
+}
+alloc_tbl        # rows = weeks, columns = tests sent to each site
+```
+
+### And in Julia
+
+```julia
+using Random, Distributions
+Random.seed!(1)
+
+theta = [0.05, 0.15, 0.22, 0.08]                 # sites A, B, C, D
+K, weeks, weekly, floor = 4, 8, 100, 5
+flex = weekly - floor * K                         # 80 steered by Thompson
+a = ones(K); b = ones(K)
+
+for w in 1:weeks
+    if w == 1
+        alloc = fill(weekly ÷ K, K)               # even warm start: 25 each
+    else
+        alloc = fill(floor, K)                    # floor for every site
+        picks = [argmax(rand.(Beta.(a, b))) for _ in 1:flex]
+        for k in 1:K
+            alloc[k] += count(==(k), picks)       # Thompson-allocate the 80
+        end
+    end
+    pos = [rand(Binomial(alloc[k], theta[k])) for k in 1:K]
+    a .+= pos; b .+= alloc .- pos                 # conjugate update
+    println("week $w: ", alloc, "  positives ", sum(pos))
+end
+```
+
+> [!TIP]
+> Three knobs turn this from a demonstration into a program you can defend.
+> The **floor** (here 5/site/week) buys insurance against a bad warm start and keeps a usable estimate at every site — raise it if the quiet sites still matter for monitoring.
+> The **warm-start length** (here one week) sets how much you learn before adapting — a longer warm start is safer when weekly counts are small.
+> And the **flexible fraction** (here 80/100) controls how aggressively the budget chases the leader — shrinking it toward an even split trades positives-found for better estimates everywhere.
+
 ## From surveillance to the clinic: adaptive trial design
 
 Swap "sites" for "treatment arms" and "positive test" for "patient responded," and the identical machinery becomes **response-adaptive randomization (RAR)** — the engine of Bayesian adaptive clinical trials.
