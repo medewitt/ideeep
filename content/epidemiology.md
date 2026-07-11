@@ -51,6 +51,7 @@ Behavior and policy are just as central to disease in wildlife and agriculture, 
 
 - [Social and Structural Drivers of Transmission](epidemiology/social-drivers-of-transmission.md) — exposure, susceptibility, care-seeking, mixing, and disparities
 - [Qualitative and Mixed Methods in Epidemiology](epidemiology/qualitative-and-mixed-methods.md) — interviews, coding, rigor, and mixed-methods designs
+- [Survey and Questionnaire Design](epidemiology/survey-and-questionnaire-design.md) — simple validated items, avoiding double-barreled questions, reusing WHO/CDC instruments, and response bias
 - [Risk Communication and Community Engagement (RCCE)](epidemiology/risk-communication-and-rcce.md) — plain language, uncertainty, trust, and misinformation
 - [Systems Thinking and Systems Mapping](epidemiology/systems-thinking-and-systems-mapping.md) — causal loops, feedback, and leverage points across sectors
 
