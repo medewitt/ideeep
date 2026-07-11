@@ -84,11 +84,13 @@ cases = CSV.read(joinpath(root, "data", "raw", "cases.csv"), DataFrame)
 
 Think of your analysis as a **directed acyclic graph (DAG)**: raw data feeds cleaning, cleaning feeds modelling, modelling feeds figures.
 Each step depends only on earlier ones.
-Framed this way, a build tool can figure out what needs to re-run when a single input changes — and skip the rest.
+Framed this way, a build tool can figure out what needs to re-run when a single input changes — and skip the rest ([@fig:dag]).
 
 ```text
 raw/cases.csv ──▶ 01-clean ──▶ derived/clean.csv ──▶ 02-fit ──▶ model.rds ──▶ 03-forecast ──▶ figures/
 ```
+
+![An analysis pipeline as a directed acyclic graph: raw data feeds cleaning, cleaning feeds fitting, and fitting feeds forecasting and figures. When a single input changes — here the raw case file — a build tool re-runs only the downstream targets it makes stale and skips everything upstream, reproducing the result with one command.](../assets/figures/project-workflow.svg "fig:dag")
 
 ## Drive the pipeline with a build tool
 

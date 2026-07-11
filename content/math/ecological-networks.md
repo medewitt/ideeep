@@ -7,6 +7,8 @@ title: "Networks in Ecology and Epidemiology"
 Who eats whom, who pollinates whom, and who contacts whom are all networks, and their structure — not just their averages — shapes ecological stability and how fast a disease spreads.
 The same graph-theoretic language links keystone species in a food web to superspreaders in an outbreak.
 
+![Left: two contact populations with the identical mean degree $\langle k\rangle=4$ — a homogeneous one (every degree $4$) and a heterogeneous one with a single hub (degrees $\{1,1,1,1,16\}$). Right: because $R_0 \propto \langle k^2\rangle/\langle k\rangle = \langle k\rangle + \operatorname{Var}(k)/\langle k\rangle$, the ratio grows with degree variance at fixed mean, so the lone hub lifts it from $4$ to $13$.](../assets/figures/ecological-networks.svg "fig:econet")
+
 ## Food webs
 
 A food web is a directed [network](networks.md) of $S$ species with $L$ trophic links pointing from prey to predator.
@@ -65,7 +67,7 @@ The mean is still $\langle k \rangle = \tfrac{1}{5}(1+1+1+1+16) = 4$, but $\lang
 \frac{\langle k^2 \rangle}{\langle k \rangle} = \frac{52}{4} = 13.
 \]
 
-The two populations have identical average connectivity, yet the heterogeneous one has a ratio — and hence an $R_0$ — more than three times larger, driven entirely by the single hub.
+The two populations have identical average connectivity, yet the heterogeneous one has a ratio — and hence an $R_0$ — more than three times larger, driven entirely by the single hub ([@fig:econet]).
 Averages hide superspreading; the second moment reveals it.
 
 ## In code

@@ -7,6 +7,8 @@ title: "Adaptive Dynamics and the Evolution of Virulence"
 Why doesn't natural selection make every pathogen either perfectly benign or maximally deadly?
 The answer is a trade-off: the very transmission that spreads a pathogen is often tied to the harm it does its host, and selection settles on an intermediate, optimal virulence.
 
+![Left: with a saturating trade-off $\beta(\alpha)=a\sqrt{\alpha}$, $R_0(\alpha)$ rises then falls and peaks at an intermediate optimum $\alpha^*=\gamma+\mu=0.6$, beating both a more benign ($\alpha=0.2$) and a more aggressive ($\alpha=1.5$) strain. Right: the pairwise-invasibility plot for the same model shades where a mutant strain can invade the resident; the singular strategy at $\alpha^*$ is an ESS because its entire vertical line lies outside the invasion region.](../assets/figures/evolution-of-virulence.svg "fig:virulence")
+
 ## Adaptive dynamics and invasion fitness
 
 **Adaptive dynamics** studies long-term evolution as a sequence of rare mutants trying to invade a resident population sitting at its ecological equilibrium.
@@ -35,7 +37,7 @@ The pathogen "wants" high transmission but not at the price of a host that dies 
 
 The value $\alpha^*$ that maximises $R_0$ is a **singular strategy** of the adaptive dynamics, found by setting $\mathrm{d}R_0/\mathrm{d}\alpha = 0$.
 Finding it is an [optimization](optimization.md) problem, and because the winning strain is simply the one with the highest $R_0$, this optimum is both an ESS (uninvadable once established) and an attractor of the evolutionary dynamics.
-Adaptive-dynamics analyses visualise this with a **pairwise-invasibility plot (PIP)**: for every resident trait on one axis and mutant trait on the other, the plot shades where a mutant can invade.
+Adaptive-dynamics analyses visualise this with a **pairwise-invasibility plot (PIP)** ([@fig:virulence]): for every resident trait on one axis and mutant trait on the other, the plot shades where a mutant can invade.
 An evolutionarily stable $\alpha^*$ appears where no nearby mutant can invade the resident — the resident's row lies entirely outside the invasion region.
 
 ## Worked example: an optimal virulence

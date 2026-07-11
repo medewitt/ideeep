@@ -7,6 +7,8 @@ title: "Permutation Tests"
 Permutation tests let epidemiologists test for a group difference without assuming a particular [distribution](distributions-overview.md)—useful for small samples or odd-shaped data where a $t$-test's assumptions are shaky.
 They build the null distribution directly from the data by shuffling.
 
+![The permutation null distribution for the worked example. There are only $\binom{6}{3}=20$ ways to split the six pooled values into two groups of three; recomputing $\bar X_A-\bar X_B$ for each traces the exact null. The observed statistic $T_{\text{obs}}=1.033$ sits in the extreme tail, and the two-sided p-value is the fraction of permutations at least as extreme.](../assets/figures/permutation-tests.svg "fig:perm")
+
 ## The idea
 
 Under a [null hypothesis](hypothesis-testing.md) of **no effect / exchangeability**, the group labels carry no information: any assignment of observations to groups is equally likely.
@@ -32,7 +34,7 @@ Observed statistic:
 T_{\text{obs}} = \bar{X}_A - \bar{X}_B = 5.733 - 4.700 = 1.033.
 \]
 
-There are $\binom{6}{3}=20$ ways to split the six pooled values into two groups of three. We recompute $\bar{X}_A - \bar{X}_B$ for each split and count how many give $|T^{*}| \ge 1.033$. That count over 20 (with the continuity adjustment) is the two-sided permutation p-value. With small $n$ the smallest attainable p-value is bounded below by $1/20 = 0.05$.
+There are $\binom{6}{3}=20$ ways to split the six pooled values into two groups of three. We recompute $\bar{X}_A - \bar{X}_B$ for each split and count how many give $|T^{*}| \ge 1.033$ ([@fig:perm]). That count over 20 (with the continuity adjustment) is the two-sided permutation p-value. With small $n$ the smallest attainable p-value is bounded below by $1/20 = 0.05$.
 
 ## In code
 

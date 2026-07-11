@@ -8,6 +8,8 @@ Before molecular biology, diagnostic microbiology meant **growing the organism**
 Culture is the only method that yields a **live isolate**, and a live isolate is what you need to test which antibiotics will actually work.
 That single capability keeps a 140-year-old technology at the center of modern clinical microbiology.
 
+![Left: the Gram stain sorts bacteria by cell-wall structure — a thick peptidoglycan layer (Gram-positive) traps the crystal-violet–iodine complex through the alcohol wash and stays purple, while a thin wall behind an outer membrane (Gram-negative) decolorizes and takes up the pink safranin counterstain. Right: disk diffusion (Kirby–Bauer) reads susceptibility from the diameter of the growth-free zone around each antibiotic disk, which maps to susceptible, intermediate, or resistant.](../assets/figures/culture-and-gram-stain.svg "fig:gram")
+
 ## Culture: growing the organism
 
 A specimen (blood, urine, sputum, a swab) is spread onto or into a **growth medium** and incubated so that any viable organisms multiply into visible colonies.
@@ -29,7 +31,7 @@ The Gram stain, devised by Hans Christian Gram in 1884, sorts almost all bacteri
 3. **Alcohol/acetone** decolorizes — thick peptidoglycan walls retain the complex, thin ones do not.
 4. **Safranin** counterstains the decolorized cells pink.
 
-**Gram-positive** bacteria (thick peptidoglycan) stay purple; **Gram-negative** bacteria (thin wall, outer membrane) turn pink.
+**Gram-positive** bacteria (thick peptidoglycan) stay purple; **Gram-negative** bacteria (thin wall, outer membrane) turn pink ([@fig:gram]).
 Combined with **morphology** — cocci vs rods, clusters vs chains — a Gram stain read in minutes gives an immediate, actionable first guess (Gram-positive cocci in clusters suggests *Staphylococcus*; Gram-negative rods in a urine sample suggest an enteric).
 
 ## Antimicrobial susceptibility testing

@@ -5,8 +5,10 @@ title: "Electron Microscopy"
 # Electron Microscopy
 
 Light microscopy runs out of resolution at about 200 nanometers — far too coarse to see a virus.
-**Electron microscopy (EM)** replaces light with a beam of electrons, whose far shorter wavelength resolves structures down to the nanometer, bringing individual **virions** and cellular **ultrastructure** into view.
+**Electron microscopy (EM)** replaces light with a beam of electrons, whose far shorter wavelength resolves structures down to the nanometer, bringing individual **virions** and cellular **ultrastructure** into view ([@fig:em]).
 It is not a high-throughput screening tool, but as a **catch-all** that can reveal a pathogen no one thought to test for, it holds a unique place in outbreak investigation and structural biology.
+
+![Left: a log-scale size ladder — light microscopy runs out near $200$ nm, too coarse to see a virus, while electrons resolve down to about $1$ nm, bringing virions and proteins into view. Right: the two modes — transmission EM passes electrons through an ultrathin section to show internal structure, while scanning EM sweeps a beam across the surface to build a three-dimensional image of the exterior.](../assets/figures/electron-microscopy.svg "fig:em")
 
 ## Two modes: TEM and SEM
 

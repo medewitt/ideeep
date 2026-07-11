@@ -6,7 +6,9 @@ title: "Debugging and Troubleshooting"
 
 Bugs are normal, not a sign you're bad at this.
 What separates a smooth debugging session from a frustrating one is a calm, systematic process.
-Panic-editing random lines is the slow path; the steps below are the fast one.
+Panic-editing random lines is the slow path; the steps below are the fast one ([@fig:debug]).
+
+![Debugging is a calm, ordered process, not panic-editing. Read the whole error message, reduce the problem to a minimal reproducible example, isolate the failure by printing intermediate values, and check the types and shapes of your data. If it still fails, that same reprex is exactly what you need to search effectively or ask for help — then you loop back with what you learned.](../assets/figures/debugging-and-troubleshooting.svg "fig:debug")
 
 ## Read the error message
 

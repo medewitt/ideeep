@@ -5,7 +5,9 @@ title: "Reproducibility"
 # Reproducibility
 
 An analysis is reproducible if someone else — or you, later — can re-run it and get the same answer.
-Reproducibility is not an extra chore at the end; it is a set of small habits that also make your work easier to debug and trust.
+Reproducibility is not an extra chore at the end; it is a set of small habits that also make your work easier to debug and trust ([@fig:repro]).
+
+![Reproducibility is a stack of small habits, not one action: scripts record every step, a fixed random seed makes stochastic results identical, a locked environment pins package versions, project-relative paths keep the code portable, and a deterministic one-command rebuild ties them together — together these layers let the same inputs reproduce the same outputs on another machine.](../assets/figures/reproducibility.svg "fig:repro")
 
 ## Scripts beat point-and-click
 

@@ -8,6 +8,8 @@ Sometimes the fastest, cheapest, and most direct diagnostic is simply to **look*
 Microscopy remains the frontline method for diagnosing malaria and most other parasites, for triaging bacterial infections alongside the [Gram stain](culture-and-gram-stain.md), and for identifying fungi and crystals.
 Its power is immediacy and low cost; its limitation is that it depends almost entirely on the **skill of the person at the eyepiece**.
 
+![Left: under polarized light a shape-and-colour rule tells two arthritides apart — monosodium urate crystals (gout) are needle-shaped and negatively birefringent (yellow when parallel to the compensator, blue when perpendicular), while calcium pyrophosphate crystals (pseudogout) are rhomboid and positively birefringent (the opposite colours). Right: the two malaria blood films — a thick film stacks many layers to detect parasites at low density, while a thin film preserves red-cell morphology to speciate and quantify parasitemia.](../assets/figures/microscopy.svg "fig:micro")
+
 ## Brightfield microscopy and diagnostic parasitology
 
 In **brightfield** microscopy light passes through a stained specimen and the eye reads contrast from the stains.
@@ -37,7 +39,7 @@ Its classic use is analyzing joint (synovial) fluid.
 - **Monosodium urate** crystals (gout) are needle-shaped and **strongly negatively birefringent** — yellow when aligned parallel to the compensator's axis.
 - **Calcium pyrophosphate** crystals (pseudogout, CPPD) are rhomboid and **positively birefringent** — blue when parallel.
 
-The color-and-shape rule lets a microscopist distinguish two arthritides at the bedside in minutes.
+The color-and-shape rule lets a microscopist distinguish two arthritides at the bedside in minutes ([@fig:micro]).
 Polarized light also identifies other crystalline and foreign materials in tissue.
 
 ## Trade-offs & resource considerations

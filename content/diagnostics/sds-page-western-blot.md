@@ -7,6 +7,8 @@ title: "SDS-PAGE and Western Blotting"
 SDS-PAGE separates proteins by **size**, and the Western blot then asks whether a **specific** protein is present using an antibody probe.
 Together they answer a question no amplification or growth-based method can: *is this exact protein — this antigen, this antibody — here?* In diagnostics that makes the Western blot a **confirmatory** test, brought in to adjudicate the positives from more sensitive but less specific screens.
 
+![Left: SDS coats every protein with uniform negative charge, so migration through the gel depends on size alone — run beside a ladder of known molecular weights, smaller proteins travel farther, and migration distance is linear in log(molecular weight). Right: the Western blot adds a second, independent constraint — transfer the bands to a membrane, block, probe with a primary plus labelled secondary antibody, and a signal appears only at the target protein's size, so size and antibody recognition must agree.](../assets/figures/sds-page-western-blot.svg "fig:blot")
+
 ## SDS-PAGE: separating proteins by size
 
 **PAGE** is polyacrylamide gel electrophoresis: proteins are driven through a gel mesh by an electric field, and smaller proteins move faster.
@@ -23,7 +25,7 @@ Staining the gel (e.g. Coomassie) reveals the whole protein complement; but to i
 3. **Probe** — a **primary antibody** binds the protein of interest; an enzyme- or fluorophore-labeled **secondary antibody** then binds the primary and generates a signal.
 4. **Detect** — a band appears at the target protein's molecular weight.
 
-Because the readout is a band *at a specific size* recognized by a *specific antibody*, the Western blot is extremely specific — two independent constraints (size and antibody recognition) must agree.
+Because the readout is a band *at a specific size* recognized by a *specific antibody*, the Western blot is extremely specific — two independent constraints (size and antibody recognition) must agree ([@fig:blot]).
 
 ## Confirmatory serology
 

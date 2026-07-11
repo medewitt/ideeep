@@ -30,6 +30,8 @@ Each page pairs the biology and notation with worked examples and runnable code 
 
 - [Surveillance Systems](epidemiology/surveillance-systems.md) — passive, active, sentinel, and syndromic surveillance and the reporting pyramid
 - [Outbreak Investigation](epidemiology/outbreak-investigation.md) — case definitions, the epidemic curve, and testing hypotheses in the field
+- [Case Definitions](epidemiology/case-definitions.md) — the CDC and WHO elements, the confirmed/probable/suspected ladder, the sensitivity-specificity trade-off, and the 7-1-7 target
+- [The 2001 UK Foot-and-Mouth Epidemic](epidemiology/foot-and-mouth-2001.md) — a farm-based stochastic spatial model, the transmission kernel, and the speed of culling versus vaccination
 - [Prospective Outbreak Detection](epidemiology/aberration-detection.md) — Shewhart, CUSUM, EARS, and Farrington aberration algorithms for count time series
 - [Nowcasting and Reporting Delays](epidemiology/nowcasting.md) — correcting the recent past for right truncation
 - [Back-Calculation and Deconvolution](epidemiology/back-calculation.md) — recovering the infection curve from delayed observed cases
@@ -45,10 +47,12 @@ Each page pairs the biology and notation with worked examples and runnable code 
 
 ## Social, behavioral, and communication science
 
-The human side of transmission — and the human response to it — shapes disease not only in people but across animals and plants: who is exposed and why, how behavior and disease feed back on one another, and how we study meaning, context, and communication. Behavior and policy are just as central to disease in wildlife and agriculture, from biosecurity and food safety across crops and agricultural animals to the management of pollinator and other social-insect diseases, where colony behavior itself drives transmission.
+The human side of transmission — and the human response to it — shapes disease not only in people but across animals and plants: who is exposed and why, how behavior and disease feed back on one another, and how we study meaning, context, and communication.
+Behavior and policy are just as central to disease in wildlife and agriculture, from biosecurity and food safety across crops and agricultural animals to the management of pollinator and other social-insect diseases, where colony behavior itself drives transmission.
 
 - [Social and Structural Drivers of Transmission](epidemiology/social-drivers-of-transmission.md) — exposure, susceptibility, care-seeking, mixing, and disparities
 - [Qualitative and Mixed Methods in Epidemiology](epidemiology/qualitative-and-mixed-methods.md) — interviews, coding, rigor, and mixed-methods designs
+- [Survey and Questionnaire Design](epidemiology/survey-and-questionnaire-design.md) — simple validated items, avoiding double-barreled questions, reusing WHO/CDC instruments, and response bias
 - [Risk Communication and Community Engagement (RCCE)](epidemiology/risk-communication-and-rcce.md) — plain language, uncertainty, trust, and misinformation
 - [Systems Thinking and Systems Mapping](epidemiology/systems-thinking-and-systems-mapping.md) — causal loops, feedback, and leverage points across sectors
 

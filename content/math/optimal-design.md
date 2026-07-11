@@ -8,6 +8,8 @@ When the design region is constrained or irregular — so classical factorials a
 In a pharmacokinetics or dose–response study, for instance, it chooses *which* concentrations to test or *when* to draw blood samples so the model parameters are pinned down most precisely for the fewest, most expensive assays.
 It is model-based: you specify the model, then choose points that [optimize](optimization.md) a criterion on the information [matrix](matrix-operations.md).
 
+![Left: for a straight line with two runs at $\pm d$ on $[-1,1]$, the information determinant $\det(X^\top X)=4d^2$ grows with the spread, so it is maximized by pushing the points to the endpoints ($d=1$, $\det=4$) rather than the interior ($d=0.5$, $\det=1$). Right: the same fact as precision — the endpoint design gives a small, tight joint confidence ellipse for $(\beta_0,\beta_1)$, while the interior design gives a large one, and D-optimality minimizes that ellipse's volume.](../assets/figures/optimal-design.svg "fig:dopt")
+
 ## The information matrix
 
 For a linear model $y = X\beta + \varepsilon$ with $\varepsilon \sim (0, \sigma^2 I)$, the least-squares estimator has [covariance](measures-of-variability.md)
@@ -61,7 +63,7 @@ Compare two candidate designs:
 - **Endpoints** $x = \{-1, +1\}$: $\det(X^\top X) = 4(1)^2 = 4$.
 - **Interior points** $x = \{-0.5, +0.5\}$: $\det(X^\top X) = 4(0.5)^2 = 1$.
 
-The endpoint design has four times the [determinant](matrix-inverse-and-determinant.md), so it estimates the slope far more precisely — spreading points as far apart as the region allows is D-optimal for a line.
+The endpoint design has four times the [determinant](matrix-inverse-and-determinant.md), so it estimates the slope far more precisely — spreading points as far apart as the region allows is D-optimal for a line ([@fig:dopt]).
 
 ## In code
 
