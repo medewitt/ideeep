@@ -30,6 +30,7 @@ Each page pairs the biology and notation with worked examples and runnable code 
 
 - [Surveillance Systems](epidemiology/surveillance-systems.md) — passive, active, sentinel, and syndromic surveillance and the reporting pyramid
 - [Outbreak Investigation](epidemiology/outbreak-investigation.md) — case definitions, the epidemic curve, and testing hypotheses in the field
+- [Case Definitions](epidemiology/case-definitions.md) — the CDC and WHO elements, the confirmed/probable/suspected ladder, the sensitivity-specificity trade-off, and the 7-1-7 target
 - [The 2001 UK Foot-and-Mouth Epidemic](epidemiology/foot-and-mouth-2001.md) — a farm-based stochastic spatial model, the transmission kernel, and the speed of culling versus vaccination
 - [Prospective Outbreak Detection](epidemiology/aberration-detection.md) — Shewhart, CUSUM, EARS, and Farrington aberration algorithms for count time series
 - [Nowcasting and Reporting Delays](epidemiology/nowcasting.md) — correcting the recent past for right truncation
