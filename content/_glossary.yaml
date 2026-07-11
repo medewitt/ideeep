@@ -52,3 +52,84 @@
 - term: Next-generation matrix
   short: A matrix whose dominant eigenvalue gives the basic reproduction number in a structured or multi-type transmission model.
   see: math/next-generation-matrix.md
+
+- term: Neural network
+  aliases: [neural networks, artificial neural network]
+  short: A model built from layers of simple units, each a weighted sum passed through a nonlinearity, whose weights are learned from data.
+  see: math/neural-networks.md
+
+- term: Multilayer perceptron
+  aliases: [MLP]
+  short: A feedforward neural network of fully connected layers — the basic deep-learning architecture.
+  see: math/neural-networks.md
+
+- term: Backpropagation
+  short: The chain rule applied layer by layer to compute a neural network's loss gradients efficiently, so its weights can be updated by gradient descent.
+  see: math/neural-networks.md
+
+- term: Activation function
+  aliases: [activation functions]
+  short: The nonlinearity applied to each neuron's weighted input (e.g. sigmoid, tanh, ReLU); without it a network could only represent linear maps.
+  see: math/neural-networks.md
+
+- term: Recurrent neural network
+  aliases: [recurrent neural networks, RNN]
+  short: A network that processes a sequence one step at a time, carrying a hidden state forward as a running summary of what it has seen.
+  see: math/recurrent-networks-lstm.md
+
+- term: Long short-term memory
+  aliases: [LSTM]
+  short: A recurrent-network cell whose forget, input, and output gates protect a long-term memory, letting it learn dependencies across many time steps.
+  see: math/recurrent-networks-lstm.md
+
+- term: Convolutional neural network
+  aliases: [convolutional neural networks, CNN]
+  short: A network that slides small learned filters across an image, building features hierarchically from edges to objects.
+  see: math/convolutional-networks-image.md
+
+- term: Autoencoder
+  aliases: [autoencoders]
+  short: A network trained to compress data through a narrow bottleneck and reconstruct it, so the bottleneck retains only the essential structure.
+  see: math/variational-autoencoders.md
+
+- term: Variational autoencoder
+  aliases: [variational autoencoders, VAE]
+  short: A generative autoencoder that learns a smooth probabilistic latent space by maximizing the ELBO, allowing sampling and anomaly detection.
+  see: math/variational-autoencoders.md
+
+- term: Latent space
+  short: The low-dimensional space of codes a model compresses data into, where each axis captures a factor of variation.
+  see: math/variational-autoencoders.md
+
+- term: Evidence lower bound
+  aliases: [ELBO]
+  short: A tractable lower bound on the log-likelihood, maximized to train variational models; it trades reconstruction accuracy against a prior-matching penalty.
+  see: math/variational-autoencoders.md
+
+- term: Reparameterization trick
+  short: Writing a random latent draw as a deterministic function of the distribution's parameters plus fixed noise, so gradients can flow through the sampling step.
+  see: math/variational-autoencoders.md
+
+- term: Transfer learning
+  short: Reusing a model pre-trained on a large general dataset and fine-tuning it on a smaller task-specific one, so generic features need not be relearned.
+  see: math/convolutional-networks-image.md
+
+- term: Transformer
+  aliases: [transformers]
+  short: A neural architecture that replaces recurrence with attention, letting every element of a sequence attend to every other — the basis of modern foundation models.
+  see: math/deep-learning-agentic-models.md
+
+- term: Foundation model
+  aliases: [foundation models]
+  short: A large model pre-trained on broad data with a self-supervised objective, then adapted to many downstream tasks by fine-tuning or prompting.
+  see: math/deep-learning-agentic-models.md
+
+- term: Large language model
+  aliases: [large language models, LLM, LLMs]
+  short: A foundation model for text, trained to predict tokens over a large corpus and adaptable to summarization, extraction, and drafting.
+  see: math/deep-learning-agentic-models.md
+
+- term: Agentic AI
+  aliases: [agentic model, agentic models]
+  short: A language model placed in a loop with tools, which reasons about a goal, calls tools, observes results, and repeats until a task is done.
+  see: math/deep-learning-agentic-models.md
