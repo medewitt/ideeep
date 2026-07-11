@@ -7,6 +7,8 @@ title: "Generalized Linear Models"
 Generalized linear models (GLMs) are a single framework that unifies linear, logistic, and Poisson regression.
 By separating the outcome's distribution from the way its mean depends on predictors, GLMs let epidemiologists model continuous measurements, binary events, and event counts with the same fitting machinery.
 
+![Left: the inverse link maps the unbounded linear predictor $\eta$ onto the mean's natural range — the identity link is a straight line, the logit's inverse (a sigmoid) keeps a probability in $[0,1]$, and the log's inverse ($e^\eta$) keeps a rate positive. Right: the worked count example — District B has the larger raw case count ($60$ vs $30$) but, once the log-population offset is applied, half the incidence rate, so the offset flips which district looks worse.](../assets/figures/generalized-linear-models.svg "fig:glm")
+
 ## Three components
 
 Every GLM is built from three pieces:
@@ -15,7 +17,7 @@ Every GLM is built from three pieces:
 - **Linear predictor:** a linear combination of covariates, $\eta = x^\top\beta$.
 - **Link function:** an invertible function $g$ connecting the mean to the linear predictor, $g(\mu) = \eta$.
 
-The link is what frees the model from the constraints of ordinary [linear regression](linear-regression.md): it maps a bounded mean (a probability in $[0,1]$, a positive rate) onto the unbounded scale where a linear predictor can roam freely.
+The link is what frees the model from the constraints of ordinary [linear regression](linear-regression.md): it maps a bounded mean (a probability in $[0,1]$, a positive rate) onto the unbounded scale where a linear predictor can roam freely ([@fig:glm]).
 
 ## Three familiar special cases
 

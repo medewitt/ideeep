@@ -7,6 +7,8 @@ title: "Polygenic Scores"
 Most common traits and diseases are not driven by one gene but by thousands of variants each nudging risk a little.
 A polygenic score collapses all those tiny effects into a single number per person, turning the output of a [GWAS](gwas.md) into an individual-level predictor of disease risk or trait value.
 
+![Left: because a polygenic score sums many small independent allele effects, its distribution across a population is approximately Gaussian by the central limit theorem, and disease cases are shifted toward the high-score right tail. Right: a score trained in one ancestry transfers poorly — predictive $R^2$ is highest in the (over-represented) European training ancestry and markedly lower in others.](../assets/figures/polygenic-scores.svg "fig:pgs")
+
 ## Definition
 
 A polygenic (risk) score for person $i$ is a weighted sum of their trait-increasing alleles, with weights taken from GWAS effect estimates:
@@ -47,7 +49,7 @@ These accuracies are bounded above by the trait's [heritability](heritability.md
 
 ### The transferability caveat
 
-A crucial limitation: a score trained in one ancestry predicts substantially worse in others.
+A crucial limitation: a score trained in one ancestry predicts substantially worse in others ([@fig:pgs]).
 LD patterns, allele frequencies, and effect sizes differ across populations, so weights and the tag SNPs they ride on do not carry over.
 Because most large GWAS have been conducted in European-ancestry samples, polygenic scores are markedly less accurate in African, East Asian, and other ancestries — an equity problem the field is actively working to fix.
 

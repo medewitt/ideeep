@@ -7,6 +7,8 @@ title: "Cox Proportional Hazards Regression"
 Cox regression relates covariates — treatment, age, viral load — to the time until an event such as death, infection, or clearance.
 It is the most widely used regression model for censored time-to-event data, and its coefficients translate directly into **hazard ratios**.
 
+![Left: when proportional hazards hold, one group's hazard is a fixed multiple of the other's at every time (here $\mathrm{HR}=0.66$, a 34% lower rate on the drug), so the curves never cross. Right: the assumption fails for a time-varying effect — a surgery with high early risk but a long-term benefit has a hazard ratio that starts above $1$ and falls below it, so the hazards cross.](../assets/figures/cox-regression.svg "fig:cox")
+
 ## The model
 
 Cox regression is a model for the [hazard](survival-analysis.md), the instantaneous event rate among those still at risk.
@@ -32,7 +34,7 @@ So $e^{\beta_j}$ is the multiplicative effect of a one-unit increase in $x_j$ on
 ## The proportional-hazards assumption
 
 Because the baseline cancels, the hazard ratio between any two covariate profiles is **constant over time** — this is the *proportional-hazards* assumption.
-Graphically, the hazard for one group is a fixed multiple of the hazard for another at every $t$; their hazard curves never cross.
+Graphically, the hazard for one group is a fixed multiple of the hazard for another at every $t$; their hazard curves never cross ([@fig:cox]).
 
 The assumption can fail — for instance, a surgery with high early risk but a long-term survival benefit has a hazard ratio that starts above 1 and falls below it.
 Common checks include:
