@@ -8,6 +8,8 @@ A rapid antigen test (RAT) is the paper strip that made at-home testing a househ
 It detects a pathogen **protein** (antigen) directly from a swab or saliva, with no instrument, no power, and a result in about fifteen minutes.
 The underlying format — the **lateral-flow immunoassay** — is the same one used by pregnancy tests, and its speed and simplicity come with a defining limitation: it is far less sensitive than a molecular test.
 
+![Left: a rapid test needs a relatively high pathogen load to cross its detection threshold, so it turns positive only around peak load near symptom onset and misses the early and late infection that a lower-threshold PCR still catches. Right: the lateral-flow strip — sample wicks past a conjugate pad, a test line, and a control line, and the two-line, one-line, and no-control readouts mean positive, negative, and invalid.](../assets/figures/rapid-antigen-tests.svg "fig:rat")
+
 ## How the strip works
 
 The specimen is mixed with a buffer and dripped onto a pad, and capillary action wicks it along a nitrocellulose strip past three zones.
@@ -23,7 +25,7 @@ Two lines means positive; one line (control only) means negative; no control lin
 ## Sensitivity tracks pathogen load
 
 The single most important fact about rapid antigen tests is that their sensitivity depends on **how much antigen is present**, which depends on **when** in the infection you test.
-A RAT needs a relatively high antigen concentration to cross its detection threshold, so it is most likely to be positive during the days of peak load — often around symptom onset — and misses early and late infection where a [PCR](qpcr.md) would still detect nucleic acid.
+A RAT needs a relatively high antigen concentration to cross its detection threshold, so it is most likely to be positive during the days of peak load — often around symptom onset — and misses early and late infection where a [PCR](qpcr.md) would still detect nucleic acid ([@fig:rat]).
 
 The practical response is **serial testing**: repeating a rapid test every day or two dramatically raises the chance of catching the infection during its detectable window, partly compensating for the lower single-test sensitivity.
 

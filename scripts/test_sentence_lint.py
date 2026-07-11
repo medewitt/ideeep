@@ -40,6 +40,15 @@ class ReflowBasics(unittest.TestCase):
         src = "\\[\na = b. c = d.\n\\]"
         self.assertEqual(reflow(src), src)
 
+    def test_image_caption_with_math_bracket_not_split(self):
+        # A figure caption whose alt text contains a `]` (a math interval like
+        # $[0,1]$) must still be masked as one image and never reflowed at the
+        # sentence boundary inside the alt text. Regression for the image-mask
+        # regex under-matching on `]`.
+        src = ("![Left: it keeps a probability in $[0,1]$. "
+               "Right: the offset flips the ranking.](../assets/figures/x.svg \"fig:x\")")
+        self.assertEqual(reflow(src), src)
+
 
 class SpoilerAwareness(unittest.TestCase):
     def test_opener_not_merged_with_first_sentence(self):

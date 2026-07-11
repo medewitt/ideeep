@@ -7,6 +7,8 @@ title: "Response Surface Methodology"
 Response Surface Methodology (RSM) is a sequential strategy for [optimizing](optimization.md) a process or output over continuous factors — think maximizing yield or minimizing defects by tuning temperature and pressure.
 You first move quickly toward the optimum with a simple model, then map the curvature near it with a richer one.
 
+![Left: the two-phase strategy — far from the optimum the fitted plane's gradient gives the direction of steepest ascent, so experimental steps climb toward the peak before a second-order model maps the curvature there. Right: a central composite design builds the three levels a quadratic needs from three pieces — the $2^k$ factorial corners, $2k$ axial (star) points at radius $\alpha$, and replicated center points.](../assets/figures/response-surface.svg "fig:rsm")
+
 ## The two-phase strategy
 
 ### Phase 1: first-order model and steepest ascent
@@ -18,7 +20,7 @@ y = \beta_0 + \sum_{i=1}^{k} \beta_i x_i + \varepsilon.
 \]
 
 Fit it with a two-level [factorial](factorial-designs.md) plus center points.
-The [gradient](gradient.md) $(\beta_1, \dots, \beta_k)$ points in the direction of **steepest ascent**; take experimental steps along it until the response stops improving, signaling you are near a peak (where first-order terms flatten and curvature dominates).
+The [gradient](gradient.md) $(\beta_1, \dots, \beta_k)$ points in the direction of **steepest ascent**; take experimental steps along it until the response stops improving, signaling you are near a peak (where first-order terms flatten and curvature dominates) ([@fig:rsm]).
 
 ### Phase 2: second-order model and curvature
 

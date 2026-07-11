@@ -9,6 +9,8 @@ Risk almost always changes with age, but not all age patterns are about age.
 Some are about *cohort*: the group of people born in the same period, who share early-life exposures, immunological history, and behaviors that follow them through life.
 A risk model that treats age as the whole story can attribute to biology a pattern that is really the fingerprint of a particular generation.
 
+![Left: a Lexis diagram — each cell belongs to one age band and one calendar period, and the diagonals are birth cohorts (cohort = period − age), so every observation carries all three clocks at once. Right: because the three linear trends are exactly collinear, the linear split is unidentified — two age slopes tilted by a constant (with the offset absorbed by period and cohort) give exactly the same fitted values; only the curvature is estimable.](../assets/figures/age-period-cohort.svg "fig:apc")
+
 ## Three timescales, one observation
 
 Any individual carries three clocks that move together.
@@ -30,7 +32,7 @@ The three clocks are exactly linearly dependent:
 \]
 
 Knowing any two fixes the third.
-So if a model includes a linear term for each of age, period, and cohort, their columns are collinear and the individual linear slopes are *not identified*: you can add a constant to the age trend, subtract it from the cohort trend, and add it to the period trend and get exactly the same fitted values.
+So if a model includes a linear term for each of age, period, and cohort, their columns are collinear and the individual linear slopes are *not identified*: you can add a constant to the age trend, subtract it from the cohort trend, and add it to the period trend and get exactly the same fitted values ([@fig:apc]).
 No amount of data breaks this tie, because it is a property of the design, not of sampling noise.
 
 ## What is and is not estimable

@@ -7,6 +7,8 @@ title: "Mendelian Randomization"
 Mendelian randomization (MR) uses genetic variants as [instrumental variables](instrumental-variables.md) to estimate the causal effect of a modifiable exposure on an outcome.
 Because [alleles](https://en.wikipedia.org/wiki/Allele) are randomly assigned from parents to offspring at conception (Mendel's law of segregation), they are largely independent of the lifestyle and environmental [confounders](experimental-design.md) that plague observational studies — giving MR the flavor of "nature's randomized trial."
 
+![Left: the inverse-variance-weighted estimate is the slope of a weighted regression of the SNP–outcome effects on the SNP–exposure effects through the origin — for the five worked SNPs it passes through $(0,0)$ with slope $\approx0.303$, and the points are sized by their weight $1/\operatorname{se}^2$. Right: under directional (horizontal) pleiotropy every outcome effect is lifted, biasing the through-origin IVW slope, while an MR-Egger regression with an intercept exposes the pleiotropy as a non-zero intercept.](../assets/figures/mendelian-randomization.svg "fig:mr")
+
 ## Genes as instruments
 
 MR is instrumental-variable analysis in which the instrument is one or more [single-nucleotide polymorphisms (SNPs)](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism).
@@ -39,7 +41,7 @@ Using weights $w_j = 1/\operatorname{se}(\hat\Gamma_j)^2$,
 \hat\beta_{\text{IVW}} = \frac{\sum_j \hat\gamma_j \hat\Gamma_j \, w_j}{\sum_j \hat\gamma_j^2 \, w_j}.
 \]
 
-This is **algebraically identical** to the slope of a weighted linear regression of the SNP–outcome estimates $\hat\Gamma_j$ on the SNP–exposure estimates $\hat\gamma_j$ **through the origin**, with weights $w_j$.
+This is **algebraically identical** to the slope of a weighted linear regression of the SNP–outcome estimates $\hat\Gamma_j$ on the SNP–exposure estimates $\hat\gamma_j$ **through the origin**, with weights $w_j$ ([@fig:mr]).
 The zero intercept encodes the exclusion restriction: a variant with no effect on the exposure should have no effect on the outcome.
 
 ## Threats and sensitivity analyses

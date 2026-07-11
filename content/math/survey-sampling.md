@@ -7,6 +7,8 @@ title: "Survey Sampling"
 Surveys are how epidemiologists estimate [population](statistical-inference.md) quantities—prevalence, coverage, exposure—without measuring everyone.
 The sampling design determines both how to draw the sample and how to weight it so estimates generalize to the target population.
 
+![Left: four designs drawn on the same population — simple random sampling scatters units anywhere, stratified sampling draws within each subgroup, cluster sampling takes whole groups, and probability-proportional-to-size favours larger clusters. Right: design weights rescale the sample back to the population — a proportional 10% sample is self-weighting (every weight $=10$), but oversampling rural residents ($\pi=0.2$) gives them weight $5$ versus $10$ for urban, so weighting is needed to avoid over-representing them.](../assets/figures/survey-sampling.svg "fig:survey")
+
 ## Common sampling designs
 
 - **Simple random sampling (SRS)** — every unit has an equal [probability](probability-basics.md) of selection, and every subset of size $n$ is equally likely.
@@ -37,7 +39,7 @@ Beyond weighting adjustments, **imputation** fills in missing values—single im
 ## Worked conceptual example
 
 Suppose a district has 800 urban and 200 rural residents (1000 total) and we take a stratified sample of 80 urban and 20 rural (a 10% sample in each stratum).
-Selection probabilities are equal at $\pi_i = 0.1$, so weights are $w_i = 10$ for everyone—a **self-weighting** design in which the unweighted sample mean already estimates the population mean.
+Selection probabilities are equal at $\pi_i = 0.1$, so weights are $w_i = 10$ for everyone—a **self-weighting** design in which the unweighted sample mean already estimates the population mean ([@fig:survey]).
 If instead we oversampled rural residents (say 40 of 200, $\pi=0.2$) for precision there, their weight would be $5$ versus $10$ for urban, and we would weight by $w_i$ to avoid over-representing rural values.
 
 In R the `survey` package handles such designs directly: build a design object and call `svymean` for design-consistent estimates and standard errors.

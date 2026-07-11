@@ -7,6 +7,8 @@ title: "Factorial Designs"
 Factorial designs let you study several factors at once by testing every combination of their levels.
 This is far more efficient than changing one factor at a time, and — crucially — it is the only way to detect **interactions**, where the effect of one factor depends on the level of another.
 
+![Left: an interaction plot of the worked $2^2$ corner means — the response versus $A$ at low $B$ and at high $B$ are two non-parallel lines, and the gap between their slopes is the $AB$ interaction of $5$: the boost from $A$ is larger when $B$ is high. Right: the factorial design visits all four corners of the $(A,B)$ square, so the $(+,+)$ combination that reveals the interaction is measured, whereas a one-factor-at-a-time path never leaves the low level of the other factor and misses it.](../assets/figures/factorial-designs.svg "fig:factorial")
+
 ## Crossing factors: the $2^k$ design
 
 Suppose we have $k$ factors, each set to a **low** ($-1$) and **high** ($+1$) level.
@@ -29,7 +31,7 @@ The interaction column $AB$ is the elementwise product of the $A$ and $B$ column
 A **main effect** of a factor is the change in the average response as the factor goes from low to high.
 An **interaction** measures how much the effect of one factor changes across the levels of another.
 
-Why one-factor-at-a-time (OFAT) fails: if you vary $A$ while holding $B$ fixed, then vary $B$ while holding $A$ fixed, you never observe the $A$–$B$ combination that reveals synergy or antagonism.
+Why one-factor-at-a-time (OFAT) fails: if you vary $A$ while holding $B$ fixed, then vary $B$ while holding $A$ fixed, you never observe the $A$–$B$ combination that reveals synergy or antagonism ([@fig:factorial]).
 Factorial designs cross the factors, so interactions become estimable.
 
 ### Effect = difference of averages

@@ -7,6 +7,8 @@ title: "Version Control with Git & GitHub"
 Git is a tool that records the history of your project so you can undo mistakes, collaborate without emailing files back and forth, and back up your work.
 GitHub is the most popular place to host Git projects online, and a public GitHub profile doubles as a portfolio that employers and collaborators can browse.
 
+![Left: commits are labeled snapshots on a line of history, and a feature branch is an independent line that diverges from `main` to let you experiment safely before merging back. Right: the everyday loop moves changes across four places — the working directory, the staging area, the local repo, and the remote (`origin`) on GitHub — via `git add`, `git commit`, `git push`, and `git pull`.](../assets/figures/version-control-git.svg "fig:git")
+
 ## Why Version Control?
 
 - **History:** every saved state (a **commit**) is recoverable.
@@ -17,6 +19,8 @@ GitHub is the most popular place to host Git projects online, and a public GitHu
 - **Portfolio / resume:** a tidy public repo of real projects is a credible demonstration of your skills.
 
 ## Core Mental Model
+
+The two diagrams in [@fig:git] capture the whole model: a history of commits with branches on the left, and the everyday add–commit–push–pull loop on the right.
 
 - **Repository (repo):** a project folder that Git is tracking, plus its full history.
 - **Commit:** a labeled snapshot of your files at a moment in time, with a message describing the change.

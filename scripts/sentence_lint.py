@@ -36,7 +36,7 @@ ABBREV = {
 # Mask inline spans that must never be split across a line boundary.
 _MASK_PATTERNS = [
     re.compile(r"`[^`]*`"),                 # inline code
-    re.compile(r"!\[[^\]]*\]\([^)]*\)"),    # image
+    re.compile(r"!\[.*?\]\([^)]*\)"),       # image (alt text may contain `]`, e.g. math `$[0,1]$`)
     re.compile(r"\[[^\]]*\]\([^)]*\)"),     # link
     re.compile(r"\$[^$\n]*\$"),             # inline math
 ]

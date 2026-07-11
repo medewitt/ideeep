@@ -8,6 +8,8 @@ Linkage disequilibrium (LD) is the non-random association of alleles at differen
 Basically, some genes are more "stuck" to eachother than others (e.g., they are more likely to travel together on a loci than be randomly disperse among others).
 It is what lets a genotyping chip "tag" millions of untyped variants with a few hundred thousand markers, and it is the reason a genetic association can point near, but not exactly at, the causal variant.
 
+![Left: recombination erodes LD geometrically, $D_t = D_0(1-c)^t$, so tightly linked loci (small $c$) retain disequilibrium for many generations while unlinked loci ($c=0.5$) lose half of any remaining $D$ each generation. Right: in the worked example the observed haplotype frequencies depart from the product of allele frequencies expected under independence, and that gap is $D = 0.40 - 0.25 = 0.15$ (giving $r^2 = 0.36$).](../assets/figures/linkage-disequilibrium.svg "fig:ld")
+
 ## Defining the association
 
 Consider two biallelic loci with alleles $A/a$ at the first and $B/b$ at the second.
@@ -24,7 +26,7 @@ The most widely used measure is the squared correlation coefficient between the 
 ## Decay under recombination
 
 Recombination breaks up haplotypes and erodes LD over the generations.
-If $c$ is the recombination fraction between the two loci (the [probability](probability-basics.md) of a crossover between them per meiosis), then the disequilibrium decays geometrically: \[ D_t = D_0 (1 - c)^t . \] Tightly linked loci (small $c$) retain LD for many generations, while unlinked loci ($c = 0.5$) lose half of any remaining $D$ each generation.
+If $c$ is the recombination fraction between the two loci (the [probability](probability-basics.md) of a crossover between them per meiosis), then the disequilibrium decays geometrically: \[ D_t = D_0 (1 - c)^t . \] Tightly linked loci (small $c$) retain LD for many generations, while unlinked loci ($c = 0.5$) lose half of any remaining $D$ each generation ([@fig:ld]).
 
 :::spoiler Show why $D$ decays by a factor $(1-c)$ each generation
 

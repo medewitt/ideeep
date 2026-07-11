@@ -7,6 +7,8 @@ title: "Genome-Wide Association Studies"
 A genome-wide association study (GWAS) scans millions of genetic variants across the genome to find those statistically associated with a trait or disease.
 It is the workhorse of modern genetic epidemiology, turning a table of genotypes and phenotypes into a map of the genome's contribution to human variation.
 
+![Left: a Manhattan plot of $-\log_{10} p$ across the genome, where null variants form a low noisy band and a tower of correlated SNPs on one chromosome rises above the genome-wide significance line at $5\times10^{-8}$. Right: QQ plots comparing a well-controlled study ($\lambda \approx 1$, points tracking the diagonal until a few true hits pull away) with a confounded one ($\lambda \gg 1$, the whole cloud lifting off the diagonal early).](../assets/figures/gwas.svg "fig:gwas")
+
 ## The basic test
 
 The unit of a GWAS is a single-nucleotide polymorphism (SNP): a position where individuals carry one of two alleles.
@@ -53,7 +55,7 @@ The count is "effective" rather than literal because nearby SNPs are correlated 
 
 ## Manhattan and QQ plots
 
-Two plots summarize a GWAS.
+Two plots summarize a GWAS ([@fig:gwas]).
 The **Manhattan plot** shows $-\log_{10} p$ for every SNP against genomic position; real signals appear as skyscraper-like towers of correlated SNPs rising above the horizon line at $5 \times 10^{-8}$.
 The **QQ plot** compares the observed distribution of $-\log_{10} p$ to the uniform distribution expected under the global null; points should track the diagonal until a few true hits pull away at the top-right tail.
 

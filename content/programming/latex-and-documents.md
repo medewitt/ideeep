@@ -7,11 +7,13 @@ title: "LaTeX and Technical Documents"
 LaTeX is a typesetting system that turns plain-text source into beautifully formatted documents, and it is the de facto standard for anything math-heavy.
 If you write equations, you will get cleaner, more consistent results with LaTeX than with a word processor, and the same math syntax works inside R Markdown, Quarto, and Jupyter.
 
+![One plain-text math source, many outputs. The same LaTeX notation written once — inline as `$...$` or in an `.Rmd` / `.qmd` source — renders through the same toolchain (LaTeX/tinytex for print, KaTeX or MathJax for the web) into a paper PDF, an HTML page, slides, and a notebook, so the equation you type is portable across every target.](../assets/figures/latex-and-documents.svg "fig:latex")
+
 ## Why LaTeX for Math?
 
 - Equations render precisely and consistently, no fighting an equation editor.
 - The source is plain text, so it [version-controls](version-control-git.md) and diffs cleanly.
-- The same math notation is portable across papers, slides, notebooks, and [websites](personal-website.md) (via KaTeX/MathJax).
+- The same math notation is portable across papers, slides, notebooks, and [websites](personal-website.md) (via KaTeX/MathJax) ([@fig:latex]).
 
 ## Inline vs. Display Math
 

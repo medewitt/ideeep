@@ -7,6 +7,8 @@ title: "The Evolution of Cooperation"
 Cooperation is a puzzle for Darwinism: if defectors always out-earn cooperators in a direct encounter, why is the living world full of altruism, from cells to societies?
 The answer is that some structure — relatedness, repetition, reputation, or a network of neighbours — can tip the balance so that helping pays.
 
+![Left: network reciprocity favours cooperation roughly when $b/c > \langle k\rangle$, so with a fixed benefit-to-cost ratio $b/c=3$ the outcome flips with connectivity — a sparse graph ($\langle k\rangle=2$) lies in the cooperation region while a denser one ($\langle k\rangle=4$) does not. Right: the same contrast as neighbourhoods — a cooperator cluster is mutually supported and persists on the sparse graph, but on the dense graph each cooperator has more defector neighbours and defection takes over.](../assets/figures/evolution-of-cooperation.svg "fig:coop")
+
 ## The Prisoner's Dilemma
 
 The tension is captured by the **Prisoner's Dilemma**.
@@ -98,7 +100,7 @@ Directed at a cousin, $r = 1/8$, we get $r b = 0.375 < 1$, and it is not.
 
 *Network reciprocity.* Here $b/c = 3$.
 On a sparse graph with mean degree $\langle k\rangle = 2$ we have $b/c = 3 > 2$, so cooperator clusters spread.
-On a denser graph with $\langle k\rangle = 4$, the condition $3 > 4$ fails, and defection takes over — more neighbours dilute the local advantage of clustered cooperators.
+On a denser graph with $\langle k\rangle = 4$, the condition $3 > 4$ fails, and defection takes over — more neighbours dilute the local advantage of clustered cooperators ([@fig:coop]).
 The same benefit and cost thus lead to opposite outcomes depending purely on how interactions are wired.
 
 ## Simulation: an iterated Prisoner's Dilemma tournament

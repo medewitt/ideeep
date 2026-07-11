@@ -7,6 +7,8 @@ title: "Structured Population Models"
 A newborn, a juvenile, and a reproductive adult contribute very differently to a population's future, so treating everyone as identical throws away essential biology.
 Structured models track these classes explicitly, and their long-run behavior is governed entirely by the eigenvalues and eigenvectors of a projection matrix — the same linear-algebra machinery behind next-generation matrices in disease ecology.
 
+![Left: starting from an all-juvenile population, the stage proportions converge after transients decay to the stable stage distribution — about 63% juveniles, 29% subadults, and 8% adults — set by the dominant right eigenvector. Right: total population size then grows geometrically at the dominant eigenvalue $\lambda \approx 1.090$, so on a log scale it straightens into a line of slope $\ln\lambda$.](../assets/figures/structured-populations.svg "fig:structured")
+
 ## Projecting an age- or stage-structured population
 
 When survival and fecundity depend on age or developmental stage, we split the population into classes and record their counts in a vector $\mathbf{n}_t$.
@@ -23,7 +25,7 @@ Iterating $\mathbf{n}_{t+1}=L\mathbf{n}_t$ is a discrete-time projection, closel
 
 ## Long-run growth and structure
 
-After transients decay, the population settles into steady exponential growth at a fixed rate multiplied each step, and its composition stops changing.
+After transients decay, the population settles into steady exponential growth at a fixed rate multiplied each step, and its composition stops changing ([@fig:structured]).
 Both facts fall out of the [eigenvalues and eigenvectors](eigenvalues-and-eigenvectors.md) of $L$:
 
 - The **dominant eigenvalue** $\lambda$ (largest in magnitude) is the asymptotic per-step growth rate — the discrete analogue of $e^r$.

@@ -7,6 +7,8 @@ title: "Global Sensitivity Analysis"
 Global sensitivity analysis (GSA) attributes the variation in a model's output to its uncertain inputs.
 It answers "which knobs actually matter?" — essential for prioritizing data collection, simplifying models, and communicating which epidemiological parameters drive a forecast.
 
+![Left: Sobol indices for the worked model $Y=X_1+X_2+X_1X_2$ — each first-order index $S_i=0.491$ sits just below its total-effect index $S_{Ti}=0.509$, and the gap $S_{Ti}-S_i$ is that input's share of the pure interaction (about $1.8\%$). Right: a Morris screening plot places each input by its mean absolute elementary effect $\mu^*$ (importance) against its spread $\sigma$ (nonlinearity and interaction), separating negligible inputs near the origin from influential ones.](../assets/figures/sensitivity-analysis.svg "fig:sobol")
+
 ## Local vs global
 
 **Local** sensitivity looks at partial derivatives at a single nominal point, \[
@@ -39,7 +41,7 @@ The **total-effect** index measures all variance involving $X_i$, including ever
 
 Interpretation:
 - $\sum_i S_i \le 1$, with equality only when the model is purely additive (no interactions).
-- Always $S_{Ti} \ge S_i$, and $S_{Ti} - S_i$ quantifies $X_i$'s involvement in interactions.
+- Always $S_{Ti} \ge S_i$, and $S_{Ti} - S_i$ quantifies $X_i$'s involvement in interactions ([@fig:sobol]).
 - $S_{Ti} \approx 0$ means $X_i$ can be safely fixed.
 
 ## Worked example

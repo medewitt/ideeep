@@ -154,6 +154,7 @@ It requires practice and repetition.
 - [Latin Hypercube Sampling](math/latin-hypercube.md) — space-filling designs for computer experiments
 - [Global Sensitivity Analysis](math/sensitivity-analysis.md) — Sobol indices and Morris screening
 - [Survey Sampling](math/survey-sampling.md) — SRS, stratified, cluster, and weighting
+- [Bayesian Bandits for Adaptive Sampling and Trial Design](math/bayesian-bandits.md) — Thompson sampling to shift a testing budget toward the positive sites, and response-adaptive clinical trials
 - [Capture-Recapture and Multiplier Methods](math/capture-recapture.md) — estimating a population's true size from overlapping incomplete lists
 
 ## Causal inference

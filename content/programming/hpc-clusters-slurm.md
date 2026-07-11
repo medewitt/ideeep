@@ -18,7 +18,9 @@ If you can drive one, you can drive the other; only the login hostnames and avai
 
 A cluster is a large collection of computers (**nodes**) wired together with fast storage and a fast network, managed as a single shared resource.
 You don't run your work interactively on the whole machine.
-Instead you **describe the job you want to run** and hand it to a **scheduler**, which finds free hardware and runs it for you, possibly hours later.
+Instead you **describe the job you want to run** and hand it to a **scheduler**, which finds free hardware and runs it for you, possibly hours later ([@fig:hpc]).
+
+![Left: the parts of a cluster — you SSH from your laptop to a login node (staging only), hand a job script to the SLURM scheduler, which dispatches it to compute nodes, all sharing one filesystem. Right: a job array launches one task per input and SLURM runs as many in parallel as there is room for, so some tasks are RUNNING while others wait PENDING behind a fair-share limit.](../assets/figures/hpc-clusters-slurm.svg "fig:hpc")
 
 Use a cluster when your work is:
 
