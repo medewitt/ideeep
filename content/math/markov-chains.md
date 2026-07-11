@@ -7,6 +7,8 @@ title: "Markov Chains"
 A Markov chain is a stochastic process that hops between states, where the probability of the next state depends only on the current state and not on the path that led there.
 This "memoryless" assumption is simple enough to analyze with linear algebra yet rich enough to model gene fixation, epidemic compartments, and the sampling engines behind modern statistics.
 
+![Left: the transition diagram for the two-state weather chain, with its four one-step probabilities and stationary distribution $\pi=(4/7,\,3/7)$. Right: two long simulations started from opposite states both have their running frequency of Sunny converge to $\pi_1=4/7\approx0.571$, so the chain forgets where it began.](../assets/figures/markov-chains.svg "fig:markov")
+
 ## States, transitions, and the Markov property
 
 Let the process take values in a finite set of states $\{1, 2, \dots, k\}$ and let $X_n$ be the state at step $n$.
@@ -33,7 +35,7 @@ For absorbing chains the interesting quantities are absorption probabilities (th
 ## Worked example
 
 Consider a two-state weather chain with states Sunny ($1$) and Rainy ($2$) and transition matrix \[ P = \begin{bmatrix} 0.7 & 0.3 \\ 0.4 & 0.6 \end{bmatrix}. \] To find the stationary distribution $\pi = (\pi_1, \pi_2)$ we solve $\pi = \pi P$ with $\pi_1 + \pi_2 = 1$.
-Writing out the first component, \[ \pi_1 = 0.7\,\pi_1 + 0.4\,\pi_2 \;\Longrightarrow\; 0.3\,\pi_1 = 0.4\,\pi_2 \;\Longrightarrow\; \pi_2 = \tfrac{3}{4}\pi_1. \] Imposing normalization, $\pi_1 + \tfrac34\pi_1 = 1$, so $\pi_1 = \tfrac{4}{7}$ and $\pi_2 = \tfrac{3}{7}$: \[ \pi = \left(\tfrac{4}{7},\ \tfrac{3}{7}\right) \approx (0.5714,\ 0.4286). \] In the long run the chain is Sunny about $57\%$ of days regardless of today's weather.
+Writing out the first component, \[ \pi_1 = 0.7\,\pi_1 + 0.4\,\pi_2 \;\Longrightarrow\; 0.3\,\pi_1 = 0.4\,\pi_2 \;\Longrightarrow\; \pi_2 = \tfrac{3}{4}\pi_1. \] Imposing normalization, $\pi_1 + \tfrac34\pi_1 = 1$, so $\pi_1 = \tfrac{4}{7}$ and $\pi_2 = \tfrac{3}{7}$: \[ \pi = \left(\tfrac{4}{7},\ \tfrac{3}{7}\right) \approx (0.5714,\ 0.4286). \] In the long run the chain is Sunny about $57\%$ of days regardless of today's weather ([@fig:markov]).
 
 ## Simulation
 

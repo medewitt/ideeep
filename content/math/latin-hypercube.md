@@ -8,6 +8,8 @@ title: "Latin Hypercube Sampling"
 This is really important for developing models, estimating parameters, and exploring sensitivity to values when building computations models.
 For example, sampling an [SIR model's](sir.md) transmission rate $\beta$ and recovery rate $\gamma$ so that a few dozen runs cover the plausible space far better than plain Monte Carlo in finite time.
 
+![Latin hypercube sampling versus plain Monte Carlo, $n=5$ in the unit square on a $5\times5$ grid. Left: independent uniform draws clump and can leave whole marginal bins empty (shaded strata with no point). Right: LHS places exactly one point in each bin of every input — one per row and per column, like a Latin square — so no marginal stratum is missed.](../assets/figures/latin-hypercube.svg "fig:lhs")
+
 ## The idea: stratify, then permute
 
 Suppose we want $n$ sample points in a $k$-dimensional unit cube $[0,1]^k$.
@@ -57,7 +59,7 @@ Centering points at bin midpoints ($U=\tfrac12$) gives the five design points:
 | 5 | 5 | 2 | 0.9 | 0.3 |
 
 Reading down each column, the five bins $\{1,2,3,4,5\}$ each appear exactly once — one point per row and per column of the $5\times5$ grid, just like a Latin square.
-Plain random sampling could easily have left, say, bin 4 of input 2 empty; LHS cannot.
+Plain random sampling could easily have left, say, bin 4 of input 2 empty; LHS cannot ([@fig:lhs]).
 
 ## In code
 

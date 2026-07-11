@@ -4,9 +4,11 @@ title: "LAMP: Isothermal Amplification"
 
 # LAMP: Isothermal Amplification
 
-Loop-mediated isothermal amplification (LAMP) does what [qPCR](qpcr.md) does — copy a target nucleic acid until it is detectable — but **without thermal cycling**.
+Loop-mediated isothermal amplification (LAMP) does what [qPCR](qpcr.md) does — copy a target nucleic acid until it is detectable — but **without thermal cycling** ([@fig:lamp]).
 The whole reaction runs at a single, constant temperature (around 60–65 °C), which means it needs nothing more than a heat block or even body heat, no expensive thermocycler.
 That single fact makes LAMP one of the most important tools for **point-of-care and field molecular diagnostics**.
+
+![qPCR must ratchet the tube between a hot denaturation step (~95 °C) and a cooler anneal/extend step (~60 °C) once per cycle — a sawtooth that requires a programmable thermal cycler — whereas LAMP holds a single constant temperature (~63 °C) throughout, so a heat block or even body heat suffices and a positive can appear in 15–30 minutes.](../assets/figures/lamp.svg "fig:lamp")
 
 ## How it works
 

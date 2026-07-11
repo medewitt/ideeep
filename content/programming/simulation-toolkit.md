@@ -8,6 +8,8 @@ Simulation is the statistician's laboratory: when you can't derive a result on p
 Because you control the truth, you can check whether a method recovers it.
 This page collects the practical tools for doing that in R, Python, and Julia.
 
+![Left: the Monte Carlo workhorse loop — start from a known data-generating process, generate a sample, fit or estimate, record an indicator, then repeat and aggregate. Right: running that loop for the coverage of a $95\%$ $t$-interval ($\mu=5$, $n=20$) — each repeat forms a fresh interval, and about $95\%$ of them cover the true mean while about $5\%$ miss, so the recorded coverage converges to $0.95$ by the law of large numbers.](../assets/figures/simulation-toolkit.svg "fig:sim")
+
 ## Start from a known data-generating process
 
 The core move is to invent a **data-generating process (DGP)** with parameters you choose, draw data from it, and then apply your method.
@@ -126,7 +128,7 @@ mean(covered)   # ~0.95
 
 ## Why this works
 
-Repeating the draw-and-estimate loop many times approximates the estimator's **[sampling distribution](../math/sampling-distributions.md)**, and the average of an indicator (like "did the interval cover?") converges to its true probability by the [law of large numbers](../math/law-of-large-numbers.md).
+Repeating the draw-and-estimate loop many times approximates the estimator's **[sampling distribution](../math/sampling-distributions.md)**, and the average of an indicator (like "did the interval cover?") converges to its true probability by the [law of large numbers](../math/law-of-large-numbers.md) ([@fig:sim]).
 That is the engine behind every coverage check, power calculation, and bias estimate you'll run by simulation.
 
 Practical tips:

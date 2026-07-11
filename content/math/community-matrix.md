@@ -7,6 +7,8 @@ title: "The Community Matrix and Stability"
 Whether a whole ecological community holds together or unravels depends on the web of pairwise interactions among its species.
 The community matrix packages those interactions into a single object whose eigenvalues tell us, at a glance, whether an equilibrium is stable — and it sits at the heart of the famous debate over whether complexity begets stability.
 
+![Left: May's random-matrix experiment — the fraction of randomly assembled communities that are stable collapses sharply as the complexity $\sigma\sqrt{SC}$ crosses $1$, so more species, connectance, or interaction strength destabilizes. Right: the worked $2\times2$ predator–prey matrix has eigenvalues $-0.35\pm0.614\,i$; both lie in the left half-plane (negative real part), so the equilibrium is a stable focus and perturbations spiral back in.](../assets/figures/community-matrix.svg "fig:community")
+
 ## Definition
 
 Consider a community of $S$ species with densities $N_1, \dots, N_S$ governed by $\frac{dN_i}{dt} = f_i(N_1, \dots, N_S)$.
@@ -47,7 +49,7 @@ May showed that as $S$ grows, such a system is almost surely stable when
 \]
 
 and almost surely unstable once $\sigma\sqrt{SC} > 1$.
-The striking implication is that **complexity tends to destabilize**: increasing the number of species $S$, the connectance $C$, or the interaction strength $\sigma$ pushes a randomly assembled community toward instability.
+The striking implication is that **complexity tends to destabilize**: increasing the number of species $S$, the connectance $C$, or the interaction strength $\sigma$ pushes a randomly assembled community toward instability ([@fig:community]).
 Real communities persist despite this, which tells us their interaction structure is far from random — a puzzle that still drives research.
 
 ## Worked example

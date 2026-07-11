@@ -7,11 +7,13 @@ title: "Hardy–Weinberg Equilibrium"
 Hardy–Weinberg equilibrium (HWE) is the null model of population genetics: it says how genotype frequencies relate to allele frequencies when nothing interesting is happening.
 Deviations from it are how we detect inbreeding, natural selection, hidden population structure, and — very practically — genotyping errors in a sequencing pipeline.
 
+![Left: the Hardy–Weinberg genotype frequencies are the terms of $(p+q)^2$ — $p^2$, $2pq$, $q^2$ — with the heterozygote frequency $2pq$ peaking at $0.5$ when $p=0.5$. Right: starting from three arbitrary genotype distributions, the heterozygote frequency snaps to its Hardy–Weinberg value $2pq$ after a single generation of random mating and stays there, regardless of the starting point.](../assets/figures/hardy-weinberg.svg "fig:hwe")
+
 ## The equilibrium
 
 Consider a single biallelic locus with alleles $A$ and $a$.
 Let $p$ be the frequency of allele $A$ and $q = 1 - p$ the frequency of allele $a$.
-Under random mating, an individual's two alleles are like two independent draws from the allele pool, so the genotype frequencies are the terms of $(p+q)^2$: \[ f(AA) = p^2, \qquad f(Aa) = 2pq, \qquad f(aa) = q^2. \] These are the Hardy–Weinberg proportions, and they are reached after a single generation of random mating regardless of the starting genotype frequencies.
+Under random mating, an individual's two alleles are like two independent draws from the allele pool, so the genotype frequencies are the terms of $(p+q)^2$: \[ f(AA) = p^2, \qquad f(Aa) = 2pq, \qquad f(aa) = q^2. \] These are the Hardy–Weinberg proportions, and they are reached after a single generation of random mating regardless of the starting genotype frequencies ([@fig:hwe]).
 
 :::spoiler Show that one generation of random mating reaches equilibrium
 

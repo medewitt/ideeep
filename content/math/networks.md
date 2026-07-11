@@ -7,6 +7,8 @@ title: "Networks and Graphs"
 A network encodes who is connected to whom — which hosts contact each other, which species eat which, which neurons wire together.
 Turning that web of relationships into a matrix lets us bring the full machinery of linear algebra to bear on ecology and disease transmission.
 
+![Left: the worked five-node example (edges 1–2, 1–3, 2–3, 3–4, 4–5) as a node-link diagram, nodes sized and labelled by degree — the degrees $(2,2,3,2,1)$ sum to $2E=10$, node 3 is the hub, and the whole graph is one connected component. Right: the shape of the degree distribution $P(k)$ distinguishes a homogeneous network from a heavy-tailed one dominated by a few high-degree hubs.](../assets/figures/networks.svg "fig:graph")
+
 ## Nodes, edges, and the adjacency matrix
 
 A **network** (or graph) is a set of **nodes** (vertices) joined by **edges** (links).
@@ -37,7 +39,7 @@ Take an undirected network on nodes $\{1,2,3,4,5\}$ with edges $\{1\!-\!2,\ 1\!-
 Its adjacency matrix is \[ A = \begin{bmatrix} 0 & 1 & 1 & 0 & 0\\ 1 & 0 & 1 & 0 & 0\\ 1 & 1 & 0 & 1 & 0\\ 0 & 0 & 1 & 0 & 1\\ 0 & 0 & 0 & 1 & 0 \end{bmatrix}. \] Summing each row gives the degrees $k_1=2,\ k_2=2,\ k_3=3,\ k_4=2,\ k_5=1$, which sum to $10=2E$ as they must.
 The mean degree is $\langle k\rangle = 2E/N = 10/5 = 2$.
 The density is $E/\binom{N}{2} = 5/\binom{5}{2} = 5/10 = 0.5$, so half of the ten possible edges are present.
-Node $3$ is the most connected, and the whole graph is a single connected component (you can walk from node $5$ to node $1$), so its giant component contains all five nodes.
+Node $3$ is the most connected, and the whole graph is a single connected component (you can walk from node $5$ to node $1$), so its giant component contains all five nodes ([@fig:graph]).
 
 ## In code
 

@@ -7,6 +7,8 @@ title: "Instrumental Variables"
 When an unmeasured [confounder](experimental-design.md) distorts the relationship between an exposure and an outcome, ordinary regression estimates the wrong thing.
 Instrumental variables (IV) exploit a special variable $Z$ to recover the causal effect even when confounding cannot be measured or adjusted for.
 
+![Left: the causal DAG behind an IV analysis — the instrument $Z$ affects the exposure $X$, which affects the outcome $Y$, while an unmeasured confounder $U$ opens a back-door into both; the dashed arrows ($Z\to U$ and a direct $Z\to Y$) are the paths the independence and exclusion assumptions forbid. Right: on confounded data OLS is biased upward while 2SLS recovers the true effect $\beta=2$.](../assets/figures/instrumental-variables.svg "fig:iv")
+
 ## The problem: confounding bias
 
 Suppose we want the causal effect $\beta$ of an exposure $X$ on an outcome $Y$, but an unmeasured confounder $U$ influences both:
@@ -73,7 +75,7 @@ A common rule of thumb is a first-stage $F$-statistic above 10; weaker instrumen
 
 ## Worked simulation
 
-We generate data where OLS is badly confounded, then show that 2SLS recovers the true effect $\beta = 2$.
+We generate data where OLS is badly confounded, then show that 2SLS recovers the true effect $\beta = 2$ ([@fig:iv]).
 
 ### R
 

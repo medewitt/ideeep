@@ -7,6 +7,8 @@ title: "Antimicrobial PK/PD"
 Antimicrobial PK/PD combines what the body does to the drug with what the drug does to the pathogen, in order to pick a dose and schedule that maximizes killing while suppressing resistance.
 It joins the concentration–time curve from [pharmacokinetics](pharmacokinetics.md) to the concentration–effect curve from [pharmacodynamics](pharmacodynamics.md) through a single benchmark: the MIC.
 
+![Left: the worked IV-bolus profile $C(t)=40\,e^{-0.35t}$ against $MIC=2$ shows all three indices at once — the peak ($C_{max}/MIC=20$), the shaded exposure ($AUC/MIC$), and the time the free concentration stays above the MIC ($\%T_{>MIC}=100\%$ here). Right: delivering the same daily dose as a short bolus, an extended infusion, or a continuous infusion keeps the concentration above the MIC for very different fractions of the interval, so the best dosing shape depends on which index governs the drug.](../assets/figures/antimicrobial-pkpd.svg "fig:pkpd")
+
 ## The MIC and free drug
 
 The **minimum inhibitory concentration** (MIC) is the lowest drug concentration that prevents visible growth of an organism in vitro.
@@ -15,7 +17,7 @@ Only unbound (free) drug is microbiologically active, so the indices below use t
 
 ## The three PK/PD indices
 
-Which feature of the profile predicts efficacy depends on the drug's kill pattern, giving three indices.
+Which feature of the profile predicts efficacy depends on the drug's kill pattern, giving three indices ([@fig:pkpd]).
 
 ### Percent time above MIC
 

@@ -7,11 +7,13 @@ title: "Note-Taking with Org Mode"
 [Org mode](https://orgmode.org) is a plain-text outliner, task manager, and literate-programming environment built into [Emacs](https://www.gnu.org/software/emacs/).
 For a researcher it doubles as a lab notebook: one `.org` file can hold your outline, to-dos, links, tables, and *runnable* code, then export to a PDF or slides — all in version-controllable plain text.
 
+![Left: a single `.org` file is an outline of headlines (depth = number of stars) that also carries TODOs, tables, and runnable code blocks, so your thinking and your work live together. Right: that one file exports to HTML, a LaTeX/PDF report, Markdown, and Beamer slides, so the same notes become a report or a talk.](../assets/figures/org-mode.svg "fig:org")
+
 ## Why plain-text notes
 
 - Everything is a `.org` text file: greppable, diffable, and safe under [version control](version-control-git.md), with no proprietary lock-in.
 - One format spans outlines, tasks, references, data tables, and analysis code, so your thinking and your work live together.
-- It exports to HTML, LaTeX/PDF, Markdown, and Beamer slides, so the same notes become a report or a talk.
+- It exports to HTML, LaTeX/PDF, Markdown, and Beamer slides, so the same notes become a report or a talk ([@fig:org]).
 
 ## Outlining
 

@@ -7,6 +7,8 @@ title: "Quantitative Genetics and the Breeder's Equation"
 Most traits that matter — height, body mass, pathogen virulence, drug resistance — vary continuously because they are shaped by many genes of small effect acting together with the environment.
 Quantitative genetics is the framework for such traits: it partitions their variation into heritable and non-heritable parts and predicts how a population responds when we select on them.
 
+![Left: selecting the tallest plants (selected mean $60$ cm, so the selection differential $S=10$) shifts the offspring mean only a fraction $h^2$ of the way — with $h^2=0.5$ the response is $R=h^2S=5$ cm (offspring mean $55$), not the full $10$. Right: the response is governed by the slope of offspring on mid-parent, which equals $h^2$, so a high-heritability trait ($h^2=0.5$) responds five times as much as a low one ($h^2=0.1$).](../assets/figures/quantitative-genetics.svg "fig:breeder")
+
 ## Partitioning phenotypic variance
 
 For a continuous trait, the phenotype $P$ of an individual is modelled as a genetic value plus an environmental deviation, $P = G + E$.
@@ -24,7 +26,7 @@ It is a property of a particular population in a particular environment, not a f
 Truncation or differential selection lets only some individuals reproduce.
 The selection differential $S$ is the difference between the mean phenotype of the selected parents and the mean of the whole population before selection.
 The response $R$ is the shift in the mean phenotype of the offspring generation relative to the parental population.
-The breeder's equation links them through heritability: \[ R = h^2 S. \] The intuition is that selection acts on phenotypes but only the additive component is inherited, so the population moves a fraction $h^2$ of the way that the selected parents were displaced.
+The breeder's equation links them through heritability: \[ R = h^2 S. \] The intuition is that selection acts on phenotypes but only the additive component is inherited, so the population moves a fraction $h^2$ of the way that the selected parents were displaced ([@fig:breeder]).
 Standardizing the selection differential by the phenotypic standard deviation $\sigma_P$ defines the selection intensity $i = S/\sigma_P$, giving the equivalent form \[ R = h^2\, i\, \sigma_P. \] High heritability means selection is effective; when $h^2 \approx 0$ even strong selection produces almost no response, because the trait differences among parents are environmental and not passed on.
 
 ## Worked example

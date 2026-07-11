@@ -7,6 +7,8 @@ title: "Heritability and Variance Components"
 Heritability answers a deceptively simple question: how much of the variation in a trait across a population is due to genetic differences rather than environment?
 It is a variance ratio, not a statement about any individual, and it anchors the study of disease genetics, breeding, and [polygenic scores](polygenic-scores.md).
 
+![Left: identical (MZ) twins correlate more strongly than fraternal (DZ) twins, and because DZ pairs share only half the additive variance, doubling the gap gives Falconer's estimate $h^2 = 2(r_{MZ}-r_{DZ}) = 2(0.80-0.50) = 0.60$. Right: the ACE variance decomposition that follows ($h^2=0.60$, $c^2=0.20$, $e^2=0.20$), beside a lower SNP-heritability bar whose gap to the twin estimate is the "missing heritability".](../assets/figures/heritability.svg "fig:heritability")
+
 ## Decomposing phenotypic variance
 
 For a trait measured across a population, the total or **phenotypic variance** splits into genetic and environmental parts:
@@ -98,7 +100,7 @@ Falconer's formula gives
 h^2 \approx 2\,(0.80 - 0.50) = 0.60,
 \]
 
-so about 60% of the trait variance is additively genetic.
+so about 60% of the trait variance is additively genetic ([@fig:heritability]).
 The shared-environment estimate is $c^2 = 2(0.50) - 0.80 = 0.20$, and the remaining $1 - 0.80 = 0.20$ is unique environment plus measurement error.
 
 ## In code
