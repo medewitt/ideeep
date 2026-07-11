@@ -179,6 +179,8 @@
   "testing-stochastic.py": "8fc8d418f822eef4095d6aef8b9378250f9caf8cee36ef6d998aaa795b44060d",
   "tidy-and-relational-data.py": "55b0d1f9c8797b4b279081afe84a53cf709a530c87f6e62545371f8fbb582502",
   "transcritical-bifurcation.py": "d657d6dfd8e6047af762781194e1f70b37e33de4fac78e3b29f8768dedd48d7f",
+  "transmission-modes-growth.py": "833df809dd9f16395d68be02ccc922c687ad3c622ec9defeaa683348552110af",
+  "transmission-modes-sir.py": "963dcba438655694d02a5c0dfde5ae557e455ffbf30b8327aacd0c0e4da99b1b",
   "transmission-modes.py": "55b4c8df8b453ba21340287a2ee67717a654fa77b0ad8acc9e55f090b58b6107",
   "transmission-tree.py": "c8f8581d7b168b21a87aed9429be5125b445ae5fc52eb8a1cd2768747268e20a",
   "turing-patterns.py": "66ba09310a734e024bc4673bd0d866e4e03a034f69bd6ca5ed4fc59269343368",

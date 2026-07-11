@@ -39,6 +39,45 @@ Under **frequency dependence**, the $N$ cancels: $$R_0 = \frac{\beta\kappa}{\gam
 There is **no density threshold**.
 A sexually transmitted infection can persist in a small, sparse population just as well as a large one, because partners are acquired at a rate set by behavior, not by crowding.
 
+:::spoiler Show how β and R₀ change with population size
+
+Both models are the *same* equation with a different transmission coefficient.
+Write new infections in the standard-incidence form $\beta(N)\,S\,I/N$ and let a single coefficient $\beta(N)=\beta\,C(N)$ absorb the contact rule.
+The two assumptions are then just two shapes for that coefficient:
+
+\[
+\beta(N) = \beta\kappa N \quad\text{(density-dependent)}, \qquad \beta(N) = \beta\kappa \quad\text{(frequency-dependent)}.
+\]
+
+Under density dependence the coefficient grows linearly with crowding; under frequency dependence it is flat.
+The power-law compromise $C(N)=\kappa N^{q}$ interpolates the two as $\beta(N)=\beta\kappa N^{q}$.
+
+Seed one infection into a fully susceptible population, $S\approx N$.
+The infected class then obeys
+
+\[
+\frac{dI}{dt} = \left[\beta(N)\,\frac{S}{N} - \gamma\right]I = \big[\beta(N) - \gamma\big]I,
+\]
+
+so the [basic reproduction number](next-generation-matrix.md) is $R_0 = \beta(N)/\gamma$, giving
+
+\[
+R_0^{\mathrm{DD}} = \frac{\beta\kappa N}{\gamma}, \qquad R_0^{\mathrm{FD}} = \frac{\beta\kappa}{\gamma}.
+\]
+
+The density-dependent $R_0$ carries a factor of $N$; the frequency-dependent one does not.
+The invasion (per-capita) growth rate is $r(N)=\beta(N)-\gamma=\gamma\,(R_0-1)$, so it shares the sign of $R_0-1$:
+
+\[
+r_{\mathrm{DD}}(N) = \beta\kappa N - \gamma, \qquad r_{\mathrm{FD}}(N) = \beta\kappa - \gamma.
+\]
+
+The density-dependent rate is a rising line that crosses zero exactly at the critical density $N_T=\gamma/(\beta\kappa)$ — below it the pathogen shrinks, above it it grows — while the frequency-dependent rate is a horizontal line whose sign never depends on $N$.
+
+![Per-capita growth rate of an invading infection against host density. The density-dependent rate rises linearly and crosses zero at the critical density N_T = 50; below it the pathogen fades out. The frequency-dependent rate is flat, so invasion succeeds or fails at every density alike.](../assets/figures/transmission-modes-growth.svg)
+
+:::
+
 ## Which assumption fits which disease
 
 The right choice is an empirical question about how contact scales, not a mathematical preference.
@@ -58,6 +97,34 @@ So $R_0=\beta\kappa N/\gamma$ is $2$ at $N=100$ and $20$ at $N=1000$ — the sam
 
 For a **frequency-dependent** pathogen with $\beta\kappa=0.3\ \text{day}^{-1}$, $R_0=0.3/0.1=3$ in *both* populations.
 Halving or doubling the host density does nothing to invasion.
+
+## Watching the threshold in an SIR epidemic
+
+The invasion algebra becomes vivid when we run the full [SIR model](sir.md) forward.
+Keep $\gamma=0.1\ \text{day}^{-1}$ and the two transmission constants from above, seed one infection, and compare population sizes $N=100$ and $N=500$.
+
+A **density-dependent** epidemic uses the mass-action term $\beta\kappa\,S I$:
+
+\[
+\frac{dS}{dt} = -\beta\kappa\,S I, \qquad \frac{dI}{dt} = \beta\kappa\,S I - \gamma I, \qquad \frac{dR}{dt} = \gamma I,
+\]
+
+so $R_0=\beta\kappa N/\gamma$ climbs from $2$ at $N=100$ to $10$ at $N=500$.
+
+A **frequency-dependent** epidemic divides the same term by $N$:
+
+\[
+\frac{dS}{dt} = -\beta\kappa\,\frac{S I}{N}, \qquad \frac{dI}{dt} = \beta\kappa\,\frac{S I}{N} - \gamma I, \qquad \frac{dR}{dt} = \gamma I,
+\]
+
+so $R_0=\beta\kappa/\gamma=3$ at *both* sizes.
+
+![Number infected over time from four SIR runs. Colour marks the contact rule (density-dependent vs frequency-dependent) and dashing marks the population size (N=100 solid, N=500 dashed). The density-dependent curves are two different epidemics — a slow low bump at N=100 and a fast tall wave at N=500 — while the frequency-dependent curves are the same epidemic scaled up with N.](../assets/figures/transmission-modes-sir.svg)
+
+Colour marks the contact rule and dashing marks the population size, so each curve is one row of the earlier $R_0$ table playing out in time.
+The two **frequency-dependent** curves (orange) are the *same* epidemic: both have $R_0=3$, so they share a growth rate and reach the same fraction of the population — raising $N$ from 100 to 500 just scales the count up about fivefold (a single seed is a smaller starting fraction in the larger population, so its wave arrives a little later).
+The two **density-dependent** curves (blue) are *different* epidemics: at $N=100$ the pathogen barely spreads ($R_0=2$, a slow bump peaking near 16), while at $N=500$ it explodes ($R_0=10$, a fast wave peaking above 330).
+Raising the density changes *what kind of outbreak* happens under density dependence, but only *how large* it is under frequency dependence.
 
 ## In code
 
