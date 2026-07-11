@@ -19,7 +19,7 @@ The order below is a guide, not a straitjacket; control measures in particular s
 1. **Verify the diagnosis and confirm an outbreak exists.** Check that the reported cases are real and correctly diagnosed, then compare the observed count against what is normally expected for this place and season.
    An outbreak is an excess over that baseline; two cases of a rare disease can be an outbreak, while a seasonal rise in a common one may not be.
 2. **Establish a case definition.** Write down explicit criteria for who counts as a case, usually graded into **confirmed** (laboratory-verified), **probable** (typical illness with an epidemiologic link), and **suspected** (compatible symptoms only).
-   A good case definition combines clinical features with restrictions on person, place, and time.
+   A good case definition combines clinical and laboratory criteria with restrictions on time and place; its grading and the sensitivity-specificity trade-off it involves are developed in [case definitions](case-definitions.md).
 3. **Find cases and build a line list.** Search actively for cases beyond those first reported, and record each one as a row in a **line list** with columns for identifiers, symptoms, onset date, and exposures.
 4. **Describe the outbreak by person, place, and time.** This descriptive epidemiology summarizes who is affected, where, and when, and it is where the epidemic curve is drawn.
 5. **Generate hypotheses.** The descriptive picture suggests candidate exposures or sources worth testing.
@@ -31,6 +31,7 @@ The order below is a guide, not a straitjacket; control measures in particular s
 The case definition is the spine of the investigation because every later count depends on it.
 Make it too narrow and real cases are missed; make it too broad and unrelated illness dilutes any signal.
 Grading cases into confirmed, probable, and suspected lets the investigation move before laboratory results are complete while keeping the categories auditable.
+The elements of a case definition, the CDC and WHO framings, and the sensitivity-specificity trade-off are treated in full on the [case definitions](case-definitions.md) page.
 
 The line list is simply a table with one row per case.
 It is the raw material for every summary that follows: tally the onset-date column and you have an epidemic curve; cross-tabulate exposure against illness and you have the beginnings of an analytic study.
