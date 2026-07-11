@@ -95,26 +95,51 @@ posterior field RMSE vs truth: 0.063
 ```
 <!-- /python-output:auto -->
 
-The full PriorVAE trains a *nonlinear* decoder offline, then plugs it into the same inference model (illustrative — the offline VAE training is shown, not run):
+The full PriorVAE replaces the linear basis with a *nonlinear* decoder, trained offline (step 2) to reproduce draws from the spatial prior; here a small `flax` VAE learns the GP's structure from 4000 draws, and its frozen decoder would then slot into the same inference model as $B$ did above:
 
 ```python
-# no-run
-import flax.linen as nn, jax, jax.numpy as jnp, optax
+import flax.linen as fnn, optax
 
-# --- offline: sample the spatial prior and train a VAE to reproduce the draws ---
-prior_draws = sample_gp_or_icar(locations, n=20000)     # step 1: slow, done once
-class Decoder(nn.Module):                               # step 2: the generative net
-    @nn.compact
-    def __call__(self, z):
-        h = nn.relu(nn.Dense(128)(z))
-        return nn.Dense(n_locations)(h)                 # z ~ N(0, I_d)  ->  field f
-# ... train encoder+decoder by maximizing the ELBO on prior_draws ...
-# --- inference: freeze g_theta and use it as the prior (numpyro) ---
-def spatial_model(y, expected):
-    z = numpyro.sample("z", dist.Normal(jnp.zeros(d), 1.0))   # step 4
-    f = decoder.apply(frozen_params, z)                        # step 3: frozen decoder
-    numpyro.sample("y", dist.Poisson(expected * jnp.exp(f)), obs=y)
+L = jnp.linalg.cholesky(jnp.asarray(K))              # sample the GP prior (step 1)
+key = jax.random.PRNGKey(0)
+draws = (L @ jax.random.normal(key, (25, 4000))).T   # 4000 draws, each a 25-dim field
+
+class PriorVAE(fnn.Module):                           # nonlinear encoder + decoder
+    @fnn.compact
+    def __call__(self, x, key):
+        h = fnn.tanh(fnn.Dense(32)(x))
+        mu, logvar = fnn.Dense(6)(h), fnn.Dense(6)(h)
+        z = mu + jnp.exp(0.5 * logvar) * jax.random.normal(key, mu.shape)
+        return fnn.Dense(25)(fnn.tanh(fnn.Dense(32)(z))), mu, logvar
+
+vae = PriorVAE()
+params = vae.init(key, draws[:1], key)
+opt = optax.adam(2e-3); state = opt.init(params)
+def elbo_loss(p, x, k):
+    xh, mu, lv = vae.apply(p, x, k)
+    recon = jnp.mean(jnp.sum((xh - x) ** 2, 1))
+    kl = jnp.mean(-0.5 * jnp.sum(1 + lv - mu ** 2 - jnp.exp(lv), 1))
+    return recon + 0.01 * kl
+
+@jax.jit
+def train_step(p, state, x, k):
+    loss, grads = jax.value_and_grad(elbo_loss)(p, x, k)
+    updates, state = opt.update(grads, state)
+    return optax.apply_updates(p, updates), state, loss
+
+for _ in range(400):                                  # train the VAE offline (step 2)
+    key, k = jax.random.split(key)
+    params, state, loss = train_step(params, state, draws, k)
+print(f"nonlinear PriorVAE trained on GP draws: reconstruction loss {float(loss):.1f}")
 ```
+
+<!-- python-output:auto -->
+```text
+nonlinear PriorVAE trained on GP draws: reconstruction loss 1.0
+```
+<!-- /python-output:auto -->
+
+The nonlinear decoder is what lets the same recipe handle priors the linear basis cannot — an ICAR field on an irregular graph, or an aggregated/change-of-support prior.
 
 ### R
 

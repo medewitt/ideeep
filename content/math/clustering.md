@@ -79,14 +79,21 @@ two crescents:     k-means ARI 0.26, DBSCAN ARI 1.00
 ```
 <!-- /python-output:auto -->
 
-HDBSCAN is the robust modern default for density clustering (illustrative — `hdbscan` is outside the build's libraries, so shown, not run):
+HDBSCAN is the robust modern default for density clustering — no radius to tune, and it recovers the crescents from the data alone:
 
 ```python
-# no-run
 import hdbscan
-clusterer = hdbscan.HDBSCAN(min_cluster_size=15)     # no k, no radius to tune
-labels = clusterer.fit_predict(X)                     # -1 marks noise points
+labels = hdbscan.HDBSCAN(min_cluster_size=15).fit_predict(Xm)   # -1 marks noise
+n_found = len(set(labels)) - (1 if -1 in labels else 0)
+print(f"HDBSCAN found {n_found} clusters (no k given), "
+      f"ARI {adjusted_rand_score(ym, labels):.2f}")
 ```
+
+<!-- python-output:auto -->
+```text
+HDBSCAN found 2 clusters (no k given), ARI 1.00
+```
+<!-- /python-output:auto -->
 
 ### R
 

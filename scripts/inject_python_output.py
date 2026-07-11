@@ -3,7 +3,8 @@
 # dependencies = [
 #     "numpy", "scipy", "sympy", "pandas", "polars", "statsmodels",
 #     "networkx", "matplotlib", "scikit-learn", "numpyro", "jax", "torch",
-#     "mapie",
+#     "mapie", "xgboost", "shap", "umap-learn", "hdbscan", "torchdiffeq",
+#     "flax", "optax", "torch-geometric",
 # ]
 # ///
 """Execute the embedded ```python code blocks in the content pages and inject

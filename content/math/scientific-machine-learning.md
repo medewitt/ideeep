@@ -90,26 +90,41 @@ recovered R0=2.98 (true 3.00)
 ```
 <!-- /python-output:auto -->
 
-The full neural-ODE and PINN versions use a network for the dynamics or the solution (illustrative — `diffrax`/`torchdiffeq` are outside the build's libraries, so shown, not run):
+A true **neural ODE** makes the vector field itself a network and backpropagates through the solver with `torchdiffeq` — here it learns the dynamics of a logistic epidemic curve from scratch:
 
 ```python
-# no-run
 import torch, torch.nn as nn
 from torchdiffeq import odeint                 # differentiable ODE integration
+torch.manual_seed(0)
 
-class UDE(nn.Module):                           # gray-box: known SIR + learned term
+t = torch.linspace(0, 10, 50)
+target = 1 / (1 + torch.exp(-(t - 5)))          # a logistic trajectory to learn
+
+class ODEFunc(nn.Module):                        # dy/dt = f_theta(y): the field IS a net
     def __init__(self):
         super().__init__()
-        self.beta, self.gamma = 0.5, 0.2
-        self.correction = nn.Sequential(nn.Linear(2, 32), nn.Tanh(), nn.Linear(32, 1))
-    def forward(self, t, u):
-        S, I = u[..., 0], u[..., 1]
-        g = self.correction(u).squeeze(-1)      # neural network fills the unknown part
-        return torch.stack([-self.beta * S * I,
-                            self.beta * S * I - self.gamma * I + g], dim=-1)
+        self.net = nn.Sequential(nn.Linear(1, 32), nn.Tanh(), nn.Linear(32, 1))
+    def forward(self, t, y):
+        return self.net(y)
 
-traj = odeint(UDE(), u0, t)                      # integrate, then backprop the loss
+func = ODEFunc()
+opt = torch.optim.Adam(func.parameters(), lr=0.01)
+y0 = target[:1].reshape(1, 1)
+for _ in range(300):                             # backprop through the ODE solver
+    opt.zero_grad()
+    pred = odeint(func, y0, t).reshape(-1)
+    loss = ((pred - target) ** 2).mean()
+    loss.backward(); opt.step()
+print(f"neural ODE fit to the trajectory: final MSE {loss.item():.4f}")
 ```
+
+<!-- python-output:auto -->
+```text
+neural ODE fit to the trajectory: final MSE 0.0101
+```
+<!-- /python-output:auto -->
+
+A **universal differential equation** keeps the known SIR terms and adds a small `correction = nn.Sequential(...)` network inside the field for the unknown part; the training loop is identical.
 
 ### R
 

@@ -92,18 +92,29 @@ top features (index: importance): [(5, 0.19), (1, 0.17), (0, 0.16), (7, 0.15)]
 ```
 <!-- /python-output:auto -->
 
-The gradient-boosting libraries used in practice share the same API (illustrative — `xgboost` is outside the build's libraries, so shown, not run):
+The gradient-boosting library used in practice is **XGBoost**, and **SHAP** ([TreeExplainer](interpretability-shap.md)) attributes each prediction to its features — both run here on the same data:
 
 ```python
-# no-run
 import xgboost as xgb
-model = xgb.XGBClassifier(n_estimators=500, learning_rate=0.03, max_depth=4,
-                          early_stopping_rounds=20, eval_metric="auc")
-model.fit(Xtr, ytr, eval_set=[(Xval, yval)])        # stop when validation AUC plateaus
 import shap
-explainer = shap.TreeExplainer(model)               # per-prediction attributions
-shap_values = explainer.shap_values(Xte)
+
+xgbm = xgb.XGBClassifier(n_estimators=300, learning_rate=0.05, max_depth=4,
+                         random_state=0).fit(Xtr, ytr)
+print(f"XGBoost test AUC {roc_auc_score(yte, xgbm.predict_proba(Xte)[:, 1]):.3f}")
+
+sv = shap.TreeExplainer(xgbm).shap_values(Xte)      # exact, fast SHAP for trees
+mean_abs = np.abs(sv).mean(0)                         # global feature importance
+order = np.argsort(mean_abs)[::-1][:4]
+print("top features by mean |SHAP|:",
+      [(int(i), round(float(mean_abs[i]), 2)) for i in order])
 ```
+
+<!-- python-output:auto -->
+```text
+XGBoost test AUC 0.963
+top features by mean |SHAP|: [(5, 1.1), (1, 0.82), (7, 0.78), (0, 0.75)]
+```
+<!-- /python-output:auto -->
 
 ### R
 

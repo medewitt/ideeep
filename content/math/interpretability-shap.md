@@ -82,16 +82,30 @@ permutation importance: [ 0.107 -0.003  0.007  0.011  0.061]
 ```
 <!-- /python-output:auto -->
 
-For nonlinear models the `shap` library computes the same attributions (illustrative — `shap` is outside the build's libraries, so shown, not run):
+For nonlinear models the `shap` library computes the same attributions exactly and fast on a tree ensemble, and the efficiency property still holds — the base value plus the SHAP values reproduce the model's output:
 
 ```python
-# no-run
-import shap
-explainer = shap.TreeExplainer(gradient_boosted_model)   # exact, fast for trees
-shap_values = explainer.shap_values(X_test)
-shap.summary_plot(shap_values, X_test)                   # global beeswarm
-shap.plots.waterfall(shap_values[0])                     # local explanation
+import shap, xgboost as xgb
+
+model = xgb.XGBClassifier(n_estimators=150, max_depth=3, random_state=0).fit(X, y)
+explainer = shap.TreeExplainer(model)
+sv = explainer.shap_values(X)                        # exact SHAP, in log-odds units
+print("global mean |SHAP| per feature:", np.round(np.abs(sv).mean(0), 2))
+
+base = float(np.ravel(explainer.expected_value)[0])  # efficiency, on one patient
+margin = float(model.predict(X[:1], output_margin=True)[0])
+print(f"base {base:.2f} + sum(SHAP) {sv[0].sum():.2f} = {base + sv[0].sum():.2f}"
+      f"  (model output {margin:.2f})")
 ```
+
+<!-- python-output:auto -->
+```text
+global mean |SHAP| per feature: [1.79 1.68 1.52 1.14 1.5 ]
+base -0.04 + sum(SHAP) 5.54 = 5.50  (model output 5.50)
+```
+<!-- /python-output:auto -->
+
+In a notebook, `shap.summary_plot(sv, X)` draws the global beeswarm and `shap.plots.waterfall(...)` the per-patient explanation of the figure.
 
 ### R
 
