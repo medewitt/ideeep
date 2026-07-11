@@ -55,6 +55,14 @@ The practical rule is to **maximize sensitivity early and optimize specificity l
 Per the WHO Toolkit, when the definition is refined every change should be **evidence-based, communicated, and logged**, so that a shift in the counting rule is never mistaken for a change in the epidemic.
 The same imperfect-classification problem echoes downstream: [Bozzuto et al., 2020, Proc. R. Soc. B](https://doi.org/10.1098/rspb.2020.2475) show that when infected and susceptible hosts can be told apart with only 50% sensitivity and specificity, a targeted control collapses into an untargeted one — a reminder that a fuzzy definition weakens every action built on it.
 
+## The definition shapes the epidemic curve
+
+Because the case definition decides which illness is counted, it decides the shape of the epidemic curve itself.
+Count one true outbreak under a broad, suspected-level definition and the curve is taller and broader, padded with false positives from co-circulating look-alike illness; count the same outbreak under a narrow, confirmed-level definition and the curve is lower and shifted later, because laboratory confirmation both misses cases and takes time.
+The total count — the denominator behind every rate — moves the same way, so a change in the definition can masquerade as a change in the epidemic unless it is logged.
+
+![Two panels. The left panel shows the same true epidemic wave counted three ways: the true infection curve, a broad suspected-definition curve that is taller and noisier from false positives, and a narrow confirmed-definition curve that is lower and delayed by laboratory confirmation. The right panel shows the resulting totals, with the suspected definition over-counting and the confirmed definition under-counting relative to the true number of cases.](../assets/figures/case-definition-epicurve.svg)
+
 ## Finding cases without bias
 
 Once the definition exists, cases are counted by searching systematically across many sources — surveillance data, medical and laboratory records, institutional records, and special surveys — and recording each as a row in the line list.

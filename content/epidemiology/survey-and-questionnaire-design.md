@@ -78,6 +78,10 @@ Even a well-worded item is answered by a person with reasons to shade the truth,
 Wording is only half of instrument design; the other half is where the sample comes from, and it carries its own bias.
 Much surveillance data is **opportunistic** rather than drawn by a probability design, so the number of positives in a place reflects where someone happened to sample as much as where disease actually is, and a raw prevalence map is distorted in space and time.
 **Risk-based** (targeted) surveillance deliberately aims effort where risk is expected to be highest, and **adaptive** surveillance updates that targeting as data arrive, as set out for the human-animal interface by [Pepin et al., 2021, Preventive Veterinary Medicine](https://doi.org/10.1016/j.prevetmed.2021.105281).
+The figure shows the same true risk surface seen through each design: opportunistic sampling that follows access rather than risk over-samples an easy-to-reach strip and misses a hotspot, risk-based sampling covers both hotspots, and adaptive sampling concentrates a second round where the first found signal.
+
+![Four maps of the same landscape with two risk hotspots. The first shows the true risk surface; the second shows opportunistic sampling clustered along a road corridor that misses one hotspot; the third shows risk-based sampling with points concentrated on both hotspots; the fourth shows adaptive sampling that starts with a coarse first round and concentrates a second round where the first round found the strongest signal.](../assets/figures/surveillance-sampling.svg)
+
 Reading a survey result therefore means asking not just whether the questions were good but whether the sampling frame could see what it claimed to measure — a point developed further in [surveillance systems](surveillance-systems.md) and [One Health surveillance](one-health-surveillance.md).
 
 ## A worked example
