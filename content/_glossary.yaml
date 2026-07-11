@@ -223,4 +223,11 @@
 - term: Epistemic uncertainty
   aliases: [aleatoric uncertainty]
   short: Uncertainty from a model's ignorance, which shrinks with more data — as opposed to aleatoric uncertainty, the irreducible noise in the world.
+  long: |
+    Epistemic uncertainty comes from a model's ignorance and shrinks as more (or
+    more representative) data are gathered; aleatoric uncertainty is the
+    irreducible randomness of the world and does not. "Aleatoric" derives from
+    the Latin *alea* — a dice game and, by extension, chance or risk — the same
+    word in Julius Caesar's "*alea iacta est*" ("the die is cast"), reputedly
+    said as he crossed the Rubicon in 49 BC to march on Rome.
   see: math/uncertainty-calibration-conformal.md

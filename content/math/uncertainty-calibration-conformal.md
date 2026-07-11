@@ -98,14 +98,36 @@ expected calibration error (over-confident): 0.072
 ```
 <!-- /python-output:auto -->
 
-The `mapie` library provides conformal prediction for scikit-learn models directly (illustrative — outside the build's libraries, so shown, not run):
+The `mapie` library wraps any scikit-learn model in conformal intervals, making the three-way train / conformalize / test split explicit — here around a random forest, again landing near the 90% target:
 
 ```python
-# no-run
-from mapie.regression import MapieRegressor
-mapie = MapieRegressor(my_model, method="plus").fit(X_train, y_train)
-y_pred, y_interval = mapie.predict(X_test, alpha=0.1)   # 90% prediction intervals
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from mapie.regression import SplitConformalRegressor
+
+X2 = rng.uniform(0, 6, (3000, 1))
+y2 = f(X2.ravel()) + rng.normal(0, 0.3, 3000)
+X_tr, X_rest, y_tr, y_rest = train_test_split(X2, y2, test_size=0.5, random_state=0)
+X_conf, X_te, y_conf, y_te = train_test_split(X_rest, y_rest, test_size=0.5,
+                                              random_state=0)
+
+scr = SplitConformalRegressor(RandomForestRegressor(n_estimators=200, random_state=0),
+                              confidence_level=0.9, prefit=False)
+scr.fit(X_tr, y_tr)                            # 1. train the underlying model
+scr.conformalize(X_conf, y_conf)               # 2. calibrate on a held-out split
+_, y_int = scr.predict_interval(X_te)          # 3. 90% prediction intervals
+lo, hi = y_int[:, 0, 0], y_int[:, 1, 0]
+covered = (y_te >= lo) & (y_te <= hi)
+print(f"target coverage 90%, achieved {100 * covered.mean():.1f}%")
+print(f"mean interval width {np.mean(hi - lo):.2f}")
 ```
+
+<!-- python-output:auto -->
+```text
+target coverage 90%, achieved 89.2%
+mean interval width 1.17
+```
+<!-- /python-output:auto -->
 
 ### R
 

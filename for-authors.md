@@ -276,8 +276,8 @@ Rules that keep this reproducible:
   the repo, so it must be deterministic.
 - Keep output **small** (capped at ~15 lines) and blocks **fast**.
 - Allowed libraries are a fixed set: `numpy, scipy, sympy, pandas, polars,
-  statsmodels, networkx, matplotlib, scikit-learn, numpyro, jax, torch`. **Prefer
-  Polars over pandas** in new examples. `torch` runs the CPU build; pretrained-weight
+  statsmodels, networkx, matplotlib, scikit-learn, numpyro, jax, torch, mapie`.
+  **Prefer Polars over pandas** in new examples. `torch` runs the CPU build; pretrained-weight
   downloads (torchvision models, YOLO) are blocked, so keep those `# no-run` and only
   run from-scratch models. Have deep-learning blocks print stable, converged numbers
   (accuracies, rounded losses) rather than exact floats, which can differ by version.
