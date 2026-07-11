@@ -69,20 +69,19 @@ The same [proper scoring](proper-scoring-rules.md) and validation discipline as 
 ## A practical example: the Eden Terrace deck
 
 Make it concrete with a real facility — the **Eden Terrace parking deck** serving a hospital campus, a long two-to-three-row deck plainly visible in overhead maps.
-Three archived overhead captures of the deck, run through the same crude dark-blob detector, show the idea working end to end: the count falls from a packed deck to a nearly empty one, exactly the occupancy signal a surveillance pipeline would track over time.
+A synthetic deck built to that layout, shown at three occupancy levels and run through the same crude dark-blob detector, illustrates the idea end to end: the count falls from a packed deck to a nearly empty one, exactly the occupancy signal a surveillance pipeline would track over time.
 
-![The Eden Terrace deck in three archived overhead captures — nearly full, partially full, and nearly empty — with a simple detector's finds circled and counted (about 107, 57, and 19 cars). The count is the raw occupancy signal; the detector is deliberately crude, and three snapshots are an illustration, not a validated time series.](../assets/figures/eden-terrace-occupancy.svg "fig:eden")
+![A synthetic overhead deck modeled on the Eden Terrace layout at three occupancy levels — nearly full, partially full, and nearly empty — with a simple detector's finds circled and counted. The count is the raw occupancy signal; the imagery is synthetic and the detector deliberately crude, an illustration rather than a validated time series.](../assets/figures/eden-terrace-occupancy.svg "fig:eden")
 
 As [@fig:eden] shows, even a threshold-and-count heuristic separates a full deck from an empty one cleanly.
 Now imagine acquiring such an image *daily*, and suppose the deck holds about $180$ cars and typically sits near $150$ occupied on a weekday; if over two weeks the daily count climbed past $210$ — above a $\mu + 3\sigma$ control limit built from the prior quiet months — that would be an alarm worth *a look*.
 It might reflect a wave of respiratory visits, or it might be a staff-parking change, a nearby road closure pushing cars onto the deck, a home football weekend, or simply better weather.
-The runnable code below uses a **synthetic** deck of the same layout so the pipeline is fully reproducible; the real captures above make the point that it is not just a toy, while every caveat in the next section still applies with full force.
+The figure and the runnable code below both use a **synthetic** deck of the Eden Terrace layout — the pipeline is real and reproducible, the imagery is modeled rather than a real (license-restricted) aerial photograph, and every caveat in the next section applies with full force.
 
 > [!WARNING]
 > This example is illustrative only.
-> The detector is a crude threshold-and-count heuristic (a real system would use the trained detector below), three archived snapshots are not a validated daily time series, and nothing has been checked against actual case data.
+> The detector is a crude threshold-and-count heuristic (a real system would use the trained detector below), the deck and its occupancy are synthetic rather than a validated daily time series, and nothing has been checked against actual case data.
 > Nothing here should be read as a claim that parking counts detected, or could detect, any specific outbreak.
-> The imagery is Esri World Imagery (Wayback) — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community — used as a static screen capture for non-commercial educational illustration.
 
 ## What the literature actually shows
 

@@ -33,16 +33,6 @@ Other photography:
   Carolina," Henry R. Carter, U.S. Public Health Service).
 - Early-twentieth-century anti-vaccination cartoon depicting "misinformation."
 
-## Aerial and satellite imagery
-
-- Overhead views of the Eden Terrace parking deck (on the [remote sensing and
-  outbreak detection](math/remote-sensing-outbreak-detection.md) page) are from
-  **Esri World Imagery (Wayback)**. Source: Esri, Maxar, Earthstar Geographics,
-  and the GIS User Community. They are included as static screen captures for
-  non-commercial educational illustration, with attribution, as permitted by the
-  ArcGIS Online terms of use; they may not be reused commercially or
-  redistributed as map tiles.
-
 ## Illustrations
 
 Scientific illustrations are from the [NIH BioArt Source](https://bioart.niaid.nih.gov/)
