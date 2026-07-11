@@ -2,11 +2,6 @@ Two-week ID research training. **Mornings** are didactic lectures; **afternoons*
 Session types: **L** = Lecture · **JC** = Journal Club · **WS** = Workshop · **IDST** = ID Science Talk.
 Cohorts: Brian Ross July 20–26 · Kit Sommers & Rasheda Hayath August 3–9.
 
-> **Concept coverage gaps (2026-07-11 re-scan).** Two sessions have no dedicated concept/mini-lesson page and currently fall back to a course hub page:
-> **(1)** Wed "AI use in medical research" — links only [Data science for ID](data-science-id.md) (a course scaffold); there is no mini-lesson on machine learning / AI or clinical prediction models.
-> **(2)** Thu "IRB / IACUC development" — links only [Research data ethics & governance](programming/research-data-ethics-and-governance.md); there is no page specific to IRB / human-subjects or IACUC / animal-welfare review.
-> Minor: "posters" (Wed scientific-writing lecture) has no dedicated page. Every other session now maps to at least one concept or mini-lesson.
-
 | Day    | Time | Session | Instructor | Related concepts |
 |-------|------------|--------|------------|------------------|
 | Mon (Jul 20 / Aug 3) | 9-9:50 | Welcome / Intro + overview of section research areas (DeWitt/ Bellotti) Research topics pitch | DeWitt / Bellotti; PIs | [Research areas](research.md) |
