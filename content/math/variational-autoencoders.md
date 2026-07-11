@@ -26,7 +26,7 @@ We would like to maximize the likelihood $p_\theta(\mathbf{x}) = \int p_\theta(\
 \[ \log p_\theta(\mathbf{x}) \;\ge\; \underbrace{\mathbb{E}_{q_\phi(\mathbf{z}\mid\mathbf{x})}\!\left[\log p_\theta(\mathbf{x}\mid\mathbf{z})\right]}_{\text{reconstruction}} \;-\; \underbrace{D_{\mathrm{KL}}\!\left(q_\phi(\mathbf{z}\mid\mathbf{x}) \,\|\, p(\mathbf{z})\right)}_{\text{regularizer}}. \label{eq:elbo} \]
 The two terms pull against each other and that tension is the whole design.
 The **reconstruction term** rewards codes that let the decoder rebuild the input faithfully.
-The **KL term** penalizes the encoder for straying from the prior, pulling every input's latent cloud toward $\mathcal{N}(\mathbf{0}, I)$; this is what keeps the latent space smooth and gap-free, so that nearby codes decode to similar outputs and you can interpolate or sample.
+The **KL term** — a [Kullback–Leibler divergence](kl-divergence.md) — penalizes the encoder for straying from the prior, pulling every input's latent cloud toward $\mathcal{N}(\mathbf{0}, I)$; this is what keeps the latent space smooth and gap-free, so that nearby codes decode to similar outputs and you can interpolate or sample.
 For diagonal Gaussians the KL term is closed-form,
 \[ D_{\mathrm{KL}}\!\left(\mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\sigma}^2)\,\|\,\mathcal{N}(\mathbf{0}, I)\right) = \tfrac12 \sum_{j}\left(\mu_j^2 + \sigma_j^2 - \log \sigma_j^2 - 1\right), \]
 so only the reconstruction term needs sampling.
@@ -192,6 +192,7 @@ And, most distinctively for this field, a VAE can **encode a complex prior**: tr
 ## Related
 
 - [Encoding Spatial Priors with VAEs (PriorVAE)](prior-encoding-vae.md)
+- [Kullback–Leibler Divergence](kl-divergence.md)
 - [Neural Networks and the Multilayer Perceptron](neural-networks.md)
 - [Bayesian Inference](bayesian-inference.md)
 - [Aberration Detection](../epidemiology/aberration-detection.md)

@@ -18,8 +18,22 @@ The [convolutional networks](convolutional-networks-image.md) page asked *what i
 Counting asks a harder question — *how many, and where?* — which is the task of **object detection**: locate every instance of a class and draw a box around it.
 Modern detectors (the YOLO family, Faster R-CNN, RetinaNet) are CNNs with two heads on top of a shared backbone, one predicting a box's location and one its class, trained on images with boxes drawn by hand.
 Count the boxes of class "car" and you have counted the cars.
-For clean overhead imagery you often do not even need deep learning: cars are dark, roughly car-sized blobs on light asphalt, so classical computer vision — threshold the image, label the connected components, keep the car-sized ones — already gives a serviceable count, as in the figure and the runnable code below.
-The deep detector earns its keep when the scene is cluttered, the lighting varies, or the objects are cells, mosquitoes, or people rather than cars.
+For clean, synthetic imagery you can cheat with classical computer vision — threshold the image, label the connected components, keep the car-sized ones — but that shortcut works only because we *built* the image and already know a car is a dark blob.
+On real, messy overhead photos the rule is not obvious, so the meaningful approach is to **train** a model on labelled examples of what a car looks like and then apply it, which is what the next section and the runnable code do.
+
+## Training a detector: label, learn, apply
+
+Every supervised detector, from this page's toy CNN to YOLO, follows the same three steps.
+
+**Label.** Assemble examples of the target and of everything else — image patches (or hand-drawn boxes) marked "car" and "not car".
+This is the expensive, human part, and the quality and representativeness of the labels cap everything downstream: a detector only ever learns the cars it was shown.
+
+**Learn.** Train a model — here a small [convolutional network](convolutional-networks-image.md) — to map a patch to the probability that it contains a car, by minimizing classification loss on the labelled set.
+Hold out a **validation** split the model never trains on and judge it there; high training accuracy with poor validation accuracy means it memorized the examples instead of learning the concept.
+Because the network *learns its own features* — dark rectangular shape, size, contrast — it generalizes to cars it has never seen, which a fixed threshold cannot.
+
+**Apply.** Slide the trained classifier across a new, unlabelled image, score every location, then collapse each cluster of overlapping high-scoring windows into a single detection (**non-maximum suppression**) and count them.
+This "train once, apply anywhere" is exactly what makes the model reusable across days, decks, and cameras — and it is the workflow the code below implements end to end.
 
 ## Remote sensing as a data source
 
@@ -65,33 +79,76 @@ Remote sensing has firmer footing elsewhere in the field — night-time lights a
 
 ### Python
 
-Counting cars in a clean overhead image needs no neural network — threshold, label the connected components, and keep the car-sized ones:
+**Step 1–2: label patches and train a detector.** We build the overhead deck we ultimately want to count, then assemble a labelled set of "car" and "not-car" patches and train a small CNN to tell them apart, judging it on a held-out validation split.
 
 ```python
-import numpy as np
-from scipy import ndimage
+import numpy as np, torch, torch.nn as nn
 rng = np.random.default_rng(7)
+torch.manual_seed(0)
 
-H, W = 96, 320                                      # a synthetic overhead deck
-img = np.full((H, W), 0.78)                        # light asphalt
+H, W = 96, 320                                       # the deck we want to count
+deck = np.full((H, W), 0.78)                         # light asphalt
 planted = 0
-for ry in (26, 50, 74):                            # three rows of bays
+for ry in (26, 50, 74):                              # three rows of bays
     for cx in range(16, W - 12, 12):
-        if rng.random() < 0.82:                    # ~82% of bays occupied
+        if rng.random() < 0.82:                      # ~82% of bays occupied
             planted += 1
-            img[ry - 8:ry + 8, cx - 4:cx + 4] = rng.choice([.12, .18, .24, .30])
-img = np.clip(img + 0.02 * rng.standard_normal((H, W)), 0, 1)
+            deck[ry - 5:ry + 5, cx - 3:cx + 3] = rng.choice([.12, .18, .24, .30])
+deck = np.clip(deck + 0.02 * rng.standard_normal((H, W)), 0, 1)
 
-mask = img < 0.55                                  # dark pixels are cars
-labels, n = ndimage.label(mask)                    # connected components
-sizes = ndimage.sum(np.ones_like(labels), labels, range(1, n + 1))
-detected = int((sizes > 30).sum())                 # keep car-sized blobs
-print(f"planted {planted} cars, detected {detected}")
+def patch(is_car):                                   # a 16x10 labelled example
+    p = np.full((16, 10), 0.78)
+    if is_car:                                        # a jittered dark car blob
+        dy, dx = rng.integers(-2, 3), rng.integers(-1, 2)
+        p[3 + dy:13 + dy, 2 + dx:8 + dx] = rng.choice([.12, .18, .24, .30])
+    return np.clip(p + 0.03 * rng.standard_normal((16, 10)), 0, 1)
+
+Xp = np.stack([patch(i % 2 == 0) for i in range(1000)])          # alternate car/bg
+yp = np.array([[1.0 - i % 2] for i in range(1000)], dtype=np.float32)   # 1 = car
+Xt = torch.tensor(Xp[:, None], dtype=torch.float32)
+yt = torch.tensor(yp)
+tr, va = slice(0, 800), slice(800, 1000)             # train / validation split
+
+net = nn.Sequential(                                 # a tiny "is this a car?" CNN
+    nn.Conv2d(1, 8, 3, padding=1), nn.ReLU(), nn.MaxPool2d(2),
+    nn.Conv2d(8, 16, 3, padding=1), nn.ReLU(), nn.AdaptiveMaxPool2d(1),
+    nn.Flatten(), nn.Linear(16, 1))
+opt = torch.optim.Adam(net.parameters(), lr=0.01)
+for epoch in range(120):
+    opt.zero_grad()
+    loss = nn.functional.binary_cross_entropy_with_logits(net(Xt[tr]), yt[tr])
+    loss.backward(); opt.step()
+acc = lambda s: ((net(Xt[s]) > 0).float() == yt[s]).float().mean().item()
+print(f"trained on 800 patches | train acc {acc(tr):.2f}  val acc {acc(va):.2f}")
 ```
 
 <!-- python-output:auto -->
 ```text
-planted 62 cars, detected 62
+trained on 800 patches | train acc 1.00  val acc 1.00
+```
+<!-- /python-output:auto -->
+
+**Step 3: apply the trained detector to the deck and count.** Slide it over the image, keep windows it scores as cars, and suppress overlapping detections so each car is counted once.
+
+```python
+from scipy.ndimage import maximum_filter
+ys, xs = list(range(0, H - 16 + 1, 4)), list(range(0, W - 10 + 1, 4))
+wins = np.stack([deck[y:y + 16, x:x + 10] for y in ys for x in xs])
+with torch.no_grad():
+    score = torch.sigmoid(net(torch.tensor(wins[:, None],
+                                           dtype=torch.float32))).numpy()
+S = score.reshape(len(ys), len(xs))                  # a score map over the deck
+
+# non-max suppression = keep local maxima; the footprint spans one car
+# (tall enough to merge a car's own overlapping windows, narrow enough to
+#  keep neighbouring cars in a row distinct)
+peaks = (S == maximum_filter(S, size=(3, 3))) & (S > 0.9)
+print(f"detector counted {int(peaks.sum())} cars (planted {planted})")
+```
+
+<!-- python-output:auto -->
+```text
+detector counted 62 cars (planted 62)
 ```
 <!-- /python-output:auto -->
 
@@ -111,12 +168,12 @@ print(f"alarm on days: {alarm_days.tolist()}")
 
 <!-- python-output:auto -->
 ```text
-baseline mean 149, control limit 185
+baseline mean 150, control limit 184
 alarm on days: [113, 114, 115, 116, 118, 119]
 ```
 <!-- /python-output:auto -->
 
-For real overhead imagery a pretrained detector does the counting; the idiomatic pipeline (illustrative — it fetches model weights over the network, so it is shown, not run):
+On real imagery you rarely train from scratch — you **fine-tune** a pretrained detector like YOLO ([transfer learning](convolutional-networks-image.md)) on a few hundred labelled overhead images, then apply it exactly as above (illustrative — it fetches model weights over the network, so it is shown, not run):
 
 ```python
 # no-run
@@ -130,23 +187,25 @@ print(f"{len(result[0].boxes)} cars detected")
 ### R
 
 ```r
-# torch/luz for detection; classical counting with EBImage (Bioconductor).
-library(EBImage)
-img  <- readImage("deck.png")
-mask <- img < 0.55                       # threshold to car pixels
-labs <- bwlabel(channel(mask, "gray"))   # connected components
-n    <- max(labs)                        # number of blobs (approx. car count)
+# Train a patch classifier with torch, then slide it over the image to count.
+library(torch)
+net <- nn_sequential(
+  nn_conv2d(1, 8, 3, padding = 1), nn_relu(), nn_max_pool2d(2),
+  nn_conv2d(8, 16, 3, padding = 1), nn_relu(), nn_adaptive_max_pool2d(1),
+  nn_flatten(), nn_linear(16, 1))
+# ... train net on labelled car/not-car patches, then apply over sliding windows
+# (EBImage::bwlabel on a threshold is the no-training shortcut for clean images).
 ```
 
 ### Julia
 
 ```julia
-# Images.jl + a connected-components pass for the classical route.
-using Images, ImageMorphology
-img  = Gray.(load("deck.png"))
-mask = img .< 0.55
-labels = label_components(mask)
-ncars  = maximum(labels)
+# Flux to train the patch classifier; slide it over the image to count.
+using Flux
+net = Chain(Conv((3, 3), 1 => 8, relu, pad = 1), MaxPool((2, 2)),
+            Conv((3, 3), 8 => 16, relu, pad = 1), GlobalMaxPool(),
+            Flux.flatten, Dense(16 => 1, σ))
+# ... train net on labelled car/not-car patches, then apply over sliding windows.
 ```
 
 ## Confounders, privacy, and validation

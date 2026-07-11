@@ -141,3 +141,8 @@
 - term: Remote sensing
   short: Measurement of the physical world at a distance — from satellites, aircraft, drones, or fixed cameras — used in epidemiology for climate, population, and activity proxies.
   see: math/remote-sensing-outbreak-detection.md
+
+- term: Kullback–Leibler divergence
+  aliases: [KL divergence, relative entropy]
+  short: An asymmetric measure of how one probability distribution differs from another — the expected log-ratio of the two — central to maximum likelihood, variational inference, and information theory.
+  see: math/kl-divergence.md

@@ -89,6 +89,7 @@
   "integral-area.py": "9030a6c65814edf6cb26b76e7f87107774cc91a752d52dcfce8b9b1a903833c2",
   "jensens-biology.py": "ba0b0be2cdcfdb78edcd195f69ab2e91873825b0c8d00ad96a72d9cba42bf7a7",
   "kin-selection.py": "da3db2fc059f7ca897d3b5c60b389b78b358fcee812645945c627f5095b6c229",
+  "kl-divergence.py": "c54e146d3adf66554e75f085f37d022077cef9077fca1cbdeef76c62290cecf9",
   "kriging.py": "29c1c6ab34b95972df554ce924a402c14c0dcf988716895faffedeed5d5c5b8f",
   "law-of-large-numbers.py": "3ae49759ffb73f8abd16efc27f718c6fc475f83895be534529a78f6d59eac11d",
   "life-history-theory.py": "0e226452c9c2674c1e37aa13d4a469f647b90ec0e2b9f6c433aaec2d2ec162cc",

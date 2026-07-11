@@ -92,6 +92,7 @@ It requires practice and repetition.
 - [Fourier and Spectral Analysis](math/fourier-spectral-analysis.md) — decomposing a signal into frequencies and finding periodicity with the periodogram
 - [Copulas](math/copulas.md) — separating dependence from the marginals via Sklar's theorem
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
+- [Kullback–Leibler Divergence](math/kl-divergence.md) — relative entropy, cross-entropy, and forward vs reverse KL
 - [Moment Matching](math/moment-matching.md) — method of moments and distributional approximation
 - [Monotonic Transformations](math/monotonic-transformations.md)
 - [Hypothesis Testing](math/hypothesis-testing.md)
