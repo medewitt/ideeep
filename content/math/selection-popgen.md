@@ -7,6 +7,8 @@ title: "Selection and Mutation–Selection Balance"
 Natural selection is the deterministic counterpart to [genetic drift](genetic-drift.md): instead of allele frequencies wandering by chance, they are pushed in a direction by differences in survival and reproduction (indicating that a heritable trait results in some reproduction of *successful* offspring).
 This page shows how to turn genotype fitnesses into an allele-frequency recursion, when that recursion drives an allele to fixation versus maintains a polymorphism, and how recurrent mutation balances selection at a low equilibrium frequency.
 
+![Left: iterating the selection recursion, directional selection drives $A$ monotonically to fixation at $p=1$ from any start, while overdominance pulls every trajectory to the same stable interior polymorphism $\hat p = s_2/(s_1+s_2)=0.6$. Right: at mutation–selection balance a deleterious recessive sits at $\hat q \approx \sqrt{\mu/s}$, a hundredfold above a dominant allele's $\hat q \approx \mu/s$ for the same $\mu$ and $s$, because recessives are shielded inside heterozygotes.](../assets/figures/selection-popgen.svg "fig:selection")
+
 ## Fitness and the selection recursion
 
 Consider a single biallelic locus with alleles $A$ and $a$ at frequencies $p$ and $q = 1 - p$.
@@ -16,7 +18,7 @@ Starting from [Hardy–Weinberg](hardy-weinberg.md) genotype frequencies $p^2, 2
 ## Directional selection
 
 Suppose one homozygote is fittest and the heterozygote is intermediate, for example $w_{AA} = 1$, $w_{Aa} = 1 - hs$, $w_{aa} = 1 - s$ with selection coefficient $s > 0$ and dominance coefficient $0 \le h \le 1$.
-Then $A$ is favoured, $\Delta p > 0$ for all $0 < p < 1$, and the allele marches monotonically toward fixation at $p = 1$.
+Then $A$ is favoured, $\Delta p > 0$ for all $0 < p < 1$, and the allele marches monotonically toward fixation at $p = 1$ ([@fig:selection]).
 A recessive deleterious allele ($h = 0$) is removed slowly once rare, because selection acts only on the vanishingly few $aa$ homozygotes.
 
 ## Overdominance and stable polymorphism

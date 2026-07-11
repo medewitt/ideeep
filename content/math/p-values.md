@@ -8,6 +8,8 @@ The p-value is among the most reported—and most [misunderstood](https://www.am
 It quantifies how surprising the data are under the [null hypothesis](hypothesis-testing.md), and understanding exactly what it does and does not say is essential for honest [inference](statistical-inference.md).
 Furthermore, the p-value can be taken as a continuous measure of the [plausibility](https://www.tandfonline.com/doi/full/10.1080/01621459.2014.983232) of the null hypothesis given the data.
 
+![Left: the two-sided p-value for the worked example is the standard-normal tail mass beyond $\pm 2.1$, totalling about $0.0357$. Right: when $H_0$ is true the p-value is Uniform$(0,1)$ — a histogram of 10,000 simulated null p-values is flat, and the shaded $p \le 0.05$ region holds about $5\%$ of them, which is exactly why testing at $\alpha$ gives a Type I error rate of $\alpha$.](../assets/figures/p-values.svg "fig:pvalue")
+
 ## Definition
 
 The **p-value** is the probability, *computed assuming the null hypothesis $H_0$ is true*, of obtaining a test statistic at least as extreme as the one actually observed:
@@ -88,7 +90,7 @@ println(2 * ccdf(TDist(9), abs(2.11)))         # two-sided t
 
 ## Simulation: under $H_0$ the p-value is Uniform(0,1)
 
-A key fact: if $H_0$ is true (and the test is exact), the p-value is uniformly distributed on $[0,1]$.
+A key fact: if $H_0$ is true (and the test is exact), the p-value is uniformly distributed on $[0,1]$ ([@fig:pvalue]).
 That is *why* rejecting when $p \le \alpha$ gives a Type I error rate of exactly $\alpha$.
 
 ```r

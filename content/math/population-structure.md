@@ -7,11 +7,13 @@ title: "Population Structure and F_ST"
 Population structure means a sample is not one randomly mating population but a mixture of subpopulations with different allele frequencies.
 Ignoring it is dangerous: it deflates heterozygosity, mimics inbreeding, and — most importantly for epidemiology — creates spurious genotype–disease associations when ancestry happens to correlate with exposure or risk.
 
+![Left: the Wahlund effect — pooling two subpopulations ($p_1=0.7$, $p_2=0.3$) gives a pooled heterozygosity $H_T=0.50$ that exceeds the within-subpopulation mean $H_S=0.42$, and the shaded gap is the heterozygosity lost to structure, $F_{ST}=(H_T-H_S)/H_T=0.16$. Right: $F_{ST}$ rises from zero as the allele-frequency difference between two equal subpopulations grows, shown against Wright's interpretive bands.](../assets/figures/population-structure.svg "fig:fst")
+
 ## The Wahlund effect
 
 Suppose a total population is subdivided into subpopulations that each mate randomly internally but rarely exchange migrants.
 Within each subpopulation, genotype frequencies follow [Hardy–Weinberg equilibrium](hardy-weinberg.md), but when you pool the subpopulations and compute genotype frequencies as if they were one unit, you find fewer heterozygotes than $2\bar p\bar q$ would predict.
-This deficit of heterozygotes caused purely by lumping together subpopulations with different allele frequencies is the Wahlund effect.
+This deficit of heterozygotes caused purely by lumping together subpopulations with different allele frequencies is the Wahlund effect ([@fig:fst]).
 It arises because the variance in allele frequency among subpopulations subtracts directly from the pooled heterozygosity.
 
 ## Defining F_ST
