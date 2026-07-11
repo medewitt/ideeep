@@ -11,6 +11,8 @@
   "areal-models-car.py": "a71d9505d243ad551bf8fe2cc276b04a7b684e61faab9efc73baba610a99bee5",
   "asynchrony-measures.py": "f3c3b749cd7d7f0a496793848e23a23ef65d77e698bc5deaa21eb2ed784792b2",
   "back-calculation.py": "b482cf89390f123809118844501a71fe16ebe8e671a83be37eea0d5e4db5b404",
+  "bayesian-bandits-weekly.py": "f68f22c4b396a3dd9da8a40cc7e96317ce22b865d10f9c69b5f01edd54c19f22",
+  "bayesian-bandits.py": "4e55c2f1ccdfbe17e7aed836bb6f89e7bf37aa8a1efd7fe4961a89bfa37e1c11",
   "bayesian-update.py": "b10162c5b458caab5e0e0146815efe2890e4f41a7854aa9fb55846d78cfaa019",
   "behavior-disease-coupled-models.py": "1e762130beb8fe1b7deb18b8586ba3ba497a72d7bf89368da500772b43cb329c",
   "big-o-doubling.py": "6d6f95bc6879bed7349dae409d2088f8e5e9b74af87bb205dbf0bf9c65572c57",
