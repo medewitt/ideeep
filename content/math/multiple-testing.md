@@ -7,7 +7,7 @@ title: "Multiple Testing and False Discovery Rate"
 Run one hypothesis test and a 5% false-positive rate is tolerable; run a million and you drown in spurious "discoveries."
 Correcting for the number of tests is what keeps large-scale screens — gene expression, imaging, and especially genome-wide scans — honest.
 
-![The worked five-test example, with sorted p-values plotted against their rank. Bonferroni compares each to a flat threshold α/m = 0.01, which only the first two clear; Benjamini–Hochberg compares each to a sloped threshold (i/m)·α, which the first four clear. BH's rising line admits more discoveries in exchange for controlling the false discovery rate rather than the family-wise error rate.](../assets/figures/multiple-testing.svg "fig:multiple-testing")
+![The worked five-test example, with sorted p-values plotted against their rank. Bonferroni compares each to a flat threshold $\alpha/m = 0.01$, which only the first two clear; Benjamini–Hochberg compares each to a sloped threshold $\frac{i}{m}\alpha$, which the first four clear. BH's rising line admits more discoveries in exchange for controlling the false discovery rate rather than the family-wise error rate.](../assets/figures/multiple-testing.svg "fig:multiple-testing")
 
 ## The problem
 

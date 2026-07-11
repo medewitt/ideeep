@@ -9,7 +9,7 @@ A fitted [logistic](logistic-regression.md) or [Poisson](generalized-linear-mode
 An odds ratio of $1.8$ does not tell a clinician how many more infections to expect, and because these models are nonlinear, the effect of a predictor on the outcome scale depends on where every other covariate sits.
 Contrasts and marginal effects translate the model back onto the scale people actually act on: probability, risk, rate.
 
-![Left: on the logistic curve the same link-scale slope β produces a steep change in probability near p = 0.5 (a steep tangent) but almost none near p = 0.02 (a nearly flat tangent), because ∂p/∂x = β·p(1−p). Right: the marginal effect of age therefore differs across the sample; the average marginal effect (AME) averages these individual effects over the real population, while the marginal effect at the means (MEM) evaluates one synthetic average person.](../assets/figures/average-marginal-effects.svg "fig:ame")
+![Left: on the logistic curve the same link-scale slope $\beta$ produces a steep change in probability near $p=0.5$ (a steep tangent) but almost none near $p=0.02$ (a nearly flat tangent), because $\partial p/\partial x = \beta\,p(1-p)$. Right: the marginal effect of age therefore differs across the sample; the average marginal effect (AME) averages these individual effects over the real population, while the marginal effect at the means (MEM) evaluates one synthetic average person.](../assets/figures/average-marginal-effects.svg "fig:ame")
 
 ## Why coefficients are not effects
 

@@ -7,7 +7,7 @@ title: "Adaptive Dynamics and the Evolution of Virulence"
 Why doesn't natural selection make every pathogen either perfectly benign or maximally deadly?
 The answer is a trade-off: the very transmission that spreads a pathogen is often tied to the harm it does its host, and selection settles on an intermediate, optimal virulence.
 
-![Left: with a saturating trade-off β(α) = a√α, R₀(α) rises then falls and peaks at an intermediate optimum α* = γ + μ = 0.6, beating both a more benign (α = 0.2) and a more aggressive (α = 1.5) strain. Right: the pairwise-invasibility plot for the same model shades where a mutant strain can invade the resident; the singular strategy at α* is an ESS because its entire vertical line lies outside the invasion region.](../assets/figures/evolution-of-virulence.svg "fig:virulence")
+![Left: with a saturating trade-off $\beta(\alpha)=a\sqrt{\alpha}$, $R_0(\alpha)$ rises then falls and peaks at an intermediate optimum $\alpha^*=\gamma+\mu=0.6$, beating both a more benign ($\alpha=0.2$) and a more aggressive ($\alpha=1.5$) strain. Right: the pairwise-invasibility plot for the same model shades where a mutant strain can invade the resident; the singular strategy at $\alpha^*$ is an ESS because its entire vertical line lies outside the invasion region.](../assets/figures/evolution-of-virulence.svg "fig:virulence")
 
 ## Adaptive dynamics and invasion fitness
 

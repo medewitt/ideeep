@@ -7,7 +7,7 @@ title: "Genome-Wide Association Studies"
 A genome-wide association study (GWAS) scans millions of genetic variants across the genome to find those statistically associated with a trait or disease.
 It is the workhorse of modern genetic epidemiology, turning a table of genotypes and phenotypes into a map of the genome's contribution to human variation.
 
-![Left: a Manhattan plot of −log₁₀ p across the genome, where null variants form a low noisy band and a tower of correlated SNPs on one chromosome rises above the genome-wide significance line at 5×10⁻⁸. Right: QQ plots comparing a well-controlled study (λ ≈ 1, points tracking the diagonal until a few true hits pull away) with a confounded one (λ ≫ 1, the whole cloud lifting off the diagonal early).](../assets/figures/gwas.svg "fig:gwas")
+![Left: a Manhattan plot of $-\log_{10} p$ across the genome, where null variants form a low noisy band and a tower of correlated SNPs on one chromosome rises above the genome-wide significance line at $5\times10^{-8}$. Right: QQ plots comparing a well-controlled study ($\lambda \approx 1$, points tracking the diagonal until a few true hits pull away) with a confounded one ($\lambda \gg 1$, the whole cloud lifting off the diagonal early).](../assets/figures/gwas.svg "fig:gwas")
 
 ## The basic test
 

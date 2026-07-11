@@ -198,6 +198,28 @@ fn math_placeholder(index: usize) -> String {
     format!("{}{}{}", MATH_PLACEHOLDER_OPEN, index, MATH_PLACEHOLDER_CLOSE)
 }
 
+/// Remove the private-use math placeholders (and their fragment index) left by
+/// `preprocess_math`. Used by `process_figures` to keep them out of an
+/// `<img alt="…">` attribute, where `restore_math` would otherwise splice
+/// block/inline KaTeX HTML and corrupt the tag. The caption copy keeps its
+/// placeholders so the math still renders in the `<figcaption>`.
+fn strip_math_placeholders(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    let mut chars = s.chars();
+    while let Some(ch) = chars.next() {
+        if ch == MATH_PLACEHOLDER_OPEN {
+            for c in chars.by_ref() {
+                if c == MATH_PLACEHOLDER_CLOSE {
+                    break;
+                }
+            }
+        } else {
+            out.push(ch);
+        }
+    }
+    out
+}
+
 /// Pull a `\label{…}` out of a display-math body, returning the body with the
 /// label removed and the label text (if any). A labelled display equation opts
 /// in to a printed number and a cross-reference target; unlabelled display math
@@ -883,6 +905,10 @@ fn process_figures(html: &str) -> String {
         } else {
             img_tag.to_string()
         };
+        // The caption below keeps any math placeholders (restored to KaTeX after
+        // this pass), but the emitted <img alt="…"> must not: restore_math would
+        // splice HTML into the attribute and produce invalid markup. Strip them.
+        let clean_img = strip_math_placeholders(&clean_img);
 
         let caption = if alt.trim().is_empty() {
             format!("<span class=\"figure-label\">Figure {}.</span>", counter)
@@ -1889,16 +1915,24 @@ fn markdown_to_html(markdown: &str, markdown_files: &std::collections::HashSet<S
     let mut html_output = String::new();
     html::push_html(&mut html_output, parser);
 
-    // Splice the rendered KaTeX HTML back in now that parsing is done.
-    let html_output = restore_math(&html_output, &math_fragments);
-
+    // Convert links, callouts, and column lists while math is still inert
+    // placeholders, then number block images. `process_figures` must see a
+    // figure caption as a clean `<p><img …></p>`: if a `$…$` in the caption were
+    // already rendered to KaTeX, that HTML would sit inside the img `alt="…"`
+    // attribute and the block-image detection (and figure numbering) would miss
+    // it. So math is restored *after* figures are wrapped — see `restore_math`
+    // below and the placeholder stripping in `process_figures`.
     let linked = convert_internal_links(&html_output, markdown_files);
     let with_callouts = render_callouts(&linked);
     let with_columns = columnize_link_lists(&with_callouts);
     // Number block images into <figure>s and resolve [@fig:…] cross-references.
     let with_figures = process_figures(&with_columns);
+    // Splice the rendered KaTeX HTML back in now that parsing and figure
+    // wrapping are done: into the figcaptions just produced and into ordinary
+    // prose and display math alike.
+    let with_math = restore_math(&with_figures, &math_fragments);
     // Resolve [@eq:…] references to the numbered display equations above.
-    let with_eq_refs = resolve_equation_refs(&with_figures, &eq_labels);
+    let with_eq_refs = resolve_equation_refs(&with_math, &eq_labels);
     // Wrap code blocks with a language badge and a copy button.
     enhance_code_blocks(&with_eq_refs)
 }
@@ -4201,6 +4235,41 @@ mod tests {
         assert!(html.contains("<figure id=\"fig-curve\" class=\"figure\">"), "labelled figure should use the label as its id:\n{html}");
         assert!(!html.contains("title=\"fig:curve\""), "the fig: sentinel title must be stripped from the img:\n{html}");
         assert!(html.contains("<a class=\"fig-ref\" href=\"#fig-curve\">Figure 1</a>"), "reference should resolve to a numbered link even when it precedes the figure:\n{html}");
+    }
+
+    /// A figure caption may carry inline `$…$` math. The rendered KaTeX must
+    /// land in the `<figcaption>` (not inside the `<img alt="…">`, which would
+    /// break block-image detection), the figure still numbers and labels, the
+    /// `[@fig:…]` reference resolves, and no math placeholder leaks. This guards
+    /// the ordering: figures are wrapped before math is restored, and the alt
+    /// attribute has its placeholders stripped.
+    #[test]
+    fn figure_caption_supports_inline_math() {
+        let html = render(
+            "![The optimum $\\alpha^*$ maximises $R_0$.](curve.svg \"fig:opt\")\n\nSee [@fig:opt].",
+        );
+        assert!(
+            html.contains("<figure id=\"fig-opt\" class=\"figure\">"),
+            "a math caption should still produce a numbered, labelled figure:\n{html}"
+        );
+        // The KaTeX renders, and it renders inside the caption — the exact bug
+        // was rendered math corrupting the img alt attribute (`alt="… <span`).
+        assert!(
+            html.contains("class=\"katex"),
+            "caption math should render as KaTeX:\n{html}"
+        );
+        assert!(
+            !html.contains("alt=\"The optimum <span"),
+            "rendered math must not be spliced into the img alt attribute:\n{html}"
+        );
+        assert!(
+            html.contains("<a class=\"fig-ref\" href=\"#fig-opt\">Figure 1</a>"),
+            "the cross-reference should resolve to a numbered link:\n{html}"
+        );
+        assert!(
+            !html.contains(MATH_PLACEHOLDER_OPEN) && !html.contains(MATH_PLACEHOLDER_CLOSE),
+            "no math placeholder should leak into the output:\n{html}"
+        );
     }
 
     /// A decorative image (empty alt, no label) is left as a plain image, and an

@@ -7,7 +7,7 @@ title: "Structured Population Models"
 A newborn, a juvenile, and a reproductive adult contribute very differently to a population's future, so treating everyone as identical throws away essential biology.
 Structured models track these classes explicitly, and their long-run behavior is governed entirely by the eigenvalues and eigenvectors of a projection matrix — the same linear-algebra machinery behind next-generation matrices in disease ecology.
 
-![Left: starting from an all-juvenile population, the stage proportions converge after transients decay to the stable stage distribution — about 63% juveniles, 29% subadults, and 8% adults — set by the dominant right eigenvector. Right: total population size then grows geometrically at the dominant eigenvalue λ ≈ 1.090, so on a log scale it straightens into a line of slope ln λ.](../assets/figures/structured-populations.svg "fig:structured")
+![Left: starting from an all-juvenile population, the stage proportions converge after transients decay to the stable stage distribution — about 63% juveniles, 29% subadults, and 8% adults — set by the dominant right eigenvector. Right: total population size then grows geometrically at the dominant eigenvalue $\lambda \approx 1.090$, so on a log scale it straightens into a line of slope $\ln\lambda$.](../assets/figures/structured-populations.svg "fig:structured")
 
 ## Projecting an age- or stage-structured population
 
