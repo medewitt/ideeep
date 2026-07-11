@@ -24,7 +24,11 @@ This is the same move that motivates [spatiotemporal models](../math/spatiotempo
 The engine of a spatial model is the **transmission kernel** $K(d)$, the relative rate at which infection passes between two farms a distance $d$ apart.
 For foot-and-mouth the kernel is **fat-tailed**: a high probability of short-range spread to immediate neighbors, combined with a long tail of occasional long-range "sparks" that seed a fresh cluster far away.
 A convenient illustrative form is \[ K(d) = \left(1 + (d/d_0)^2\right)^{-\alpha}, \] with a local scale $d_0$ and a tail exponent $\alpha$ that controls how heavy the tail is.
-The contrast in panel (a) is the whole point: a thin-tailed Gaussian kernel falls off so fast that long jumps essentially never happen, whereas the fat-tailed kernel keeps a small but real chance of a distant spark.
+Varying those two parameters traces the whole family: a smaller $\alpha$ fattens the tail so long-range sparks become more likely, while a larger $d_0$ widens the near-field over which spread is almost certain.
+
+![Two panels of the transmission kernel on a log axis. The left panel varies the tail exponent alpha at fixed local scale, showing that a smaller alpha gives a heavier tail and more long-range transmission; the right panel varies the local scale d0 at fixed alpha, showing that a larger d0 stretches the near-field of near-certain local spread.](../assets/figures/foot-and-mouth-kernel.svg)
+
+The contrast in the main figure's panel (a) is the whole point: a thin-tailed Gaussian kernel falls off so fast that long jumps essentially never happen, whereas the fat-tailed kernel keeps a small but real chance of a distant spark.
 Those sparks matter because they are what let an epidemic escape a local firebreak, and they are the spatial cousin of the heavy tails that drive [superspreading](../math/superspreading.md) and jumps across a [contact network](../math/networks.md).
 
 ## A farm-based stochastic model
@@ -47,6 +51,9 @@ Three strategies span the options that were debated in 2001.
 - **Ring vaccination** immunizes susceptible farms inside the radius instead of killing them, but protection arrives only after a **decision-to-immunity delay**, during which those farms can still be infected.
 
 The choice is not abstract: it decides how the response meets the kernel in space and time.
+The responses differ above all in *timing*: culling protects the moment it is applied, whereas vaccination leaves a ring susceptible through the delay while immunity develops, so cases keep accruing there until protection takes hold.
+
+![Two panels contrasting the timing of culling and vaccination. The left panel is a timeline in which both responses share a detection-and-reporting lead time, after which ring culling immediately marks farms protected while ring vaccination leaves them susceptible through an immunity-onset window before they become immune. The right panel shows the percentage of the ring infected over time, flat for culling once it acts but continuing to rise for vaccination through the immunity delay, with the gap between them marking extra infections caused by the delay.](../assets/figures/foot-and-mouth-response-delay.svg)
 
 ## Speed and targeting: the response trade-off
 

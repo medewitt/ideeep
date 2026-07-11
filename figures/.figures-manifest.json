@@ -67,6 +67,8 @@
   "floating-point-underflow.py": "fea6a1026be96778fad954ea657ca9350a863afe0a966ee3e2794b59ec385ed1",
   "floquet-theory.py": "32345785b2225664307c3039ba902152cd6f7e38b1cc4bf942b1148c3e77438c",
   "foot-and-mouth-2001.py": "d8d1d5d04ff8cc2cb218304f79bbff57d846ed716426becc603480bf26a16cee",
+  "foot-and-mouth-kernel.py": "1015f6212bff9e17aeacb8a0b688d9c24b970f19e70627a62c30e03f66cd7a73",
+  "foot-and-mouth-response-delay.py": "35d3fe4aae762c701057c1880f1ac5eadaa495af5f7a2589d01b522ab159f120",
   "force-of-infection.py": "188c4823afaef461533ddba680872b06eb005912aec4757878ff3c897b4b88c2",
   "fourier-spectral-analysis.py": "2974e0972b8835e75d637aac510dfda23065b02c7de4db36d768b706a69bcbb6",
   "functional-responses.py": "dbe8f08a39e5ef7726d1e7dd28f3575e0abe75000a29af6051c5716de8217bae",
