@@ -265,6 +265,11 @@ It requires practice and repetition.
 - [Graph Neural Networks](math/graph-neural-networks.md) — message passing on contact and mobility graphs, and the GCN layer
 - [Transformers and Attention](math/transformers-attention.md) — self-attention, multi-head attention, and the architecture behind foundation models
 
+*Unsupervised learning:*
+
+- [Dimensionality Reduction and Embeddings](math/dimensionality-reduction.md) — PCA, t-SNE, and UMAP for visualizing and compressing high-dimensional data
+- [Clustering and Unsupervised Learning](math/clustering.md) — k-means, Gaussian mixtures, hierarchical, and density-based clustering
+
 *Generative models & Bayesian deep learning:*
 
 - [Variational Autoencoders](math/variational-autoencoders.md) — encoder/decoder, the ELBO, the reparameterization trick, and surveillance anomaly detection

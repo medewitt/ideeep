@@ -42,6 +42,17 @@ Epidemiology has long borrowed from it: satellite-derived rainfall, temperature,
 What is newer is using high-resolution overhead imagery of *human activity* — how full a parking lot is, how busy a road is — as a near-real-time behavioural signal.
 The appeal is that it is passive, needs no cooperation from the people it observes, and can update daily; the peril, as below, is that it measures behaviour, and behaviour has many causes.
 
+### Getting the imagery
+
+A practical snag is licensing: **Google Maps/Earth, Bing, and Esri imagery can be viewed but not redistributed**, so they cannot supply an image you publish or bake into a reproducible pipeline.
+License-clean sources do exist, and for counting cars you need roughly 15–60 cm resolution.
+
+- **Government aerial orthophotos** are the best route for a specific facility: US state and county GIS open-data portals (for example [NC OneMap](https://www.nconemap.gov/)) publish 3–6 inch orthoimagery that is usually public domain, and [USGS EarthExplorer](https://earthexplorer.usgs.gov/) serves nationwide [NAIP](https://naip-usdaonline.hub.arcgis.com/) imagery (~0.6 m, public domain).
+- **Openly-licensed imagery**: [OpenAerialMap](https://openaerialmap.org/) hosts CC-licensed aerial and drone imagery, and the [Maxar Open Data program](https://www.maxar.com/open-data) releases high-resolution scenes for disaster events.
+- **Your own drone** (where permitted) gives imagery you fully own, at a resolution you choose.
+- **Coarse free satellites won't work**: Sentinel-2 (10 m) and Landsat (15–30 m) cannot resolve individual cars — use them for climate and land cover, not counting.
+- **Labelled training data**: to *train* a detector, overhead-vehicle datasets such as [CARPK](https://lafi.github.io/LPN/) (drone images of parking lots with per-car annotations), COWC, and xView provide ready-made examples.
+
 ## The proxy chain, and its assumptions
 
 The logic linking a parking count to disease is a chain of assumptions, each of which can break: \[ \text{cars parked} \;\to\; \text{hospital visits} \;\to\; \text{people seeking care} \;\to\; \text{disease burden}. \] Reading a rise in cars as a rise in disease assumes that occupancy tracks visits (not staff shifts, construction, or a nearby event), that visits track care-seeking (not elective procedures or visitors), that care-seeking tracks illness (not fear or a policy change), and that the illness is the one you care about.

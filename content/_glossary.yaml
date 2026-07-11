@@ -231,3 +231,31 @@
     word in Julius Caesar's "*alea iacta est*" ("the die is cast"), reputedly
     said as he crossed the Rubicon in 49 BC to march on Rome.
   see: math/uncertainty-calibration-conformal.md
+
+- term: Dimensionality reduction
+  short: Compressing high-dimensional data into a few informative coordinates that preserve its important structure, for visualization, denoising, or modeling.
+  see: math/dimensionality-reduction.md
+
+- term: Principal component analysis
+  aliases: [PCA]
+  short: A linear dimensionality-reduction method that projects data onto the orthogonal directions of greatest variance, the eigenvectors of its covariance matrix.
+  see: math/dimensionality-reduction.md
+
+- term: Manifold learning
+  aliases: [t-SNE, UMAP]
+  short: Nonlinear dimensionality reduction that unrolls data lying on a curved low-dimensional surface, preserving local neighbourhoods for visualization.
+  see: math/dimensionality-reduction.md
+
+- term: Unsupervised learning
+  short: Learning structure from data without labels — clustering, dimensionality reduction, density estimation, and anomaly detection.
+  see: math/clustering.md
+
+- term: Clustering
+  aliases: [cluster analysis]
+  short: Grouping observations so that members of a group resemble each other more than members of other groups, without using labels.
+  see: math/clustering.md
+
+- term: k-means
+  aliases: [k-means clustering]
+  short: A clustering method that partitions data into k groups by minimizing each point's squared distance to its cluster mean, favouring spherical clusters.
+  see: math/clustering.md
