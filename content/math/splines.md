@@ -164,6 +164,8 @@ rcs coefficients (intercept, linear, nonlinear...): [ 0.14   0.661 -0.098  0.31 
 ```
 <!-- /python-output:auto -->
 
+![The two fits from the code above on the same seeded data: the GCV-penalized smoothing spline and the 5-knot restricted cubic spline nearly coincide over the bulk of the range, with knot locations dashed. The squares mark the smoothing-spline predictions printed above at $x = 2, 5, 8$.](../assets/figures/splines-python-fit.svg "fig:spline-python-fit")
+
 ### Julia
 
 ```julia

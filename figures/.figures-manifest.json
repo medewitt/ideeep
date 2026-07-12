@@ -243,6 +243,7 @@
   "spatiotemporal-models.py": "1ad689f69db27750deae13bca6c9d31f742498c51fec6505cfa0c6f0fa80b6b4",
   "species-abundance.py": "7d43b3622af99d3fd48e296ed934919edddfa6fbcb6b9e9d5c8ccd82ce36cdaa",
   "splines-basis.py": "454e5d133c733f3d2bfda983c68e579ce1ca3a5f3ab2cf7236addb97d762e45d",
+  "splines-python-fit.py": "7f12139ebb184bb4f6184ae894b516fa35e0660bdb637141f2307c88289ab457",
   "splines-smoothing.py": "aae11b6ead8672fc3a3cfd8f4e6e96c288be20d0bdcd994bb0cd8be7ec17da94",
   "state-space-particle-filter.py": "c1298da1accad64a851243dabce9a04926d4851e77a7ee7327b5f7497470bace",
   "stochastic-epidemic.py": "cf5478c609a9ce0a5beb78425341268aded7b05cc859accf0fcacaafdbcb8c17",
