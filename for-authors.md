@@ -323,7 +323,12 @@ just repl content/math/foo.md              # run every python block, then a prom
 just repl content/math/foo.md --list       # number the blocks first
 just repl content/math/foo.md --block 3    # run just block 3
 just repl content/math/foo.md --lang r      # the page's R blocks (needs Rscript)
+just repl content/math/foo.md --none       # run nothing; bare REPL in the page's env
 ```
+
+The prompt is IPython when available (so pasted multi-line blocks just work);
+`--none` exists mainly for editor integrations that open the REPL and send
+blocks themselves.
 
 This is a **local dev tool** — it is never part of the built site, so it changes
 nothing for readers. It does not edit the page or commit anything; use
