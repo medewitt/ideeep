@@ -90,6 +90,7 @@ It requires practice and repetition.
 - [Superspreading and Transmission Heterogeneity](math/superspreading.md) — the offspring distribution, the dispersion $k$, and the 20/80 rule
 - [Chain-Binomial Models and the Household Secondary Attack Rate](math/chain-binomial-reed-frost.md) — Reed-Frost transmission and household final size
 - [Random Walks and Brownian Motion](math/random-walk-brownian-motion.md) — diffusive scaling and the Wiener process
+- [Quasi-Stationary Distributions](math/quasi-stationary-distributions.md) — the endemic level before fade-out, and persistence as an eigenvalue
 - [Fourier and Spectral Analysis](math/fourier-spectral-analysis.md) — decomposing a signal into frequencies and finding periodicity with the periodogram
 - [Copulas](math/copulas.md) — separating dependence from the marginals via Sklar's theorem
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
@@ -307,6 +308,7 @@ It requires practice and repetition.
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
 - [Reservoir Ecology](math/reservoir-ecology.md) — maintenance hosts, spillover, and multi-host persistence
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)
+- [Quasi-Stationary Distributions](math/quasi-stationary-distributions.md) — endemic persistence, fade-out, and the mean time to extinction
 - [Queueing Theory and ICU Colonization](math/queueing-theory.md) — patients through beds as a queue, a birth-death model of hospital colonization, and pricing out infection-prevention practices
 - [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
 - [The Renewal Equation](math/renewal-equation.md) — linking incidence, the generation interval, and $R_t$

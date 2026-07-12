@@ -163,6 +163,7 @@ The burnout result sharpens the point: even a single large epidemic in a closed 
 ## Related
 
 - [Stochastic Epidemics and the Gillespie Algorithm](../math/stochastic-epidemics.md)
+- [Quasi-Stationary Distributions](../math/quasi-stationary-distributions.md)
 - [Branching Processes](../math/branching-processes.md)
 - [SEIR and Compartmental Extensions](../math/seir-models.md)
 - [Metapopulations and the Levins Model](../math/metapopulations.md)

@@ -191,4 +191,5 @@ Understanding when to reach for a stochastic model — small numbers, early phas
 - [The Next-Generation Matrix and R₀](next-generation-matrix.md)
 - [Spatial Moment Equations](spatial-moment-equations.md)
 - [Critical Community Size and Epidemic Fade-Out](../epidemiology/critical-community-size.md) — how demographic stochasticity drives an endemic infection extinct in small populations
+- [Quasi-Stationary Distributions](quasi-stationary-distributions.md) — the endemic level conditioned on survival, and persistence as an eigenvalue
 - [Quantitative Methods](../math.md)
