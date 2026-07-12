@@ -129,6 +129,11 @@ for t in (2.0, 5.0, 10.0, 14.0):
 ```
 <!-- /python-output:auto -->
 
+The first line printed above, `2.5 2.5`, is the layer-cake identity at work: the code integrates the survival curve $S(t) = e^{-\gamma t}$ and gets the same $1/\gamma = 2.5$ days as the closed form.
+[@fig:mean] shows exactly what that `quad` call accumulates — the shaded area under the survival curve *is* the mean infectious period, and each height $t$ contributes the level-set measure $\mu(\{T>t\}) = S(t)$.
+
+![The mean infectious period as the area under the survival curve S(t)=e^{-0.4t}: the integral the code evaluates equals 1/γ = 2.5 days, with each height t contributing the level-set measure S(t).](../assets/figures/lebesgue-layer-cake.svg "fig:mean")
+
 ### Julia
 
 ```julia

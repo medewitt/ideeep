@@ -128,6 +128,7 @@
   "latin-hypercube.py": "b3ca9955ef1cba856d6bf3751410cf0c4c52fb2f51d25ef4e81cb1e7c23e6b44",
   "law-of-large-numbers.py": "3ae49759ffb73f8abd16efc27f718c6fc475f83895be534529a78f6d59eac11d",
   "lebesgue-integration.py": "90975da3fc6aa2fe59a6d32eae76bc4dd2c69597ddbbd7b1b046e1585ab12039",
+  "lebesgue-layer-cake.py": "008974f9660d51272841533ba27afa29ba50091112c3ff9f3a221113fa9aee77",
   "lebesgue-mixed-measure.py": "4ca8a9aec50c440fb70277f71cff18b50c185461480c5d37fc849beac3c0978b",
   "life-history-theory.py": "0e226452c9c2674c1e37aa13d4a469f647b90ec0e2b9f6c433aaec2d2ec162cc",
   "likelihood.py": "8d8cda006b05de6096530c1c442bfa97f600b798652be85ec65c087e5991a5c7",
