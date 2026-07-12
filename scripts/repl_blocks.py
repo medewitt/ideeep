@@ -6,6 +6,7 @@
 #     "mapie", "xgboost", "shap", "umap-learn", "hdbscan", "torchdiffeq",
 #     "flax", "optax", "torch-geometric",
 #     "numba>=0.60",
+#     "ipython",
 # ]
 # ///
 """Interactively run a content page's code blocks in the injector's environment
@@ -28,6 +29,7 @@ Usage (via `just repl`, or directly through uv):
   just repl content/math/foo.md --through 3      # run blocks 1..3, then a REPL
   just repl content/math/foo.md --lang r         # same, for the page's R blocks
   just repl content/math/foo.md --no-repl        # run blocks and print output, no prompt
+  just repl content/math/foo.md --none           # run nothing; a bare REPL in the page's env
 
 By default it runs **every** block of the chosen language in document order (that
 is the authoring intent — try the code you are writing), which differs from the
@@ -35,10 +37,13 @@ injector's opt-in rule for R/Julia (`# run`) and opt-out for Python (`# no-run`)
 Pass `--respect-directives` to restrict to exactly the blocks the injector would
 execute, so you can preview precisely what will be committed.
 
-Python blocks run in-process and open a `code.interact` prompt with the page's
-namespace preloaded. R/Julia blocks are written to a temp file and handed to an
-interactive `R` / `julia` session (state preloaded), when that interpreter is on
-PATH; otherwise the tool says so and exits.
+Python blocks run in-process and open an IPython prompt (falling back to
+`code.interact` when IPython is unavailable) with the page's namespace
+preloaded. IPython is preferred because it accepts bracketed-paste multi-line
+input, which is what editor "send block to REPL" integrations emit. R/Julia
+blocks are written to a temp file and handed to an interactive `R` / `julia`
+session (state preloaded), when that interpreter is on PATH; otherwise the tool
+says so and exits.
 """
 from __future__ import annotations
 import argparse
@@ -84,6 +89,22 @@ def banner(n: int, total: int, code: str) -> str:
     return f"\n# ── block {n}/{total}  {preview(code)}"
 
 
+def launch_repl(ns: dict, total: int) -> None:
+    """Drop into a REPL over `ns` — IPython when available (it accepts pasted
+    multi-line blocks via bracketed paste), else the stdlib `code.interact`."""
+    names = sorted(k for k in ns if not k.startswith("__"))
+    print(f"[repl] {total} block(s) loaded. In scope: "
+          f"{', '.join(names) or '(nothing)'}\nPython "
+          f"{sys.version.split()[0]} — Ctrl-D to exit.", file=sys.stderr)
+    try:
+        from IPython import start_ipython
+    except ImportError:
+        import code as codemod
+        codemod.interact(banner="", local=ns, exitmsg="")
+        return
+    start_ipython(argv=["--no-banner"], user_ns=ns)
+
+
 def run_python(selected: list[tuple[int, str]], total: int, open_repl: bool) -> int:
     ns: dict = {}
     for n, code in selected:
@@ -93,13 +114,7 @@ def run_python(selected: list[tuple[int, str]], total: int, open_repl: bool) -> 
         except BaseException:                            # keep going; state accumulates
             traceback.print_exc()
     if open_repl:
-        import code as codemod
-        names = sorted(k for k in ns if not k.startswith("__"))
-        codemod.interact(
-            banner=f"[repl] {total} block(s) loaded. In scope: "
-                   f"{', '.join(names) or '(nothing)'}\nPython "
-                   f"{sys.version.split()[0]} — Ctrl-D to exit.",
-            local=ns, exitmsg="")
+        launch_repl(ns, len(selected))
     return 0
 
 
@@ -145,6 +160,8 @@ def main() -> int:
     ap.add_argument("--list", action="store_true", help="number the blocks and exit")
     ap.add_argument("--block", type=int, metavar="N", help="run only block N")
     ap.add_argument("--through", type=int, metavar="N", help="run blocks 1..N")
+    ap.add_argument("--none", action="store_true",
+                    help="run no blocks; just open a REPL in the page's environment")
     ap.add_argument("--no-repl", action="store_true",
                     help="run the blocks and print output without opening a prompt")
     ap.add_argument("--respect-directives", action="store_true",
@@ -153,6 +170,8 @@ def main() -> int:
 
     if args.block is not None and args.through is not None:
         ap.error("--block and --through are mutually exclusive")
+    if args.none and (args.block is not None or args.through is not None):
+        ap.error("--none runs no blocks; it cannot be combined with --block/--through")
 
     try:
         with open(args.page, encoding="utf-8") as f:
@@ -162,7 +181,9 @@ def main() -> int:
         return 2
 
     blocks = collect_blocks(text, args.lang, args.respect_directives)
-    if not blocks:
+    if not blocks and not args.none:
+        # With --none an empty page is fine — the point is a bare REPL in the
+        # page's environment, whether or not the page has code yet.
         which = "runnable " if args.respect_directives else ""
         print(f"repl: no {which}{args.lang} blocks in {args.page}", file=sys.stderr)
         return 1
@@ -177,7 +198,7 @@ def main() -> int:
             ap.error(f"block number {bound} out of range (page has {len(blocks)} "
                      f"{args.lang} block(s))")
 
-    selected = select(blocks, args.block, args.through)
+    selected = [] if args.none else select(blocks, args.block, args.through)
     open_repl = not args.no_repl
     if args.lang == "python":
         return run_python(selected, len(blocks), open_repl)

@@ -10,10 +10,12 @@ test:
     cargo test --release
 
 # Run the Python dev-tool tests (inject_python_output caching + injection,
-# and the spoiler-aware sentence linter).
-# Stdlib only — no scientific deps needed, so plain python3 (not uv).
+# the repl_blocks block selection + REPL launcher, and the spoiler-aware
+# sentence linter). Stdlib only — no scientific deps needed, so plain python3
+# (not uv).
 test-scripts:
     python3 -W error::ResourceWarning scripts/test_inject_python_output.py
+    python3 -W error::ResourceWarning scripts/test_repl_blocks.py
     python3 -W error::ResourceWarning scripts/test_sentence_lint.py
 
 # Directories whose Markdown prose follows the one-sentence-per-line convention
