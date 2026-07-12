@@ -106,7 +106,9 @@ It requires practice and repetition.
 
 - [Linear Regression](math/linear-regression.md)
 - [Logistic Regression](math/logistic-regression.md)
+- [Proportional Odds Models](math/proportional-odds.md) — ordinal outcomes, and how they relate to logistic and survival regression
 - [Generalized Linear Models](math/generalized-linear-models.md) — GLMs and Poisson regression
+- [Splines and Penalized Regression](math/splines.md) — B-splines, restricted cubic splines, penalized/thin-plate smooths (Wood, Harrell)
 - [Contrasts and Average Marginal Effects](math/average-marginal-effects.md) — turning link-scale coefficients into risk differences and effects on the outcome scale
 - [Age, Period, and Cohort Effects](math/age-period-cohort.md) — separating birth-cohort effects from age and calendar-time trends in risk models
 - [Hierarchical (Multilevel) Models](math/hierarchical-models.md) — partial pooling and shrinkage
