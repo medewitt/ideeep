@@ -187,6 +187,160 @@ function viterbi(x, A, p, pi)
 end
 ```
 
+## Going Bayesian: priors and predictive checks
+
+The Baum–Welch fit above returns a single maximum-likelihood point, and HMMs make that fragile in ways this problem shows sharply.
+A **Bayesian** treatment — put priors on the parameters and sample the posterior — fixes them, and buys uncertainty and predictive checking for free.
+Three reasons it matters here:
+
+- **Rare events, short series.** Months are mostly test-negative, so the high-risk emission rests on a handful of positives; unconstrained maximum likelihood can chase them to degenerate values (a state that is positive with probability one).
+  A mild prior keeps estimates sane.
+- **Label switching.** The two states are mathematically interchangeable — nothing in the likelihood [@eq:hmm-lik] says which is "high-risk" — so an unconstrained fit can swap them between runs.
+  Priors that *order* the states break the symmetry by construction.
+- **Uncertainty and pooling.** We usually want a credible interval on how sticky the high-risk regime is, or on $\Pr(z_t = \text{high})$ for a given person-month — not a point.
+  Bayes also opens the door to a **hierarchical HMM**, giving each person their own risk parameters shrunk toward a cohort mean, the natural model for real cohort data.
+
+**Choosing priors** is where the domain knowledge goes.
+We know low-risk months are rarely positive, so $p_\text{low} \sim \text{Beta}(1, 20)$ (prior mean $\approx 0.05$).
+We know the high-risk state is *clearly elevated*, so rather than a second free probability we set $p_\text{high} = p_\text{low} + (1 - p_\text{low})\,\text{gap}$ with $\text{gap} \sim \text{Beta}(2,2)$ — this forces $p_\text{high} > p_\text{low}$ and dissolves label switching.
+We know regimes persist, so the stay-probabilities get sticky priors $\text{Beta}(8,2)$ and $\text{Beta}(6,2)$ (for $K > 2$ states, a Dirichlet on each transition row plays the same role).
+Before trusting any of this, a **prior predictive check** simulates data from the priors alone and confirms they imply plausible datasets; after fitting, a **posterior predictive check** simulates from the posterior and confirms the model reproduces a feature of the real data — here the *clustering* of positive months (consecutive positives per person), which a constant-risk model cannot generate.
+
+### Python (NumPyro)
+
+Both NumPyro and Stan **marginalize** the discrete states rather than sampling them — the same forward algorithm from [@eq:hmm-forward], run inside the model so the sampler sees a smooth likelihood.
+
+```python
+import numpy as np
+import jax.numpy as jnp
+from jax import vmap, lax, random
+from jax.scipy.special import logsumexp
+import numpyro, numpyro.distributions as dist
+from numpyro.infer import MCMC, NUTS
+
+# ---- observed cohort (40 people, 4 years of monthly tests) ----
+Npat, T = 40, 48
+def sim_cohort(a_ll, a_hh, p_low, p_high, rng):
+    Am = np.array([[a_ll, 1 - a_ll], [1 - a_hh, a_hh]]); p = np.array([p_low, p_high])
+    XX = np.zeros((Npat, T), int)
+    for i in range(Npat):
+        z = int(rng.random() > 0.85)
+        for t in range(T):
+            if t: z = int(rng.random() > Am[z, 0])
+            XX[i, t] = rng.random() < p[z]
+    return XX
+Xobs = sim_cohort(0.95, 0.85, 0.03, 0.55, np.random.default_rng(2))
+clustering = lambda X: np.mean((X[:, :-1] * X[:, 1:]).sum(1))   # consecutive +/+ pairs
+obs_stat = clustering(Xobs)
+
+def forward_ll(p_low, p_high, a_ll, a_hh, x):
+    logA = jnp.log(jnp.array([[a_ll, 1 - a_ll], [1 - a_hh, a_hh]]))
+    p = jnp.array([p_low, p_high])
+    le = lambda xt: jnp.log(jnp.where(xt == 1, p, 1 - p))
+    la0 = jnp.log(jnp.array([0.85, 0.15])) + le(x[0])
+    step = lambda la, xt: (le(xt) + logsumexp(la[:, None] + logA, axis=0), None)
+    laT, _ = lax.scan(step, la0, x[1:])
+    return logsumexp(laT)
+
+def model(X):
+    p_low = numpyro.sample("p_low", dist.Beta(1., 20.))          # low-risk: rarely positive
+    gap = numpyro.sample("gap", dist.Beta(2., 2.))
+    p_high = numpyro.deterministic("p_high", p_low + (1 - p_low) * gap)   # ordered > p_low
+    a_ll = numpyro.sample("stay_low", dist.Beta(8., 2.))         # regimes are sticky
+    a_hh = numpyro.sample("stay_high", dist.Beta(6., 2.))
+    ll = vmap(lambda x: forward_ll(p_low, p_high, a_ll, a_hh, x))(jnp.array(X)).sum()
+    numpyro.factor("obs", ll)                                    # marginal HMM likelihood
+
+mcmc = MCMC(NUTS(model), num_warmup=400, num_samples=400, progress_bar=False)
+mcmc.run(random.PRNGKey(0), Xobs)
+post = mcmc.get_samples()
+print("posterior mean [90% CI]:")
+for nm, tr in [("p_low", 0.03), ("p_high", 0.55), ("stay_low", 0.95), ("stay_high", 0.85)]:
+    s = np.asarray(post[nm])
+    print(f"  {nm:9s} {s.mean():.2f} [{np.percentile(s,5):.2f}, {np.percentile(s,95):.2f}]  truth {tr}")
+
+# ---- prior & posterior predictive checks on the clustering statistic ----
+def pred_interval(pl, ph, al, ah, seed):
+    r = np.random.default_rng(seed)
+    st = [clustering(sim_cohort(al[i], ah[i], pl[i], ph[i], r)) for i in range(len(pl))]
+    return np.percentile(st, [5, 95])
+S = 200; kr = np.random.default_rng(7)
+pl = kr.beta(1, 20, S); ph = pl + (1 - pl) * kr.beta(2, 2, S)    # draws from the prior
+lo0, hi0 = pred_interval(pl, ph, kr.beta(8, 2, S), kr.beta(6, 2, S), 11)
+j = np.random.default_rng(9).integers(0, 400, S)                 # draws from the posterior
+lo1, hi1 = pred_interval(np.asarray(post["p_low"])[j], np.asarray(post["p_high"])[j],
+                         np.asarray(post["stay_low"])[j], np.asarray(post["stay_high"])[j], 12)
+print(f"clustering stat: observed {obs_stat:.1f}")
+print(f"  prior predictive     90% [{lo0:.1f}, {hi0:.1f}]")
+print(f"  posterior predictive 90% [{lo1:.1f}, {hi1:.1f}]")
+```
+
+<!-- python-output:auto -->
+```text
+posterior mean [90% CI]:
+  p_low     0.02 [0.00, 0.03]  truth 0.03
+  p_high    0.54 [0.49, 0.60]  truth 0.55
+  stay_low  0.95 [0.93, 0.96]  truth 0.95
+  stay_high 0.87 [0.82, 0.91]  truth 0.85
+clustering stat: observed 3.2
+  prior predictive     90% [0.5, 16.2]
+  posterior predictive 90% [2.2, 4.3]
+```
+<!-- /python-output:auto -->
+
+The posterior recovers the truth with credible intervals, the prior predictive interval is wide but brackets the observed clustering (the priors are not absurd), and the posterior predictive interval is tight and still contains it — the fitted model reproduces the very persistence it was built to capture.
+
+### R (Stan)
+
+Stan cannot sample discrete parameters, so the hidden states are marginalized by the same forward recursion inside the `model` block; `generated quantities` draws replicate cohorts for the posterior predictive check.
+
+```stan
+data {
+  int<lower=1> N;                       // people
+  int<lower=1> T;                       // months
+  array[N, T] int<lower=0, upper=1> y;  // test results
+}
+parameters {
+  real<lower=0, upper=1> p_low;
+  real<lower=0, upper=1> gap;           // p_high = p_low + (1 - p_low) * gap
+  real<lower=0, upper=1> stay_low;
+  real<lower=0, upper=1> stay_high;
+}
+transformed parameters {
+  real p_high = p_low + (1 - p_low) * gap;
+}
+model {
+  p_low     ~ beta(1, 20);              // low-risk months rarely positive
+  gap       ~ beta(2, 2);               // high-risk clearly elevated (and ordered)
+  stay_low  ~ beta(8, 2);               // sticky regimes
+  stay_high ~ beta(6, 2);
+  matrix[2, 2] logA = [[log(stay_low), log1m(stay_low)],
+                       [log1m(stay_high), log(stay_high)]];
+  vector[2] p = [p_low, p_high]';
+  for (n in 1:N) {                      // forward algorithm: marginalize the states
+    vector[2] lp;
+    for (k in 1:2) lp[k] = log([0.85, 0.15][k]) + bernoulli_lpmf(y[n, 1] | p[k]);
+    for (t in 2:T) {
+      vector[2] lp_new;
+      for (k in 1:2)
+        lp_new[k] = log_sum_exp(lp + logA[, k]) + bernoulli_lpmf(y[n, t] | p[k]);
+      lp = lp_new;
+    }
+    target += log_sum_exp(lp);
+  }
+}
+```
+
+```r
+library(cmdstanr)
+stan_data <- list(N = nrow(Y), T = ncol(Y), y = Y)   # Y: N x T matrix of 0/1 tests
+fit <- cmdstan_model("hmm.stan")$sample(data = stan_data, chains = 4,
+                                        parallel_chains = 4, refresh = 0)
+fit$summary(c("p_low", "p_high", "stay_low", "stay_high"))   # posterior + intervals
+# posterior predictive: add a `generated quantities` block drawing y_rep, then
+# compare a summary (e.g. consecutive-positive counts) of y_rep to the observed Y.
+```
+
 ## Filtering, smoothing, or the single best path
 
 The three decoders answer different questions, and the choice matters.
@@ -228,6 +382,8 @@ For any question that is really "which hidden category was the system in, given 
 - [POMP Models and Plug-and-Play Inference](partially-observed-markov-processes.md) — when the hidden process is a mechanistic simulator
 - [Markov Chains](markov-chains.md) — the transition dynamics of the hidden state
 - [Maximum Likelihood Estimation](maximum-likelihood.md) — the target Baum–Welch (EM) climbs
+- [Bayesian Inference](bayesian-inference.md) · [Markov Chain Monte Carlo](mcmc.md) — the Bayesian fit and its sampler
+- [Prior Predictive Checks](prior-predictive-checks.md) · [Posterior Predictive Checks](posterior-predictive-checks.md) — the checks used on the Bayesian HMM
 - [The Effective Reproduction Number and Forecasting](reproduction-number-rt.md) — a continuous view of the epidemic-phase question HMMs pose discretely
 - [Genomic Surveillance](../epidemiology/genomic-surveillance.md) — sequence segmentation and annotation by HMM
 - [Quantitative Methods](../math.md)
