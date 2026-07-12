@@ -325,7 +325,7 @@ sir_rw_step <- Csnippet("
 ```
 
 This is precisely where the connection to the **Kalman filter** surfaces.
-If the latent state evolved as a *linear* Gaussian process and were observed through a *linear* Gaussian measurement, the filtering distribution [@eq:pomp-lik] would be Gaussian at every step and available in closed form — that exact recursion **is** the [Kalman filter](state-space-particle-filter.md), and its smoother returns the whole latent trajectory analytically.
+If the latent state evolved as a *linear* Gaussian process and were observed through a *linear* Gaussian measurement, the filtering distribution [@eq:pomp-lik] would be Gaussian at every step and available in closed form — that exact recursion **is** the [Kalman filter](kalman-filter.md), and its smoother returns the whole latent trajectory analytically.
 Time-varying transmission breaks that linearity in two places: incidence depends nonlinearly on $R_t$ and the current state, and case counts are discrete rather than Gaussian.
 So the exact Kalman recursion no longer applies, and the **particle filter is its general-purpose replacement** — it *samples* the filtering distribution instead of *computing* it, at the cost of Monte-Carlo error.
 The **ensemble Kalman filter** sits between the two, propagating a Gaussian approximation through the nonlinear model: cheaper than a particle filter, exact only in the linear-Gaussian limit.
@@ -354,6 +354,7 @@ For the broader modeling context, Keeling & Rohani's *Modeling Infectious Diseas
 ## Related
 
 - [State-Space Models and Particle Filtering](state-space-particle-filter.md) — the bootstrap particle filter developed in full, the engine under every method here
+- [The Kalman Filter](kalman-filter.md) — the linear-Gaussian special case, exact where these simulation-based methods approximate
 - [Approximate Bayesian Computation](approximate-bayesian-computation.md) — the most assumption-light plug-and-play route, needing no measurement density
 - [Fitting Dynamic Models to Data](model-calibration.md) — calibration and identifiability when a likelihood is available directly
 - [Markov Chain Monte Carlo](mcmc.md) — the sampler wrapped around the particle filter in particle MCMC

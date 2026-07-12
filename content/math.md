@@ -118,6 +118,7 @@ It requires practice and repetition.
 
 - [Bayesian Inference](math/bayesian-inference.md) — priors, likelihood, and the posterior
 - [Markov Chain Monte Carlo](math/mcmc.md)
+- [The Kalman Filter](math/kalman-filter.md) — the linear-Gaussian predict/update recursion, time-varying transmission, and fusing wastewater with case reports
 - [State-Space Models and Particle Filtering](math/state-space-particle-filter.md) — partially observed Markov processes and the bootstrap particle filter
 - [POMP Models and Plug-and-Play Inference](math/partially-observed-markov-processes.md) — iterated filtering, particle MCMC, and synthetic likelihood behind the `pomp` package
 - [Approximate Bayesian Computation](math/approximate-bayesian-computation.md) — likelihood-free inference by simulation, for models you can run but not write down
