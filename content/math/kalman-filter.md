@@ -151,6 +151,115 @@ The filter uses only data up to time $t$, which is what you want in real time bu
 The **Rauch–Tung–Striebel (RTS) smoother** makes a second, backward pass that conditions each state on the *entire* series, sharpening every estimate and narrowing every band — especially at turning points, where a filter always lags.
 Use the **filter** for nowcasting and forecasting, the **smoother** for retrospective reconstruction (`dlmSmooth` above does exactly this).
 
+## Going Bayesian: learning the noise
+
+Everything so far assumed you *know* the process- and observation-noise variances $Q$ and $R$ — but those are exactly what set the Kalman gain [@eq:kf-gain], and in practice they are unknown.
+Hand-tuning them is the usual fudge; the principled alternative is to put **priors** on them and let the data decide.
+This is where the filter reveals a second gift: as it runs, it produces the **exact marginal likelihood** of the data given the parameters, $p(y_{1:T} \mid \theta)$, through the innovations (prediction-error) decomposition — it integrates the latent states out analytically, the continuous-Gaussian twin of the [HMM forward algorithm](hidden-markov-models.md).
+So we run the Kalman filter inside a NumPyro model to get a smooth log-likelihood in the noise scales $(\sigma_\text{proc}, \sigma_\text{obs})$ and sample their posterior with NUTS — the very objective that `dlm` and `KFAS` *maximize* for MLE, sampled instead of optimized, which also propagates the parameter uncertainty into the state estimates.
+
+**Setting priors.** The unknowns are two standard deviations, so **half-Normal** priors — positive and weakly informative — are the natural choice: $\sigma_\text{proc}, \sigma_\text{obs} \sim \text{HalfNormal}(1)$, with the scale set to the rough magnitude of the data's fluctuations (an Exponential or half-$t$ serves equally well).
+A **prior predictive check** confirms those priors imply sensible series before fitting, and a **posterior predictive check** — here on the standard deviation of the first differences $\Delta y_t = y_t - y_{t-1}$, which for a local-level model equals $\sqrt{2\sigma_\text{obs}^2 + \sigma_\text{proc}^2}$ — confirms the fit reproduces the data's volatility.
+
+:::spoiler How running the filter marginalizes the latent states — and where that is in the code
+A Bayesian sampler needs $p(y_{1:T} \mid \theta)$ with the latent states $x_{1:T}$ **integrated out**, and for a linear-Gaussian model that integral is available in closed form — the Kalman filter computes it as a *byproduct*.
+As the filter steps forward it produces the one-step-ahead **innovation** $v_t = y_t - H\hat{x}_{t\mid t-1}$, which is Gaussian with mean zero and variance $S_t = H P_{t\mid t-1} H^\top + R$, and successive innovations are independent.
+So the marginal likelihood factorizes into a product of these predictive Gaussians — the **prediction-error decomposition**:
+
+\[
+\log p(y_{1:T} \mid \theta) = -\tfrac{1}{2}\sum_{t=1}^{T} \Big[ \log(2\pi S_t) + \frac{v_t^2}{S_t} \Big].
+\]
+
+This integrates over all latent-state paths *exactly*, the Gaussian analogue of the [HMM forward algorithm](hidden-markov-models.md) summing over discrete paths — same idea, sum replaced by an integral the Kalman recursion does in closed form.
+
+The `kalman_loglik` function is precisely this:
+
+- inside `step`, `xp, Pp = x, P + q` is the predict [@eq:kf-predict]; `v = yt - xp` and `S = Pp + r` are the innovation and its variance (with $H = 1$ for a local level).
+- `ll = ll - 0.5*(log(2*pi*S) + v*v/S)` accumulates one term of the boxed sum.
+- `K = Pp / S` and the returned `(xp + K*v, (1-K)*Pp, ll)` are the Kalman update [@eq:kf-update], carrying the state forward for the next innovation.
+- `lax.scan` runs the recursion down the series — fast, and differentiable in $(\sigma_\text{proc}, \sigma_\text{obs})$, which enter only through `q` and `r` — and `numpyro.factor("obs", ...)` adds the total to the model's log-density.
+
+Because the states were integrated out, they are not in the posterior; to recover the filtered/smoothed trajectory you rerun the filter (or the RTS smoother) at the posterior draws, exactly as the HMM recovers its states after marginalizing them.
+:::
+
+```python
+import numpy as np
+import jax.numpy as jnp
+from jax import lax, random
+import numpyro, numpyro.distributions as dist
+from numpyro.infer import MCMC, NUTS
+
+# ---- data: a local-level (random walk + noise) series ----
+rng = np.random.default_rng(0)
+n = 150
+sig_proc_true, sig_obs_true = 0.3, 1.0
+x_true = np.cumsum(rng.normal(0, sig_proc_true, n)) + 5.0
+y = x_true + rng.normal(0, sig_obs_true, n)
+stat = lambda yy: np.std(np.diff(yy))                # SD of first differences
+obs_stat = stat(y)
+
+
+def kalman_loglik(sig_proc, sig_obs, y):
+    """Innovations (prediction-error) log-likelihood: marginalizes the states."""
+    q, r = sig_proc ** 2, sig_obs ** 2
+
+    def step(carry, yt):
+        x, P, ll = carry
+        xp, Pp = x, P + q                            # predict
+        v, S = yt - xp, Pp + r                       # innovation + its variance
+        ll = ll - 0.5 * (jnp.log(2 * jnp.pi * S) + v * v / S)
+        K = Pp / S                                   # Kalman gain, then update
+        return (xp + K * v, (1 - K) * Pp, ll), None
+
+    (_, _, ll), _ = lax.scan(step, (y[0], 100.0, 0.0), y)
+    return ll
+
+
+def model(y):
+    sig_proc = numpyro.sample("sig_proc", dist.HalfNormal(1.0))   # process SD
+    sig_obs = numpyro.sample("sig_obs", dist.HalfNormal(1.0))     # observation SD
+    numpyro.factor("obs", kalman_loglik(sig_proc, sig_obs, jnp.array(y)))
+
+
+mcmc = MCMC(NUTS(model), num_warmup=500, num_samples=500, progress_bar=False)
+mcmc.run(random.PRNGKey(0), y)
+post = mcmc.get_samples()
+print("posterior mean [90% CI]:")
+for nm, tr in [("sig_proc", sig_proc_true), ("sig_obs", sig_obs_true)]:
+    s = np.asarray(post[nm])
+    print(f"  {nm:9s} {s.mean():.2f} [{np.percentile(s,5):.2f}, {np.percentile(s,95):.2f}]  truth {tr}")
+
+# ---- prior & posterior predictive checks on the first-difference SD ----
+def sim(sp, so, seed):
+    r = np.random.default_rng(seed)
+    return np.cumsum(r.normal(0, sp, n)) + 5.0 + r.normal(0, so, n)
+
+def pred_interval(sp, so, seed):
+    return np.percentile([stat(sim(sp[i], so[i], seed + i)) for i in range(len(sp))], [5, 95])
+
+S = 300; kr = np.random.default_rng(7)
+lo0, hi0 = pred_interval(np.abs(kr.normal(0, 1, S)), np.abs(kr.normal(0, 1, S)), 100)  # prior
+j = np.random.default_rng(9).integers(0, 500, S)                                        # posterior
+lo1, hi1 = pred_interval(np.asarray(post["sig_proc"])[j], np.asarray(post["sig_obs"])[j], 200)
+print(f"first-diff SD: observed {obs_stat:.2f}")
+print(f"  prior predictive     90% [{lo0:.2f}, {hi0:.2f}]")
+print(f"  posterior predictive 90% [{lo1:.2f}, {hi1:.2f}]")
+```
+
+<!-- python-output:auto -->
+```text
+posterior mean [90% CI]:
+  sig_proc  0.32 [0.21, 0.48]  truth 0.3
+  sig_obs   1.07 [0.97, 1.20]  truth 1.0
+first-diff SD: observed 1.54
+  prior predictive     90% [0.34, 2.88]
+  posterior predictive 90% [1.32, 1.82]
+```
+<!-- /python-output:auto -->
+
+The posterior recovers both noise scales with credible intervals, the prior predictive brackets the observed volatility loosely, and the posterior predictive brackets it tightly — a calibrated fit that learned $Q$ and $R$ from the data instead of by hand.
+The same recipe extends to the [local-linear-trend](#example-recovering-time-varying-transmission) and multi-stream models above: add priors on their noise scales and run their Kalman filter inside the sampler.
+
 ## Example: recovering time-varying transmission
 
 Transmission is never constant — interventions, behavior, and seasonality all move it — so a central task is estimating a **time-varying growth rate or reproduction number** from a case series.
@@ -360,5 +469,7 @@ Learn it here in its exact, linear-Gaussian form, and the nonlinear generalizati
 - [The Renewal Equation](renewal-equation.md) — the growth-rate-to-$R_t$ conversion used above
 - [Random Walks and Brownian Motion](random-walk-brownian-motion.md) — the process model at the heart of the local-level filter
 - [Gaussian Processes](gaussian-processes.md) — the other Gaussian workhorse; a state-space view of GPs yields Kalman-speed inference
+- [Bayesian Inference](bayesian-inference.md) · [Markov Chain Monte Carlo](mcmc.md) — the Bayesian fit of the noise variances and its sampler
+- [Prior Predictive Checks](prior-predictive-checks.md) · [Posterior Predictive Checks](posterior-predictive-checks.md) — the checks used on the Bayesian filter
 - [Nowcasting](../epidemiology/nowcasting.md) · [Excess Mortality](../epidemiology/excess-mortality.md) — applications of structural-model filtering
 - [Quantitative Methods](../math.md)
