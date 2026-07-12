@@ -144,11 +144,11 @@ def run_external(lang: str, selected: list[tuple[int, str]], total: int,
             # R runs R_PROFILE_USER at startup, then drops to the prompt with
             # state loaded.
             env = dict(os.environ, R_PROFILE_USER=path)
-            print(f"[repl] {total} R block(s) preloaded — Ctrl-D to exit.",
+            print(f"[repl] {len(selected)} R block(s) preloaded — Ctrl-D to exit.",
                   file=sys.stderr)
             return subprocess.run([interp, "--no-save", "--quiet"], env=env).returncode
         # julia -i runs the file then stays interactive with Main populated.
-        print(f"[repl] {total} Julia block(s) preloaded — Ctrl-D to exit.",
+        print(f"[repl] {len(selected)} Julia block(s) preloaded — Ctrl-D to exit.",
               file=sys.stderr)
         return subprocess.run([interp, "-i", path]).returncode
 

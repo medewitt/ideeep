@@ -141,6 +141,18 @@ class RunPythonTests(unittest.TestCase):
         launch.assert_not_called()
 
 
+class RunExternalTests(unittest.TestCase):
+    def test_banner_counts_loaded_not_page_total(self):
+        err = io.StringIO()
+        with mock.patch.object(rb.inj, "toolchain_available", lambda lang: True):
+            with mock.patch.object(rb.subprocess, "run") as run:
+                run.return_value.returncode = 0
+                with mock.patch.object(sys, "stderr", err):
+                    rc = rb.run_external("r", [], total=3, open_repl=True)
+        self.assertEqual(rc, 0)
+        self.assertIn("0 R block(s) preloaded", err.getvalue())
+
+
 class MainNoneFlagTests(unittest.TestCase):
     def run_main(self, *argv):
         with mock.patch.object(sys, "argv", ["repl_blocks.py", *argv]):
