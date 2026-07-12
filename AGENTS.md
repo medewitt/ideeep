@@ -344,30 +344,48 @@ left as a plain, un-numbered image (use it for purely decorative art), and an
 **unresolved `[@fig:…]`** renders a loud marker rather than silently vanishing.
 See `process_figures` in `src/main.rs`.
 
-## Executable Python: output injection
+## Executable code: output injection
 
-` ```python ` blocks are **executed** by `scripts/inject_python_output.py`, and their real stdout is injected beneath the block between `<!-- python-output:auto -->` markers (idempotent).
+` ```python ` blocks are **executed** by `scripts/inject_python_output.py`, and their real stdout is injected beneath the block between `<!-- python-output:auto -->` markers (idempotent). ` ```r ` and ` ```julia ` blocks can opt in the same way — see the R/Julia note below.
 
 - Blocks on a page run **top-to-bottom in one shared namespace**.
 - Allowed dependencies (fixed set): `numpy, scipy, sympy, pandas, polars, statsmodels, networkx, matplotlib, scikit-learn, numpyro, jax, torch, mapie, xgboost, shap, umap-learn, hdbscan, torchdiffeq, flax, optax, torch-geometric`. (`numpyro`/`jax`/`torch` make the injector heavier to install and run — they are included so Bayesian and deep-learning examples can execute; keep such blocks small and fast, e.g. short MCMC runs or a few training steps on tiny synthetic data.) `torch` installs the CPU build from PyPI; **`download.pytorch.org` is blocked**, so anything that fetches pretrained weights (torchvision models, YOLO, HuggingFace) cannot run — write those as `# no-run` illustrative snippets and keep only from-scratch models runnable. Because minor float differences across `torch` versions can change committed output, make deep-learning blocks print **stable, converged quantities** (accuracies, coarsely-rounded losses, shapes), not exact float trajectories.
 - Keep blocks **deterministic** (seed RNGs), **self-contained**, and **low-output** (capped at 15 lines).
-- **R and Julia blocks are never executed** — they are illustrative, so they may reference any package.
-- Add `# no-run` to skip a block; plot-only or intentionally-erroring blocks inject nothing.
+- Add `# no-run` (on its own line) to skip a Python block; plot-only or intentionally-erroring blocks inject nothing.
 - Run `just python-output` to (re)generate; `just python-output-check` verifies it is current.
 - **Prefer [Polars](https://pola.rs) over pandas** in new Python examples.
 
+**R and Julia are opt-in, default off.** ` ```r ` and ` ```julia ` blocks are
+illustrative by default and are **not** executed — so they may reference any
+package. Opt a single block in by adding `# run` on its own line (the mirror of
+Python's `# no-run`); its stdout is then injected between `<!-- r-output:auto -->`
+or `<!-- julia-output:auto -->` markers. Details:
+- Execution only happens when the interpreter (`Rscript` / `julia`) is **on PATH**.
+  When it is absent, the runnable blocks are skipped with a stderr warning and any
+  committed output is left untouched — **CI installs neither**, so `# run` outputs
+  are generated on a contributor's machine and committed, never regenerated in CI.
+- Each language's runnable blocks on a page share **one interpreter process**, so
+  a later `# run` block sees names from earlier ones — just like Python's namespace.
+- **R auto-prints** visible top-level values (REPL-like, via `print.eval`); **Julia**
+  (like Python) prints only what the code explicitly `println`s.
+- An erroring `# run` block injects nothing but the process continues, so it may
+  leave **partial shared state** for later blocks — keep runnable blocks robust.
+
 **Execution is cached by content hash.** A page's injected output is a pure
-function of its ordered ```python blocks, so the injector fingerprints those
-blocks and records the fingerprint in `scripts/.python-output-cache.json` after
-a successful `--write`. A later run skips executing any page whose fingerprint
-still matches — so a full `just python-output-check` no longer re-runs the heavy
-MCMC/`jax` pages every time, and editing only prose on such a page does not
-trigger re-sampling. **Commit the cache file** alongside the injected outputs
-(both are written by `just python-output`); it is what lets CI's `--check` only
-execute the pages whose code actually changed. The cache self-heals — a missing
-or stale entry just falls back to running that page — so deleting it is safe and
-only costs a one-time recompute. Bump `FORMAT_TAG` in the script if you change
-the injection format so every fingerprint invalidates.
+function of its runnable blocks — every ```python block, plus each ```r/```julia
+block carrying `# run` — so the injector fingerprints those and records the
+fingerprint in `scripts/.python-output-cache.json` after a successful `--write`.
+A later run skips executing any page whose fingerprint still matches — so a full
+`just python-output-check` no longer re-runs the heavy MCMC/`jax` pages every
+time, and editing only prose (or an illustrative R/Julia block) does not trigger
+re-sampling. A page whose `# run` blocks could not execute (missing toolchain, or
+a failed interpreter) is **never recorded as fresh**, so a machine that does have
+the toolchain will pick it up. **Commit the cache file** alongside the injected
+outputs (both are written by `just python-output`); it is what lets CI's `--check`
+only execute the pages whose code actually changed. The cache self-heals — a
+missing or stale entry just falls back to running that page — so deleting it is
+safe and only costs a one-time recompute. Bump `FORMAT_TAG` in the script if you
+change the injection format so every fingerprint invalidates.
 
 The injector has its own regression suite, `scripts/test_inject_python_output.py`
 (stdlib only), run with `just test-scripts` — which also runs
@@ -375,8 +393,10 @@ The injector has its own regression suite, `scripts/test_inject_python_output.py
 one-sentence-per-line reflow and its spoiler-awareness (fence lines are never
 merged into prose). It follows the same test-driven
 rule as the Rust generator: changes to `inject_python_output.py` — injection,
-`# no-run` / truncation handling, fingerprinting, or caching — should come with a
-test. Keep injected Python **deterministic**: seed every RNG *and* pin any
+`# no-run` / `# run` / truncation handling, R/Julia execution, fingerprinting, or
+caching — should come with a test (the R/Julia runner is mocked in the suite so
+the orchestration is covered even where `Rscript`/`julia` are absent). Keep
+injected Python **deterministic**: seed every RNG *and* pin any
 library-internal randomness (e.g. `PCA(svd_solver="full")`, which avoids
 scikit-learn's unseeded randomized SVD), so a page's committed output is stable
 and the fingerprint cache stays trustworthy.
