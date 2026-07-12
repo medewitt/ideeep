@@ -37,6 +37,16 @@ python-output:
 python-output-check:
     uv run --script scripts/inject_python_output.py --check {{prose_dirs}}
 
+# Interactively run a page's code blocks in the injector's uv environment, then
+# drop into a REPL with the page's state loaded — a dev-time authoring aid (like
+# "send block to REPL"). Local only; never part of the built site. Examples:
+#   just repl content/math/foo.md                # every python block, then a REPL
+#   just repl content/math/foo.md --list         # number the blocks and exit
+#   just repl content/math/foo.md --block 3      # run only block 3, then a REPL
+#   just repl content/math/foo.md --lang r        # the page's R blocks (needs Rscript)
+repl PAGE *ARGS:
+    uv run --script scripts/repl_blocks.py {{PAGE}} {{ARGS}}
+
 # Render illustrative figures (SVG) from the scripts in figures/ using uv.
 # Each script declares its own dependencies inline (PEP 723); uv builds an
 # ephemeral, cached environment per run. Output SVGs are committed so the
