@@ -91,6 +91,7 @@ It requires practice and repetition.
 - [Chain-Binomial Models and the Household Secondary Attack Rate](math/chain-binomial-reed-frost.md) — Reed-Frost transmission and household final size
 - [Random Walks and Brownian Motion](math/random-walk-brownian-motion.md) — diffusive scaling and the Wiener process
 - [Fourier and Spectral Analysis](math/fourier-spectral-analysis.md) — decomposing a signal into frequencies and finding periodicity with the periodogram
+- [Wavelet Analysis](math/wavelet-analysis.md) — time-resolved periodicity for non-stationary signals, the scalogram, and wavelet coherence
 - [Copulas](math/copulas.md) — separating dependence from the marginals via Sklar's theorem
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
 - [Kullback–Leibler Divergence](math/kl-divergence.md) — relative entropy, cross-entropy, and forward vs reverse KL
@@ -119,7 +120,10 @@ It requires practice and repetition.
 
 - [Bayesian Inference](math/bayesian-inference.md) — priors, likelihood, and the posterior
 - [Markov Chain Monte Carlo](math/mcmc.md)
+- [The Kalman Filter](math/kalman-filter.md) — the linear-Gaussian predict/update recursion, time-varying transmission, and fusing wastewater with case reports
 - [State-Space Models and Particle Filtering](math/state-space-particle-filter.md) — partially observed Markov processes and the bootstrap particle filter
+- [POMP Models and Plug-and-Play Inference](math/partially-observed-markov-processes.md) — iterated filtering, particle MCMC, and synthetic likelihood behind the `pomp` package
+- [Hidden Markov Models](math/hidden-markov-models.md) — discrete latent regimes via the forward, Viterbi, and Baum-Welch algorithms
 - [Approximate Bayesian Computation](math/approximate-bayesian-computation.md) — likelihood-free inference by simulation, for models you can run but not write down
 - [Prior Predictive Checks](math/prior-predictive-checks.md) — simulate from the prior to sanity-check it before fitting
 - [Posterior Predictive Checks](math/posterior-predictive-checks.md) — compare replicated data to the observed to test the model

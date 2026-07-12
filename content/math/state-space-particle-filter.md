@@ -19,7 +19,7 @@ The **observation model** links the hidden state to the data, $y_t \sim g(y_t \m
 The inferential problem is that we only see $y_{1:T}$ and must reason about the unobserved $x_{1:T}$ and the parameters governing both layers.
 
 The central quantity is the **filtering distribution** $p(x_t \mid y_{1:t})$: our belief about the current hidden state given all data so far.
-For linear-Gaussian models the [Kalman filter](covariance-functions.md) computes it exactly, and the **ensemble Kalman filter** extends it approximately to nonlinear models, but epidemic models are nonlinear and non-Gaussian, which is where particle filters come in.
+For linear-Gaussian models the [Kalman filter](kalman-filter.md) computes it exactly, and the **ensemble Kalman filter** extends it approximately to nonlinear models, but epidemic models are nonlinear and non-Gaussian, which is where particle filters come in.
 
 ## The bootstrap particle filter
 
@@ -148,6 +148,9 @@ That combination — mechanistic simulator plus a filter that yields a likelihoo
 
 ## Related
 
+- [The Kalman Filter](kalman-filter.md) — the exact linear-Gaussian filter this method generalizes
+- [Hidden Markov Models](hidden-markov-models.md) — the discrete-latent-state special case
+- [POMP Models and Plug-and-Play Inference](partially-observed-markov-processes.md) — the inference toolkit built on the particle filter
 - [Fitting Dynamic Models to Data](model-calibration.md) — calibration when a likelihood is available
 - [Markov Chains](markov-chains.md) — the process layer of a state-space model
 - [Markov Chain Monte Carlo](mcmc.md) — the sampler behind particle MCMC
