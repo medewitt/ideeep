@@ -5,7 +5,8 @@ title: "Exponential and Logistic Growth"
 # Exponential and Logistic Growth
 
 Every population, from a bacterial colony to an outbreak's infected class, starts by growing in proportion to its own size.
-Exponential and logistic growth are the two baseline models that describe this — the first for unlimited resources, the second for the density dependence that eventually reins growth in.
+In the case of bacterial growth undergoing binary fission, each generation begets two offspring, continuing.
+Exponential and logistic growth are the two baseline models that describe this — the first for unlimited resources (rarely if ever the case in reality, but realistic in early growth periods), the second for the density dependence that eventually reins growth in due to limited resources driven by the resources or competition for the resources.
 
 ![Exponential growth rises without bound while logistic growth levels off at the carrying capacity K.](../assets/figures/logistic-growth.svg)
 

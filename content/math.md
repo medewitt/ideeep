@@ -8,11 +8,15 @@ description: "Bite-sized references on the calculus, linear algebra, probability
 
 # Quantitative Methods
 
-Quantitative methods are essential for those working in mathematical biology, doing epidemiology, and designing experiments (from basic bench experiementals to large field experiments) -- especially as part of the modern practice of these fields.
+Quantitative methods are essential for those working in mathematical biology, doing epidemiology, and designing experiments (from basic bench experiments to large field experiments) -- especially as part of the modern practice of these fields.
 The best way to learn these skills is through constant exposure and solving practical problems.
 
 Here we collate a collection of bite-sized references covering the calculus, linear algebra, probability, and statistics that underpin quantitative work in infectious disease ecology, evolution, and epidemiology.
 Each page pairs the core idea and notation with a worked example and runnable code in [**R**](https://cran.r-project.org), [**Python**](https://www.python.org), and [**Julia**](https://julialang.org) for simulation and mostly importantly, intuition.
+Note that many of these came from years of notes, but some are created with the assistance of LLMs.
+Let us know if you spot any errors.
+Furthermore, many of the posts taken on strong opinions regarding the use of particular methods.
+These are tools and as such there are often many different ways of applying tools to problems (e.g., two carpenters with the same tools may approach building a cabinet in very different ways using different sets of tools).
 
 Math is hard.
 It requires practice and repetition.
