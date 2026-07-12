@@ -88,41 +88,51 @@ The likelihood is highest near the truth: that is the signal iterated filtering 
 
 ## In code
 
+The R version uses the [`pomp`](https://kingaa.github.io/pomp/) package directly: you specify the model as `rprocess`/`rmeasure`/`dmeasure` C snippets and call `pfilter()` and `mif2()` on the resulting object.
+The Python and Julia versions implement the same bootstrap filter by hand, so you can see the propagate–weight–resample loop that `pomp` runs for you.
+
 ### R
 
 ```r
-set.seed(42)
-N <- 20000; gamma <- 1.0; rho <- 0.5; n_weeks <- 24
+library(pomp)
 
-step <- function(S, I, beta) {
-  new_inf <- rbinom(1, S, 1 - exp(-beta * I / N))
-  new_rec <- rbinom(1, I, 1 - exp(-gamma))
-  list(S = S - new_inf, I = I + new_inf - new_rec, inc = new_inf)
-}
+# --- rprocess: a discrete-time stochastic SIR with a case accumulator C.
+sir_step <- Csnippet("
+  double infection = rbinom(S, 1 - exp(-beta * I / N));
+  double recovery  = rbinom(I, 1 - exp(-gamma));
+  S -= infection;
+  I += infection - recovery;
+  C += infection;                       // new infections since last observation
+")
+rinit <- Csnippet("S = N - 10; I = 10; C = 0;")
 
-# simulate one epidemic at the true beta and observe it with reporting rho
-S <- N - 10; I <- 10; reports <- numeric(n_weeks)
-for (t in 1:n_weeks) {
-  st <- step(S, I, 1.5); S <- st$S; I <- st$I
-  reports[t] <- rbinom(1, st$inc, rho)
-}
+# --- measurement model: reports ~ Binomial(C, rho) — under-reporting.
+dmeas <- Csnippet("lik = dbinom(reports, C, rho, give_log);")
+rmeas <- Csnippet("reports = rbinom(C, rho);")
 
-pfilter <- function(beta, n_part = 2000) {
-  S <- rep(N - 10, n_part); I <- rep(10, n_part); loglik <- 0
-  for (t in 1:n_weeks) {
-    new_inf <- rbinom(n_part, S, 1 - exp(-beta * I / N))
-    new_rec <- rbinom(n_part, I, 1 - exp(-gamma))
-    S <- S - new_inf; I <- I + new_inf - new_rec
-    w <- dbinom(reports[t], new_inf, rho)         # dmeasure
-    if (sum(w) == 0) return(-Inf)                 # filter collapse: beta ruled out
-    loglik <- loglik + log(mean(w))
-    idx <- sample.int(n_part, n_part, TRUE, prob = w)
-    S <- S[idx]; I <- I[idx]
-  }
-  loglik
-}
+# --- assemble the POMP object: plug in the simulator and the obs density.
+mod <- pomp(
+  data      = data.frame(week = 1:24, reports = NA),
+  times = "week", t0 = 0,
+  rprocess  = discrete_time(sir_step, delta.t = 1),
+  rinit = rinit, rmeasure = rmeas, dmeasure = dmeas,
+  accumvars = "C",
+  statenames = c("S", "I", "C"),
+  paramnames = c("beta", "gamma", "rho", "N")
+)
 
-sapply(c(1.3, 1.5, 1.7), pfilter)   # log-likelihood highest near beta = 1.5
+theta <- c(beta = 1.5, gamma = 1.0, rho = 0.5, N = 20000)
+obs <- simulate(mod, params = theta, seed = 42)   # one epidemic at beta = 1.5
+
+# particle-filter log-likelihood at a few transmission rates (highest near 1.5)
+ll_at <- function(b)
+  logLik(pfilter(obs, params = c(theta[-1], beta = b), Np = 2000))
+sapply(c(1.3, 1.5, 1.7), ll_at)
+
+# iterated filtering (IF2): climb to the maximum-likelihood estimate of beta
+mf <- mif2(obs, Nmif = 50, Np = 2000, params = theta,
+           rw.sd = rw_sd(beta = 0.02), cooling.fraction.50 = 0.5)
+coef(mf, "beta")                                  # -> approximately 1.5
 ```
 
 ### Python
@@ -222,6 +232,105 @@ end
 [pfilter(b) for b in (1.3, 1.5, 1.7)]   # highest near beta = 1.5
 ```
 
+## Time-varying transmission and the link to the Kalman filter
+
+A constant transmission rate is usually a fiction: interventions, behavior change, school terms, and weather all move transmission over the course of an outbreak.
+The POMP framing handles this without any new machinery — you simply **promote the transmission rate from a fixed parameter to a latent state** and let it evolve, most often as a Gaussian random walk on the log scale,
+
+\[
+\log R_t = \log R_{t-1} + \sigma\, \varepsilon_t, \qquad \varepsilon_t \sim \mathcal{N}(0, 1).
+\label{eq:rw-rt}
+\]
+
+Now the filter estimates a whole **trajectory** $R_{1:T}$ rather than a single number, and the same particle filter that scored a scalar $\beta$ tracks the moving target instead.
+This semi-mechanistic device — a mechanistic transmission process with a stochastically drifting rate — is how time-varying reproduction numbers are estimated in practice, and it links directly to the [renewal equation](renewal-equation.md) and the [effective reproduction number](reproduction-number-rt.md).
+
+![Left: latent infections and their under-reported case counts from a renewal process. Right: a particle filter tracking a Gaussian random walk on log R_t recovers the true time-varying reproduction number — dropping below one when control is imposed and rebounding later — with a 90% credible band.](../assets/figures/pomp-time-varying-transmission.svg)
+
+Here the latent state is the recent infection history together with $\log R_t$; the process pushes infections forward through the [renewal equation](renewal-equation.md), $I_t \sim \text{Poisson}\!\big(R_t \sum_s w_s I_{t-s}\big)$, and the measurement model under-reports them.
+The filter recovers $R_t$ falling below one when control bites and climbing back afterward, lagging the true step changes slightly — the price a *filter* pays for using only data up to time $t$ (a smoother, using all the data, sharpens the turns).
+
+```python
+import numpy as np
+from scipy.stats import binom
+from scipy.special import logsumexp
+
+rng = np.random.default_rng(3)
+n_weeks, rho = 40, 0.6
+w = np.array([0.30, 0.40, 0.20, 0.10])       # generation-interval weights
+L = len(w)
+
+# True R_t: 1.6, dropping to 0.7 under control, rebounding to 1.15.
+t = np.arange(n_weeks)
+R_true = np.where(t < 14, 1.6, np.where(t < 26, 0.7, 1.15))
+
+# Simulate latent incidence via the renewal equation, then under-report it.
+I = np.zeros(n_weeks)
+I[:L] = [20, 25, 30, 35]
+for k in range(L, n_weeks):
+    I[k] = rng.poisson(R_true[k] * np.sum(w * I[k - L:k][::-1]))
+reports = rng.binomial(I.astype(int), rho)
+
+
+def track_rt(n_part=6000, sigma=0.15, seed=4):
+    """Particle filter over (recent infections, log R_t) with a random walk."""
+    r = np.random.default_rng(seed)
+    logR = r.normal(np.log(1.5), 0.3, n_part)
+    hist = np.tile(I[:L], (n_part, 1)).astype(float)
+    est = np.array(R_true, dtype=float)
+    for k in range(L, n_weeks):
+        logR = logR + r.normal(0, sigma, n_part)              # rw on log R_t
+        lam = np.exp(logR) * (hist[:, ::-1] * w).sum(1)       # renewal mean
+        Ik = r.poisson(np.maximum(lam, 1e-6))                 # latent infections
+        wt = np.exp(binom.logpmf(reports[k], Ik, rho)
+                    - logsumexp(binom.logpmf(reports[k], Ik, rho)))
+        est[k] = np.sum(wt * np.exp(logR))
+        idx = r.choice(n_part, n_part, p=wt)                  # resample
+        logR, hist = logR[idx], np.column_stack([hist[idx, 1:], Ik[idx]])
+    return est
+
+
+est = track_rt()
+print("week  R_true  R_est")
+for k in (6, 13, 18, 25, 30, 38):
+    print(f"{k + 1:4d}   {R_true[k]:.2f}    {est[k]:.2f}")
+print(f"RMSE(R_t) = {np.sqrt(np.mean((est[L:] - R_true[L:]) ** 2)):.3f}")
+```
+
+<!-- python-output:auto -->
+```text
+week  R_true  R_est
+   7   1.60    1.35
+  14   1.60    1.63
+  19   0.70    0.62
+  26   0.70    0.85
+  31   1.15    1.22
+  39   1.15    0.96
+RMSE(R_t) = 0.121
+```
+<!-- /python-output:auto -->
+
+In `pomp` you would write exactly [@eq:rw-rt] as part of `rprocess` and leave every other component untouched — the plug-and-play interface again:
+
+```r
+# rprocess with log-transmission as a random-walk latent state
+sir_rw_step <- Csnippet("
+  logbeta += rnorm(0, sigma);           // eq. (2): random walk on log transmission
+  double beta = exp(logbeta);
+  double infection = rbinom(S, 1 - exp(-beta * I / N));
+  double recovery  = rbinom(I, 1 - exp(-gamma));
+  S -= infection; I += infection - recovery; C += infection;
+")
+# 'logbeta' is now a state, 'sigma' its walk sd; pfilter()/mif2() are unchanged.
+```
+
+This is precisely where the connection to the **Kalman filter** surfaces.
+If the latent state evolved as a *linear* Gaussian process and were observed through a *linear* Gaussian measurement, the filtering distribution [@eq:pomp-lik] would be Gaussian at every step and available in closed form — that exact recursion **is** the [Kalman filter](state-space-particle-filter.md), and its smoother returns the whole latent trajectory analytically.
+Time-varying transmission breaks that linearity in two places: incidence depends nonlinearly on $R_t$ and the current state, and case counts are discrete rather than Gaussian.
+So the exact Kalman recursion no longer applies, and the **particle filter is its general-purpose replacement** — it *samples* the filtering distribution instead of *computing* it, at the cost of Monte-Carlo error.
+The **ensemble Kalman filter** sits between the two, propagating a Gaussian approximation through the nonlinear model: cheaper than a particle filter, exact only in the linear-Gaussian limit.
+The fixed-$\beta$ likelihood slice above and this time-varying reconstruction are the same idea at two points on that continuum, with the Kalman filter waiting at the linear-Gaussian end.
+
 ## Case studies
 
 The plug-and-play toolkit was built to answer questions that stumped likelihood-based methods.
@@ -249,6 +358,8 @@ For the broader modeling context, Keeling & Rohani's *Modeling Infectious Diseas
 - [Fitting Dynamic Models to Data](model-calibration.md) — calibration and identifiability when a likelihood is available directly
 - [Markov Chain Monte Carlo](mcmc.md) — the sampler wrapped around the particle filter in particle MCMC
 - [Stochastic Epidemics and the Gillespie Algorithm](stochastic-epidemics.md) — simulating the latent process that `rprocess` encodes
+- [The Effective Reproduction Number and Forecasting](reproduction-number-rt.md) — what the time-varying-transmission POMP estimates
+- [The Renewal Equation](renewal-equation.md) — the process model behind the time-varying $R_t$ example
 - [Maximum Likelihood Estimation](maximum-likelihood.md) — the target that iterated filtering climbs
 - [Identifiability](identifiability.md) — when data cannot separate the process and observation parameters
 - [Quantitative Methods](../math.md)

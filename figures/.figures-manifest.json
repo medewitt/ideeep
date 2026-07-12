@@ -177,6 +177,7 @@
   "plain-text-and-filesystems.py": "42bd119f30898ebb0491488db619bb84f3504c733e7e7753cd73197257ee47fa",
   "poisson-pmf.py": "56e6e6c56ad3bff55fa7838f0fe162242412bb31d755ddef78644d56a0f2b95e",
   "polygenic-scores.py": "80bb8c47c559c95b861afdd34f45d4908af2cd66a6a199f935e8fa6b7db3a160",
+  "pomp-time-varying-transmission.py": "51b25303cea1f41a3c9ee547099d853f87a647257087ff57a907270112a83731",
   "pooled-testing.py": "a4a3399882d10f0d9e0c69739a1bac6656355a9f4534eb0fdb89f0f53a8d58af",
   "population-model-scaling.py": "805987d4bb9ff9ab9107cb2fa274c4f04411d9e85469340cad4203018a92c3bb",
   "population-stratification.py": "3b0978d34d1124871593256a50872424e8a147522907f0bd069a07673bbe8164",
