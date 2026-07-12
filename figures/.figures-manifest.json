@@ -165,6 +165,7 @@
   "overfitting-regularization.py": "f16d5c19de326cedf46e23e332cecc15a37159f9a726b73105e10ad1b8ae3afd",
   "p-values.py": "a21dca8f62d7e969b3584565b1bd97fa966a7b6e2b0745b72f169b62d7018957",
   "package-anatomy.py": "1196a4951cf1c1624671512354ea840fe3f7b8c31628a6dee85264afa35d9018",
+  "partially-observed-markov-processes.py": "a9ec0cb29ca4ee06c2a5253c957dab7552c6aca66c3c5c9a10e6b50c5a308160",
   "permutation-tests.py": "4b03ebc8a08185a672d310607772fc6d2476493d95e646accd1e6698f424e1c8",
   "personal-website.py": "a0636186fc7696f9ec9b8ed1682fc82fc7bfcc8fc67b0177b59148ea1798a2f8",
   "pharmacodynamics.py": "1bf1c1eca9a05cb2395390fd05d02f73fe0939a305c022de0f509fbf306867cc",
