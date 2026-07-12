@@ -259,3 +259,18 @@
   aliases: [k-means clustering]
   short: A clustering method that partitions data into k groups by minimizing each point's squared distance to its cluster mean, favouring spherical clusters.
   see: math/clustering.md
+
+- term: Softmax
+  aliases: [softmax function]
+  short: A function that turns a vector of real-valued scores into a probability distribution by exponentiating each entry and normalizing them to sum to one — the multi-class generalization of the logistic function.
+  long: |
+    The softmax maps a vector of scores $z = (z_1, \dots, z_K)$ to probabilities
+    $p_i = e^{z_i} / \sum_j e^{z_j}$, which are non-negative and sum to one. It is
+    the output layer of multi-class classifiers and multinomial logistic
+    regression, and the operation that turns attention scores into weights inside
+    a transformer. A temperature $\tau$ (dividing the scores by $\tau$ before
+    exponentiating) sharpens the distribution as $\tau \to 0$ and flattens it as
+    $\tau \to \infty$. In practice it is computed via the numerically stable
+    log-sum-exp trick — subtracting the maximum score before exponentiating — to
+    avoid overflow.
+  see: math/transformers-attention.md

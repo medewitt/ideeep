@@ -52,6 +52,7 @@ It requires practice and repetition.
 - [Common Integrals](math/common-integrals.md) — a reference table
 - [u-Substitution](math/u-substitution.md)
 - [Integration by Parts](math/integration-by-parts.md)
+- [Lebesgue Integration](math/lebesgue-integration.md) — slicing the range, integrating against any measure, and a mixed continuous-plus-atomic force of infection
 
 ## Optimization
 
@@ -306,6 +307,7 @@ It requires practice and repetition.
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
 - [Reservoir Ecology](math/reservoir-ecology.md) — maintenance hosts, spillover, and multi-host persistence
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)
+- [Queueing Theory and ICU Colonization](math/queueing-theory.md) — patients through beds as a queue, a birth-death model of hospital colonization, and pricing out infection-prevention practices
 - [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
 - [The Renewal Equation](math/renewal-equation.md) — linking incidence, the generation interval, and $R_t$
 - [Population Dynamics of Resistance](math/resistance-dynamics.md) — two-strain competition and the treatment threshold
