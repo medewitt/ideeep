@@ -192,6 +192,7 @@
   "prior-encoding-vae.py": "62bad834304d0b9836f77c5c9efc29d12716fd7e2f0b4cb8ac0f5286b52cab38",
   "prior-predictive-checks.py": "29c9e795f55c5588f91a1085606abcdf41674d39ac63a17fca020a9f356e8052",
   "project-workflow.py": "b66db6650961e86e986c96faaf61183c47425634acbdad1e471d012ab2093a7d",
+  "proportional-odds-fit.py": "ba70cfd8a5e6d8c59ced8abe7ed23ce12b679b8109c8d571b4f2c91676e53bcf",
   "proportional-odds-parallel.py": "9c76ae5138fe78adab7dbf693465c927eb3ab0e64d0dbf1326fdf66445f6075b",
   "proportional-odds.py": "c4d27df92c5999c9cc50a96955966d5f9a8e01dae0677c7d9c4d2e91ce72a2c8",
   "qpcr-standard-curve.py": "090a873a51748eb8e1996cc860418656c17bfdfd841acc175fc4773b75a53214",

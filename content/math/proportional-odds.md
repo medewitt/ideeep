@@ -146,6 +146,8 @@ treatment odds ratio: 3.787
 ```
 <!-- /python-output:auto -->
 
+![The fit from the code above. Left: the model's fitted cumulative probabilities $P(Y \ge j \mid x)$ for control (solid) and treated (dashed); treatment shifts every curve by the same single odds ratio printed above, $e^{1.33} \approx 3.79$. Right: the model reproduces the data — observed category proportions (bars) versus model-predicted (dots), split by treatment arm, with treatment moving mass toward the highest category.](../assets/figures/proportional-odds-fit.svg "fig:po-fit")
+
 ### Julia
 
 ```julia
