@@ -274,3 +274,38 @@
     log-sum-exp trick — subtracting the maximum score before exponentiating — to
     avoid overflow.
   see: math/transformers-attention.md
+
+- term: Analysis of variance
+  aliases: [ANOVA]
+  short: A method that partitions total variability into between-group and within-group parts and tests their ratio with an F-statistic.
+  see: math/anova.md
+
+- term: Split-plot design
+  aliases: [split-plot, split-plot designs]
+  short: An experiment with two randomization scales — a hard-to-change factor on whole plots and an easier one on sub-plots — giving two error strata.
+  see: math/split-plot-designs.md
+
+- term: Repeated measures design
+  aliases: [repeated measures, repeated-measures, repeated-measures design]
+  short: A design in which the same units are measured under several conditions or times, using each unit as its own control.
+  see: math/repeated-measures.md
+
+- term: Crossover design
+  aliases: [crossover trial, crossover trials]
+  short: A trial in which every subject receives every treatment in sequence, separated by washout, so treatments are compared within subjects.
+  see: math/crossover-designs.md
+
+- term: Stepped-wedge design
+  aliases: [stepped-wedge trial, stepped wedge]
+  short: A cluster trial in which groups cross one-way from control to intervention on a staggered, randomized schedule until all are exposed.
+  see: math/stepped-wedge-designs.md
+
+- term: Balanced incomplete block design
+  aliases: [BIBD]
+  short: A blocked design whose blocks are too small to hold every treatment, arranged so every pair of treatments appears together equally often.
+  see: math/balanced-incomplete-block-designs.md
+
+- term: Latin square
+  aliases: [Latin square design, Latin squares]
+  short: A t×t layout in which each treatment appears once in every row and every column, controlling two blocking factors at once.
+  see: math/latin-square-designs.md

@@ -156,6 +156,13 @@ It requires practice and repetition.
 - [Optimal Experimental Design](math/optimal-design.md) — D-, A-, and I-optimality
 - [Response Surface Methodology](math/response-surface.md) — optimizing over continuous factors
 - [Latin Hypercube Sampling](math/latin-hypercube.md) — space-filling designs for computer experiments
+- [Analysis of Variance](math/anova.md) — partitioning variation into between- and within-group parts, the F-test
+- [Split-Plot Designs](math/split-plot-designs.md) — whole-plot and sub-plot factors, two error strata
+- [Repeated Measures Designs](math/repeated-measures.md) — same subjects over conditions, within-subject correlation
+- [Crossover Designs](math/crossover-designs.md) — every subject gets every treatment; washout and carryover
+- [Stepped-Wedge Designs](math/stepped-wedge-designs.md) — staggered cluster rollout, separating effect from time trend
+- [Balanced Incomplete Block Designs](math/balanced-incomplete-block-designs.md) — when a block cannot hold every treatment, keeping pairs balanced
+- [Latin Square Designs](math/latin-square-designs.md) — controlling two blocking factors at once in a t×t layout
 - [Global Sensitivity Analysis](math/sensitivity-analysis.md) — Sobol indices and Morris screening
 - [Survey Sampling](math/survey-sampling.md) — SRS, stratified, cluster, and weighting
 - [Bayesian Bandits for Adaptive Sampling and Trial Design](math/bayesian-bandits.md) — Thompson sampling to shift a testing budget toward the positive sites, and response-adaptive clinical trials
