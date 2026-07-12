@@ -210,6 +210,35 @@ Before trusting any of this, a **prior predictive check** simulates data from th
 
 Both NumPyro and Stan **marginalize** the discrete states rather than sampling them — the same forward algorithm from [@eq:hmm-forward], run inside the model so the sampler sees a smooth likelihood.
 
+:::spoiler Why marginalize the states — and how the forward algorithm in the code does it
+Gradient-based samplers (NUTS/HMC, which both NumPyro and Stan use) need a log-density that is **differentiable in the parameters** and defined on a continuous space.
+The hidden states $z_t$ are discrete, and you cannot take a gradient with respect to a category or let HMC glide through it.
+So we do not sample the $z_t$ at all — we **sum them out**, leaving a likelihood in the continuous parameters $(p_\text{low}, p_\text{high}, \text{stay}_\text{low}, \text{stay}_\text{high})$ alone.
+
+That sum is exactly the marginal likelihood [@eq:hmm-lik], $\Pr(y_{1:T}) = \sum_{z_{1:T}} \Pr(y_{1:T}, z_{1:T})$, over all $K^T$ paths — intractable head-on.
+The **forward recursion** collapses it in linear time.
+With $\alpha_t(j) = \Pr(y_{1:t}, z_t = j)$ from [@eq:hmm-forward], the whole-series likelihood is just the last column summed, $\Pr(y_{1:T}) = \sum_j \alpha_T(j)$ — an *exact* marginalization, not an approximation, costing $O(T K^2)$.
+
+Over a long series those products underflow, so we carry $\log \alpha_t$ and turn every "sum of products" into a **log-sum-exp**:
+
+\[
+\log \alpha_t(j) = \log b_j(y_t) + \operatorname*{logsumexp}_{i}\Big[ \log \alpha_{t-1}(i) + \log A_{ij} \Big],
+\qquad
+\log \Pr(y_{1:T}) = \operatorname*{logsumexp}_{j} \log \alpha_T(j).
+\]
+
+The `forward_ll` function is this recursion line for line:
+
+- `le(xt)` returns the two log-emissions $\log b_j(y_t)$ — here $\log p_j$ if the test is positive, $\log(1-p_j)$ if negative.
+- `la0 = log([0.85, 0.15]) + le(x[0])` is $\log \alpha_1(j) = \log \pi_j + \log b_j(y_1)$.
+- inside `step`, `la[:, None] + logA` builds the $2\times2$ grid $\log\alpha_{t-1}(i) + \log A_{ij}$; `logsumexp(..., axis=0)` sums over the previous state $i$; adding `le(xt)` applies the new emission — precisely the boxed recursion.
+- `lax.scan(step, la0, x[1:])` runs it down the series (fast, and differentiable in the parameters, since they enter only through `logA` and `le`).
+- `logsumexp(laT)` is $\log \Pr(y_{1:T})$ for one person; `vmap` does every person; `.sum()` adds their log-likelihoods; and `numpyro.factor("obs", ll)` adds that total to the model's log-density.
+
+The Stan block does the identical thing: `lp` is $\log \alpha_t$, the inner `log_sum_exp(lp + logA[, k])` is the same over-$i$ sum, and `target += log_sum_exp(lp)` adds the marginal log-likelihood.
+Because the states were summed out, they never appear in the posterior — to get them back you run [forward–backward](#three-questions-three-algorithms) (for $\gamma_t$) or Viterbi with the sampled parameters, exactly as in the classical section above.
+:::
+
 ```python
 import numpy as np
 import jax.numpy as jnp
