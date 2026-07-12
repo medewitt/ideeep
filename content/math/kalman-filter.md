@@ -355,6 +355,7 @@ Learn it here in its exact, linear-Gaussian form, and the nonlinear generalizati
 
 - [State-Space Models and Particle Filtering](state-space-particle-filter.md) — the nonlinear, non-Gaussian generalization of this page
 - [POMP Models and Plug-and-Play Inference](partially-observed-markov-processes.md) — fitting mechanistic models when the Kalman assumptions fail
+- [Hidden Markov Models](hidden-markov-models.md) — the discrete-state analogue, for latent regimes rather than a continuous state
 - [The Effective Reproduction Number and Forecasting](reproduction-number-rt.md) — a prime target of the time-varying-transmission filter
 - [The Renewal Equation](renewal-equation.md) — the growth-rate-to-$R_t$ conversion used above
 - [Random Walks and Brownian Motion](random-walk-brownian-motion.md) — the process model at the heart of the local-level filter

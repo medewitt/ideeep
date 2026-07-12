@@ -107,6 +107,7 @@
   "hardy-weinberg.py": "dcccd0a026fb1fb410164d95f34bac947d5705165eb2defeeadb3f361bd8db6d",
   "healthcare-associated-infections.py": "ba8dc3b765b566b55e8cb68f9c7df8ea71ef6d36548953caeff50cdc688f8c8a",
   "heritability.py": "0d2c765ea059f6d2cd9a0537b7d68d43e2b68d92c486e9f3540238c9c06b83b0",
+  "hidden-markov-model.py": "4be66b5924b3b01ab7730ce911503f57306f25d4624cafc8a58f5b7b39d8a89b",
   "hilbert-space-gp.py": "242c0a30ee4965245ad7d727a2d52bf4eed3004ab37c530240800ae872a13f45",
   "hpc-clusters-slurm.py": "39ce9b05e39ef530d91cba984dc14ad569ea11e9f1eee5922db801479ef8670b",
   "hypothesis-test.py": "fede0b19efb994684fca523efaf01b0941bbdfcdf9d3295cb2cc3683a35001bd",
@@ -279,6 +280,7 @@
   "variational-autoencoders.py": "5dcfdabde57bf4d3cf0addee6d6ff0f700153dbc2438a111f60933341dcc2bed",
   "vector-borne.py": "fe0bc8c81719dc46db249177c312a4e952519b28ca490d7d048219fe559c6843",
   "version-control-git.py": "6bcc30697f81d1926f330de737329d7876802c4c7c15815eb0e480d4884ccf6d",
+  "wavelet-analysis.py": "1ffe5cec06e4cd7de5407e4a6e3fa62c558d5d9488057b0b9c5bd06b3451ff19",
   "within-host-dynamics.py": "1a2b0d553de064d0548aceb012ad250f68138b0ad0aa7a740ead8dfd4847723b",
   "within-host-viral-load.py": "72d3dc9b50d3c7a1c147453959d3c1d422c02ab57e3ff593d30bec77e5965bc3",
   "zoonotic-spillover.py": "8f21852e7a840ad7aa893389f6d8e86e31c585682551e78aca3c68be7889b690"

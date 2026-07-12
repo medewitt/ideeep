@@ -149,6 +149,7 @@ That combination — mechanistic simulator plus a filter that yields a likelihoo
 ## Related
 
 - [The Kalman Filter](kalman-filter.md) — the exact linear-Gaussian filter this method generalizes
+- [Hidden Markov Models](hidden-markov-models.md) — the discrete-latent-state special case
 - [POMP Models and Plug-and-Play Inference](partially-observed-markov-processes.md) — the inference toolkit built on the particle filter
 - [Fitting Dynamic Models to Data](model-calibration.md) — calibration when a likelihood is available
 - [Markov Chains](markov-chains.md) — the process layer of a state-space model
