@@ -439,6 +439,7 @@ just build            # cargo run --release -> dist/
 just test             # cargo test --release (md-compiler unit tests)
 just figures          # render figures/*.py -> assets/figures/*.svg
 just python-output     # execute python blocks and inject stdout
+just repl PAGE         # dev-only: run a page's blocks, then a REPL with state loaded
 just lint-prose        # one-sentence-per-line check
 just preview           # build + serve dist/ on :8000
 ```

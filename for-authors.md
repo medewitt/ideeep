@@ -312,6 +312,23 @@ The output is injected beneath the block, just like Python. A few things to know
 Run `just python-output` after editing Python (or a `# run` R/Julia block), and
 commit the injected output (and the cache file it updates) alongside your change.
 
+### Trying code as you write (REPL)
+
+While drafting, `just repl <page.md>` runs the page's code blocks in the same
+environment the injector uses and then drops you into a REPL with the page's
+state already loaded — the "send block to REPL" loop, without leaving your clone:
+
+```
+just repl content/math/foo.md              # run every python block, then a prompt
+just repl content/math/foo.md --list       # number the blocks first
+just repl content/math/foo.md --block 3    # run just block 3
+just repl content/math/foo.md --lang r      # the page's R blocks (needs Rscript)
+```
+
+This is a **local dev tool** — it is never part of the built site, so it changes
+nothing for readers. It does not edit the page or commit anything; use
+`just python-output` when you are ready to bake outputs in.
+
 ---
 
 ## 8. Reusable fragments
