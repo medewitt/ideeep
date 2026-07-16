@@ -309,3 +309,13 @@
   aliases: [Latin square design, Latin squares]
   short: A t×t layout in which each treatment appears once in every row and every column, controlling two blocking factors at once.
   see: math/latin-square-designs.md
+
+- term: Meta-analysis
+  aliases: [meta-analyses]
+  short: A statistical synthesis that pools estimates from multiple studies into one overall estimate, weighting each by its precision.
+  see: math/meta-analysis.md
+
+- term: Prediction interval
+  aliases: [prediction intervals]
+  short: In a random-effects meta-analysis, the interval within which the true effect of a new study is expected to fall — reflecting between-study heterogeneity, not just uncertainty in the mean.
+  see: math/meta-analysis.md

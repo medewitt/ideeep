@@ -163,6 +163,7 @@ It requires practice and repetition.
 - [Stepped-Wedge Designs](math/stepped-wedge-designs.md) — staggered cluster rollout, separating effect from time trend
 - [Balanced Incomplete Block Designs](math/balanced-incomplete-block-designs.md) — when a block cannot hold every treatment, keeping pairs balanced
 - [Latin Square Designs](math/latin-square-designs.md) — controlling two blocking factors at once in a t×t layout
+- [Meta-Analysis](math/meta-analysis.md) — pooling effects and prevalence across studies, heterogeneity and a Bayesian I²
 - [Global Sensitivity Analysis](math/sensitivity-analysis.md) — Sobol indices and Morris screening
 - [Survey Sampling](math/survey-sampling.md) — SRS, stratified, cluster, and weighting
 - [Bayesian Bandits for Adaptive Sampling and Trial Design](math/bayesian-bandits.md) — Thompson sampling to shift a testing budget toward the positive sites, and response-adaptive clinical trials
