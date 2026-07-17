@@ -367,3 +367,22 @@
   aliases: [resistance ratios]
   short: The ratio of the lethal concentration (e.g. LC50) of a resistant population to that of a susceptible reference strain, a graded measure of insecticide-resistance intensity.
   see: math/insecticide-resistance-monitoring.md
+
+- term: Propensity score
+  aliases: [propensity scores]
+  short: The probability of receiving treatment given measured confounders; a balancing score used to remove confounding by matching, stratification, or weighting.
+  see: math/propensity-scores.md
+
+- term: Inverse probability weighting
+  aliases: [IPW, inverse-probability weighting, inverse probability weights]
+  short: Reweighting units by the inverse probability of their observed treatment to build a pseudo-population in which treatment is unconfounded by measured covariates.
+  see: math/inverse-probability-weighting.md
+
+- term: Marginal structural model
+  aliases: [marginal structural models, MSM]
+  short: An outcome model fit in the inverse-probability-weighted pseudo-population, whose coefficients are marginal causal effects, valid with time-varying confounding.
+  see: math/inverse-probability-weighting.md
+
+- term: G-estimation
+  short: A g-method that estimates a structural nested model by finding the treatment effect that makes the treatment-free outcome independent of treatment given confounders.
+  see: math/g-estimation.md

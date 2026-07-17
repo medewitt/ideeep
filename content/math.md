@@ -174,6 +174,9 @@ It requires practice and repetition.
 ## Causal inference
 
 - [Causal Inference](math/causal-inference.md) — confounding, counterfactuals, and Simpson's paradox
+- [Propensity Scores](math/propensity-scores.md) — the balancing score, and matching, stratification, and weighting on it
+- [Inverse Probability Weighting](math/inverse-probability-weighting.md) — reweighting to a pseudo-population, stabilized weights, and marginal structural models
+- [G-Estimation](math/g-estimation.md) — structural nested models and the g-methods for time-varying confounding
 - [Instrumental Variables](math/instrumental-variables.md) — estimating causal effects under confounding
 - [Mendelian Randomization](math/mendelian-randomization.md) — genetic variants as instruments
 
