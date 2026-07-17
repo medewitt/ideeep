@@ -237,6 +237,11 @@ It requires practice and repetition.
 - [Modern Coexistence Theory and the Storage Effect](math/coexistence-theory.md) — stabilizing niche vs fitness differences
 - [The Community Matrix and Stability](math/community-matrix.md)
 
+*Species distributions & niche modeling:*
+
+- [Species Distribution Models: Presence-Only Data](math/species-distribution-presence-only.md) — background points and the Maxent / Poisson point-process view
+- [Species Distribution Models: Presence–Absence Data](math/species-distribution-presence-absence.md) — logistic occurrence models, AUC, and the detection/occupancy caveat
+
 *Biodiversity & community structure:*
 
 - [Diversity Indices](math/diversity-indices.md) — Shannon, Simpson, Hill numbers

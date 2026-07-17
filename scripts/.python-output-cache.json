@@ -230,6 +230,8 @@
   "content/math/spatial-synchrony.md": "b8087d7f46e295f919794ba65d579b3b74e1e45beb7acdd6919670b189433ae7",
   "content/math/spatiotemporal-models.md": "03bafd3f7af8fbc3d24613dec93590b648dbfcd9e63cce7e8913faf67c583d38",
   "content/math/species-abundance.md": "a3f617e3372d2aed226bcc328ceced22f5488b93d3f697d031f7489b66cfbc3d",
+  "content/math/species-distribution-presence-absence.md": "2cbfb01e060d13d5f9665a5405e05702bc046f50c16df934ff3a43c30411ead1",
+  "content/math/species-distribution-presence-only.md": "e9f549b45e2f724e9dbd36c7d584024f6f9bd372d967169c1784c0c06b15212b",
   "content/math/splines.md": "f340ad4442e054e753dd87925506f52f4681e69e849ded78d446de70c66ddc85",
   "content/math/split-plot-designs.md": "bf3f5765f155851d92fbbc979f25509da1dceef76e99723a2ccdd115e3161684",
   "content/math/state-space-particle-filter.md": "999c47c2889ffd668afe4b56074e221c19f69edad0777003c6d05746d63167f5",

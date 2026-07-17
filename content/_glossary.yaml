@@ -343,3 +343,13 @@
   aliases: [calibration curve]
   short: A curve fit to standards of known concentration (often a four-parameter logistic) and inverted to read the concentration of unknowns from their assay signal.
   see: math/dilutions-and-titers.md
+
+- term: Species distribution model
+  aliases: [SDM, ecological niche model, niche model]
+  short: A model relating a species' occurrence to environmental covariates to map where it can live, from presence-only or presence-absence data.
+  see: math/species-distribution-presence-only.md
+
+- term: Pseudo-absence
+  aliases: [pseudo-absences, background points]
+  short: Points sampling the available environment across a landscape, contrasted against occurrence records in presence-only species distribution models.
+  see: math/species-distribution-presence-only.md
