@@ -328,3 +328,18 @@
 - term: Limits of agreement
   short: In a Bland–Altman analysis, the interval (mean difference ± 1.96 SD of the differences) within which 95% of the differences between two methods are expected to lie.
   see: math/bland-altman.md
+
+- term: Serial dilution
+  aliases: [serial dilutions]
+  short: A stepwise dilution of a sample by a fixed factor at each step, producing a geometric series of concentrations used for titration and standard curves.
+  see: math/dilutions-and-titers.md
+
+- term: Titer
+  aliases: [titre, endpoint titer, neutralization titer]
+  short: The reciprocal of the highest (or 50%) dilution of a sample that still produces a defined effect, such as neutralization or agglutination.
+  see: math/dilutions-and-titers.md
+
+- term: Standard curve
+  aliases: [calibration curve]
+  short: A curve fit to standards of known concentration (often a four-parameter logistic) and inverted to read the concentration of unknowns from their assay signal.
+  see: math/dilutions-and-titers.md

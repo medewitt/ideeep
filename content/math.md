@@ -102,6 +102,7 @@ It requires practice and repetition.
 - [Permutation Tests](math/permutation-tests.md)
 - [Diagnostic Testing and Screening](math/diagnostic-testing.md) — sensitivity, specificity, PPV, and ROC
 - [Bland–Altman Agreement](math/bland-altman.md) — comparing two measurement methods by bias and limits of agreement, not correlation
+- [Dilutions, Titers, and Standard Curves](math/dilutions-and-titers.md) — turning an assay readout into a concentration: serial-dilution titers and standard-curve interpolation
 - [Proper Scoring Rules](math/proper-scoring-rules.md) — Brier, log score, CRPS, and forecast calibration
 
 ## Regression & generalized linear models
