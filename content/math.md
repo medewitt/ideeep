@@ -101,6 +101,7 @@ It requires practice and repetition.
 - [Confidence Intervals](math/confidence-intervals.md)
 - [Permutation Tests](math/permutation-tests.md)
 - [Diagnostic Testing and Screening](math/diagnostic-testing.md) — sensitivity, specificity, PPV, and ROC
+- [Bland–Altman Agreement](math/bland-altman.md) — comparing two measurement methods by bias and limits of agreement, not correlation
 - [Proper Scoring Rules](math/proper-scoring-rules.md) — Brier, log score, CRPS, and forecast calibration
 
 ## Regression & generalized linear models

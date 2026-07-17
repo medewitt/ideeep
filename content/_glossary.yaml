@@ -319,3 +319,12 @@
   aliases: [prediction intervals]
   short: In a random-effects meta-analysis, the interval within which the true effect of a new study is expected to fall — reflecting between-study heterogeneity, not just uncertainty in the mean.
   see: math/meta-analysis.md
+
+- term: Bland–Altman plot
+  aliases: [Bland-Altman plot, Bland–Altman, Bland-Altman analysis]
+  short: A plot of the difference between two measurement methods against their mean, used to assess agreement via the bias and limits of agreement.
+  see: math/bland-altman.md
+
+- term: Limits of agreement
+  short: In a Bland–Altman analysis, the interval (mean difference ± 1.96 SD of the differences) within which 95% of the differences between two methods are expected to lie.
+  see: math/bland-altman.md

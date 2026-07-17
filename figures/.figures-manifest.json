@@ -26,6 +26,8 @@
   "big-o-empirical.py": "d04bd92a76f4f1f3a359aeb087b29c5ee998c18bff449e48fc6be4c7bbf10e33",
   "big-o-growth.py": "5c427b165ffd9880609883219d99042eeb46861580834b9e55f0e6108b25dd2a",
   "binomial-pmf.py": "8daead0dcc0f25d9ae555b048facbba489a4d12c0f5bdfe9afef36f873b683fd",
+  "bland-altman-plot.py": "c135413a0005df70656f1e64dd221a9538e0e82de922fadd95190af0fd8d052c",
+  "bland-altman.py": "83311cc4448b7eb60dfe22212dc61848f5f89b4f8b41e62bcb9673545d1bba0d",
   "branching-processes.py": "d06ab700bb4c39688aff8c03f7eeb6956806994e21abe42abb8460701b450f04",
   "briere-thermal-response.py": "8b9e0cbdb84e72a498598fa2d1e79a46dd9dfae88651d83c0c2c1fa9f025739a",
   "calibration.py": "f2a3422784bcd38f3178ab4ddefc8cfabbbeb896c1994ecee217c86fbe2bc259",
