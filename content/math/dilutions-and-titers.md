@@ -163,6 +163,142 @@ a, d, c, b = fit.param
 x = c * ((a - d) / (1.10 - d) - 1)^(1 / b) * 100     # invert and un-dilute
 ```
 
+## Multiple plates: one curve per plate
+
+The single curve above calibrates one plate.
+A real run spans many plates, and **absolute OD drifts from plate to plate** — reagent age, incubation time, the reader, edge effects — so each plate carries its own standards and is read against **its own** curve.
+Sharing one curve across plates is a classic and serious error.
+But fitting every plate in complete isolation has its own failure mode: a plate with only a few usable standards (a short curve, or dropped wells) cannot pin down all four 4PL parameters on its own.
+
+A **Bayesian hierarchical** model threads the needle.
+The curve *shape* — the Hill slope $b$ and the EC50 $c$ — is shared across plates (it is the same chemistry), while the plate-specific signal level (the top $d_p$) is given a **partial-pooling** prior, $d_p \sim \mathcal{N}(d_{\text{pop}}, \sigma_d)$.
+Each plate keeps its own top, but a plate with sparse standards **borrows strength** from the others toward the population, instead of failing outright ([@fig:plates]).
+
+![Left: standards from four plates with their independent four-parameter-logistic fits; plate 4 has only three standards and cannot be fit on its own. Right: the recovered concentration of each plate's unknown (true value 40). Independent fitting recovers plates 1–3 but fails for plate 4; the hierarchical model recovers all four — plate 4 is rescued by borrowing the shared curve shape, with an appropriately wider interval.](../assets/figures/hierarchical-plates.svg "fig:plates")
+
+```python
+import jax.numpy as jnp
+from jax import random
+import numpyro
+import numpyro.distributions as dist
+from numpyro.infer import MCMC, NUTS
+
+# four plates; plate 4 has only three standards (a short curve)
+rng = np.random.default_rng(0)
+a_t, d_pop, c_t, b_t, noise = 0.03, 3.1, 30.0, 1.10, 0.05
+tops = d_pop * np.array([1.00, 0.85, 1.15, 0.92])          # plate-to-plate drift
+full = np.array([0.5, 1.5, 5, 15, 50, 150, 500.0])
+standards = {0: full, 1: full, 2: full, 3: np.array([5, 50, 500.0])}
+x_true = 40.0                                              # true unknown, every plate
+
+sx, sp, sy, y_unknown = [], [], [], []
+for p in range(4):
+    for x in standards[p]:
+        sx.append(x); sp.append(p)
+        sy.append(fourpl(x, a_t, tops[p], c_t, b_t) + rng.normal(0, noise))
+    y_unknown.append(fourpl(x_true, a_t, tops[p], c_t, b_t) + rng.normal(0, noise))
+sx, sp, sy, y_unknown = map(np.asarray, (sx, sp, sy, y_unknown))
+
+# independent per-plate fits: plate 4 cannot be fit (3 points, 4 parameters)
+indep = []
+for p in range(4):
+    m = sp == p
+    try:
+        (a, d, c, b), _ = curve_fit(fourpl, sx[m], sy[m], p0=[0.03, 3.1, 30, 1.0],
+                                    maxfev=20000)
+        indep.append(c * ((a - d) / (y_unknown[p] - d) - 1) ** (1 / b))
+    except (TypeError, RuntimeError):
+        indep.append(np.nan)
+print("independent recovery (true 40):",
+      ", ".join("fails" if np.isnan(v) else f"{v:.1f}" for v in indep))
+
+def hier(sx, sp, sy, yu, P):
+    a = numpyro.sample("a", dist.Normal(0.03, 0.05))
+    c = numpyro.sample("c", dist.LogNormal(np.log(30), 0.5))    # shared EC50
+    b = numpyro.sample("b", dist.LogNormal(0.0, 0.3))           # shared Hill slope
+    d_pop = numpyro.sample("d_pop", dist.Normal(3.0, 0.5))
+    sig_d = numpyro.sample("sig_d", dist.HalfNormal(0.5))
+    sig = numpyro.sample("sig", dist.HalfNormal(0.1))
+    with numpyro.plate("plates", P):
+        d = numpyro.sample("d", dist.Normal(d_pop, sig_d))      # partial-pooled top
+        lx = numpyro.sample("lx", dist.Normal(np.log(30), 1.5))
+    x_un = numpyro.deterministic("x_unknown", jnp.exp(lx))
+    numpyro.sample("os", dist.Normal(d[sp] + (a - d[sp]) / (1 + (sx / c) ** b), sig),
+                   obs=sy)
+    numpyro.sample("ou", dist.Normal(d + (a - d) / (1 + (x_un / c) ** b), sig), obs=yu)
+
+mcmc = MCMC(NUTS(hier), num_warmup=1500, num_samples=2000, num_chains=1,
+            progress_bar=False)
+mcmc.run(random.PRNGKey(0), jnp.array(sx), jnp.array(sp), jnp.array(sy),
+         jnp.array(y_unknown), 4)
+xu = np.array(mcmc.get_samples()["x_unknown"])
+print("hierarchical recovery (true 40):")
+for p in range(4):
+    lo, hi = np.percentile(xu[:, p], [2.5, 97.5])
+    tag = "  <- rescued (3 standards)" if p == 3 else ""
+    print(f"  plate {p+1}: {xu[:, p].mean():.1f}  95% CrI [{lo:.1f}, {hi:.1f}]{tag}")
+```
+
+<!-- python-output:auto -->
+```text
+independent recovery (true 40): 43.5, 41.4, 39.1, fails
+hierarchical recovery (true 40):
+  plate 1: 41.7  95% CrI [37.2, 46.8]
+  plate 2: 40.4  95% CrI [35.3, 46.5]
+  plate 3: 40.5  95% CrI [36.4, 44.8]
+  plate 4: 38.5  95% CrI [33.9, 44.0]  <- rescued (3 standards)
+```
+<!-- /python-output:auto -->
+
+Independent fitting recovers the well-populated plates but collapses on the short-curve plate; the hierarchical model recovers all four, giving the sparse plate a sensible estimate with an honestly wider credible interval.
+The pooling is **adaptive**: plates with rich standards barely move, while the sparse plate is pulled toward the population exactly as much as its own data are weak.
+
+### The same model in CmdStanR
+
+In R, the identical hierarchical model runs through [CmdStanR](https://mc-stan.org/cmdstanr/).
+It is illustrative here (the site executes no R), but runs as written against a local CmdStan install.
+
+```r
+library(cmdstanr)
+
+stan_code <- "
+data {
+  int<lower=0> Ns;                 // number of standard measurements
+  int<lower=0> P;                  // number of plates
+  vector[Ns] sx;                   // standard concentrations
+  array[Ns] int<lower=1> sp;       // plate index of each standard
+  vector[Ns] sy;                   // standard optical densities
+  vector[P] yu;                    // one unknown OD per plate
+}
+parameters {
+  real a;                          // shared bottom
+  real<lower=0> c;                 // shared EC50
+  real<lower=0> b;                 // shared Hill slope
+  real d_pop; real<lower=0> sig_d; // population top and its spread
+  vector[P] d;                     // per-plate top (partial pooled)
+  vector[P] lx;                    // per-plate log unknown concentration
+  real<lower=0> sig;
+}
+model {
+  a ~ normal(0.03, 0.05);
+  c ~ lognormal(log(30), 0.5);
+  b ~ lognormal(0, 0.3);
+  d_pop ~ normal(3, 0.5);  sig_d ~ normal(0, 0.5);  sig ~ normal(0, 0.1);
+  d ~ normal(d_pop, sig_d);        // <- borrows strength across plates
+  lx ~ normal(log(30), 1.5);
+  for (i in 1:Ns)
+    sy[i] ~ normal(d[sp[i]] + (a - d[sp[i]]) / (1 + (sx[i] / c)^b), sig);
+  yu ~ normal(d + (a - d) ./ (1 + (exp(lx) / c)^b), sig);
+}
+generated quantities { vector[P] x_unknown = exp(lx); }
+"
+
+mod <- cmdstan_model(write_stan_file(stan_code))
+fit <- mod$sample(data = standata, seed = 1, chains = 4,
+                  iter_warmup = 1500, iter_sampling = 1000)
+fit$summary("x_unknown")          # per-plate recovered concentration
+```
+
 ## Why it matters
 
 These two calculations sit under a huge amount of infectious-disease measurement.

@@ -115,6 +115,7 @@
   "hardy-weinberg.py": "dcccd0a026fb1fb410164d95f34bac947d5705165eb2defeeadb3f361bd8db6d",
   "healthcare-associated-infections.py": "ba8dc3b765b566b55e8cb68f9c7df8ea71ef6d36548953caeff50cdc688f8c8a",
   "heritability.py": "0d2c765ea059f6d2cd9a0537b7d68d43e2b68d92c486e9f3540238c9c06b83b0",
+  "hierarchical-plates.py": "179cba0ac143d5ba1357fa6c5d50feb894ad1916f550457d807cd62367afb7fe",
   "hilbert-space-gp.py": "242c0a30ee4965245ad7d727a2d52bf4eed3004ab37c530240800ae872a13f45",
   "hpc-clusters-slurm.py": "39ce9b05e39ef530d91cba984dc14ad569ea11e9f1eee5922db801479ef8670b",
   "hypothesis-test.py": "fede0b19efb994684fca523efaf01b0941bbdfcdf9d3295cb2cc3683a35001bd",
