@@ -128,6 +128,7 @@ When the rhythm itself moves, wavelets carry the same idea into a world where th
 
 ## Related
 
+- [Wavelet Analysis](wavelet-analysis.md) — time-localized spectra for periodicities that change over time
 - [Covariance Functions and the Matérn Family](covariance-functions.md) — the spectrum as the transform of the autocovariance
 - [Climate Forcing in Transmission Models](climate-forcing-in-transmission-models.md) — the seasonal drivers spectra reveal
 - [Critical Community Size and Epidemic Fade-Out](../epidemiology/critical-community-size.md) — the biennial measles dynamics

@@ -1946,8 +1946,7 @@ enum NavbarItem {
 }
 
 fn generate_navbar(
-    navbar_items: &[NavbarItem], 
-    output_in_dist: bool,
+    navbar_items: &[NavbarItem],
     dropdowns: Option<&std::collections::HashMap<String, serde_yaml::Value>>,
     markdown_titles: &std::collections::HashMap<String, String>,
     current_page: Option<&str>,
@@ -2411,37 +2410,6 @@ fn calculate_asset_prefix(relative_path: &Path) -> String {
         String::new()
     } else {
         "../".repeat(depth)
-    }
-}
-
-fn calculate_relative_link_path(from_path: &Path, to_path: &str) -> String {
-    // If to_path is "index", it's always at the root
-    if to_path == "index" {
-        let depth = from_path.parent()
-            .map(|p| p.components().count())
-            .unwrap_or(0);
-        if depth == 0 {
-            "index.html".to_string()
-        } else {
-            format!("{}index.html", "../".repeat(depth))
-        }
-    } else {
-        // For other paths, calculate relative path
-        let from_dir = from_path.parent().unwrap_or(Path::new(""));
-        let to_path_buf = Path::new(to_path);
-        
-        // If they're in the same directory
-        if from_dir == to_path_buf.parent().unwrap_or(Path::new("")) {
-            format!("{}.html", to_path)
-        } else {
-            // Need to go up to common ancestor, then down to target
-            let depth = from_dir.components().count();
-            if depth == 0 {
-                format!("{}.html", to_path)
-            } else {
-                format!("{}{}.html", "../".repeat(depth), to_path)
-            }
-        }
     }
 }
 
@@ -3283,7 +3251,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         }
                     }
                     // Otherwise treat as markdown file name (can be filename or path like "math/sir")
-                    if let Some((full_path, relative_path, title)) = markdown_files.iter()
+                    if let Some((_, relative_path, title)) = markdown_files.iter()
                         .find(|(_, rel_path, _)| {
                             let rel_key = rel_path.with_extension("")
                                 .to_string_lossy()
@@ -3587,7 +3555,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         };
 
         // Generate navbar HTML with current page highlighted
-        let navbar = generate_navbar(&navbar_items, true, dropdowns.as_ref(), &markdown_titles, Some(&rel_key), &asset_prefix);
+        let navbar = generate_navbar(&navbar_items, dropdowns.as_ref(), &markdown_titles, Some(&rel_key), &asset_prefix);
 
         let html_output = generate_html(title, &description, &canonical_path, robots, &breadcrumbs, &html_content, &navbar, &asset_prefix, page_image.as_deref(), page_image_alt.as_deref())?;
 
@@ -3609,7 +3577,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Emit the interactive search page at the dist root (asset_prefix = "").
     let search_navbar = generate_navbar(
         &navbar_items,
-        true,
         dropdowns.as_ref(),
         &markdown_titles,
         Some("search"),
@@ -3642,7 +3609,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if has_glossary {
         let glossary_navbar = generate_navbar(
             &navbar_items,
-            true,
             dropdowns.as_ref(),
             &markdown_titles,
             Some("glossary"),
@@ -3943,7 +3909,7 @@ mod tests {
         let titles: HashMap<String, String> = HashMap::new();
 
         // Rendered from a nested page (asset_prefix "../").
-        let nav = generate_navbar(&items, true, Some(&dropdowns), &titles, Some("math/sir"), "../");
+        let nav = generate_navbar(&items, Some(&dropdowns), &titles, Some("math/sir"), "../");
         assert!(
             nav.contains("href=\"../programs.html#curriculum\""),
             "relative mapping URL must be prefixed with asset_prefix:\n{nav}"
@@ -3959,7 +3925,7 @@ mod tests {
         );
 
         // From the site root there is no prefix to add.
-        let nav_root = generate_navbar(&items, true, Some(&dropdowns), &titles, Some("index"), "");
+        let nav_root = generate_navbar(&items, Some(&dropdowns), &titles, Some("index"), "");
         assert!(
             nav_root.contains("href=\"programs.html#curriculum\""),
             "root-level mapping URL must be unprefixed:\n{nav_root}"

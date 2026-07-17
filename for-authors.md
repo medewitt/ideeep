@@ -282,13 +282,57 @@ Rules that keep this reproducible:
   downloads (torchvision models, YOLO) are blocked, so keep those `# no-run` and only
   run from-scratch models. Have deep-learning blocks print stable, converged numbers
   (accuracies, rounded losses) rather than exact floats, which can differ by version.
-- Add `# no-run` as the first line to skip execution. Plot-only blocks inject
+- Add `# no-run` on its own line to skip execution. Plot-only blocks inject
   nothing.
-- **R and Julia blocks are never executed** — they are illustrative, so they may
-  use any package.
 
-Run `just python-output` after editing Python, and commit the injected output
-(and the cache file it updates) alongside your change.
+### R and Julia — opt-in, default off
+
+` ```r ` and ` ```julia ` blocks are **illustrative by default** — they are not
+run, so they may use any package. To execute one and show its real output, add
+`# run` on its own line (the mirror of Python's `# no-run`):
+
+````markdown
+```r
+# run
+x <- rpois(5, lambda = 3)
+cat(x, "\n")     # R auto-prints top-level values; cat/print both work
+```
+````
+
+The output is injected beneath the block, just like Python. A few things to know:
+
+- Execution only happens when `Rscript` / `julia` is **installed on your machine**.
+  If it isn't, the block is skipped with a warning and any committed output is left
+  as-is — so generate `# run` outputs locally and commit them.
+- Each language's `# run` blocks on a page **share state top-to-bottom**, like
+  Python. Seed RNGs and keep them fast and small (same 15-line cap).
+- R auto-prints visible top-level results; Julia (like Python) prints only what you
+  explicitly `println`.
+
+Run `just python-output` after editing Python (or a `# run` R/Julia block), and
+commit the injected output (and the cache file it updates) alongside your change.
+
+### Trying code as you write (REPL)
+
+While drafting, `just repl <page.md>` runs the page's code blocks in the same
+environment the injector uses and then drops you into a REPL with the page's
+state already loaded — the "send block to REPL" loop, without leaving your clone:
+
+```
+just repl content/math/foo.md              # run every python block, then a prompt
+just repl content/math/foo.md --list       # number the blocks first
+just repl content/math/foo.md --block 3    # run just block 3
+just repl content/math/foo.md --lang r      # the page's R blocks (needs Rscript)
+just repl content/math/foo.md --none       # run nothing; bare REPL in the page's env
+```
+
+The prompt is IPython when available (so pasted multi-line blocks just work);
+`--none` exists mainly for editor integrations that open the REPL and send
+blocks themselves.
+
+This is a **local dev tool** — it is never part of the built site, so it changes
+nothing for readers. It does not edit the page or commit anything; use
+`just python-output` when you are ready to bake outputs in.
 
 ---
 
@@ -405,5 +449,6 @@ up under the right navbar section.
 | Link to another page | `[text](../section/page.md)` |
 | Link to a section | `[text](#heading-slug)` |
 | Run Python and show output | a ` ```python ` block (seed your RNG) |
+| Run R/Julia and show output | add `# run` to a ` ```r ` / ` ```julia ` block (needs `Rscript`/`julia` installed) |
 | Define a glossary term | add it to `content/_glossary.yaml` (auto-links everywhere) |
 | Hide a draft page | `hidden: true` in front matter |

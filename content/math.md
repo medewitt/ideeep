@@ -8,11 +8,15 @@ description: "Bite-sized references on the calculus, linear algebra, probability
 
 # Quantitative Methods
 
-Quantitative methods are essential for those working in mathematical biology, doing epidemiology, and designing experiments (from basic bench experiementals to large field experiments) -- especially as part of the modern practice of these fields.
+Quantitative methods are essential for those working in mathematical biology, doing epidemiology, and designing experiments (from basic bench experiments to large field experiments) -- especially as part of the modern practice of these fields.
 The best way to learn these skills is through constant exposure and solving practical problems.
 
 Here we collate a collection of bite-sized references covering the calculus, linear algebra, probability, and statistics that underpin quantitative work in infectious disease ecology, evolution, and epidemiology.
 Each page pairs the core idea and notation with a worked example and runnable code in [**R**](https://cran.r-project.org), [**Python**](https://www.python.org), and [**Julia**](https://julialang.org) for simulation and mostly importantly, intuition.
+Note that many of these came from years of notes, but some are created with the assistance of LLMs.
+Let us know if you spot any errors.
+Furthermore, many of the posts taken on strong opinions regarding the use of particular methods.
+These are tools and as such there are often many different ways of applying tools to problems (e.g., two carpenters with the same tools may approach building a cabinet in very different ways using different sets of tools).
 
 Math is hard.
 It requires practice and repetition.
@@ -90,7 +94,9 @@ It requires practice and repetition.
 - [Superspreading and Transmission Heterogeneity](math/superspreading.md) — the offspring distribution, the dispersion $k$, and the 20/80 rule
 - [Chain-Binomial Models and the Household Secondary Attack Rate](math/chain-binomial-reed-frost.md) — Reed-Frost transmission and household final size
 - [Random Walks and Brownian Motion](math/random-walk-brownian-motion.md) — diffusive scaling and the Wiener process
+- [Quasi-Stationary Distributions](math/quasi-stationary-distributions.md) — the endemic level before fade-out, and persistence as an eigenvalue
 - [Fourier and Spectral Analysis](math/fourier-spectral-analysis.md) — decomposing a signal into frequencies and finding periodicity with the periodogram
+- [Wavelet Analysis](math/wavelet-analysis.md) — time-resolved periodicity for non-stationary signals, the scalogram, and wavelet coherence
 - [Copulas](math/copulas.md) — separating dependence from the marginals via Sklar's theorem
 - [Maximum Likelihood Estimation](math/maximum-likelihood.md)
 - [Kullback–Leibler Divergence](math/kl-divergence.md) — relative entropy, cross-entropy, and forward vs reverse KL
@@ -121,7 +127,10 @@ It requires practice and repetition.
 
 - [Bayesian Inference](math/bayesian-inference.md) — priors, likelihood, and the posterior
 - [Markov Chain Monte Carlo](math/mcmc.md)
+- [The Kalman Filter](math/kalman-filter.md) — the linear-Gaussian predict/update recursion, time-varying transmission, and fusing wastewater with case reports
 - [State-Space Models and Particle Filtering](math/state-space-particle-filter.md) — partially observed Markov processes and the bootstrap particle filter
+- [POMP Models and Plug-and-Play Inference](math/partially-observed-markov-processes.md) — iterated filtering, particle MCMC, and synthetic likelihood behind the `pomp` package
+- [Hidden Markov Models](math/hidden-markov-models.md) — discrete latent regimes via the forward, Viterbi, and Baum-Welch algorithms
 - [Approximate Bayesian Computation](math/approximate-bayesian-computation.md) — likelihood-free inference by simulation, for models you can run but not write down
 - [Prior Predictive Checks](math/prior-predictive-checks.md) — simulate from the prior to sanity-check it before fitting
 - [Posterior Predictive Checks](math/posterior-predictive-checks.md) — compare replicated data to the observed to test the model
@@ -327,6 +336,7 @@ It requires practice and repetition.
 - [Insecticide-Resistance Monitoring](math/insecticide-resistance-monitoring.md) — diagnostic-dose classification, LC50/LC90, and the resistance ratio
 - [Reservoir Ecology](math/reservoir-ecology.md) — maintenance hosts, spillover, and multi-host persistence
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)
+- [Quasi-Stationary Distributions](math/quasi-stationary-distributions.md) — endemic persistence, fade-out, and the mean time to extinction
 - [Queueing Theory and ICU Colonization](math/queueing-theory.md) — patients through beds as a queue, a birth-death model of hospital colonization, and pricing out infection-prevention practices
 - [The Effective Reproduction Number and Forecasting](math/reproduction-number-rt.md)
 - [The Renewal Equation](math/renewal-equation.md) — linking incidence, the generation interval, and $R_t$

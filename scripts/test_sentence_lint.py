@@ -95,5 +95,32 @@ class SpoilerAwareness(unittest.TestCase):
         self.assertIn(":::{course-policies.md}:::", out.split("\n"))
 
 
+class InjectedOutputAwareness(unittest.TestCase):
+    """Cross-stage guard (AGENTS.md design rule): a `# run` R block and the
+    output the injector splices beneath it must survive prose reflow byte-for-byte,
+    so `just fmt-prose` never corrupts an executed R/Julia block."""
+
+    def test_run_block_and_injected_output_are_reflow_stable(self):
+        src = "\n".join([
+            "Some prose before the block.",
+            "",
+            "```r",
+            "# run",
+            "cat('two words here.\\n')",   # a period inside code must not be split
+            "```",
+            "",
+            "<!-- r-output:auto -->",
+            "```text",
+            "two words here.",
+            "```",
+            "<!-- /r-output:auto -->",
+            "",
+            "More prose after.",
+        ])
+        out = reflow(src)
+        self.assertEqual(out, src)
+        self.assertEqual(reflow(out), out)           # idempotent
+
+
 if __name__ == "__main__":
     unittest.main()
