@@ -353,3 +353,17 @@
   aliases: [pseudo-absences, background points]
   short: Points sampling the available environment across a landscape, contrasted against occurrence records in presence-only species distribution models.
   see: math/species-distribution-presence-only.md
+
+- term: Vectorial capacity
+  short: The expected number of infectious bites that eventually arise from all mosquitoes biting one infectious person on a single day, given by m·a²·pⁿ/(−ln p).
+  see: math/vectorial-capacity.md
+
+- term: Entomological inoculation rate
+  aliases: [EIR]
+  short: The number of infectious bites received per person per unit time, the product of the human biting rate and the sporozoite rate — the field measure of transmission intensity.
+  see: math/vectorial-capacity.md
+
+- term: Resistance ratio
+  aliases: [resistance ratios]
+  short: The ratio of the lethal concentration (e.g. LC50) of a resistant population to that of a susceptible reference strain, a graded measure of insecticide-resistance intensity.
+  see: math/insecticide-resistance-monitoring.md

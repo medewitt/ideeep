@@ -320,6 +320,8 @@ It requires practice and repetition.
 - [Social Contact Matrices and Age-Structured Mixing](math/contact-matrices.md) — who-meets-whom by age, from contact surveys to $R_0$
 - [Within-Host Dynamics and the Immune Response](math/within-host-dynamics.md) — virus, infected cells, and B-cell/T-cell immunity
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
+- [Vectorial Capacity from Field Data](math/vectorial-capacity.md) — estimating biting rate, survival, EIR, and vectorial capacity from entomological collections
+- [Insecticide-Resistance Monitoring](math/insecticide-resistance-monitoring.md) — diagnostic-dose classification, LC50/LC90, and the resistance ratio
 - [Reservoir Ecology](math/reservoir-ecology.md) — maintenance hosts, spillover, and multi-host persistence
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)
 - [Queueing Theory and ICU Colonization](math/queueing-theory.md) — patients through beds as a queue, a birth-death model of hospital colonization, and pricing out infection-prevention practices
