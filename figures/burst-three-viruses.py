@@ -5,15 +5,18 @@
 #     "matplotlib",
 # ]
 # ///
-"""Seven viruses as seven cellular life-history strategies.
+"""Eight viruses as eight cellular life-history strategies.
 
 Left: cumulative virions produced by one infected cell over time. The lifetime
 yield B = (production rate) x (production window) is reached different ways --
 poliovirus fastest, in a lytic burst; influenza fast then lyses; measles and
-RSV bud but fuse cells into dying syncytia; dengue buds then the cell dies; HIV
-moderate then the cell dies; and hantavirus slow but non-cytopathic so the
-window stays open (persistence). Right: each virus on the burst-size /
-mutation-rate plane, with diagonals of constant per-cell mutational output B*mu.
+RSV bud but fuse cells into dying syncytia; dengue buds then the cell dies;
+variola (a DNA poxvirus) builds in cytoplasmic factories and releases mainly on
+lysis; HIV moderate then the cell dies; and hantavirus slow but non-cytopathic
+so the window stays open (persistence). Right: each virus on the burst-size /
+mutation-rate plane, with diagonals of constant per-cell mutational output B*mu
+-- variola sits far below the RNA viruses, its proofreading DNA polymerase
+holding the per-site rate near 1e-6.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -26,6 +29,7 @@ fig, (axL, axR) = plt.subplots(1, 2, figsize=(8.0, 4.0))
 # the shared style module -- and every other figure -- is left untouched)
 RSV_C = "#1f9aa0"    # teal
 DENV_C = "#b0436b"   # rose
+VARIOLA_C = "#6d4c2f"  # umber -- the one DNA virus
 
 # --- Left: cumulative production, five strategies -------------------------
 t = np.linspace(0, 10, 800)   # days
@@ -49,6 +53,8 @@ mea = np.ma.masked_where(t > 3.0, sat(t, 0.5, 1e3, 0.6))
 rsv = np.ma.masked_where(t > 2.5, sat(t, 0.5, 8e2, 0.5))
 # dengue: budding through the secretory pathway, apoptotic; cell dies ~3 days
 denv = np.ma.masked_where(t > 3.2, sat(t, 0.7, 5e3, 0.6))
+# variola: large dsDNA poxvirus, cytoplasmic factories; released mainly on lysis ~2 days
+var_ = np.ma.masked_where(t > 2.0, sat(t, 0.3, 1e4, 0.5))
 
 axL.plot(t, flu, color=PALETTE[1], lw=2.3, label="influenza (lyses)")
 axL.plot(t, hiv, color=PALETTE[0], lw=2.3, label="HIV (cell dies)")
@@ -57,12 +63,14 @@ axL.plot(t, polio, color=PALETTE[3], lw=2.3, label="poliovirus (lytic burst)")
 axL.plot(t, mea, color=PALETTE[4], lw=2.3, label="measles (syncytia)")
 axL.plot(t, rsv, color=RSV_C, lw=2.3, label="RSV (syncytia)")
 axL.plot(t, denv, color=DENV_C, lw=2.3, label="dengue (cell dies)")
+axL.plot(t, var_, color=VARIOLA_C, lw=2.3, label="variola (DNA, lyses)")
 axL.plot(1.0, sat(np.array([1.0]), 0.25, 5e3, 0.25)[0], "o", color=PALETTE[1], ms=6)
 axL.plot(2.2, sat(np.array([2.2]), 1.0, 5e4, 0.4)[0], "o", color=PALETTE[0], ms=6)
 axL.plot(0.3, sat(np.array([0.3]), 0.1, 3e4, 0.06)[0], "o", color=PALETTE[3], ms=6)
 axL.plot(3.0, sat(np.array([3.0]), 0.5, 1e3, 0.6)[0], "o", color=PALETTE[4], ms=6)
 axL.plot(2.5, sat(np.array([2.5]), 0.5, 8e2, 0.5)[0], "o", color=RSV_C, ms=6)
 axL.plot(3.2, sat(np.array([3.2]), 0.7, 5e3, 0.6)[0], "o", color=DENV_C, ms=6)
+axL.plot(2.0, sat(np.array([2.0]), 0.3, 1e4, 0.5)[0], "o", color=VARIOLA_C, ms=6)
 axL.annotate("no lysis:\nwindow stays open", xy=(9.4, 2e3 * 8.4), xytext=(4.9, 7e4),
              fontsize=7.6, color=INK,
              arrowprops=dict(arrowstyle="->", color=MUTED, lw=1.0))
@@ -77,7 +85,7 @@ axL.legend(fontsize=7, loc="lower right", ncol=2, columnspacing=1.0,
 
 # --- Right: burst size vs mutation rate, constant-B*mu diagonals ----------
 B_lo, B_hi = 1e1, 1e5
-mu_lo, mu_hi = 3e-6, 1e-3
+mu_lo, mu_hi = 3e-7, 1e-3   # floor lowered to fit variola's DNA-virus mutation rate
 axR.set_xscale("log")
 axR.set_yscale("log")
 axR.set_xlim(B_lo, B_hi)
@@ -100,7 +108,8 @@ pts = [("HIV",        5e4, 2.5e-5, PALETTE[0], (6, 6)),
        ("poliovirus", 3e4, 2.0e-4, PALETTE[3], (-10, 8)),
        ("measles",    1e3, 1.0e-4, PALETTE[4], (-16, 7)),
        ("RSV",        8e2, 6.0e-5, RSV_C, (8, -3)),
-       ("dengue",     5e3, 1.2e-4, DENV_C, (7, 3))]
+       ("dengue",     5e3, 1.2e-4, DENV_C, (7, 3)),
+       ("variola",    1e4, 1.5e-6, VARIOLA_C, (8, -3))]
 for name, b, mu, color, (dx, dy) in pts:
     axR.plot(b, mu, "o", color=color, ms=9)
     axR.annotate(name, xy=(b, mu), xytext=(dx, dy), textcoords="offset points",
