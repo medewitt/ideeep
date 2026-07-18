@@ -338,6 +338,7 @@ It requires practice and repetition.
 - [Social Contact Matrices and Age-Structured Mixing](math/contact-matrices.md) — who-meets-whom by age, from contact surveys to $R_0$
 - [Serocatalytic Models](math/serocatalytic-models.md) — estimating the force of infection from age–seroprevalence surveys
 - [Within-Host Dynamics and the Immune Response](math/within-host-dynamics.md) — virus, infected cells, and B-cell/T-cell immunity
+- [Burst Size, Latent Period, and Mutation at the Cellular Scale](math/viral-burst-size.md) — the cell-level viral life history: $R_0 = B\rho$, continuous-vs-burst extinction, the optimal lysis time, and the mutational output $B\mu$
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
 - [Vectorial Capacity from Field Data](math/vectorial-capacity.md) — estimating biting rate, survival, EIR, and vectorial capacity from entomological collections
 - [Insecticide-Resistance Monitoring](math/insecticide-resistance-monitoring.md) — diagnostic-dose classification, LC50/LC90, and the resistance ratio
