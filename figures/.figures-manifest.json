@@ -33,6 +33,7 @@
   "burst-continuous-vs-burst.py": "d7afd5433c560b8bfb4d16371a160502cc1d223d8b71a7ca4d2057c3601edce8",
   "burst-latent-optimum.py": "8116d1d14525734a064ae6df0aa07dcc539e37744a64e4fd0683c51f70f95044",
   "burst-mutation-supply.py": "b9ecfcb9a5c079bf92331c0b753cec4e0b9094c281472950abfd5eed026b1d63",
+  "burst-three-viruses.py": "ccaec33e99a807f3a409f9e1480e9f1969c05ede1a3fb331f9783bb25ca5bf8f",
   "calibration.py": "f2a3422784bcd38f3178ab4ddefc8cfabbbeb896c1994ecee217c86fbe2bc259",
   "capture-recapture.py": "64c37c6ef0b3e513b348c529cee19562d71e4aae87ee3ed7066f19b4f518ef69",
   "career-funding-ladder.py": "16437c4db9b9bb580a89f819c7349b1492d77c41b8dc28afceff1ea607fbbe2d",

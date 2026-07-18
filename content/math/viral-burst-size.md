@@ -157,6 +157,38 @@ Near the establishment threshold, though, the production mode matters: at $R_0 =
 On mutation, with per-site $\mu = 3\times10^{-5}$ the 148-virion burst throws a given point mutant with probability $1 - (1-\mu)^{148} \approx 0.0044$; a super-producer cell making $B = 5000$ raises that to $\approx 0.14$, and its expected genome-wide mutant output ($U = 0.5$) is $5000 \times 0.39 \approx 1967$ mutant progeny from that one cell.
 The rare high-burst cells are doing most of the evolving.
 
+## Three viruses, three strategies: HIV, influenza, hantavirus
+
+The equations above are a common currency, so the most useful thing to do with them is compare real viruses that solve the cellular problem in very different ways.
+All three below are enveloped RNA viruses that leave the cell by **budding** rather than a lytic burst, yet they occupy opposite corners of the parameter space — and the differences explain a great deal of their epidemiology.
+
+| Trait | HIV-1 | Influenza A | Hantavirus |
+|-------|-------|-------------|------------|
+| Genome | retrovirus, +ssRNA → DNA, ~9.7 kb | −ssRNA, 8 segments, ~13.5 kb | −ssRNA, 3 segments, ~12 kb |
+| Production mode | budding, continuous | budding, ~continuous | budding, continuous |
+| Infected-cell fate | dies in ~1–2 days (cytopathic + CTL) | dies in ~1 day (cytopathic) | **survives — non-cytopathic, persistent** |
+| Eclipse $\tau_E$ | ~18–24 h | ~6 h | ~1–3 days |
+| Burst size $B$ | ~$10^4$–$10^5$ total virions, only ~1 in $10^2$–$10^3$ infectious | ~$10^2$–$10^4$ (single-cell mean ~350–700) | low–moderate, IFN-limited, sustained |
+| Per-site mutation $\mu$ | ~$2.4\times10^{-5}$ (RT); up to ~$4\times10^{-3}$ in vivo via APOBEC | ~$1.8$–$2.5\times10^{-4}$ (2–3 per genome) | RNA-range but constrained; low diversity |
+| Evolutionary signature | quasispecies, rapid drug/immune escape | antigenic drift + segment reassortment | host codivergence, spillover dead-end |
+
+![Left: cumulative virions produced by one cell over time for the three viruses — influenza builds fast then lyses, HIV reaches a large yield before the cell dies, and hantavirus produces slowly but never lyses, so its window stays open. Right: the three viruses on the burst-size / mutation-rate plane, with diagonals of constant per-cell mutational output B times mu.](../assets/figures/burst-three-viruses.svg "fig:threevirus")
+
+**The production window, not the burst rate, is what hantavirus changes.** Recall that lifetime burst is production rate times production window, and for a lytic or cytopathic virus the window is the cell's lifespan $1/a$.
+Influenza and HIV both kill the cell — influenza fast, HIV a little slower — so their yield is capped by how long the cell survives (left panel of [@fig:threevirus]); HIV's in-vivo per-cell yield is [~$4$–$5\times10^4$ virions](https://consensus.app/papers/details/d76471e95f7c52678a9d830a1a7cb71d/?utm_source=claude_desktop) but only [about one in a few hundred is infectious](https://consensus.app/papers/details/7bbed86921a2565b81662456ebdcc8b3/?utm_source=claude_desktop), so the *effective* burst that enters $R_0 = B\rho$ is far smaller than the RNA count.
+Hantaviruses are the striking case: they replicate in vascular [endothelial cells with no cytopathic effect](https://consensus.app/papers/details/12cfb379bb70513e800debe01f1cabbe/?utm_source=claude_desktop) and establish [persistent infection](https://consensus.app/papers/details/42a0ead3db6656f7b2e5ee4545d599d5/?utm_source=claude_desktop), so $a \to 0$ and the window is set not by lysis but by interferon.
+In human cells IFN-β switches on after a few days and [production falls off](https://consensus.app/papers/details/5aae91cef939570ca800e5e8bc5ddd0e/?utm_source=claude_desktop); in the natural rodent reservoir the antiviral response is [never triggered](https://consensus.app/papers/details/e938efae4cb85e59bb0fce4e6003a47b/?utm_source=claude_desktop), the window stays open indefinitely, and the animal remains a lifelong low-level shedder.
+The same $B = \text{rate}\times\text{window}$ accounting, with the death term turned off, is the whole difference between an acute and a persistent infection.
+
+**All three are budding, so their stochastic fate follows the continuous branch.** Because none release a synchronized lytic burst, the offspring distribution of a single infected cell is closer to the over-dispersed geometric of [@eq:qcont] than to the Poisson of [@eq:qburst], with extinction probability near $1/R_0$.
+This is why single-cell seeding is fragile even for a fit virus, and it is consistent with the very narrow transmission bottleneck of HIV, where a productive infection is usually founded by a **single** transmitted variant despite the donor carrying a diverse swarm.
+
+**Mutational output separates the fast evolvers from the stable one.** The per-cell mutational output is $B\mu$, and the right panel of [@fig:threevirus] places the three viruses on the $B$–$\mu$ plane against diagonals of constant $B\mu$.
+Influenza sits high on $\mu$ — [~$2\times10^{-4}$ per site, 2–3 mutations per genome copied](https://consensus.app/papers/details/cce553f33ee1556f882e1af30c291b60/?utm_source=claude_desktop) — which, multiplied over large bursts, is the raw material of antigenic drift, compounded by reassortment of its eight segments.
+HIV's reverse transcriptase runs at the [canonical RNA-virus rate ~$2\times10^{-5}$](https://consensus.app/papers/details/4b6e36be7c67570680258fec69859a8c/?utm_source=claude_desktop), but its enormous within-host replication and [APOBEC-driven hypermutation push the in-vivo rate to ~$4\times10^{-3}$](https://consensus.app/papers/details/182e5620626759ac8eb93b57ea314026/?utm_source=claude_desktop) — the highest measured for any biological entity — which is why drug resistance is essentially pre-existing in every patient.
+Hantaviruses sit in the low corner: their persistent, low-turnover replication accumulates change slowly, and their tight [codivergence with rodent hosts](https://consensus.app/papers/details/42a0ead3db6656f7b2e5ee4545d599d5/?utm_source=claude_desktop) leaves them genetically stable and host-restricted — part of why human infections are typically epidemiological dead ends rather than the start of sustained human-to-human chains.
+Read through $B\mu$, the same product that sets a phage's supply of escape mutants explains why two of these viruses are moving targets and the third is a fixture of its reservoir.
+
 ## In code
 
 We reproduce all four scenarios: the cellular $R_0$ from a burst, the continuous-versus-burst extinction gap, the optimal latent period, and the mutational output per burst.
