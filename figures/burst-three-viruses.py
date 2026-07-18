@@ -53,11 +53,23 @@ axL.set_ylim(1, 2e5)
 axL.legend(fontsize=8, loc="lower right")
 
 # --- Right: burst size vs mutation rate, constant-B*mu diagonals ----------
-B = np.array([1e1, 1e5])
-for Bmu, y in [(1e-2, None), (1e-1, None), (1.0, None), (10.0, None)]:
-    axR.plot(B, Bmu / B, color=MUTED, lw=0.8, ls=":")
-    axR.text(1.3e1, Bmu / 1.3e1 * 1.05, f"$B\\mu={Bmu:g}$", fontsize=6.8,
-             color=MUTED, rotation=-33, va="bottom")
+B_lo, B_hi = 1e1, 1e5
+mu_lo, mu_hi = 3e-6, 1e-3
+axR.set_xscale("log")
+axR.set_yscale("log")
+axR.set_xlim(B_lo, B_hi)
+axR.set_ylim(mu_lo, mu_hi)
+
+diag_labels = []
+for Bmu in (1e-2, 1e-1, 1.0, 10.0):
+    axR.plot([B_lo, B_hi], [Bmu / B_lo, Bmu / B_hi], color=MUTED, lw=0.8, ls=":")
+    # anchor each label on the visible segment of its own diagonal, so no label
+    # is pushed off the top of the plot the way a fixed left-edge anchor would be
+    b0, b1 = max(B_lo, Bmu / mu_hi), min(B_hi, Bmu / mu_lo)
+    bl = np.exp(0.62 * np.log(b0) + 0.38 * np.log(b1))
+    t = axR.text(bl, Bmu / bl, f"$B\\mu={Bmu:g}$", fontsize=6.8, color=MUTED,
+                 rotation_mode="anchor", ha="center", va="bottom")
+    diag_labels.append(t)
 
 pts = [("HIV",        5e4, 2.5e-5, PALETTE[0], (6, 6)),
        ("influenza",  3e3, 2.0e-4, PALETTE[1], (-4, 8)),
@@ -67,13 +79,19 @@ for name, b, mu, color, (dx, dy) in pts:
     axR.annotate(name, xy=(b, mu), xytext=(dx, dy), textcoords="offset points",
                  fontsize=8.5, color=INK)
 
-axR.set_xscale("log")
-axR.set_yscale("log")
 axR.set_xlabel("burst size $B$ (virions/cell)")
 axR.set_ylabel(r"per-site mutation rate $\mu$")
 axR.set_title("per-cell mutational output")
-axR.set_xlim(1e1, 1e5)
-axR.set_ylim(3e-6, 1e-3)
 
 fig.tight_layout()
+
+# rotate each constant-B*mu label to match its diagonal's on-screen slope,
+# measured after tight_layout so it tracks the final axes aspect ratio
+fig.canvas.draw()
+p0 = axR.transData.transform((B_lo, 1.0 / B_lo))
+p1 = axR.transData.transform((B_hi, 1.0 / B_hi))
+diag_deg = np.degrees(np.arctan2(p1[1] - p0[1], p1[0] - p0[0]))
+for t in diag_labels:
+    t.set_rotation(diag_deg)
+
 save(fig, "assets/figures/burst-three-viruses.svg")
