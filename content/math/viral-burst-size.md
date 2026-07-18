@@ -6,11 +6,13 @@ toc: true
 
 # Burst Size, Latent Period, and Mutation at the Cellular Scale
 
-Zoom in from the host to a single infected cell and a virus faces a small number of decisions, each with a mathematical consequence.
+The same population dynamics that govern how microbes and their hosts interact also play out one scale down, inside a single infected cell.
+Zoom in from the host to that cell and a virus faces a small number of decisions, each with a mathematical consequence.
 How long should it commandeer the cell before releasing progeny — its **latent period**?
 How many virions should it build in that time — its **burst size**?
 And how faithfully should it copy its genome — its **mutation rate**?
-These three cellular traits are not independent knobs: a longer latent period buys a larger burst, a larger burst is a larger draw from sequence space, and the fidelity of copying sets how much of that draw is mutant.
+Perfect copying would be a trap: some level of variation is itself an advantage, the raw material that lets the virus evolve and adapt to immunity and drugs.
+These three are the virus's cellular **life-history traits**, and they are coupled rather than independent: a longer latent period buys a larger burst, a larger burst is a larger draw from sequence space, and the fidelity of copying sets how much of that draw is mutant.
 This page works through the math that links them, at the level of the cell, following the viral-ecology tradition that Joshua Weitz synthesized in *Quantitative Viral Ecology* and that goes back to the phage physiologists.
 
 ![Left: virions accumulate inside a cell only after an eclipse period, rising then saturating as host resources deplete. Right: the phage population growth rate is maximised at an intermediate latent period, and the optimum shifts to shorter lysis when hosts are abundant.](../assets/figures/burst-latent-optimum.svg "fig:tradeoff")
@@ -44,8 +46,8 @@ B(L) = p\,(L - \tau_E), \qquad L \ge \tau_E. \label{eq:accumulate}
 \]
 
 In reality the curve in [@fig:tradeoff] bends over: as the cell's ribosomes, nucleotides, and membrane are exhausted, production saturates toward a ceiling $B_{\max}$, well described by $B(L) = B_{\max}\!\left(1 - e^{-(L-\tau_E)/\kappa}\right)$.
-Single-cell measurements confirm both the [rising-then-saturating shape](https://consensus.app/papers/details/45d7bd8278315762a153196955076059/?utm_source=claude_desktop) and something the deterministic picture hides: burst size is wildly heterogeneous from cell to cell.
-For influenza A, single infected cells span [$10^1$ to $10^4$ virions](https://consensus.app/papers/details/054cedbcac465a1b9f9f94c1f3e622a3/?utm_source=claude_desktop), with ~10% of cells ("super-producers") making 40–60% of all progeny; HSV-1 progeny from single keratinocytes [span three orders of magnitude](https://consensus.app/papers/details/987a2fe0022e5d5e9f50fdf6cefeac59/?utm_source=claude_desktop) for the same reason.
+Single-cell measurements confirm both the [rising-then-saturating shape](https://doi.org/10.1128/spectrum.02663-21) and something the deterministic picture hides: burst size is wildly heterogeneous from cell to cell.
+For influenza A, single infected cells span [$10^1$ to $10^4$ virions](https://doi.org/10.1371/journal.ppat.1012257), with ~10% of cells ("super-producers") making 40–60% of all progeny; HSV-1 progeny from single keratinocytes [span three orders of magnitude](https://doi.org/10.1128/jvi.01138-25) for the same reason.
 The linear law [@eq:accumulate] is the mean of a very broad distribution — a cell-scale echo of the [superspreading](superspreading.md) heterogeneity seen between hosts.
 
 ## The cellular reproduction number
@@ -78,7 +80,7 @@ The lesson is that $R_0$ at the cellular scale is *nothing but burst size times 
 
 Here is a fact that surprises people the first time.
 A budding virus that trickles out virus at rate $k$ over a lifespan $1/a$, and a lytic virus that releases the whole burst $B = k/a$ at the instant of lysis, produce **identical deterministic dynamics** — the [ODEs](within-host-dynamics.md) cannot tell them apart, because only the lifetime total enters the mean-field equations.
-But [Pearson and colleagues showed](https://consensus.app/papers/details/1bd515a605cd5abda5fdc40877de84a6/?utm_source=claude_desktop) that stochastically they differ, and the difference lives in the *offspring distribution* of a single infected cell.
+But [Pearson and colleagues showed](https://doi.org/10.1371/journal.pcbi.1001058) that stochastically they differ, and the difference lives in the *offspring distribution* of a single infected cell.
 
 Model each cell as producing a random number $Z$ of successful secondary infections; by [branching-process](branching-processes.md) theory the probability a lineage started by one infected cell dies out is the smallest root $q \in (0,1]$ of $q = g(q)$, where $g(s) = \mathbb{E}[s^Z]$ is the [probability generating function](moment-generating-functions.md).
 
@@ -102,12 +104,12 @@ More variance means more mass on "zero offspring," so the continuous mode is alw
 
 > [!NOTE]
 > Real cells sit between these extremes.
-> With an [eclipse phase and a staged infectious period](https://consensus.app/papers/details/3711d6a5b8a453cea12579d6c74bb21e/?utm_source=claude_desktop), the reproduction number of a single cell is a **negative binomial** random variable, and the probability of establishment depends on that whole distribution, not just its mean — the same reason [dispersion](superspreading.md) governs outbreak fate between hosts.
+> With an [eclipse phase and a staged infectious period](https://doi.org/10.1098/rsif.2023.0400), the reproduction number of a single cell is a **negative binomial** random variable, and the probability of establishment depends on that whole distribution, not just its mean — the same reason [dispersion](superspreading.md) governs outbreak fate between hosts.
 
 ## The optimal latent period: a marginal-value problem
 
 Waiting longer to lyse trades higher burst for slower turnover — the phage version of "a bird in the hand versus two in the bush."
-The classic treatment casts it as [optimal foraging via the marginal value theorem](https://consensus.app/papers/details/520e2ea4e543550592bb148bac1d62f7/?utm_source=claude_desktop): the cell is a patch, progeny are the resource, and lysis is the decision to leave.
+The classic treatment casts it as [optimal foraging via the marginal value theorem](https://doi.org/10.1007/BF01237884): the cell is a patch, progeny are the resource, and lysis is the decision to leave.
 Consider a phage growing in a well-mixed host population where a free phage takes a mean search time $T_a = 1/(k_a S)$ to find and adsorb a host (density $S$).
 Each infection cycle multiplies the phage by $B(L)$ over a generation of length $T_a + L$, so the long-run population growth rate is
 
@@ -121,12 +123,12 @@ Maximising [@eq:fitness] — setting $dr/dL = 0$ — gives the optimality condit
 \underbrace{\frac{B'(L^\*)}{B(L^\*)}}_{\text{marginal gain rate}} = \underbrace{\frac{r(L^\*)}{1}}_{\text{average gain rate}} \;=\; \frac{\ln B(L^\*)}{T_a + L^\*}, \label{eq:mvt}
 \]
 
-the marginal value theorem in one line: **lyse at the moment the marginal rate of building new progeny falls to the average rate of return of the whole cycle.** Because $B(L)$ is concave (it saturates), [@eq:fitness] has a single interior peak — an intermediate latent period is optimal, exactly as [Wang built an isogenic λ-phage panel to confirm](https://consensus.app/papers/details/71894646b3b85ccb90fcaad0e9d6e2ba/?utm_source=claude_desktop) and [Kannoly verified in continuous culture](https://consensus.app/papers/details/f0cb2455186c545a835b4ad2093b1d8a/?utm_source=claude_desktop).
-The comparative statics fall straight out of [@eq:mvt]: when hosts are abundant ($T_a$ small) the cost of a long wait is high, so the optimum shifts to **shorter** lysis times (right panel of [@fig:tradeoff]), the prediction [Abedon confirmed experimentally](https://consensus.app/papers/details/7d435567a3d15cd5ac8ffc4ff121c645/?utm_source=claude_desktop) by enriching for short-latent-period mutants at high bacterial density.
+the marginal value theorem in one line: **lyse at the moment the marginal rate of building new progeny falls to the average rate of return of the whole cycle.** Because $B(L)$ is concave (it saturates), [@eq:fitness] has a single interior peak — an intermediate latent period is optimal, exactly as [Wang built an isogenic λ-phage panel to confirm](https://doi.org/10.1534/genetics.105.045922) and [Kannoly verified in continuous culture](https://doi.org/10.1128/mbio.03593-21).
+The comparative statics fall straight out of [@eq:mvt]: when hosts are abundant ($T_a$ small) the cost of a long wait is high, so the optimum shifts to **shorter** lysis times (right panel of [@fig:tradeoff]), the prediction [Abedon confirmed experimentally](https://doi.org/10.1128/AEM.69.12.7499-7506.2003) by enriching for short-latent-period mutants at high bacterial density.
 
 > [!TIP]
 > Notice how *flat* the fitness curve is near its peak in [@fig:tradeoff].
-> A broad optimum means selection on lysis timing is weak once you are close, which is why real latent periods are variable and why [cell-to-cell noise in lysis timing](https://consensus.app/papers/details/884ef64e4f015167b2bb027f4b901a21/?utm_source=claude_desktop) both persists and biases the classic one-step growth-curve estimate of $L$ downward.
+> A broad optimum means selection on lysis timing is weak once you are close, which is why real latent periods are variable and why [cell-to-cell noise in lysis timing](https://doi.org/10.1128/mbio.01376-24) both persists and biases the classic one-step growth-curve estimate of $L$ downward.
 
 ## Mutation: burst size is a lottery for variation
 
@@ -175,18 +177,18 @@ All three below are enveloped RNA viruses that leave the cell by **budding** rat
 ![Left: cumulative virions produced by one cell over time for the three viruses — influenza builds fast then lyses, HIV reaches a large yield before the cell dies, and hantavirus produces slowly but never lyses, so its window stays open. Right: the three viruses on the burst-size / mutation-rate plane, with diagonals of constant per-cell mutational output B times mu.](../assets/figures/burst-three-viruses.svg "fig:threevirus")
 
 **The production window, not the burst rate, is what hantavirus changes.** Recall that lifetime burst is production rate times production window, and for a lytic or cytopathic virus the window is the cell's lifespan $1/a$.
-Influenza and HIV both kill the cell — influenza fast, HIV a little slower — so their yield is capped by how long the cell survives (left panel of [@fig:threevirus]); HIV's in-vivo per-cell yield is [~$4$–$5\times10^4$ virions](https://consensus.app/papers/details/d76471e95f7c52678a9d830a1a7cb71d/?utm_source=claude_desktop) but only [about one in a few hundred is infectious](https://consensus.app/papers/details/7bbed86921a2565b81662456ebdcc8b3/?utm_source=claude_desktop), so the *effective* burst that enters $R_0 = B\rho$ is far smaller than the RNA count.
-Hantaviruses are the striking case: they replicate in vascular [endothelial cells with no cytopathic effect](https://consensus.app/papers/details/12cfb379bb70513e800debe01f1cabbe/?utm_source=claude_desktop) and establish [persistent infection](https://consensus.app/papers/details/42a0ead3db6656f7b2e5ee4545d599d5/?utm_source=claude_desktop), so $a \to 0$ and the window is set not by lysis but by interferon.
-In human cells IFN-β switches on after a few days and [production falls off](https://consensus.app/papers/details/5aae91cef939570ca800e5e8bc5ddd0e/?utm_source=claude_desktop); in the natural rodent reservoir the antiviral response is [never triggered](https://consensus.app/papers/details/e938efae4cb85e59bb0fce4e6003a47b/?utm_source=claude_desktop), the window stays open indefinitely, and the animal remains a lifelong low-level shedder.
+Influenza and HIV both kill the cell — influenza fast, HIV a little slower — so their yield is capped by how long the cell survives (left panel of [@fig:threevirus]); HIV's in-vivo per-cell yield is [~$4$–$5\times10^4$ virions](https://doi.org/10.1073/pnas.0707449104) but only [about one in a few hundred is infectious](https://doi.org/10.1186/1742-4690-9-18), so the *effective* burst that enters $R_0 = B\rho$ is far smaller than the RNA count.
+Hantaviruses are the striking case: they replicate in vascular [endothelial cells with no cytopathic effect](https://doi.org/10.3389/fmicb.2014.00727) and establish [persistent infection](https://doi.org/10.1016/s0966-842x(99)01658-3), so $a \to 0$ and the window is set not by lysis but by interferon.
+In human cells IFN-β switches on after a few days and [production falls off](https://doi.org/10.1128/JVI.66.10.5929-5936.1992); in the natural rodent reservoir the antiviral response is [never triggered](https://doi.org/10.1371/journal.ppat.1012728), the window stays open indefinitely, and the animal remains a lifelong low-level shedder.
 The same $B = \text{rate}\times\text{window}$ accounting, with the death term turned off, is the whole difference between an acute and a persistent infection.
 
 **All three are budding, so their stochastic fate follows the continuous branch.** Because none release a synchronized lytic burst, the offspring distribution of a single infected cell is closer to the over-dispersed geometric of [@eq:qcont] than to the Poisson of [@eq:qburst], with extinction probability near $1/R_0$.
 This is why single-cell seeding is fragile even for a fit virus, and it is consistent with the very narrow transmission bottleneck of HIV, where a productive infection is usually founded by a **single** transmitted variant despite the donor carrying a diverse swarm.
 
 **Mutational output separates the fast evolvers from the stable one.** The per-cell mutational output is $B\mu$, and the right panel of [@fig:threevirus] places the three viruses on the $B$–$\mu$ plane against diagonals of constant $B\mu$.
-Influenza sits high on $\mu$ — [~$2\times10^{-4}$ per site, 2–3 mutations per genome copied](https://consensus.app/papers/details/cce553f33ee1556f882e1af30c291b60/?utm_source=claude_desktop) — which, multiplied over large bursts, is the raw material of antigenic drift, compounded by reassortment of its eight segments.
-HIV's reverse transcriptase runs at the [canonical RNA-virus rate ~$2\times10^{-5}$](https://consensus.app/papers/details/4b6e36be7c67570680258fec69859a8c/?utm_source=claude_desktop), but its enormous within-host replication and [APOBEC-driven hypermutation push the in-vivo rate to ~$4\times10^{-3}$](https://consensus.app/papers/details/182e5620626759ac8eb93b57ea314026/?utm_source=claude_desktop) — the highest measured for any biological entity — which is why drug resistance is essentially pre-existing in every patient.
-Hantaviruses sit in the low corner: their persistent, low-turnover replication accumulates change slowly, and their tight [codivergence with rodent hosts](https://consensus.app/papers/details/42a0ead3db6656f7b2e5ee4545d599d5/?utm_source=claude_desktop) leaves them genetically stable and host-restricted — part of why human infections are typically epidemiological dead ends rather than the start of sustained human-to-human chains.
+Influenza sits high on $\mu$ — [~$2\times10^{-4}$ per site, 2–3 mutations per genome copied](https://doi.org/10.7554/eLife.26437) — which, multiplied over large bursts, is the raw material of antigenic drift, compounded by reassortment of its eight segments.
+HIV's reverse transcriptase runs at the [canonical RNA-virus rate ~$2\times10^{-5}$](https://doi.org/10.1128/JVI.00694-10), but its enormous within-host replication and [APOBEC-driven hypermutation push the in-vivo rate to ~$4\times10^{-3}$](https://doi.org/10.1371/journal.pbio.1002251) — the highest measured for any biological entity — which is why drug resistance is essentially pre-existing in every patient.
+Hantaviruses sit in the low corner: their persistent, low-turnover replication accumulates change slowly, and their tight [codivergence with rodent hosts](https://doi.org/10.1016/s0966-842x(99)01658-3) leaves them genetically stable and host-restricted — part of why human infections are typically epidemiological dead ends rather than the start of sustained human-to-human chains.
 Read through $B\mu$, the same product that sets a phage's supply of escape mutants explains why two of these viruses are moving targets and the third is a fixture of its reservoir.
 
 ## In code
