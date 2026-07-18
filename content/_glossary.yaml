@@ -386,3 +386,31 @@
 - term: G-estimation
   short: A g-method that estimates a structural nested model by finding the treatment effect that makes the treatment-free outcome independent of treatment given confounders.
   see: math/g-estimation.md
+
+- term: E-value
+  aliases: [E-values]
+  short: The minimum strength of association an unmeasured confounder would need with both exposure and outcome to fully explain away an observed effect.
+  see: math/e-values.md
+
+- term: Coarsened exact matching
+  aliases: [CEM]
+  short: A matching method that coarsens covariates into bins, exact-matches on the bins, and prunes unmatched units, directly bounding covariate imbalance.
+  see: math/matching-methods.md
+
+- term: Meta-regression
+  short: A random-effects regression of study effect sizes on study-level covariates, used to explain between-study heterogeneity in a meta-analysis.
+  see: math/meta-regression.md
+
+- term: Publication bias
+  short: The distortion arising when studies with null or unfavorable results are less likely to be published, inflating pooled effects in a meta-analysis.
+  see: math/publication-bias.md
+
+- term: Cumulative incidence function
+  aliases: [CIF]
+  short: In competing-risks analysis, the probability of experiencing a specific cause of failure by a given time, accounting for the competing events.
+  see: math/competing-risks.md
+
+- term: Force of infection
+  aliases: [forces of infection]
+  short: The per-capita rate at which susceptible individuals become infected; estimable from age–seroprevalence data via serocatalytic models.
+  see: epidemiology/force-of-infection.md

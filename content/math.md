@@ -158,6 +158,7 @@ It requires practice and repetition.
 
 - [Survival Analysis](math/survival-analysis.md) — Kaplan–Meier, hazards, censoring
 - [Cox Proportional Hazards Regression](math/cox-regression.md)
+- [Competing Risks](math/competing-risks.md) — cause-specific vs subdistribution hazards, cumulative incidence, and the 1−KM trap
 
 ## Experimental & study design
 
@@ -175,6 +176,8 @@ It requires practice and repetition.
 - [Balanced Incomplete Block Designs](math/balanced-incomplete-block-designs.md) — when a block cannot hold every treatment, keeping pairs balanced
 - [Latin Square Designs](math/latin-square-designs.md) — controlling two blocking factors at once in a t×t layout
 - [Meta-Analysis](math/meta-analysis.md) — pooling effects and prevalence across studies, heterogeneity and a Bayesian I²
+- [Meta-Regression](math/meta-regression.md) — explaining between-study heterogeneity with study-level covariates
+- [Publication Bias and Small-Study Effects](math/publication-bias.md) — funnel plots, Egger's test, and trim-and-fill
 - [Global Sensitivity Analysis](math/sensitivity-analysis.md) — Sobol indices and Morris screening
 - [Survey Sampling](math/survey-sampling.md) — SRS, stratified, cluster, and weighting
 - [Bayesian Bandits for Adaptive Sampling and Trial Design](math/bayesian-bandits.md) — Thompson sampling to shift a testing budget toward the positive sites, and response-adaptive clinical trials
@@ -186,6 +189,8 @@ It requires practice and repetition.
 - [Propensity Scores](math/propensity-scores.md) — the balancing score, and matching, stratification, and weighting on it
 - [Inverse Probability Weighting](math/inverse-probability-weighting.md) — reweighting to a pseudo-population, stabilized weights, and marginal structural models
 - [G-Estimation](math/g-estimation.md) — structural nested models and the g-methods for time-varying confounding
+- [Matching Methods](math/matching-methods.md) — exact, propensity-score, and coarsened exact matching, with balance diagnostics
+- [E-Values and Unmeasured Confounding](math/e-values.md) — how strong a hidden confounder would need to be to explain away a result
 - [Instrumental Variables](math/instrumental-variables.md) — estimating causal effects under confounding
 - [Mendelian Randomization](math/mendelian-randomization.md) — genetic variants as instruments
 
@@ -330,6 +335,7 @@ It requires practice and repetition.
 - [Density-Dependent and Frequency-Dependent Transmission](math/transmission-modes.md) — how the contact rate scales with host density, and the critical density threshold
 - [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
 - [Social Contact Matrices and Age-Structured Mixing](math/contact-matrices.md) — who-meets-whom by age, from contact surveys to $R_0$
+- [Serocatalytic Models](math/serocatalytic-models.md) — estimating the force of infection from age–seroprevalence surveys
 - [Within-Host Dynamics and the Immune Response](math/within-host-dynamics.md) — virus, infected cells, and B-cell/T-cell immunity
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
 - [Vectorial Capacity from Field Data](math/vectorial-capacity.md) — estimating biting rate, survival, EIR, and vectorial capacity from entomological collections
