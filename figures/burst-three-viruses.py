@@ -11,8 +11,9 @@ Left: cumulative virions produced by one infected cell over time. The lifetime
 yield B = (production rate) x (production window) is reached three different
 ways -- influenza fast then lyses, HIV moderate then the cell dies, hantavirus
 slow but non-cytopathic so the window stays open (persistence). Right: each
-virus on the burst-size / mutation-rate plane, with diagonals of constant
-per-cell mutational output B*mu.
+virus on the burst-size / mutation-rate plane -- the three above plus
+poliovirus, a lytic RNA virus with no polymerase proofreading -- with
+diagonals of constant per-cell mutational output B*mu.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -73,7 +74,8 @@ for Bmu in (1e-2, 1e-1, 1.0, 10.0):
 
 pts = [("HIV",        5e4, 2.5e-5, PALETTE[0], (6, 6)),
        ("influenza",  3e3, 2.0e-4, PALETTE[1], (-4, 8)),
-       ("hantavirus", 5e2, 1.0e-5, PALETTE[2], (8, -4))]
+       ("hantavirus", 5e2, 1.0e-5, PALETTE[2], (8, -4)),
+       ("poliovirus", 3e4, 2.0e-4, PALETTE[3], (-10, 8))]
 for name, b, mu, color, (dx, dy) in pts:
     axR.plot(b, mu, "o", color=color, ms=9)
     axR.annotate(name, xy=(b, mu), xytext=(dx, dy), textcoords="offset points",
