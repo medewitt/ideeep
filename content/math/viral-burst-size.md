@@ -159,37 +159,44 @@ Near the establishment threshold, though, the production mode matters: at $R_0 =
 On mutation, with per-site $\mu = 3\times10^{-5}$ the 148-virion burst throws a given point mutant with probability $1 - (1-\mu)^{148} \approx 0.0044$; a super-producer cell making $B = 5000$ raises that to $\approx 0.14$, and its expected genome-wide mutant output ($U = 0.5$) is $5000 \times 0.39 \approx 1967$ mutant progeny from that one cell.
 The rare high-burst cells are doing most of the evolving.
 
-## Three viruses, three strategies: HIV, influenza, hantavirus
+## Seven viruses across the cellular parameter space
 
 The equations above are a common currency, so the most useful thing to do with them is compare real viruses that solve the cellular problem in very different ways.
-All three below are enveloped RNA viruses that leave the cell by **budding** rather than a lytic burst, yet they occupy opposite corners of the parameter space — and the differences explain a great deal of their epidemiology.
+The seven below are all RNA viruses, yet they span the parameter space along all three axes at once — burst size, mutation rate, and the length of the production window.
+Six leave the cell by **budding** — HIV, influenza, and hantavirus continuously; measles and RSV while fusing the cell into dying syncytia; dengue before the cell apoptoses — while poliovirus alone packages progeny internally and releases them in a single **lytic burst**.
+Those differences in how, how many, and how fast explain a great deal of their epidemiology.
 
-| Trait | HIV-1 | Influenza A | Hantavirus |
-|-------|-------|-------------|------------|
-| Genome | retrovirus, +ssRNA → DNA, ~9.7 kb | −ssRNA, 8 segments, ~13.5 kb | −ssRNA, 3 segments, ~12 kb |
-| Production mode | budding, continuous | budding, ~continuous | budding, continuous |
-| Infected-cell fate | dies in ~1–2 days (cytopathic + CTL) | dies in ~1 day (cytopathic) | **survives — non-cytopathic, persistent** |
-| Eclipse $\tau_E$ | ~18–24 h | ~6 h | ~1–3 days |
-| Burst size $B$ | ~$10^4$–$10^5$ total virions, only ~1 in $10^2$–$10^3$ infectious | ~$10^2$–$10^4$ (single-cell mean ~350–700) | low–moderate, IFN-limited, sustained |
-| Per-site mutation $\mu$ | ~$2.4\times10^{-5}$ (RT); up to ~$4\times10^{-3}$ in vivo via APOBEC | ~$1.8$–$2.5\times10^{-4}$ (2–3 per genome) | RNA-range but constrained; low diversity |
-| Evolutionary signature | quasispecies, rapid drug/immune escape | antigenic drift + segment reassortment | host codivergence, spillover dead-end |
+| Trait | HIV-1 | Influenza A | Hantavirus | Poliovirus | Measles | RSV | Dengue |
+|-------|-------|-------------|------------|------------|---------|-----|--------|
+| Genome | retrovirus, +ssRNA → DNA, ~9.7 kb | −ssRNA, 8 segments, ~13.5 kb | −ssRNA, 3 segments, ~12 kb | +ssRNA, non-segmented, ~7.5 kb | −ssRNA, non-segmented, ~15.9 kb | −ssRNA, non-segmented, ~15.2 kb | +ssRNA, non-segmented, ~10.7 kb |
+| Production mode | budding, continuous | budding, ~continuous | budding, continuous | **lytic burst** | budding, syncytial | budding, syncytial | budding (secretory) |
+| Infected-cell fate | dies in ~1–2 days (cytopathic + CTL) | dies in ~1 day (cytopathic) | **survives — non-cytopathic, persistent** | lysed in ~6–8 h (rapid host shutoff) | fuses into dying syncytia over ~2–3 days | fuses into dying syncytia (~2–3 days) | dies by apoptosis (~2–3 days) |
+| Eclipse $\tau_E$ | ~18–24 h | ~6 h | ~1–3 days | ~2–3 h | ~12–24 h | ~10–12 h | ~12–24 h |
+| Burst size $B$ | ~$10^4$–$10^5$ total virions, only ~1 in $10^2$–$10^3$ infectious | ~$10^2$–$10^4$ (single-cell mean ~350–700) | low–moderate, IFN-limited, sustained | ~$10^4$–$10^5$ per cell | low–moderate (~$10^2$–$10^3$) | low; high particle-to-PFU ratio | ~$10^3$–$10^4$ |
+| Per-site mutation $\mu$ | ~$2.4\times10^{-5}$ (RT); up to ~$4\times10^{-3}$ in vivo via APOBEC | ~$1.8$–$2.5\times10^{-4}$ (2–3 per genome) | RNA-range but constrained; low diversity | ~$2\times10^{-4}$ (RdRp, no proofreading) | ~$10^{-4}$ (RNA-range) | ~$10^{-4}$ (RNA-range) | ~$1$–$2\times10^{-4}$ (RdRp) |
+| Evolutionary signature | quasispecies, rapid drug/immune escape | antigenic drift + segment reassortment | host codivergence, spillover dead-end | high diversity but 3 fixed serotypes; vaccine-derived reversion | **monotypic** — one serotype, antigenically stable | A/B subgroups; variable G, conserved F | 4 serotypes; cross-serotype ADE |
 
-![Left: cumulative virions produced by one cell over time for the three viruses — influenza builds fast then lyses, HIV reaches a large yield before the cell dies, and hantavirus produces slowly but never lyses, so its window stays open. Right: the viruses on the burst-size / mutation-rate plane — the three above plus poliovirus, a lytic RNA virus with no polymerase proofreading — with diagonals of constant per-cell mutational output B times mu.](../assets/figures/burst-three-viruses.svg "fig:threevirus")
+![Left: cumulative virions produced by one cell over time for all seven viruses — poliovirus bursts fastest, influenza builds fast then lyses, measles and RSV bud into dying syncytia, dengue buds then the cell apoptoses, HIV reaches a large yield before the cell dies, and hantavirus produces slowly but never lyses, so its window stays open. Right: the seven viruses on the burst-size / mutation-rate plane, with diagonals of constant per-cell mutational output B times mu.](../assets/figures/burst-three-viruses.svg "fig:threevirus")
 
 **The production window, not the burst rate, is what hantavirus changes.** Recall that lifetime burst is production rate times production window, and for a lytic or cytopathic virus the window is the cell's lifespan $1/a$.
 Influenza and HIV both kill the cell — influenza fast, HIV a little slower — so their yield is capped by how long the cell survives (left panel of [@fig:threevirus]); HIV's in-vivo per-cell yield is [~$4$–$5\times10^4$ virions](https://doi.org/10.1073/pnas.0707449104) but only [about one in a few hundred is infectious](https://doi.org/10.1186/1742-4690-9-18), so the *effective* burst that enters $R_0 = B\rho$ is far smaller than the RNA count.
+Poliovirus is the same accounting compressed into hours: it packages $10^4$–$10^5$ virions and lyses the cell within about 6–8 h — a very high production rate over a very short window, the steep early climb in the left panel.
+Measles, RSV, and dengue sit in between: all three bud yet still kill the cell — measles and RSV by fusing it into dying syncytia, dengue by driving it to apoptosis — so their windows are bounded like influenza's while their production rates stay modest, which is why their curves in the left panel plateau at intermediate yields.
 Hantaviruses are the striking case: they replicate in vascular [endothelial cells with no cytopathic effect](https://doi.org/10.3389/fmicb.2014.00727) and establish [persistent infection](https://doi.org/10.1016/s0966-842x(99)01658-3), so $a \to 0$ and the window is set not by lysis but by interferon.
 In human cells IFN-β switches on after a few days and [production falls off](https://doi.org/10.1128/JVI.66.10.5929-5936.1992); in the natural rodent reservoir the antiviral response is [never triggered](https://doi.org/10.1371/journal.ppat.1012728), the window stays open indefinitely, and the animal remains a lifelong low-level shedder.
 The same $B = \text{rate}\times\text{window}$ accounting, with the death term turned off, is the whole difference between an acute and a persistent infection.
 
-**All three are budding, so their stochastic fate follows the continuous branch.** Because none release a synchronized lytic burst, the offspring distribution of a single infected cell is closer to the over-dispersed geometric of [@eq:qcont] than to the Poisson of [@eq:qburst], with extinction probability near $1/R_0$.
+**Production mode sorts their stochastic fate.** The six budding viruses release virus continuously rather than in a synchronized burst, so the offspring distribution of a single infected cell is closer to the over-dispersed geometric of [@eq:qcont] than to the Poisson of [@eq:qburst], with extinction probability near $1/R_0$.
 This is why single-cell seeding is fragile even for a fit virus, and it is consistent with the very narrow transmission bottleneck of HIV, where a productive infection is usually founded by a **single** transmitted variant despite the donor carrying a diverse swarm.
+Poliovirus is the exception that makes the mechanism visible: because it releases its whole burst at lysis, a single cell's successful-offspring count is Poisson [@eq:qburst] rather than geometric, so at the *same* mean $R_0$ a lone poliovirus-infected cell is meaningfully **harder** to extinguish than any of the budding six — the burst-versus-continuous gap of [@fig:extinction], now a difference between real viruses.
 
-**Mutational output separates the fast evolvers from the stable one.** The per-cell mutational output is $B\mu$, and the right panel of [@fig:threevirus] places the three viruses on the $B$–$\mu$ plane against diagonals of constant $B\mu$.
+**Mutational output separates the fast evolvers from the stable ones.** The per-cell mutational output is $B\mu$, and the right panel of [@fig:threevirus] places all seven viruses on the $B$–$\mu$ plane against diagonals of constant $B\mu$.
 Influenza sits high on $\mu$ — [~$2\times10^{-4}$ per site, 2–3 mutations per genome copied](https://doi.org/10.7554/eLife.26437) — which, multiplied over large bursts, is the raw material of antigenic drift, compounded by reassortment of its eight segments.
 HIV's reverse transcriptase runs at the [canonical RNA-virus rate ~$2\times10^{-5}$](https://doi.org/10.1128/JVI.00694-10), but its enormous within-host replication and [APOBEC-driven hypermutation push the in-vivo rate to ~$4\times10^{-3}$](https://doi.org/10.1371/journal.pbio.1002251) — the highest measured for any biological entity — which is why drug resistance is essentially pre-existing in every patient.
 Hantaviruses sit in the low corner: their persistent, low-turnover replication accumulates change slowly, and their tight [codivergence with rodent hosts](https://doi.org/10.1016/s0966-842x(99)01658-3) leaves them genetically stable and host-restricted — part of why human infections are typically epidemiological dead ends rather than the start of sustained human-to-human chains.
-Read through $B\mu$, the same product that sets a phage's supply of escape mutants explains why two of these viruses are moving targets and the third is a fixture of its reservoir.
+Poliovirus and measles are the cautionary corner: poliovirus has the *highest* per-cell mutational output of the seven ($B\mu \approx 6$, a large burst copied at RdRp fidelity) and measles carries an ordinary RNA-range $\mu$, yet both are antigenically almost frozen — poliovirus in three fixed serotypes, measles as a single serotype the 1960s vaccine still matches — because their capsid and glycoprotein structures are functionally constrained, so most of that variation is either lethal or invisible to immunity.
+RSV and dengue occupy the middle ground, carrying just enough usable antigenic variation to matter epidemiologically: RSV splits into A and B subgroups on its variable G protein while its fusion protein stays conserved, and dengue's four serotypes are the substrate for [antibody-dependent enhancement](https://doi.org/10.1126/science.aan6836), where prior immunity to one serotype worsens infection by another.
+They are the standing reminder that $B\mu$ sets the *supply* of variants, not whether any of them can become useful: read through that product, the same quantity that sets a phage's supply of escape mutants explains why influenza and HIV are moving targets, why hantavirus (little variation) and poliovirus and measles (plenty of variation, nowhere to go) are not, and why RSV and dengue land in between.
 
 ## In code
 
