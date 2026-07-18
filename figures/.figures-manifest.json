@@ -76,6 +76,8 @@
   "distance-measures.py": "db835d4ff50b50e8b96de77f08a9a62ef8131f1979bc194653a42a6d9b9ee1a2",
   "diversity-rank-abundance.py": "1295012597478e7484a050a07c7de69b4044b1118e3befc949f17e922dbc989c",
   "dn-ds.py": "486b349faec0d4f21df011341ce5671d6f98c90c39880035a611378c876f2f3c",
+  "dta-forest.py": "e3f539f43e1ebe4455e391253615bbe54a209c3b69c3a99c6580998944767d6d",
+  "dta-sroc.py": "cd9befdf2043c5b11a46304f321ff24e180a69a9f33e0e1e5995b832930f5dfb",
   "dynamic-programming-alignment.py": "e75eb57ea57ac25e008f819e2b00344d9a8017e7611fdd6b564beab008a8995e",
   "ecological-networks.py": "a30ebdd026ee4012fd03740adcfc50ea3a340d03615e145166a6017a0c4cd7dd",
   "eden-terrace-occupancy.py": "8fd5f363710571d8952ba87f32f6fa68e6e9dbe62a2db176be8d9a488c931cda",

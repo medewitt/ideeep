@@ -82,6 +82,7 @@ Individual tests aggregate into **surveillance** — the systematic monitoring t
 - [Detection Probability: Viral Kinetics and Assay Thresholds](epidemiology/detection-probability.md) — the quantitative link between viral load, the limit of detection, and time-varying sensitivity
 - [Dilutions, Titers, and Standard Curves](math/dilutions-and-titers.md) — serial-dilution titers and reading an unknown off an ELISA standard curve
 - [Diagnostic Testing and Screening](math/diagnostic-testing.md) — sensitivity, specificity, PPV, and ROC
+- [Diagnostic Test Accuracy Meta-Analysis](math/diagnostic-accuracy-meta-analysis.md) — pooling sensitivity and specificity across studies (bivariate/HSROC)
 - [Data Ingestion & APIs](programming/data-ingestion-and-apis.md) — pulling sequence data from GenBank and GISAID
 - [The Molecular Clock and Phylodynamics](math/molecular-clock.md)
 - [Epidemiology](epidemiology.md)

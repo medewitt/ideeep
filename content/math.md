@@ -178,6 +178,7 @@ It requires practice and repetition.
 - [Meta-Analysis](math/meta-analysis.md) — pooling effects and prevalence across studies, heterogeneity and a Bayesian I²
 - [Meta-Regression](math/meta-regression.md) — explaining between-study heterogeneity with study-level covariates
 - [Publication Bias and Small-Study Effects](math/publication-bias.md) — funnel plots, Egger's test, and trim-and-fill
+- [Diagnostic Test Accuracy Meta-Analysis](math/diagnostic-accuracy-meta-analysis.md) — pooling sensitivity and specificity with the bivariate/HSROC model
 - [Global Sensitivity Analysis](math/sensitivity-analysis.md) — Sobol indices and Morris screening
 - [Survey Sampling](math/survey-sampling.md) — SRS, stratified, cluster, and weighting
 - [Bayesian Bandits for Adaptive Sampling and Trial Design](math/bayesian-bandits.md) — Thompson sampling to shift a testing budget toward the positive sites, and response-adaptive clinical trials

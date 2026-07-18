@@ -414,3 +414,8 @@
   aliases: [forces of infection]
   short: The per-capita rate at which susceptible individuals become infected; estimable from age–seroprevalence data via serocatalytic models.
   see: epidemiology/force-of-infection.md
+
+- term: Summary ROC curve
+  aliases: [SROC, HSROC, bivariate meta-analysis]
+  short: The summary of a diagnostic test accuracy meta-analysis, from a bivariate random-effects model that jointly pools sensitivity and specificity and their threshold correlation.
+  see: math/diagnostic-accuracy-meta-analysis.md
