@@ -99,7 +99,7 @@ max(abs(out[, "N"] - exact))   # ~1e-4: numerical and exact agree
 import numpy as np
 from scipy.integrate import solve_ivp
 
-r, K, N0 = 0.5, 1000.0, 10.0
+r, K, N0 = 0.5, 1000.0, 10. 
 f = lambda t, N: r * N * (1 - N / K)
 t = np.linspace(0, 20, 201)
 sol = solve_ivp(f, (0, 20), [N0], t_eval=t, rtol=1e-8)
