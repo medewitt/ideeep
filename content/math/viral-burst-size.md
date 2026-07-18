@@ -184,6 +184,12 @@ for (Ta in c(3, 60)) {
   Lstar <- grid[which.max(log(burst(grid)) / (Ta + grid))]
   cat(sprintf("Ta=%2.0f: optimal L = %.1f min, burst = %.0f\n", Ta, Lstar, burst(Lstar)))
 }
+
+# mutation: expected mutants and escape probability per burst
+mu <- 3e-5; U <- 0.5                            # per-site rate; per-genome rate
+for (B in c(30, 148, 5000))
+  cat(sprintf("B=%5d: E[site mutants]=%.3f, P(escape)=%.3f, E[mutant progeny]=%.0f\n",
+              B, B * mu, 1 - (1 - mu)^B, B * (1 - exp(-U))))
 ```
 
 ### Python
@@ -255,6 +261,14 @@ grid = range(eclipse + 0.5, 160; length = 4000)
 for Ta in (3.0, 60.0)
     Lstar = grid[argmax(log.(burst.(grid)) ./ (Ta .+ grid))]
     println("Ta=$Ta: optimal L = $(round(Lstar; digits=1)) min, burst = $(round(burst(Lstar); digits=0))")
+end
+
+# mutation: expected mutants and escape probability per burst
+mu, U = 3e-5, 0.5                            # per-site rate; per-genome rate
+for B in (30, 148, 5000)
+    println("B=$B: E[site mutants]=$(round(B*mu; digits=3)), " *
+            "P(escape)=$(round(1 - (1 - mu)^B; digits=3)), " *
+            "E[mutant progeny]=$(round(B * (1 - exp(-U)); digits=0))")
 end
 ```
 
