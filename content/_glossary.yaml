@@ -274,3 +274,148 @@
     log-sum-exp trick — subtracting the maximum score before exponentiating — to
     avoid overflow.
   see: math/transformers-attention.md
+
+- term: Analysis of variance
+  aliases: [ANOVA]
+  short: A method that partitions total variability into between-group and within-group parts and tests their ratio with an F-statistic.
+  see: math/anova.md
+
+- term: Split-plot design
+  aliases: [split-plot, split-plot designs]
+  short: An experiment with two randomization scales — a hard-to-change factor on whole plots and an easier one on sub-plots — giving two error strata.
+  see: math/split-plot-designs.md
+
+- term: Repeated measures design
+  aliases: [repeated measures, repeated-measures, repeated-measures design]
+  short: A design in which the same units are measured under several conditions or times, using each unit as its own control.
+  see: math/repeated-measures.md
+
+- term: Crossover design
+  aliases: [crossover trial, crossover trials]
+  short: A trial in which every subject receives every treatment in sequence, separated by washout, so treatments are compared within subjects.
+  see: math/crossover-designs.md
+
+- term: Stepped-wedge design
+  aliases: [stepped-wedge trial, stepped wedge]
+  short: A cluster trial in which groups cross one-way from control to intervention on a staggered, randomized schedule until all are exposed.
+  see: math/stepped-wedge-designs.md
+
+- term: Balanced incomplete block design
+  aliases: [BIBD]
+  short: A blocked design whose blocks are too small to hold every treatment, arranged so every pair of treatments appears together equally often.
+  see: math/balanced-incomplete-block-designs.md
+
+- term: Latin square
+  aliases: [Latin square design, Latin squares]
+  short: A t×t layout in which each treatment appears once in every row and every column, controlling two blocking factors at once.
+  see: math/latin-square-designs.md
+
+- term: Meta-analysis
+  aliases: [meta-analyses]
+  short: A statistical synthesis that pools estimates from multiple studies into one overall estimate, weighting each by its precision.
+  see: math/meta-analysis.md
+
+- term: Prediction interval
+  aliases: [prediction intervals]
+  short: In a random-effects meta-analysis, the interval within which the true effect of a new study is expected to fall — reflecting between-study heterogeneity, not just uncertainty in the mean.
+  see: math/meta-analysis.md
+
+- term: Bland–Altman plot
+  aliases: [Bland-Altman plot, Bland–Altman, Bland-Altman analysis]
+  short: A plot of the difference between two measurement methods against their mean, used to assess agreement via the bias and limits of agreement.
+  see: math/bland-altman.md
+
+- term: Limits of agreement
+  short: In a Bland–Altman analysis, the interval (mean difference ± 1.96 SD of the differences) within which 95% of the differences between two methods are expected to lie.
+  see: math/bland-altman.md
+
+- term: Serial dilution
+  aliases: [serial dilutions]
+  short: A stepwise dilution of a sample by a fixed factor at each step, producing a geometric series of concentrations used for titration and standard curves.
+  see: math/dilutions-and-titers.md
+
+- term: Titer
+  aliases: [titre, endpoint titer, neutralization titer]
+  short: The reciprocal of the highest (or 50%) dilution of a sample that still produces a defined effect, such as neutralization or agglutination.
+  see: math/dilutions-and-titers.md
+
+- term: Standard curve
+  aliases: [calibration curve]
+  short: A curve fit to standards of known concentration (often a four-parameter logistic) and inverted to read the concentration of unknowns from their assay signal.
+  see: math/dilutions-and-titers.md
+
+- term: Species distribution model
+  aliases: [SDM, ecological niche model, niche model]
+  short: A model relating a species' occurrence to environmental covariates to map where it can live, from presence-only or presence-absence data.
+  see: math/species-distribution-presence-only.md
+
+- term: Pseudo-absence
+  aliases: [pseudo-absences, background points]
+  short: Points sampling the available environment across a landscape, contrasted against occurrence records in presence-only species distribution models.
+  see: math/species-distribution-presence-only.md
+
+- term: Vectorial capacity
+  short: The expected number of infectious bites that eventually arise from all mosquitoes biting one infectious person on a single day, given by m·a²·pⁿ/(−ln p).
+  see: math/vectorial-capacity.md
+
+- term: Entomological inoculation rate
+  aliases: [EIR]
+  short: The number of infectious bites received per person per unit time, the product of the human biting rate and the sporozoite rate — the field measure of transmission intensity.
+  see: math/vectorial-capacity.md
+
+- term: Resistance ratio
+  aliases: [resistance ratios]
+  short: The ratio of the lethal concentration (e.g. LC50) of a resistant population to that of a susceptible reference strain, a graded measure of insecticide-resistance intensity.
+  see: math/insecticide-resistance-monitoring.md
+
+- term: Propensity score
+  aliases: [propensity scores]
+  short: The probability of receiving treatment given measured confounders; a balancing score used to remove confounding by matching, stratification, or weighting.
+  see: math/propensity-scores.md
+
+- term: Inverse probability weighting
+  aliases: [IPW, inverse-probability weighting, inverse probability weights]
+  short: Reweighting units by the inverse probability of their observed treatment to build a pseudo-population in which treatment is unconfounded by measured covariates.
+  see: math/inverse-probability-weighting.md
+
+- term: Marginal structural model
+  aliases: [marginal structural models, MSM]
+  short: An outcome model fit in the inverse-probability-weighted pseudo-population, whose coefficients are marginal causal effects, valid with time-varying confounding.
+  see: math/inverse-probability-weighting.md
+
+- term: G-estimation
+  short: A g-method that estimates a structural nested model by finding the treatment effect that makes the treatment-free outcome independent of treatment given confounders.
+  see: math/g-estimation.md
+
+- term: E-value
+  aliases: [E-values]
+  short: The minimum strength of association an unmeasured confounder would need with both exposure and outcome to fully explain away an observed effect.
+  see: math/e-values.md
+
+- term: Coarsened exact matching
+  aliases: [CEM]
+  short: A matching method that coarsens covariates into bins, exact-matches on the bins, and prunes unmatched units, directly bounding covariate imbalance.
+  see: math/matching-methods.md
+
+- term: Meta-regression
+  short: A random-effects regression of study effect sizes on study-level covariates, used to explain between-study heterogeneity in a meta-analysis.
+  see: math/meta-regression.md
+
+- term: Publication bias
+  short: The distortion arising when studies with null or unfavorable results are less likely to be published, inflating pooled effects in a meta-analysis.
+  see: math/publication-bias.md
+
+- term: Cumulative incidence function
+  aliases: [CIF]
+  short: In competing-risks analysis, the probability of experiencing a specific cause of failure by a given time, accounting for the competing events.
+  see: math/competing-risks.md
+
+- term: Force of infection
+  aliases: [forces of infection]
+  short: The per-capita rate at which susceptible individuals become infected; estimable from age–seroprevalence data via serocatalytic models.
+  see: epidemiology/force-of-infection.md
+
+- term: Summary ROC curve
+  aliases: [SROC, HSROC, bivariate meta-analysis]
+  short: The summary of a diagnostic test accuracy meta-analysis, from a bivariate random-effects model that jointly pools sensitivity and specificity and their threshold correlation.
+  see: math/diagnostic-accuracy-meta-analysis.md

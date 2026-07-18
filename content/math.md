@@ -107,6 +107,8 @@ It requires practice and repetition.
 - [Confidence Intervals](math/confidence-intervals.md)
 - [Permutation Tests](math/permutation-tests.md)
 - [Diagnostic Testing and Screening](math/diagnostic-testing.md) — sensitivity, specificity, PPV, and ROC
+- [Bland–Altman Agreement](math/bland-altman.md) — comparing two measurement methods by bias and limits of agreement, not correlation
+- [Dilutions, Titers, and Standard Curves](math/dilutions-and-titers.md) — turning an assay readout into a concentration: serial-dilution titers and standard-curve interpolation
 - [Proper Scoring Rules](math/proper-scoring-rules.md) — Brier, log score, CRPS, and forecast calibration
 
 ## Regression & generalized linear models
@@ -156,6 +158,7 @@ It requires practice and repetition.
 
 - [Survival Analysis](math/survival-analysis.md) — Kaplan–Meier, hazards, censoring
 - [Cox Proportional Hazards Regression](math/cox-regression.md)
+- [Competing Risks](math/competing-risks.md) — cause-specific vs subdistribution hazards, cumulative incidence, and the 1−KM trap
 
 ## Experimental & study design
 
@@ -165,6 +168,17 @@ It requires practice and repetition.
 - [Optimal Experimental Design](math/optimal-design.md) — D-, A-, and I-optimality
 - [Response Surface Methodology](math/response-surface.md) — optimizing over continuous factors
 - [Latin Hypercube Sampling](math/latin-hypercube.md) — space-filling designs for computer experiments
+- [Analysis of Variance](math/anova.md) — partitioning variation into between- and within-group parts, the F-test
+- [Split-Plot Designs](math/split-plot-designs.md) — whole-plot and sub-plot factors, two error strata
+- [Repeated Measures Designs](math/repeated-measures.md) — same subjects over conditions, within-subject correlation
+- [Crossover Designs](math/crossover-designs.md) — every subject gets every treatment; washout and carryover
+- [Stepped-Wedge Designs](math/stepped-wedge-designs.md) — staggered cluster rollout, separating effect from time trend
+- [Balanced Incomplete Block Designs](math/balanced-incomplete-block-designs.md) — when a block cannot hold every treatment, keeping pairs balanced
+- [Latin Square Designs](math/latin-square-designs.md) — controlling two blocking factors at once in a t×t layout
+- [Meta-Analysis](math/meta-analysis.md) — pooling effects and prevalence across studies, heterogeneity and a Bayesian I²
+- [Meta-Regression](math/meta-regression.md) — explaining between-study heterogeneity with study-level covariates
+- [Publication Bias and Small-Study Effects](math/publication-bias.md) — funnel plots, Egger's test, and trim-and-fill
+- [Diagnostic Test Accuracy Meta-Analysis](math/diagnostic-accuracy-meta-analysis.md) — pooling sensitivity and specificity with the bivariate/HSROC model
 - [Global Sensitivity Analysis](math/sensitivity-analysis.md) — Sobol indices and Morris screening
 - [Survey Sampling](math/survey-sampling.md) — SRS, stratified, cluster, and weighting
 - [Bayesian Bandits for Adaptive Sampling and Trial Design](math/bayesian-bandits.md) — Thompson sampling to shift a testing budget toward the positive sites, and response-adaptive clinical trials
@@ -173,6 +187,11 @@ It requires practice and repetition.
 ## Causal inference
 
 - [Causal Inference](math/causal-inference.md) — confounding, counterfactuals, and Simpson's paradox
+- [Propensity Scores](math/propensity-scores.md) — the balancing score, and matching, stratification, and weighting on it
+- [Inverse Probability Weighting](math/inverse-probability-weighting.md) — reweighting to a pseudo-population, stabilized weights, and marginal structural models
+- [G-Estimation](math/g-estimation.md) — structural nested models and the g-methods for time-varying confounding
+- [Matching Methods](math/matching-methods.md) — exact, propensity-score, and coarsened exact matching, with balance diagnostics
+- [E-Values and Unmeasured Confounding](math/e-values.md) — how strong a hidden confounder would need to be to explain away a result
 - [Instrumental Variables](math/instrumental-variables.md) — estimating causal effects under confounding
 - [Mendelian Randomization](math/mendelian-randomization.md) — genetic variants as instruments
 
@@ -235,6 +254,11 @@ It requires practice and repetition.
 - [Competition and Coexistence](math/competition-coexistence.md)
 - [Modern Coexistence Theory and the Storage Effect](math/coexistence-theory.md) — stabilizing niche vs fitness differences
 - [The Community Matrix and Stability](math/community-matrix.md)
+
+*Species distributions & niche modeling:*
+
+- [Species Distribution Models: Presence-Only Data](math/species-distribution-presence-only.md) — background points and the Maxent / Poisson point-process view
+- [Species Distribution Models: Presence–Absence Data](math/species-distribution-presence-absence.md) — logistic occurrence models, AUC, and the detection/occupancy caveat
 
 *Biodiversity & community structure:*
 
@@ -312,8 +336,11 @@ It requires practice and repetition.
 - [Density-Dependent and Frequency-Dependent Transmission](math/transmission-modes.md) — how the contact rate scales with host density, and the critical density threshold
 - [SEIR and Compartmental Extensions](math/seir-models.md) — latent classes, waning, demography
 - [Social Contact Matrices and Age-Structured Mixing](math/contact-matrices.md) — who-meets-whom by age, from contact surveys to $R_0$
+- [Serocatalytic Models](math/serocatalytic-models.md) — estimating the force of infection from age–seroprevalence surveys
 - [Within-Host Dynamics and the Immune Response](math/within-host-dynamics.md) — virus, infected cells, and B-cell/T-cell immunity
 - [Vector-Borne Disease Models](math/vector-borne.md) — the Ross–Macdonald framework
+- [Vectorial Capacity from Field Data](math/vectorial-capacity.md) — estimating biting rate, survival, EIR, and vectorial capacity from entomological collections
+- [Insecticide-Resistance Monitoring](math/insecticide-resistance-monitoring.md) — diagnostic-dose classification, LC50/LC90, and the resistance ratio
 - [Reservoir Ecology](math/reservoir-ecology.md) — maintenance hosts, spillover, and multi-host persistence
 - [Stochastic Epidemics and the Gillespie Algorithm](math/stochastic-epidemics.md)
 - [Quasi-Stationary Distributions](math/quasi-stationary-distributions.md) — endemic persistence, fade-out, and the mean time to extinction
