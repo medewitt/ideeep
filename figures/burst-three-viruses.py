@@ -5,12 +5,12 @@
 #     "matplotlib",
 # ]
 # ///
-"""Eight viruses as eight cellular life-history strategies.
+"""Nine viruses as nine cellular life-history strategies.
 
 Left: cumulative virions produced by one infected cell over time. The lifetime
 yield B = (production rate) x (production window) is reached different ways --
-poliovirus fastest, in a lytic burst; influenza fast then lyses; measles and
-RSV bud but fuse cells into dying syncytia; dengue buds then the cell dies;
+poliovirus fastest, in a lytic burst; influenza fast then lyses; measles, mumps,
+and RSV bud but fuse cells into dying syncytia; dengue buds then the cell dies;
 variola (a DNA poxvirus) builds in cytoplasmic factories and releases mainly on
 lysis; HIV moderate then the cell dies; and hantavirus slow but non-cytopathic
 so the window stays open (persistence). Right: each virus on the burst-size /
@@ -30,6 +30,7 @@ fig, (axL, axR) = plt.subplots(1, 2, figsize=(8.0, 4.0))
 RSV_C = "#1f9aa0"    # teal
 DENV_C = "#b0436b"   # rose
 VARIOLA_C = "#6d4c2f"  # umber -- the one DNA virus
+MUMPS_C = "#8a9a2a"  # olive
 
 # --- Left: cumulative production, five strategies -------------------------
 t = np.linspace(0, 10, 800)   # days
@@ -55,6 +56,8 @@ rsv = np.ma.masked_where(t > 2.5, sat(t, 0.5, 8e2, 0.5))
 denv = np.ma.masked_where(t > 3.2, sat(t, 0.7, 5e3, 0.6))
 # variola: large dsDNA poxvirus, cytoplasmic factories; released mainly on lysis ~2 days
 var_ = np.ma.masked_where(t > 2.0, sat(t, 0.3, 1e4, 0.5))
+# mumps: paramyxovirus like measles, budding + syncytial; moderate yield, cell dies ~2.8 days
+mumps = np.ma.masked_where(t > 2.8, sat(t, 0.5, 1.5e3, 0.55))
 
 axL.plot(t, flu, color=PALETTE[1], lw=2.3, label="influenza (lyses)")
 axL.plot(t, hiv, color=PALETTE[0], lw=2.3, label="HIV (cell dies)")
@@ -64,6 +67,7 @@ axL.plot(t, mea, color=PALETTE[4], lw=2.3, label="measles (syncytia)")
 axL.plot(t, rsv, color=RSV_C, lw=2.3, label="RSV (syncytia)")
 axL.plot(t, denv, color=DENV_C, lw=2.3, label="dengue (cell dies)")
 axL.plot(t, var_, color=VARIOLA_C, lw=2.3, label="variola (DNA, lyses)")
+axL.plot(t, mumps, color=MUMPS_C, lw=2.3, label="mumps (syncytia)")
 axL.plot(1.0, sat(np.array([1.0]), 0.25, 5e3, 0.25)[0], "o", color=PALETTE[1], ms=6)
 axL.plot(2.2, sat(np.array([2.2]), 1.0, 5e4, 0.4)[0], "o", color=PALETTE[0], ms=6)
 axL.plot(0.3, sat(np.array([0.3]), 0.1, 3e4, 0.06)[0], "o", color=PALETTE[3], ms=6)
@@ -71,6 +75,7 @@ axL.plot(3.0, sat(np.array([3.0]), 0.5, 1e3, 0.6)[0], "o", color=PALETTE[4], ms=
 axL.plot(2.5, sat(np.array([2.5]), 0.5, 8e2, 0.5)[0], "o", color=RSV_C, ms=6)
 axL.plot(3.2, sat(np.array([3.2]), 0.7, 5e3, 0.6)[0], "o", color=DENV_C, ms=6)
 axL.plot(2.0, sat(np.array([2.0]), 0.3, 1e4, 0.5)[0], "o", color=VARIOLA_C, ms=6)
+axL.plot(2.8, sat(np.array([2.8]), 0.5, 1.5e3, 0.55)[0], "o", color=MUMPS_C, ms=6)
 axL.annotate("no lysis:\nwindow stays open", xy=(9.4, 2e3 * 8.4), xytext=(4.9, 7e4),
              fontsize=7.6, color=INK,
              arrowprops=dict(arrowstyle="->", color=MUTED, lw=1.0))
@@ -109,7 +114,8 @@ pts = [("HIV",        5e4, 2.5e-5, PALETTE[0], (6, 6)),
        ("measles",    1e3, 1.0e-4, PALETTE[4], (-16, 7)),
        ("RSV",        8e2, 6.0e-5, RSV_C, (8, -3)),
        ("dengue",     5e3, 1.2e-4, DENV_C, (7, 3)),
-       ("variola",    1e4, 1.5e-6, VARIOLA_C, (8, -3))]
+       ("variola",    1e4, 1.5e-6, VARIOLA_C, (8, -3)),
+       ("mumps",      1.7e3, 1.8e-4, MUMPS_C, (-4, 8))]
 for name, b, mu, color, (dx, dy) in pts:
     axR.plot(b, mu, "o", color=color, ms=9)
     axR.annotate(name, xy=(b, mu), xytext=(dx, dy), textcoords="offset points",
