@@ -419,3 +419,13 @@
   aliases: [SROC, HSROC, bivariate meta-analysis]
   short: The summary of a diagnostic test accuracy meta-analysis, from a bivariate random-effects model that jointly pools sensitivity and specificity and their threshold correlation.
   see: math/diagnostic-accuracy-meta-analysis.md
+
+- term: Type M error
+  aliases: [type M errors, magnitude error, exaggeration ratio]
+  short: In design analysis, the factor by which a statistically significant estimate overstates the true effect on average; large in underpowered studies.
+  see: math/type-m-s-errors.md
+
+- term: Type S error
+  aliases: [type S errors, sign error, sign errors]
+  short: In design analysis, the probability that a statistically significant estimate has the opposite sign from the true effect; rises as power falls toward the significance level.
+  see: math/type-m-s-errors.md

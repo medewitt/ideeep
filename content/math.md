@@ -104,6 +104,7 @@ It requires practice and repetition.
 - [Monotonic Transformations](math/monotonic-transformations.md)
 - [Hypothesis Testing](math/hypothesis-testing.md)
 - [p-values](math/p-values.md)
+- [Type M and Type S Errors](math/type-m-s-errors.md) — design analysis beyond power: the exaggeration ratio and sign-error rate of significant estimates
 - [Confidence Intervals](math/confidence-intervals.md)
 - [Permutation Tests](math/permutation-tests.md)
 - [Diagnostic Testing and Screening](math/diagnostic-testing.md) — sensitivity, specificity, PPV, and ROC
