@@ -157,6 +157,69 @@ se = sqrt(1/a + 1/b + 1/c + 1/d)
 design_analysis(logor, se)
 ```
 
+## Putting it together: a complete binary-outcome workflow
+
+Design analysis earns its keep as the *last* step of a workflow that begins before any data are collected.
+Here is the whole arc for a binary outcome, from the a-priori sample size to the retrospective check that keeps a lucky result honest.
+
+A trial of a prophylactic aims to cut a post-operative infection risk of $30\%$ by a modest but genuinely worthwhile amount — an odds ratio of $0.65$.
+A standard two-sided calculation at $80\%$ power says the trial needs about $450$ patients per arm, $900$ in all.
+Accrual is slow, though, and the trial closes with only $120$ per arm — a shortfall of nearly three-quarters of the planned sample.
+The analysis then turns up exactly the kind of result that feels like a reward for the struggle: $10\%$ infections on treatment versus $27.5\%$ on control, an odds ratio of $0.29$ with $p < 0.001$.
+Before celebrating, run the design analysis using the study's *own* standard error and the modest effect the trial was actually built to detect.
+Even granting that the drug truly helps at OR $0.65$, this study had only about $22\%$ power, so a significant estimate exaggerates the log-odds effect by roughly $2.2\times$ on average and would land near an odds ratio of $0.40$.
+The direction is trustworthy (Type S well under $1\%$), but the eye-catching $0.29$ is almost certainly an inflated draw, not evidence that the effect is enormous.
+
+```python
+import math
+
+# Step 1 — a-priori sample size to detect the smallest effect worth finding
+def n_per_arm_logor(p0, odds_ratio, alpha=0.05, power=0.80):
+    odds0 = p0 / (1 - p0)
+    p1 = odds_ratio * odds0 / (1 + odds_ratio * odds0)
+    var_factor = 1/p1 + 1/(1 - p1) + 1/p0 + 1/(1 - p0)   # SE(logOR)^2 = factor / n
+    se_target = abs(math.log(odds_ratio)) / (norm.ppf(1 - alpha/2) + norm.ppf(power))
+    return math.ceil(var_factor / se_target**2)
+
+p0, or_design = 0.30, 0.65                      # control risk; smallest worthwhile effect
+n_req = n_per_arm_logor(p0, or_design)
+print(f"Step 1  design: OR={or_design} at 80% power needs {n_req}/arm ({2*n_req} total)")
+
+# Step 2 — reality: accrual falls short
+n_obs = 120
+print(f"Step 2  enrolled {n_obs}/arm ({2*n_obs} total): a {1 - n_obs/n_req:.0%} shortfall")
+
+# Step 3 — the tempting result: a big, significant odds ratio
+a, b = 12, n_obs - 12          # treated:  infected, not
+c, d = 33, n_obs - 33          # control:  infected, not
+or_obs = (a * d) / (b * c)
+se_obs = math.sqrt(1/a + 1/b + 1/c + 1/d)
+z = math.log(or_obs) / se_obs
+print(f"Step 3  observed OR={or_obs:.2f}  (SE={se_obs:.2f}, z={z:.2f}, "
+      f"p={2*norm.cdf(-abs(z)):.1e}) — significant!")
+
+# Step 4 — retrospective design analysis at the study's own SE,
+#          assuming the truth is the modest effect the trial was built for
+r = design_analysis(math.log(or_design), se_obs)
+avg_sig = math.exp(-r["type_m"] * abs(math.log(or_design)))
+print(f"Step 4  if the truth is OR={or_design}: power={r['power']:.2f}, "
+      f"Type S={r['type_s']*100:.1f}%, Type M={r['type_m']:.1f}")
+print(f"        a significant study averages OR {avg_sig:.2f}; "
+      f"the observed {or_obs:.2f} is an inflated draw")
+```
+
+<!-- python-output:auto -->
+```text
+Step 1  design: OR=0.65 at 80% power needs 450/arm (900 total)
+Step 2  enrolled 120/arm (240 total): a 73% shortfall
+Step 3  observed OR=0.29  (SE=0.37, z=-3.35, p=8.1e-04) — significant!
+Step 4  if the truth is OR=0.65: power=0.22, Type S=0.4%, Type M=2.2
+        a significant study averages OR 0.40; the observed 0.29 is an inflated draw
+```
+<!-- /python-output:auto -->
+
+The takeaway is not that the treatment fails — the sign is reliable and it may well help — but that the *magnitude* on display is untrustworthy, and the honest point estimate is far closer to the modest effect the trial set out to detect than to the dramatic one it happened to report.
+
 ## Why it matters
 
 Design analysis reframes what a "significant" finding is worth in the very regime where infectious-disease work often operates: small trials, rare events, sparse contingency tables, subgroup analyses, and pilot studies.
