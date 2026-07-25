@@ -332,6 +332,7 @@
   "transmission-tree.py": "c8f8581d7b168b21a87aed9429be5125b445ae5fc52eb8a1cd2768747268e20a",
   "tree-ensembles.py": "175d93f71bfd87e668b598e0e31d413a6dece2863b72d8614004749583ad12e7",
   "turing-patterns.py": "66ba09310a734e024bc4673bd0d866e4e03a034f69bd6ca5ed4fc59269343368",
+  "type-m-s-errors.py": "b67f206f47a96ae2791f06a82842965c1d63e2a31f2fd62f5f51c924ad4c6677",
   "uncertainty-calibration-conformal.py": "19da02cdf74e57eb8d4a0c89798d4ce108b10cee2a9668edfa7cf87932966ffc",
   "vaccine-effectiveness.py": "dcbf75fb7106c672d26f70ef4ca09278aac613af44fb938ed938fcb4df7cf24a",
   "vaccine-effects-direct-indirect.py": "ca0a73d4b3ae2370b68b8536b3c097c4d8313d2ff14c13572b4aabf0ae28f144",
